@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'piston',
     'pastebin',
     'pastebin.apps.dpaste',
+    'gunicorn',
 )
 
 #==============================================================================
