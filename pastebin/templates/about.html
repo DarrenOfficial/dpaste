@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block headline %}
+    <h1>About dpaste.de</h1>
+{% endblock %}
+
+{% block content %}
+    <p>Description follows...</p>
+
+	
+<h2>API</h2>
+
+<pre>#!/usr/bin/env python
+ 
+import urllib
+import urllib2
+import sys
+ 
+def paste_code():
+    request = urllib2.Request(
+        'http://dpaste.de/api/',
+        urllib.urlencode([('content', ''.join(sys.stdin.readlines()))]),
+    )
+    response = urllib2.urlopen(request)
+    print response.read()[1:-1]
+ 
+if __name__ == '__main__':
+    paste_code()</pre>
+
+<p>Save this script in <code>/usr/local/bin/dpaste</code> and <code>chmod +x ..filepath</code>.</p>
+<p>Usage: <code>cat foo.txt | dpaste</code></p>
+{% endblock %}
+
+
+{% block sidebar %}
+    <h2>Imprint</h2>
+    
+    <p>
+        <strong>Address</strong>
+    </p>
+    <p>
+        Martin Mahner<br/>
+        Lauterbacher Str. 4<br/>
+        DE-18581 Putbus<br/>
+        Germany
+    </p>
+    
+    <p>
+        <strong>Jabber/E-Mail:</strong>
+    </p>
+    
+    <p>
+        <a href="mailto:martin@mahner.org">martin@mahner.org</a>
+    </p>
+    
+    <p>
+        <strong>Phone:</strong>
+    </p>
+    
+    <p>
+        +49 38301 890(770+8)<sup>1</sup><br/><br/>        
+        <small style="font-size:0.9em;"><sup>1</sup> Yes, that's math!</small>
+    </p>
+{% endblock %}

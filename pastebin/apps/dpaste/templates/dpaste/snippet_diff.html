@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<h2>
+    <span style="float:right;">(<a href="#" onclick="$('#diff').slideUp('fast'); return false;">{% trans "Close" %}</a>)</span>
+    {% blocktrans with fileA.get_absolute_url as filea_url and fileB.get_absolute_url as fileb_url and fileA.id as filea_id and fileB.id as fileb_id %}
+    Diff between
+    <a href="{{ filea_url }}">Snippet #{{ filea_id }}</a>
+    and
+    <a href="{{ fileb_url }}">Snippet #{{ fileb_id }}</a>
+    {% endblocktrans %}
+</h2>
+
+<pre class="code">{{ difftext|safe }}</pre>

@@ -1,0 +1,174 @@
+{% extends "dpaste/base.html" %}
+{% load mptt_tags %}
+{% load i18n %}
+
+{% block extrahead %}
+     {% if request.session.userprefs %}
+     <style type="text/css" media="all">
+         .code{
+             {# FIXME: Thats stupid #}
+             {% ifnotequal request.session.userprefs.font_family "None" %}font-family: {{ request.session.userprefs.font_family }} !important;{% endifnotequal %}
+             {% ifnotequal request.session.userprefs.font_size "None" %}font-size: {{ request.session.userprefs.font_size }}px !important;{% endifnotequal %}
+             {% ifnotequal request.session.userprefs.line_height "None" %}line-height: {{ request.session.userprefs.line_height }}px !important;{% endifnotequal %}
+         }
+     </style>
+     {% endif %}
+{% endblock %}
+
+{% block title %}{% trans "Snippet" %} #{{ snippet.pk }}{% endblock %}
+{% block headline %}
+    <h1>
+        {% trans "Snippet" %} #{{ snippet.pk }}
+        {% if snippet.parent_id %}
+            {% blocktrans with snippet.parent.get_absolute_url as parent_url and snippet.parent.id as parent_id %}(Copy of <a href="{{ parent_url }}">snippet #{{ parent_id }}</a>){% endblocktrans %}
+        {% endif %}
+        <span class="date">{{ snippet.published|date:_("DATETIME_FORMAT") }} ({% trans "UTC" %})</span>
+    </h1>
+{% endblock %}
+{% load dpaste_tags %}
+
+{% block content %}
+<div id="diff" style="display:none;">diff</div>
+
+<div class="accordion">
+    <div class="snippet-options">
+        <abbr title="{% trans "Time to life" %}">TTL:</abbr> {{ snippet.expires|timeuntil  }}
+        &mdash;
+        {% if snippet.pk|in_list:request.session.snippet_list %}
+        <a onclick="return confirm('{% trans "Really delete this snippet?" %}')" href="{% url snippet_delete snippet.secret_id %}">Delete now!</a>
+        &mdash;
+        {% endif %}
+        <a id="toggleWordwrap" href="#">{% trans "Wordwrap" %}</a>
+    </div>
+    <h2>
+        {% if snippet.title %}{{ snippet.title }}{% else %} {% trans "Snippet" %} #{{ snippet.id}}{% endif %}
+        <span>{% if snippet.author %}{% blocktrans with snippet.author as author %}by {{ author }}{% endblocktrans %}{% endif %}</span>
+    </h2>
+
+    <div class="container">
+        <div class="snippet">
+        <table>
+            <tr>
+                <th><pre class="code">{% for l in lines %}<a href="#l{{ forloop.counter }}" id="l{{ forloop.counter }}">{{ forloop.counter }}</a>{% endfor %}</pre></th>
+                <td><pre class="code">{% for line in snippet.content_splitted %}<div class="line" id="l{{ forloop.counter }}">{% if line %}{{ line|safe }}{% else %}&nbsp;{% endif %}</div>{% endfor %}</pre></td>
+            </tr>
+        </table>
+        </div>
+    </div>
+
+    <h2>{% trans "Write an answer" %} &rarr;</h2>
+    <div class="container" style="display: none;">
+        {% include "dpaste/snippet_form.html" %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block sidebar %}
+    <h2>{% trans "History" %}</h2>
+
+    <form method="get" id="diffform" action="{% url snippet_diff %}">
+    {% csrf_token %}
+    <div class="tree">
+        {% for tree_item,structure in tree|tree_info %}
+        {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
+        <div>
+        <span class="diff">
+            <input type="radio" name="a" value="{{ tree_item.id }}" {% ifequal tree_item.id snippet.parent_id %}checked="checked"{% endifequal %}/>
+            <input type="radio" name="b" value="{{ tree_item.id }}" {% ifequal snippet tree_item %}checked="checked"{% endifequal %}/>
+        </span>
+        {% ifequal snippet tree_item %}
+            <strong>{% trans "Snippet" %} #{{ tree_item.id }}</strong>
+       {% else %}
+       <a href="{{ tree_item.get_absolute_url }}">{% trans "Snippet" %} #{{ tree_item.id }}</a>
+        {% endifequal %}
+        </div>
+        {% for level in structure.closed_levels %}</li></ul>{% endfor %}
+        {% endfor %}
+        <div class="submit">
+            <input type="submit" value="{% trans "Compare" %}"/>
+        </div>
+    </div>
+    </form>
+
+    <h2>{% trans "Options" %}</h2>
+    <p><a href="{% url snippet_details_raw snippet.secret_id %}">{% trans "View raw" %}</a></p>
+{% endblock %}
+
+{% block script_footer %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+    curLine = document.location.hash;
+    if(curLine.substring(0,2) == '#l'){
+        $('div.snippet div.line'+curLine).addClass('marked');
+    }
+
+    $("div.accordion").accordion({
+       autoHeight: false,
+       header: 'h2',
+       animation: 'bounceslide',
+       duration: 2000,
+    });
+
+    /**
+    * Diff Ajax Call
+    */
+    $("form#diffform").submit(function() {
+        $.get("{% url snippet_diff %}", {
+            a: $("input[name=a]:checked").val(),
+            b: $("input[name=b]:checked").val()
+        }, function(data){
+            $('#diff').html(data).slideDown('fast');
+        });
+        return false;
+    });
+
+    /**
+    * Wordwrap
+    */
+    $('#toggleWordwrap').toggle(
+        function(){
+            $('div.snippet pre.code').css('white-space', 'pre-wrap');
+            return false;
+        },
+        function(){
+            $('div.snippet pre.code').css('white-space', 'pre');
+            return false;
+        }
+    );
+
+    /**
+    * Line Highlighting
+    */
+    $('div.snippet th a').each(function(i){
+        $(this).click(function(){
+            var j = $(this).text();
+            $('div.snippet div.line.marked').removeClass('marked');
+            $('div.snippet div.line#l'+j).toggleClass('marked');
+        });
+    });
+
+    {% if request.session.userprefs.display_all_lexer %}
+    /**
+    * Lexer Guessing
+    */
+    $('#guess_lexer_btn').click(function(){
+        $.getJSON('{% url snippet_guess_lexer %}',
+            {'codestring': $('#id_content').val()},
+            function(data){
+                if(data.lexer == "unknown"){
+                    $('#guess_lexer_btn').css('color', 'red');
+                }else{
+                    $('#id_lexer').val(data.lexer);
+                    $('#guess_lexer_btn').css('color', 'inherit');
+                }
+            });
+    });
+    {% endif %}
+});
+</script>
+{% endblock %}

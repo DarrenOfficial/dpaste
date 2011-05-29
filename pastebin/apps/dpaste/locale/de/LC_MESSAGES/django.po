@@ -1,0 +1,236 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-07 12:23+0200\n"
+"PO-Revision-Date: 2008-08-10 01:20+0100\n"
+"Last-Translator: Martin Mahner <martin@mahner.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:13
+msgid "In one hour"
+msgstr "In einer Stunde"
+
+#: forms.py:14
+msgid "In one week"
+msgstr "In einer Woche"
+
+#: forms.py:15
+msgid "In one month"
+msgstr "In einem Monat"
+
+#: forms.py:16
+msgid "Save forever"
+msgstr "Für immer speichern"
+
+#: forms.py:26 models.py:20
+msgid "Lexer"
+msgstr "Syntax"
+
+#: forms.py:32 models.py:22
+msgid "Expires"
+msgstr "Erlischt"
+
+#: forms.py:87 forms.py:96
+msgid "Default"
+msgstr "Standard"
+
+#: forms.py:100
+msgid "Default Name"
+msgstr "Standard Name"
+
+#: forms.py:102
+msgid "Display all lexer"
+msgstr "Alle Syntaxformate anzeigen"
+
+#: forms.py:105
+msgid "This also enables the super secret 'guess lexer' function."
+msgstr "Dies aktiviert auch die super geheime 'Syntax erraten' Funktion."
+
+#: forms.py:107
+msgid "Font Family"
+msgstr "Schriftart"
+
+#: forms.py:108
+msgid "Font Size"
+msgstr "Schriftgröße"
+
+#: forms.py:109
+msgid "Line Height"
+msgstr "Zeilenhöhe"
+
+#: models.py:15
+msgid "Secret ID"
+msgstr "Geheime ID"
+
+#: models.py:16
+msgid "Title"
+msgstr "Titel"
+
+#: models.py:17
+msgid "Author"
+msgstr "Autor"
+
+#: models.py:18
+msgid "Content"
+msgstr "Inhalt"
+
+#: models.py:19
+msgid "Highlighted Content"
+msgstr "Gehighlighteter Content"
+
+#: models.py:21
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: views.py:145
+msgid "No changes were made between this two files."
+msgstr "Zwischen diesen beiden Dateien wurden keine Änderungen durchgeführt."
+
+#: templates/dpaste/snippet_details.html:18
+#: templates/dpaste/snippet_details.html:21
+#: templates/dpaste/snippet_details.html:44
+#: templates/dpaste/snippet_details.html:81
+#: templates/dpaste/snippet_details.html:83
+#: templates/dpaste/snippet_list.html:4 templates/dpaste/snippet_list.html:13
+msgid "Snippet"
+msgstr "Snippet"
+
+#: templates/dpaste/snippet_details.html:23
+#, python-format
+msgid "(Copy of <a href=\"%(parent_url)s\">snippet #%(parent_id)s</a>)"
+msgstr "(Kopie von <a href=\"%(parent_url)s\">Snippet #%(parent_id)s</a>)"
+
+#: templates/dpaste/snippet_details.html:25
+#: templates/dpaste/snippet_list.html:14
+msgid "DATETIME_FORMAT"
+msgstr ""
+
+#: templates/dpaste/snippet_details.html:25
+msgid "UTC"
+msgstr "UTC"
+
+#: templates/dpaste/snippet_details.html:35
+msgid "Time to life"
+msgstr ""
+
+#: templates/dpaste/snippet_details.html:38
+msgid "Really delete this snippet?"
+msgstr "Wirklich dieses Snippet löschen?"
+
+#: templates/dpaste/snippet_details.html:41
+msgid "Wordwrap"
+msgstr ""
+
+#: templates/dpaste/snippet_details.html:45
+#, python-format
+msgid "by %(author)s"
+msgstr "von %(author)s"
+
+#: templates/dpaste/snippet_details.html:59
+msgid "Write an answer"
+msgstr "Schreibe eine Antwort"
+
+#: templates/dpaste/snippet_details.html:69
+msgid "History"
+msgstr "Verlauf"
+
+#: templates/dpaste/snippet_details.html:89
+msgid "Compare"
+msgstr "Vergleichen"
+
+#: templates/dpaste/snippet_details.html:94
+msgid "Options"
+msgstr "Optionen"
+
+#: templates/dpaste/snippet_details.html:95
+msgid "View raw"
+msgstr "Rohformat"
+
+#: templates/dpaste/snippet_diff.html:4
+msgid "Close"
+msgstr "Schließen"
+
+#: templates/dpaste/snippet_diff.html:5
+#, python-format
+msgid ""
+"\n"
+"    Diff between\n"
+"    <a href=\"%(filea_url)s\">Snippet #%(filea_id)s</a>\n"
+"    and\n"
+"    <a href=\"%(fileb_url)s\">Snippet #%(fileb_id)s</a>\n"
+"    "
+msgstr ""
+"\n"
+"    Diff zwischen\n"
+"    <a href=\"%(filea_url)s\">Snippet #%(filea_id)s</a>\n"
+"    und\n"
+"    <a href=\"%(fileb_url)s\">Snippet #%(fileb_id)s</a>\n"
+"    "
+
+#: templates/dpaste/snippet_form.html:10
+msgid "Guess lexer"
+msgstr "Syntax erraten"
+
+#: templates/dpaste/snippet_form.html:15
+msgid "Paste it"
+msgstr "Paste es"
+
+#: templates/dpaste/snippet_list.html:6
+#, python-format
+msgid "Your latest %(snippets_max)s snippets"
+msgstr "Deine neuesten %(snippets_max)s Snippets"
+
+#: templates/dpaste/snippet_list.html:19
+msgid "No snippets available."
+msgstr "Keine Snippets verfügbar"
+
+#: templates/dpaste/snippet_list.html:24 templates/dpaste/userprefs.html:25
+msgid "DATA_STORED_IN_A_COOKIE_HINT"
+msgstr ""
+"<p><strong>Hinweis:</strong> Deine Daten werden in einem Cookie gespeichert."
+
+#: templates/dpaste/snippet_new.html:4 templates/dpaste/snippet_new.html:8
+msgid "New snippet"
+msgstr "Neues Snippet"
+
+#: templates/dpaste/snippet_new.html:5
+msgid "Paste a new snippet"
+msgstr "Schreibe ein neues Snippet"
+
+#: templates/dpaste/snippet_new.html:14
+msgid "DPASTE_HOMEPAGE_TITLE"
+msgstr "dpaste"
+
+#: templates/dpaste/snippet_new.html:15
+msgid "DPASTE_HOMEPAGE_DESCRIPTION"
+msgstr ""
+"dpaste.de ist ein Codespeicher inspiriert von <a href=\"http://dpaste.com/"
+"\">dpaste.com</a>. Die Vorteile und den Quellcode dieser Seite findest du "
+"bei <a href=\"http://code.google.com/p/django-paste/\">Google Code</a>."
+
+#: templates/dpaste/userprefs.html:5 templates/dpaste/userprefs.html.py:15
+msgid "User Settings"
+msgstr "Benutzereinstellungen"
+
+#: templates/dpaste/userprefs.html:11
+msgid "USER_PREFS_SAVED_SUCCESSFULLY"
+msgstr "Deine Einstellungen wurden erfolgreich gespeichert."
+
+#: templates/dpaste/userprefs.html:20
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+#~ msgid "WHAT_IS_THIS_TITLE"
+#~ msgstr "Was ist das hier?"
+
+#~ msgid "Youre displaying the whole bunch of lexers!"
+#~ msgstr "Du siehst derzeit das ganze Bündel an Lexern!"

@@ -1,0 +1,7 @@
+*~
+*.pyc
+docs/_build/*
+uploads
+pastebin/conf/local/*.py
+dev.db
+pastebin.egg-info

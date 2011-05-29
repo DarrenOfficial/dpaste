@@ -1,0 +1,62 @@
+{% load i18n %}
+
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>dpaste.de: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
+	<link rel="stylesheet" media="screen, projection" href="{{ STATIC_URL }}theme.css"/>
+	{% block extrahead %}{% endblock %}
+</head>
+<body>
+
+<div id="header">
+    <span class="new_snippet"><a href="{% url snippet_new %}">{% trans "New snippet" %} &rarr;</a></span>
+	{% block headline %}{% endblock %}
+</div>
+
+<div id="sidebar">
+	{% block sidebar %}{% endblock %}
+</div>
+
+
+<div id="content">
+	{% block content %}{% endblock %}
+</div>
+<div id="footer">
+    {% comment %}
+    <form action="/i18n/setlang/" method="post" class="setlang">
+        {% csrf_token %}
+        <select name="language">
+            {% for lang in LANGUAGES %}
+            <option {% ifequal LANGUAGE_CODE lang.0 %}selected="selected"{% endifequal %} value="{{ lang.0 }}">{{ lang.1 }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Go" />
+    </form>
+    {% endcomment %}
+    <a href="{% url snippet_userlist %}">{% trans "Recent snippets" %}</a>
+    <a href="{% url snippet_userprefs %}">{% trans "Settings" %}</a>
+    <a href="{% url about %}">{% trans "About" %}</a>
+</div>
+
+{% block script_footer %}{% endblock %}
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-90910-20']);
+  _gaq.push(['_setDomainName', '.dpaste.de']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

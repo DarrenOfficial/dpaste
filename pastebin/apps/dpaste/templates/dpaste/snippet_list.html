@@ -1,0 +1,26 @@
+{% extends "dpaste/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Snippet" %} #{{ snippet.pk }}{% endblock %}
+{% block headline %}
+<h1>{% blocktrans %}Your latest {{ snippets_max }} snippets{% endblocktrans %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% if snippet_list %}
+    {% for snippet in snippet_list %}
+    <h2>
+        <a href="{{ snippet.get_absolute_url }}">{% trans "Snippet" %} #{{ snippet.pk }}</a>
+        ~ {{ snippet.published|date:_("DATETIME_FORMAT") }}
+    </h2>
+    <p style="color: #555; margin: 8px 0 20px 0;">{{ snippet.content|truncatewords:40 }}</p>
+    {% endfor %}
+    {% else %}
+    <p>{% trans "No snippets available." %}</p>
+    {% endif %}
+
+
+    <div class="hint">
+        {% trans "DATA_STORED_IN_A_COOKIE_HINT" %}
+    </div>
+{% endblock %}
