@@ -5,13 +5,9 @@ from piston.handler import AnonymousBaseHandler
 from pastebin.apps.dpaste.models import Snippet
 
 class SnippetHandler(AnonymousBaseHandler):
-    allowed_methods = ('GET', 'POST')
+    allowed_methods = ('POST',)
     fields = ('title', 'content',)
     model = Snippet
-
-    def read(self, request, secret_id):
-        post = Snippet.objects.get(secret_id=secret_id)
-        return post
 
     def create(self, request):
         if not request.POST.get('content'):
