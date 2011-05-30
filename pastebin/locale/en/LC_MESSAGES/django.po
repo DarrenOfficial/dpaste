@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-29 17:48-0500\n"
-"PO-Revision-Date: 2011-05-30 01:01+0100\n"
+"POT-Creation-Date: 2011-05-30 12:21-0500\n"
+"PO-Revision-Date: 2011-05-30 19:21+0100\n"
 "Last-Translator: Martin Mahner <martin@mahner.org>\n"
 "Language-Team: en <martin@mahner.org>\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr ""
 
 #: apps/dpaste/templates/dpaste/snippet_details.html:35
 msgid "Time to life"
-msgstr ""
+msgstr "Time to live"
 
 #: apps/dpaste/templates/dpaste/snippet_details.html:38
 msgid "Really delete this snippet?"
@@ -232,15 +232,15 @@ msgstr "Your settings were saved."
 msgid "Save settings"
 msgstr ""
 
-#: templates/base.html:38
+#: templates/base.html:41
 msgid "Recent snippets"
 msgstr ""
 
-#: templates/base.html:39
+#: templates/base.html:42
 msgid "Settings"
 msgstr ""
 
-#: templates/base.html:40
+#: templates/base.html:43
 msgid "About"
 msgstr ""
 
