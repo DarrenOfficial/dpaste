@@ -79,6 +79,14 @@ LOGIN_REDIRECT_URL = '/'
 # Templates
 #==============================================================================
 
+MIDDLEWARE_CLASSES = (
+    'pastebin.disable.DisableCSRF',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+)
+
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, PROJECT_MODULE_NAME, 'templates'),
 )

@@ -7,11 +7,7 @@ from pastebin.apps.dpaste.models import Snippet
 class SnippetHandler(AnonymousBaseHandler):
     allowed_methods = ('GET', 'POST')
     fields = ('title', 'content',)
-    exclude = ('id', re.compile(r'^private_'))
     model = Snippet
-
-    def content_size(self, blogpost):
-        return len(blogpost.content)
 
     def read(self, request, secret_id):
         post = Snippet.objects.get(secret_id=secret_id)

@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     
     # Bla
     (r'^i18n/', include('django.conf.urls.i18n')),
-    (r'^admin/(.*)', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
     
     # API
     url(r'^api/(?P<secret_id>[^/]+)/$', snippet_resource),
