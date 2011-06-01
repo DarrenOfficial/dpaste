@@ -39,7 +39,7 @@ class NakedHtmlFormatter(HtmlFormatter):
 def pygmentize(code_string, lexer_name='text'):
     try:
         return highlight(code_string, get_lexer_by_name(lexer_name), NakedHtmlFormatter())
-    except AttributeError:
+    except TypeError:
         return code_string
 
 def guess_code_lexer(code_string, default_lexer='unknown'):
