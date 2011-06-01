@@ -4,6 +4,9 @@ from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
 from pygments import highlight
 
+import logging
+logger = logging.getLogger(__name__)
+
 LEXER_LIST_ALL = sorted([(i[1][0], i[0]) for i in get_all_lexers()])
 LEXER_LIST = (
     ('bash', 'Bash'),
@@ -34,7 +37,11 @@ class NakedHtmlFormatter(HtmlFormatter):
             yield i, t
 
 def pygmentize(code_string, lexer_name='text'):
-    return highlight(code_string, get_lexer_by_name(lexer_name), NakedHtmlFormatter())
+    try:
+        return highlight(code_string, get_lexer_by_name(lexer_name), NakedHtmlFormatter())
+    except TypeError:
+        logger.critical('Highlight failed with lexter %s' % lexer_name)
+        return code_string
 
 def guess_code_lexer(code_string, default_lexer='unknown'):
     try:
