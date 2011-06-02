@@ -38,10 +38,10 @@ class NakedHtmlFormatter(HtmlFormatter):
         for i, t in source:
             yield i, t
 
-def pygmentize(code_string, lexer_name='text'):
+def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     try:
         lexer = get_lexer_by_name(lexer_name)
-    except (TypeError, ClassNotFound):
+    except ClassNotFound:
         logger.warning('Could not find lexer for name "%s"' %  lexer_name)
         lexer = PythonLexer()
 
