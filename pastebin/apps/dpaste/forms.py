@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from pastebin.apps.dpaste.models import Snippet
+from pastebin.apps.dpaste.models import Snippet, Spamword
 from pastebin.apps.dpaste.highlight import LEXER_LIST_ALL, LEXER_LIST, LEXER_DEFAULT
 import datetime
 
@@ -46,6 +46,14 @@ class SnippetForm(forms.ModelForm):
             self.fields['author'].initial = self.request.session['userprefs'].get('default_name', '')
         except KeyError:
             pass
+        
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        if content:
+            regex = Spamword.objects.get_regex()
+            if regex.findall(content):
+                raise forms.ValidationError('This snippet was identified as SPAM.')
+        return content
         
     def save(self, parent=None, *args, **kwargs):
 

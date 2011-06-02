@@ -2,6 +2,7 @@ import datetime
 import difflib
 import random
 import mptt
+import re
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
@@ -46,3 +47,16 @@ class Snippet(models.Model):
         return '%s' % self.secret_id
 
 mptt.register(Snippet, order_insertion_by=['content'])
+
+
+class SpamwordManager(models.Manager):
+    def get_regex(self):
+        return re.compile(r'|'.join((i[1] for i in self.values_list())),
+            re.MULTILINE)
+
+class Spamword(models.Model):
+    word = models.CharField(max_length=100)
+    objects = SpamwordManager()
+    
+    def __unicode__(self):
+        return self.word

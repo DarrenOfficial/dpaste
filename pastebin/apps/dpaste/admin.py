@@ -1,4 +1,4 @@
-from pastebin.apps.dpaste.models import Snippet
+from pastebin.apps.dpaste.models import Snippet, Spamword
 from django.contrib import admin
 
 class SnippetAdmin(admin.ModelAdmin):
@@ -11,3 +11,4 @@ class SnippetAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(Snippet, SnippetAdmin)
+admin.site.register(Spamword)
