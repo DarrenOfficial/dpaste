@@ -51,7 +51,7 @@ class SnippetForm(forms.ModelForm):
         content = self.cleaned_data.get('content')
         if content:
             regex = Spamword.objects.get_regex()
-            if regex.findall(content):
+            if regex.findall(content.lower()):
                 raise forms.ValidationError('This snippet was identified as SPAM.')
         return content
         
