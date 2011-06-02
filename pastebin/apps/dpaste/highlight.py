@@ -39,7 +39,7 @@ class NakedHtmlFormatter(HtmlFormatter):
 def pygmentize(code_string, lexer_name='text'):
     try:
         lexer = get_lexer_by_name(lexer_name)
-    except ClassNotFound:
+    except (TypeError, ClassNotFound):
         logger.warning('Could not find lexer for name "%s"' %  lexer_name)
         lexer = PythonLexer()
 
