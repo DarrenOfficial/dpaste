@@ -4,6 +4,8 @@ from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
 from pygments import highlight
 
+from django.utils.html import escape
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -47,7 +49,7 @@ def pygmentize(code_string, lexer_name='text'):
         return highlight(code_string, lexer, NakedHtmlFormatter())
     except TypeError:
         logger.warning('Could not highlight code with lexer "%s"' %  lexer_name)
-        return code_string
+        return escape(code_string)
 
 def guess_code_lexer(code_string, default_lexer='unknown'):
     try:
