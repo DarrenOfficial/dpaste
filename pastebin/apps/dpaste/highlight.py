@@ -1,4 +1,4 @@
-from pygments.lexers import get_all_lexers, get_lexer_by_name, guess_lexer
+from pygments.lexers import get_all_lexers, get_lexer_by_name, guess_lexer, PythonLexer
 from pygments.styles import get_all_styles
 from pygments.formatters import HtmlFormatter
 from pygments.util import ClassNotFound
@@ -38,8 +38,15 @@ class NakedHtmlFormatter(HtmlFormatter):
 
 def pygmentize(code_string, lexer_name='text'):
     try:
-        return highlight(code_string, get_lexer_by_name(lexer_name), NakedHtmlFormatter())
+        lexer = get_lexer_by_name(lexer_name)
+    except ClassNotFound:
+        logger.warning('Could not find lexer for name "%s"' %  lexer_name)
+        lexer = PythonLexer()
+
+    try:
+        return highlight(code_string, lexer, NakedHtmlFormatter())
     except TypeError:
+        logger.warning('Could not highlight code with lexer "%s"' %  lexer_name)
         return code_string
 
 def guess_code_lexer(code_string, default_lexer='unknown'):
