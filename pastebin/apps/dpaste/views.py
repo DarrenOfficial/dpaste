@@ -125,7 +125,8 @@ def userprefs(request, template_name='dpaste/userprefs.html'):
 
 def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
 
-    if request.GET.get('a').isdigit() and request.GET.get('b').isdigit():
+    if request.GET.get('a') and request.GET.get('a').isdigit() \
+    and request.GET.get('b') and request.GET.get('b').isdigit():
         try:
             fileA = Snippet.objects.get(pk=int(request.GET.get('a')))
             fileB = Snippet.objects.get(pk=int(request.GET.get('b')))
