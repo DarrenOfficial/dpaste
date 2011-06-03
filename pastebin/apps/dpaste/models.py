@@ -37,7 +37,7 @@ class Snippet(models.Model):
             self.published = datetime.datetime.now()
             self.secret_id = generate_secret_id()
         self.content_highlighted = pygmentize(self.content, self.lexer)
-        super(Snippet, self).save(*args, **kwargs)
+        return super(Snippet, self).save(*args, **kwargs)
 
     @permalink
     def get_absolute_url(self):
