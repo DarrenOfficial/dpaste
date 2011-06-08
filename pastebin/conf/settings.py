@@ -80,7 +80,7 @@ LOGIN_REDIRECT_URL = '/'
 #==============================================================================
 
 MIDDLEWARE_CLASSES = (
-    'pastebin.disable.DisableCSRF',
+    #'pastebin.disable.DisableCSRF',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
