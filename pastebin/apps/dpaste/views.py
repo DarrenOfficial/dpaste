@@ -36,8 +36,8 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
 
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
 
-    #tree = snippet.get_root()
-    #tree = tree.get_descendants(include_self=True)
+    tree = snippet.get_root()
+    tree = tree.get_descendants(include_self=True)
 
     new_snippet_initial = {
         'content': snippet.content,
@@ -56,7 +56,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         'snippet_form': snippet_form,
         'snippet': snippet,
         'lines': range(snippet.get_linecount()),
-        #'tree': tree,
+        'tree': tree,
     }
 
     response = render_to_response(
