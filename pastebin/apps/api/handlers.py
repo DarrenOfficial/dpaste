@@ -1,6 +1,6 @@
 import datetime
 import re
-from piston.utils import rc 
+from piston.utils import rc
 from piston.handler import AnonymousBaseHandler
 from pastebin.apps.dpaste.models import Snippet
 

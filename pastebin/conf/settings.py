@@ -1,4 +1,4 @@
-# Import global settings to make it easier to extend settings. 
+# Import global settings to make it easier to extend settings.
 from django.conf.global_settings import *
 
 #==============================================================================
@@ -22,7 +22,7 @@ SECRET_KEY = ''
 #==============================================================================
 
 USE_I18N = True
-USE_L10N = False 
+USE_L10N = False
 
 LANGUAGE_CODE = 'en'
 LANGUAGES = (

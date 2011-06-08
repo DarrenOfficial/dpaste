@@ -10,7 +10,7 @@ from pastebin.apps.dpaste.highlight import LEXER_DEFAULT, pygmentize
 
 t = 'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890'
 def generate_secret_id(length=4):
-    return ''.join([random.choice(t) for i in range(length)]) 
+    return ''.join([random.choice(t) for i in range(length)])
 
 class Snippet(models.Model):
     secret_id = models.CharField(_(u'Secret ID'), max_length=4, blank=True)
@@ -57,6 +57,6 @@ class SpamwordManager(models.Manager):
 class Spamword(models.Model):
     word = models.CharField(max_length=100)
     objects = SpamwordManager()
-    
+
     def __unicode__(self):
         return self.word

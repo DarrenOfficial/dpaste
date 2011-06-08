@@ -48,7 +48,7 @@ def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     except TypeError:
         logger.warning('Could not highlight code with lexer "%s"' % lexer_name)
         return escape(code_string)
-    
+
 def guess_code_lexer(code_string, default_lexer='unknown'):
     try:
         return guess_lexer(code_string).name

@@ -83,12 +83,12 @@ def snippet_delete(request, snippet_id):
     return HttpResponseRedirect(reverse('snippet_new'))
 
 def snippet_userlist(request, template_name='dpaste/snippet_list.html'):
-    
+
     try:
         snippet_list = get_list_or_404(Snippet, pk__in=request.session.get('snippet_list', None))
     except ValueError:
         snippet_list = None
-                
+
     template_context = {
         'snippets_max': getattr(settings, 'MAX_SNIPPETS_PER_USER', 10),
         'snippet_list': snippet_list,
@@ -159,7 +159,7 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
         template_context,
         RequestContext(request)
     )
-    
+
 def guess_lexer(request):
     code_string = request.GET.get('codestring', False)
     response = simplejson.dumps({'lexer': guess_code_lexer(code_string)})
