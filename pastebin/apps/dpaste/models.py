@@ -46,7 +46,7 @@ class Snippet(models.Model):
     def __unicode__(self):
         return '%s' % self.secret_id
 
-mptt.register(Snippet, order_insertion_by=['content'])
+#mptt.register(Snippet, order_insertion_by=['content'])
 
 
 class SpamwordManager(models.Manager):

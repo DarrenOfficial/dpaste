@@ -56,16 +56,19 @@
         </div>
     </div>
 
+    {% comment %}
     <h2>{% trans "Write an answer" %} &rarr;</h2>
     <div class="container" style="display: none;">
         {% include "dpaste/snippet_form.html" %}
     </div>
+    {% endcomment %}
 </div>
 {% endblock %}
 
 
 
 {% block sidebar %}
+{% comment %}
     <h2>{% trans "History" %}</h2>
 
     <form method="get" id="diffform" action="{% url snippet_diff %}">
@@ -91,6 +94,7 @@
         </div>
     </div>
     </form>
+{% endcomment %}
 
     <h2>{% trans "Options" %}</h2>
     <p><a href="{% url snippet_details_raw snippet.secret_id %}">{% trans "View raw" %}</a></p>
