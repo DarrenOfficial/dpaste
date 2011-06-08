@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     # Static
     url(r'^about/$', 'django.views.generic.simple.direct_to_template', {'template': 'about.html'}, name='about'),
     
+    url(r'^admin/', include(admin.site.urls)),
+    
     # API
     url(r'^api/(?P<secret_id>[^/]+)/$', snippet_resource),
     url(r'^api/$', snippet_resource),
