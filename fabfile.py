@@ -27,6 +27,7 @@ def push(remote=None, branch=None, reload=False):
     local('git push %s %s' % (remote, branch))
     with cd(env.proj_root):
         ve_run('git pull %s %s' % (remote, branch))
+        rmpyc()
     if reload:
         restart()
 
@@ -55,7 +56,11 @@ def restart():
 def flush():
     """Flush memcache"""
     sshagent_run('/etc/init.d/memcached restart')
-    
+
+def rmpyc():
+    ve_run("find . -name '*.pyc' -exec rm {} \;")
+
+
 # ============================================================================
 # Django
 # ============================================================================
