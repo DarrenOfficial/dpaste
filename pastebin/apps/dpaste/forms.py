@@ -47,13 +47,13 @@ class SnippetForm(forms.ModelForm):
         except KeyError:
             pass
         
-    #def clean_content(self):
-    #    content = self.cleaned_data.get('content')
-    #    if content:
-    #        regex = Spamword.objects.get_regex()
-    #        if regex.findall(content.lower()):
-    #            raise forms.ValidationError('This snippet was identified as SPAM.')
-    #    return content
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        if content:
+            regex = Spamword.objects.get_regex()
+            if regex.findall(content.lower()):
+                raise forms.ValidationError('This snippet was identified as SPAM.')
+        return content
         
     def save(self, parent=None, *args, **kwargs):
 
