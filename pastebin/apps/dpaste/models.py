@@ -18,6 +18,7 @@ class Snippet(models.Model):
     title = models.CharField(_(u'Title'), max_length=120, blank=True)
     author = models.CharField(_(u'Author'), max_length=30, blank=True)
     content = models.TextField(_(u'Content'), )
+    content_highlighted = models.TextField(_(u'Highlighted Content'), blank=True)
     lexer = models.CharField(_(u'Lexer'), max_length=30, default=LEXER_DEFAULT)
     published = models.DateTimeField(_(u'Published'), blank=True)
     expires = models.DateTimeField(_(u'Expires'), blank=True, help_text='asdf')
@@ -30,12 +31,14 @@ class Snippet(models.Model):
         return len(self.content.splitlines())
 
     def content_splitted(self):
-        return self.content.splitlines()
+        return self.content_highlighted.splitlines()
 
     def save(self, *args, **kwargs):
         if not self.pk:
             self.published = datetime.datetime.now()
             self.secret_id = generate_secret_id()
+        #self.content_highlighted = pygmentize(self.content, self.lexer)
+        self.content_highlighted = self.content
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
