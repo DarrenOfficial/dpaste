@@ -6,7 +6,6 @@
      {% if request.session.userprefs %}
      <style type="text/css" media="all">
          .code{
-             {# FIXME: Thats stupid #}
              {% ifnotequal request.session.userprefs.font_family "None" %}font-family: {{ request.session.userprefs.font_family }} !important;{% endifnotequal %}
              {% ifnotequal request.session.userprefs.font_size "None" %}font-size: {{ request.session.userprefs.font_size }}px !important;{% endifnotequal %}
              {% ifnotequal request.session.userprefs.line_height "None" %}line-height: {{ request.session.userprefs.line_height }}px !important;{% endifnotequal %}

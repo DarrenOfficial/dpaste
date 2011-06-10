@@ -87,6 +87,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
+
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, PROJECT_MODULE_NAME, 'templates'),
 )
