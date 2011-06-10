@@ -1,6 +1,6 @@
-from pygments.lexers import get_all_lexers, get_lexer_by_name, guess_lexer, PythonLexer
-from pygments.formatters import HtmlFormatter
 from pygments import highlight
+from pygments.lexers import *
+from pygments.formatters import HtmlFormatter
 
 from django.utils.html import escape
 
