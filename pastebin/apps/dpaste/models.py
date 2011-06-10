@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from pastebin.apps.dpaste.highlight import LEXER_DEFAULT, pygmentize
 
 t = 'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890'
-def generate_secret_id(length=5):
+def generate_secret_id(length=4):
     return ''.join([random.choice(t) for i in range(length)])
 
 class Snippet(models.Model):
