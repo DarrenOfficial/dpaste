@@ -38,15 +38,19 @@ class NakedHtmlFormatter(HtmlFormatter):
 
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     try:
-        lexer = get_lexer_by_name(lexer_name)
-    except ValueError:
-        logger.warning('Could not find lexer for name "%s"' % lexer_name)
-        lexer = PythonLexer()
-
+        if lexer_name:
+            lexer = get_lexer_by_name(lexer_name)
+        else:
+            raise Exception
+    except:
+        try:
+            lexer = guess_lexer(code_string)
+        except:
+            lexer = PythonLexer()
+    
     try:
         return highlight(code_string, lexer, NakedHtmlFormatter())
-    except TypeError:
-        logger.warning('Could not highlight code with lexer "%s"' % lexer_name)
+    except:
         return escape(code_string)
 
 def guess_code_lexer(code_string, default_lexer='unknown'):

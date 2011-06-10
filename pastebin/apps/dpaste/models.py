@@ -37,8 +37,8 @@ class Snippet(models.Model):
         if not self.pk:
             self.published = datetime.datetime.now()
             self.secret_id = generate_secret_id()
-        #self.content_highlighted = pygmentize(self.content, self.lexer)
-        self.content_highlighted = self.content
+        if self.content and self.lexer:
+            self.content_highlighted = pygmentize(self.content, self.lexer)
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
