@@ -1,5 +1,6 @@
 from pygments import highlight
 from pygments.lexers import *
+from pygments.lexers import get_all_lexers
 from pygments.formatters import HtmlFormatter
 
 from django.utils.html import escape
