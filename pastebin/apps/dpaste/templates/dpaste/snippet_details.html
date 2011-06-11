@@ -49,7 +49,7 @@
         <table>
             <tr>
                 <th><pre class="code">{% for l in lines %}<a href="#l{{ forloop.counter }}" id="l{{ forloop.counter }}">{{ forloop.counter }}</a>{% endfor %}</pre></th>
-                <td><pre class="code">{% for line in snippet.content_splitted %}<div class="line" id="l{{ forloop.counter }}">{% if line %}{{ line|safe }}{% else %}&nbsp;{% endif %}</div>{% endfor %}</pre></td>
+                <td><pre class="code">{% for line in snippet|highlight %}<div class="line" id="l{{ forloop.counter }}">{% if line %}{{ line|safe }}{% else %}&nbsp;{% endif %}</div>{% endfor %}</pre></td>
             </tr>
         </table>
         </div>
