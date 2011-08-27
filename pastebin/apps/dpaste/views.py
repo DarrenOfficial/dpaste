@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404, get_list_or_
 from django.template.context import RequestContext
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponse, HttpResponseForbidden
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 from pastebin.apps.dpaste.forms import SnippetForm, UserSettingsForm
 from pastebin.apps.dpaste.models import Snippet
@@ -34,8 +34,16 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
 
 def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.html', is_raw=False):
 
-    snippet = get_object_or_404(Snippet, secret_id=snippet_id)
-
+    try:
+        snippet = Snippet.objects.get(secret_id=snippet_id)
+    except MultipleObjectsReturned:
+        raise Http404('Multiple snippets exist for this slug. This should never '
+                      'happen but its likely that you are a spam bot, so I dont '
+                      'care.')
+    except ObjectDoesNotExist:
+        raise Http404('This snippet does not exist anymore. Its likely that its '
+                      'lifetime is expired.')
+        
     tree = snippet.get_root()
     tree = tree.get_descendants(include_self=True)
 
