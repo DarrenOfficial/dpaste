@@ -75,7 +75,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     )
 
     if is_raw:
-        response['Content-Type'] = 'text/plain'
+        response['Content-Type'] = 'text/plain;charset=UTF-8'
         return response
     else:
         return response
