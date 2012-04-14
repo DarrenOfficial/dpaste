@@ -10,7 +10,7 @@
 {% block content %}
     {% if snippet_list %}
     {% for snippet in snippet_list %}
-    <h2>
+    <h2 class="divider">
         <a title="{{ snippet.published|date:_("DATETIME_FORMAT") }}" href="{{ snippet.get_absolute_url }}">
             {{ snippet.published|timesince }} ago
         </a>

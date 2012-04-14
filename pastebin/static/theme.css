@@ -102,6 +102,13 @@ div.hint{
     line-height: 1.6em;
 }
 
+#content h2.divider{
+    font-size: 1em;
+    padding: 5px 20px;
+    background-color: #f8f8f8;
+    margin: 40px 0 20px 0;
+}
+
 #content h2 span{
     font-weight: normal;
 }
