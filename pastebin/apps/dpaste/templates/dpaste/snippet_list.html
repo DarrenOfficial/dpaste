@@ -1,7 +1,8 @@
 {% extends "dpaste/base.html" %}
 {% load i18n %}
+{% load dpaste_tags %}
 
-{% block title %}{% trans "Snippet" %} #{{ snippet.pk }}{% endblock %}
+{% block title %}{% trans "Snippet List" %}{% endblock %}
 {% block headline %}
 <h1>{% blocktrans %}Your latest {{ snippets_max }} snippets{% endblocktrans %}</h1>
 {% endblock %}
@@ -10,11 +11,21 @@
     {% if snippet_list %}
     {% for snippet in snippet_list %}
     <h2>
-        <a href="{{ snippet.get_absolute_url }}">{% trans "Snippet" %} #{{ snippet.pk }}</a>
-        ~ {{ snippet.published|date:_("DATETIME_FORMAT") }}
+        <a title="{{ snippet.published|date:_("DATETIME_FORMAT") }}" href="{{ snippet.get_absolute_url }}">
+            {{ snippet.published|timesince }} ago
+        </a>
     </h2>
-    <p style="color: #555; margin: 8px 0 20px 0;">{{ snippet.content|truncatewords:40 }}</p>
-    {% endfor %}
+
+    <div class="snippet">
+    <table>
+        <tr>
+            <th><pre class="code">{% for l in lines %}<a href="#l{{ forloop.counter }}" id="l{{ forloop.counter }}">{{ forloop.counter }}</a>{% endfor %}</pre></th>
+            <td><pre class="code">{% for line in snippet|highlight:5 %}<div class="line" id="l{{ forloop.counter }}">{% if line %}{{ line|safe }}{% else %}&nbsp;{% endif %}</div>{% endfor %}
+<a title="{{ snippet.published|date:_("DATETIME_FORMAT") }}" href="{{ snippet.get_absolute_url }}">... see full snippet.</a></pre><td>
+        </tr>
+    </table>
+    </div>
+            {% endfor %}
     {% else %}
     <p>{% trans "No snippets available." %}</p>
     {% endif %}
