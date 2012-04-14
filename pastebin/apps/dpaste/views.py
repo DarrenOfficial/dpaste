@@ -5,11 +5,14 @@ from django.http import Http404, HttpResponseRedirect, HttpResponseBadRequest, \
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
-from pastebin.apps.dpaste.forms import SnippetForm, UserSettingsForm
-from pastebin.apps.dpaste.models import Snippet
-from pastebin.apps.dpaste.highlight import pygmentize, guess_code_lexer
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
+
+from pastebin.apps.dpaste.forms import SnippetForm, UserSettingsForm
+from pastebin.apps.dpaste.models import Snippet
+from pastebin.apps.dpaste.highlight import pygmentize, guess_code_lexer, \
+    LEXER_WORDWRAP
+
 import difflib
 
 def snippet_new(request, template_name='dpaste/snippet_new.html'):
@@ -44,7 +47,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     except ObjectDoesNotExist:
         raise Http404('This snippet does not exist anymore. Its likely that its '
                       'lifetime is expired.')
-        
+
     tree = snippet.get_root()
     tree = tree.get_descendants(include_self=True)
 
@@ -66,6 +69,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         'snippet': snippet,
         'lines': range(snippet.get_linecount()),
         'tree': tree,
+        'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
     }
 
     response = render_to_response(

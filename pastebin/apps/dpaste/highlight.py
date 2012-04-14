@@ -28,7 +28,7 @@ LEXER_LIST = (
     ('text', 'Text only'),
 )
 LEXER_DEFAULT = 'python'
-
+LEXER_WORDWRAP = ('text', 'rst')
 
 class NakedHtmlFormatter(HtmlFormatter):
     def wrap(self, source, outfile):
@@ -48,7 +48,7 @@ def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
             lexer = guess_lexer(code_string)
         except:
             lexer = PythonLexer()
-    
+
     try:
         return highlight(code_string, lexer, NakedHtmlFormatter())
     except:

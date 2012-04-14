@@ -112,6 +112,12 @@ class UserSettingsForm(forms.Form):
         widget=forms.CheckboxInput,
         help_text=_(u'This also enables the super secret \'guess lexer\' function.'),
     )
+    wordwrap =  forms.BooleanField(
+        label=_('Always enable wordwrap'),
+        required=False,
+        widget=forms.CheckboxInput,
+        help_text=_(u'Wordwrap is always enabled for text lexers such as \'text\' or \'reStructuredText\'.'),
+    )
     font_family = forms.ChoiceField(label=_(u'Font Family'), required=False, choices=USERPREFS_FONT_CHOICES)
     font_size = forms.ChoiceField(label=_(u'Font Size'), required=False, choices=USERPREFS_SIZES)
     line_height = forms.ChoiceField(label=_(u'Line Height'), required=False, choices=USERPREFS_SIZES)

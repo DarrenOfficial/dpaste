@@ -171,7 +171,7 @@ form.snippetform ol li{
 
 form.snippetform label{
     width: 125px;
-    float: left;
+    display: inline-block;
 }
 
 form.snippetform #id_content{

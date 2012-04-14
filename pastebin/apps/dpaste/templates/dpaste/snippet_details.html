@@ -37,7 +37,7 @@
         <a onclick="return confirm('{% trans "Really delete this snippet?" %}')" href="{% url snippet_delete snippet.secret_id %}">Delete now!</a>
         &mdash;
         {% endif %}
-        <a id="toggleWordwrap" href="#">{% trans "Wordwrap" %}</a>
+        <a id="toggleWordwrap" href="#"><input type="checkbox"/> {% trans "Wordwrap" %}</a>
     </div>
     <h2>
         {% if snippet.title %}{{ snippet.title }}{% else %} {% trans "Snippet" %} #{{ snippet.id}}{% endif %}
@@ -131,14 +131,21 @@ jQuery(document).ready(function(){
     */
     $('#toggleWordwrap').toggle(
         function(){
+            $('input', this).attr('checked', 'checked');
             $('div.snippet pre.code').css('white-space', 'pre-wrap');
             return false;
         },
         function(){
+            $('input', this).attr('checked', '');
             $('div.snippet pre.code').css('white-space', 'pre');
             return false;
         }
     );
+
+    // Activate wordwrap for text heavy lexers or if enabled in the settings
+    if('{{ wordwrap }}' === 'True' || '{{ request.session.userprefs.wordwrap }}' === 'True') {
+        $('#toggleWordwrap').trigger('click');
+    }
 
     /**
     * Line Highlighting
