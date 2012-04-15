@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from pastebin.apps.dpaste.models import Snippet, Spamword
+from pastebin.apps.dpaste.models import Snippet
 from pastebin.apps.dpaste.highlight import LEXER_LIST_ALL, LEXER_LIST, LEXER_DEFAULT
 import datetime
 
@@ -19,18 +19,11 @@ EXPIRE_CHOICES = (
 EXPIRE_DEFAULT = 3600*24*30
 
 class SnippetForm(forms.ModelForm):
-
-    lexer = forms.ChoiceField(
-        choices=LEXER_LIST,
-        initial=LEXER_DEFAULT,
-        label=_(u'Lexer'),
-    )
-
-    expire_options = forms.ChoiceField(
-        choices=EXPIRE_CHOICES,
-        initial=EXPIRE_DEFAULT,
-        label=_(u'Expires'),
-    )
+    lexer = forms.ChoiceField(choices=LEXER_LIST, initial=LEXER_DEFAULT, label=_(u'Lexer'))
+    expire_options = forms.ChoiceField(choices=EXPIRE_CHOICES, initial=EXPIRE_DEFAULT, label=_(u'Expires'))
+    # Honeypot field
+    title = forms.CharField(required=False, label=_(u'Title'),
+        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
 
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)
@@ -47,13 +40,10 @@ class SnippetForm(forms.ModelForm):
         except KeyError:
             pass
 
-    def clean_content(self):
-        content = self.cleaned_data.get('content')
-        if content:
-            regex = Spamword.objects.get_regex()
-            if regex.findall(content.lower()):
-                raise forms.ValidationError('This snippet was identified as SPAM.')
-        return content
+    def clean(self):
+        if self.cleaned_data.get('title'):
+            raise forms.ValidationError('This snippet was identified as Spam.')
+        return self.cleaned_data
 
     def save(self, parent=None, *args, **kwargs):
 
@@ -81,9 +71,7 @@ class SnippetForm(forms.ModelForm):
     class Meta:
         model = Snippet
         fields = (
-            #'title',
             'content',
-            #'author',
             'lexer',
         )
 

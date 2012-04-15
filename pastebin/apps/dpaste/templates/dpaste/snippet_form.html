@@ -1,9 +1,12 @@
 {% load i18n %}
 <form method="post" action="." class="snippetform">
 {% csrf_token %}
+
+{{ snippet_form.non_field_errors }}
+
 <ol>
     {% for field in snippet_form %}
-    <li>
+    <li {% ifequal field.name "title" %}style="display: none"{% endifequal %}>
         {{ field.errors }}
         {{ field.label_tag }}
         {{ field }}

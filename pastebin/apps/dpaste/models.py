@@ -15,8 +15,6 @@ def generate_secret_id(length=5):
 
 class Snippet(models.Model):
     secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True)
-    title = models.CharField(_(u'Title'), max_length=120, blank=True)
-    author = models.CharField(_(u'Author'), max_length=30, blank=True)
     content = models.TextField(_(u'Content'), )
     content_highlighted = models.TextField(_(u'Highlighted Content'), blank=True)
     lexer = models.CharField(_(u'Lexer'), max_length=30, default=LEXER_DEFAULT)
@@ -47,16 +45,3 @@ class Snippet(models.Model):
         return '%s' % self.secret_id
 
 mptt.register(Snippet, order_insertion_by=['content'])
-
-
-class SpamwordManager(models.Manager):
-    def get_regex(self):
-        return re.compile(r'|'.join((i[1] for i in self.values_list())),
-            re.MULTILINE)
-
-class Spamword(models.Model):
-    word = models.CharField(max_length=100)
-    objects = SpamwordManager()
-
-    def __unicode__(self):
-        return self.word

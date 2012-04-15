@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'mptt',
+    'south',
     'pastebin',
     'pastebin.apps.dpaste',
     'gunicorn',
