@@ -10,8 +10,7 @@ TEMPLATE_DEBUG = DEBUG
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-TIME_ZONE = 'America/Chicago'
-USE_I18N = True
+TIME_ZONE = 'UTC'
 SITE_ID = 1
 
 # Make this unique, and don't share it with anybody.
@@ -21,7 +20,7 @@ SECRET_KEY = ''
 # I18N
 #==============================================================================
 
-USE_I18N = True
+USE_I18N = False
 USE_L10N = False
 
 LANGUAGE_CODE = 'en'
