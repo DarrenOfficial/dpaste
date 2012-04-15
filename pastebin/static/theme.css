@@ -16,6 +16,19 @@ a:hover{
     text-decoration: underline;
 }
 
+p.hint{
+    color: #333;
+    margin-top: 30px;
+}
+
+p.hint em{
+    color: black;
+    background-color: #c9f8b4;
+    display: inline-block;
+    padding: 2px 3px;
+    font-style: normal;
+}
+
 hr.clear{
     clear: both;
     border: none;
@@ -183,7 +196,7 @@ form.snippetform label{
 
 form.snippetform #id_content{
     width: 80%;
-    height: 290px;
+    height: 320px;
     font-family: monospace;
    font-size: 0.9em;
 }

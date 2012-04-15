@@ -25,18 +25,8 @@
 <div id="content">
 	{% block content %}{% endblock %}
 </div>
+
 <div id="footer">
-    {% comment %}
-    <form action="/i18n/setlang/" method="post" class="setlang">
-        {% csrf_token %}
-        <select name="language">
-            {% for lang in LANGUAGES %}
-            <option {% ifequal LANGUAGE_CODE lang.0 %}selected="selected"{% endifequal %} value="{{ lang.0 }}">{{ lang.1 }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Go" />
-    </form>
-    {% endcomment %}
     <a href="{% url snippet_userlist %}">{% trans "Recent snippets" %}</a>
     <a href="{% url snippet_userprefs %}">{% trans "Settings" %}</a>
     <a href="{% url about %}">{% trans "About" %}</a>
