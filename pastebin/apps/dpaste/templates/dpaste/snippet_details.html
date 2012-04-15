@@ -37,7 +37,7 @@
         <a onclick="return confirm('{% trans "Really delete this snippet?" %}')" href="{% url snippet_delete snippet.secret_id %}">Delete now!</a>
         &mdash;
         {% endif %}
-        <a id="toggleWordwrap" href="#"><input type="checkbox"/> {% trans "Wordwrap" %}</a>
+        <span id="toggleWordwrap"><input type="checkbox"/> <a href="#">{% trans "Wordwrap" %}</a></span>
     </div>
     <h2>
         {% if snippet.title %}{{ snippet.title }}{% else %} {% trans "Snippet" %} #{{ snippet.id}}{% endif %}
@@ -129,18 +129,17 @@ jQuery(document).ready(function(){
     /**
     * Wordwrap
     */
-    $('#toggleWordwrap').toggle(
-        function(){
-            $('input', this).attr('checked', 'checked');
+    $('#toggleWordwrap a').click(function(){
+        $('#toggleWordwrap input').trigger('click').trigger('change');
+    });
+
+    $('#toggleWordwrap input').change(function(){
+        if($(this).attr('checked')) {
             $('div.snippet pre.code').css('white-space', 'pre-wrap');
-            return false;
-        },
-        function(){
-            $('input', this).attr('checked', '');
+        } else {
             $('div.snippet pre.code').css('white-space', 'pre');
-            return false;
         }
-    );
+    });
 
     // Activate wordwrap for text heavy lexers or if enabled in the settings
     if('{{ wordwrap }}' === 'True' || '{{ request.session.userprefs.wordwrap }}' === 'True') {
