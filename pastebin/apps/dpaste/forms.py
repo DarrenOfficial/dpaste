@@ -11,12 +11,13 @@ import datetime
 
 EXPIRE_CHOICES = (
     (3600, _(u'In one hour')),
-    (3600*24*7, _(u'In one week')),
-    (3600*24*30, _(u'In one month')),
+    (3600 * 24 * 7, _(u'In one week')),
+    (3600 * 24 * 30, _(u'In one month')),
     #(3600*24*30*12*100, _(u'Save forever')), # 100 years, I call it forever ;)
 )
 
-EXPIRE_DEFAULT = 3600*24*30
+EXPIRE_DEFAULT = 3600 * 24 * 30
+
 
 class SnippetForm(forms.ModelForm):
     lexer = forms.ChoiceField(choices=LEXER_LIST, initial=LEXER_DEFAULT, label=_(u'Lexer'))
@@ -91,6 +92,7 @@ USERPREFS_FONT_CHOICES = [(None, _(u'Default'))] + [
 
 USERPREFS_SIZES = [(None, _(u'Default'))] + [(i, '%dpx' % i) for i in range(5, 25)]
 
+
 class UserSettingsForm(forms.Form):
 
     default_name = forms.CharField(label=_(u'Default Name'), required=False)
@@ -100,7 +102,7 @@ class UserSettingsForm(forms.Form):
         widget=forms.CheckboxInput,
         help_text=_(u'This also enables the super secret \'guess lexer\' function.'),
     )
-    wordwrap =  forms.BooleanField(
+    wordwrap = forms.BooleanField(
         label=_('Always enable wordwrap'),
         required=False,
         widget=forms.CheckboxInput,

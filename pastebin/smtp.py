@@ -2,9 +2,9 @@
 
 import threading
 
-from django.conf import settings
 from django.core.mail.backends.base import BaseEmailBackend
-from subprocess import Popen,PIPE
+from subprocess import Popen, PIPE
+
 
 class EmailBackend(BaseEmailBackend):
     def __init__(self, fail_silently=False, **kwargs):
