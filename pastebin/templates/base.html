@@ -32,7 +32,14 @@
     <a href="{% url about %}">{% trans "About" %}</a>
 </div>
 
-{% block script_footer %}{% endblock %}
+{% block script_footer %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}raven-0.4.min.js"></script>
+<script type="text/javascript">
+    Raven.config('http://059a065b89384b9cbfca0917e5b1ba1d@178.79.156.5:9000/1');
+    window.onerror = Raven.process;
+</script>
+{% endblock %}
 
 </body>
 </html>
