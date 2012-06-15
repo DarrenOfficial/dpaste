@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'pastebin',
     'pastebin.apps.dpaste',
     'gunicorn',
+    'raven.contrib.django',
 )
 
 #==============================================================================
@@ -115,3 +116,5 @@ INSTALLED_APPS = (
 # How many recent snippets to save for every user? IDs of this snippets are
 # stored in the user session.
 MAX_SNIPPETS_PER_USER = 25
+
+SENTRY_DSN = 'http://059a065b89384b9cbfca0917e5b1ba1d:96d3af5b9407448a94bedbe51c4f6677@178.79.156.5:9000/1'
