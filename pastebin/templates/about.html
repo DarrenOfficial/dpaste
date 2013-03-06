@@ -27,6 +27,10 @@ if __name__ == '__main__':
 
 <p>Save this script in <code>/usr/local/bin/dpaste</code> and <code>chmod +x ..filepath</code>.</p>
 <p>Usage: <code>cat foo.txt | dpaste</code></p>
+
+<p>Or you could use <code>curl</code>:
+<code>alias dpaste="curl -F 'content=&lt;-' http://dpaste.de/api/</code></p>
+
 {% endblock %}
 
 
