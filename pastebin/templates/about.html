@@ -16,9 +16,10 @@ import sys
 def paste_code():
     request = urllib2.Request(
         'http://dpaste.de/api/',
-        urllib.urlencode([('content', ''.join(sys.stdin.readlines()))]),
+        urllib.urlencode([('content', sys.stdin.read())]),
     )
     response = urllib2.urlopen(request)
+    # Strip surrounding quotes (NB: response has no trailing newline)
     print response.read()[1:-1]
 
 if __name__ == '__main__':
