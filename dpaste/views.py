@@ -23,7 +23,8 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
         snippet_form = SnippetForm(data=request.POST, request=request)
         if snippet_form.is_valid():
             request, new_snippet = snippet_form.save()
-            return HttpResponseRedirect(new_snippet.get_absolute_url())
+            url = new_snippet.get_absolute_url()
+            return HttpResponseRedirect(url)
     else:
         snippet_form = SnippetForm(request=request)
 
@@ -62,7 +63,8 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         snippet_form = SnippetForm(data=request.POST, request=request, initial=new_snippet_initial)
         if snippet_form.is_valid():
             request, new_snippet = snippet_form.save(parent=snippet)
-            return HttpResponseRedirect(new_snippet.get_absolute_url())
+            url = new_snippet.get_absolute_url()
+            return HttpResponseRedirect(url)
     else:
         snippet_form = SnippetForm(initial=new_snippet_initial, request=request)
 
