@@ -1,12 +1,10 @@
 from django.template import Library
-from django.utils.safestring import mark_safe
-
 from dpaste.highlight import pygmentize
 
 register = Library()
 
 @register.filter
-def in_list(value,arg):
+def in_list(value, arg):
     return value in arg
 
 @register.filter

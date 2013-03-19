@@ -33,6 +33,7 @@ LEXER_WORDWRAP = ('text', 'rst')
 class NakedHtmlFormatter(HtmlFormatter):
     def wrap(self, source, outfile):
         return self._wrap_code(source)
+
     def _wrap_code(self, source):
         for i, t in source:
             yield i, t

@@ -1,13 +1,10 @@
 import datetime
-import difflib
 import random
 import mptt
-import re
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
-from dpaste.highlight import LEXER_DEFAULT, pygmentize
+from dpaste.highlight import LEXER_DEFAULT
 
 t = 'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890'
 def generate_secret_id(length=5):
