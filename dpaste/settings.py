@@ -16,6 +16,13 @@ SITE_ID = 1
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 
+ALLOWED_HOSTS = (
+    'dpaste.de',
+    'www.dpaste.de',
+    'localhost',
+    '127.0.0.1',
+)
+
 #==============================================================================
 # I18N
 #==============================================================================
@@ -116,3 +123,29 @@ INSTALLED_APPS = (
 MAX_SNIPPETS_PER_USER = 25
 
 SENTRY_DSN = 'http://0afbf6df0a9749f9985059ed6c527b19:717d9800ba854149a7e7f6a501b2caa0@ohnoez.mahner.org/2'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
