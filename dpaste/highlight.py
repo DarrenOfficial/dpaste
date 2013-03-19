@@ -29,8 +29,6 @@ class NakedHtmlFormatter(HtmlFormatter):
 
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     lexer_name = LEXER_LIST_NAME.get(lexer_name, None)
-
-    print lexer_name
     try:
         if lexer_name:
             lexer = get_lexer_by_name(lexer_name)
