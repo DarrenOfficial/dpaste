@@ -32,7 +32,6 @@
 <script src="{% static "dpaste/bootstrap/js/bootstrap.min.js" %}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-    {% if request.session.userprefs.display_all_lexer %}
     $('#guess_lexer_btn').click(function(){
         $.getJSON('{% url "snippet_guess_lexer" %}',
             {'codestring': $('#id_content').val()},
@@ -45,7 +44,6 @@ $(document).ready(function(){
                 }
             });
     });
-    {% endif %}
 });
 </script>
 {% endblock %}
