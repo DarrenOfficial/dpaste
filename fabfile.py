@@ -11,8 +11,8 @@ env.proj_repo = 'git@github.com:bartTC/dpaste.de.git'
 env.root = '/opt/webapps/dpaste.de'
 env.proj_root = env.root + '/src/dpastede'
 env.pid_file = env.root + '/var/gunicorn.pid'
-env.proj_bin = env.proj_root + '/dpaste/bin'
-env.local_settings = env.proj_root + '/dpaste/conf/local/settings.py'
+env.proj_bin = env.proj_root + '/'
+env.local_settings = env.proj_root + '/dpaste/settings_local.py'
 env.pip_file = env.proj_root + '/requirements.pip'
 
 # ============================================================================

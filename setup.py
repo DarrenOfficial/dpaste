@@ -2,8 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name='dpaste',
-      version='0.1',
+      version='1.0',
       packages=find_packages(),
-      package_data={'dpaste': ['bin/*.*', 'static/*.*', 'templates/*.*']},
-      exclude_package_data={'dpaste': ['bin/*.pyc']},
-      scripts=['dpaste/bin/manage.py'])
+      package_data={'dpaste': ['static/*.*', 'templates/*.*']},
+      scripts=['manage.py'])
