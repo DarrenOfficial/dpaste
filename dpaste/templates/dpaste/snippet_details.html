@@ -34,7 +34,7 @@
         <abbr title="{% trans "Time to life" %}">TTL:</abbr> {{ snippet.expires|timeuntil  }}
         &mdash;
         {% if snippet.pk|in_list:request.session.snippet_list %}
-        <a onclick="return confirm('{% trans "Really delete this snippet?" %}')" href="{% url snippet_delete snippet.secret_id %}">Delete now!</a>
+        <a onclick="return confirm('{% trans "Really delete this snippet?" %}')" href="{% url "snippet_delete" snippet.secret_id %}">Delete now!</a>
         &mdash;
         {% endif %}
         <span id="toggleWordwrap"><input type="checkbox"/> <a href="#">{% trans "Wordwrap" %}</a></span>
@@ -67,7 +67,7 @@
 {% block sidebar %}
     <h2>{% trans "History" %}</h2>
 
-    <form method="get" id="diffform" action="{% url snippet_diff %}">
+    <form method="get" id="diffform" action="{% url "snippet_diff" %}">
     {% csrf_token %}
     <div class="tree">
         {% for tree_item,structure in tree|tree_info %}
@@ -92,7 +92,7 @@
     </form>
 
     <h2>{% trans "Options" %}</h2>
-    <p><a href="{% url snippet_details_raw snippet.secret_id %}">{% trans "View raw" %}</a></p>
+    <p><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "View raw" %}</a></p>
 {% endblock %}
 
 {% block script_footer %}
@@ -117,7 +117,7 @@ jQuery(document).ready(function(){
     * Diff Ajax Call
     */
     $("form#diffform").submit(function() {
-        $.get("{% url snippet_diff %}", {
+        $.get("{% url "snippet_diff" %}", {
             a: $("input[name=a]:checked").val(),
             b: $("input[name=b]:checked").val()
         }, function(data){
@@ -162,7 +162,7 @@ jQuery(document).ready(function(){
     * Lexer Guessing
     */
     $('#guess_lexer_btn').click(function(){
-        $.getJSON('{% url snippet_guess_lexer %}',
+        $.getJSON('{% url "snippet_guess_lexer" %}',
             {'codestring': $('#id_content').val()},
             function(data){
                 if(data.lexer == "unknown"){

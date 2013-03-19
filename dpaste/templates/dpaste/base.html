@@ -7,13 +7,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>dpaste.de: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
-	<link rel="stylesheet" media="screen, projection" href="{{ STATIC_URL }}theme.css"/>
+	<link rel="stylesheet" media="screen, projection" href="{{ STATIC_URL }}dpaste/theme.css"/>
 	{% block extrahead %}{% endblock %}
 </head>
 <body>
 
 <div id="header">
-    <span class="new_snippet"><a href="{% url snippet_new %}">{% trans "New snippet" %} &rarr;</a></span>
+    <span class="new_snippet"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></span>
 	{% block headline %}{% endblock %}
 </div>
 
@@ -27,9 +27,9 @@
 </div>
 
 <div id="footer">
-    <a href="{% url snippet_userlist %}">{% trans "Recent snippets" %}</a>
-    <a href="{% url snippet_userprefs %}">{% trans "Settings" %}</a>
-    <a href="{% url about %}">{% trans "About" %}</a>
+    <a href="{% url "snippet_userlist" %}">{% trans "Recent snippets" %}</a>
+    <a href="{% url "snippet_userprefs" %}">{% trans "Settings" %}</a>
+    <a href="{% url "about" %}">{% trans "About" %}</a>
 </div>
 
 {% block script_footer %}

@@ -21,7 +21,7 @@
 jQuery(document).ready(function(){
     {% if request.session.userprefs.display_all_lexer %}
     $('#guess_lexer_btn').click(function(){
-        $.getJSON('{% url snippet_guess_lexer %}',
+        $.getJSON('{% url "snippet_guess_lexer" %}',
             {'codestring': $('#id_content').val()},
             function(data){
                 if(data.lexer == "unknown"){
