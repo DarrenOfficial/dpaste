@@ -11,8 +11,8 @@ env.proj_repo = 'git@github.com:bartTC/dpaste.de.git'
 env.root = '/opt/webapps/dpaste.de'
 env.proj_root = env.root + '/src/dpastede'
 env.pid_file = env.root + '/var/gunicorn.pid'
-env.proj_bin = env.proj_root + '/pastebin/bin'
-env.local_settings = env.proj_root + '/pastebin/conf/local/settings.py'
+env.proj_bin = env.proj_root + '/dpaste/bin'
+env.local_settings = env.proj_root + '/dpaste/conf/local/settings.py'
 env.pip_file = env.proj_root + '/requirements.pip'
 
 # ============================================================================
@@ -33,7 +33,7 @@ def push(remote=None, branch=None, reload=False):
 
 def pushr(remote=None, branch=None, reload=True):
     push(remote, branch, reload)
-    
+
 def switch(branch):
     """Switch the repo branch which the server is using"""
     with cd(env.proj_root):
@@ -85,7 +85,7 @@ def debugon():
     """Turn debug mode on for the production server."""
     run("sed -i -e 's/^DEBUG = .*/DEBUG = True/' %s" % env.local_settings)
     restart()
-    
+
 def debugoff():
     """Turn debug mode on for the production server."""
     run("sed -i -e 's/^DEBUG = .*/DEBUG = False/' %s" % env.local_settings)

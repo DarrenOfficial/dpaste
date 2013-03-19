@@ -1,5 +1,5 @@
 from django.contrib import admin
-from pastebin.apps.dpaste.models import Snippet
+from dpaste.models import Snippet
 
 class SnippetAdmin(admin.ModelAdmin):
     list_display = ('published', 'expires', 'lexer', 'get_absolute_url')

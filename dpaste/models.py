@@ -7,7 +7,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
-from pastebin.apps.dpaste.highlight import LEXER_DEFAULT, pygmentize
+from dpaste.highlight import LEXER_DEFAULT, pygmentize
 
 t = 'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890'
 def generate_secret_id(length=5):
@@ -24,6 +24,7 @@ class Snippet(models.Model):
 
     class Meta:
         ordering = ('-published',)
+        db_table = 'dpaste_snippet'
 
     def get_linecount(self):
         return len(self.content.splitlines())

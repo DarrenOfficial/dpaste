@@ -8,9 +8,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 
-from pastebin.apps.dpaste.forms import SnippetForm, UserSettingsForm
-from pastebin.apps.dpaste.models import Snippet
-from pastebin.apps.dpaste.highlight import pygmentize, guess_code_lexer, \
+from dpaste.forms import SnippetForm, UserSettingsForm
+from dpaste.models import Snippet
+from dpaste.highlight import pygmentize, guess_code_lexer, \
     LEXER_WORDWRAP
 
 import difflib

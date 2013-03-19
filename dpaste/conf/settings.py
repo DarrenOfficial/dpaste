@@ -33,10 +33,10 @@ LANGUAGES = (
 #==============================================================================
 import os
 import sys
-import pastebin
+import dpaste
 
 PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
-    os.path.dirname(os.path.realpath(pastebin.__file__))
+    os.path.dirname(os.path.realpath(dpaste.__file__))
 )
 
 PYTHON_BIN = os.path.dirname(sys.executable)
@@ -68,7 +68,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 MEDIA_ROOT = os.path.join(VAR_ROOT, 'uploads')
 
-ROOT_URLCONF = 'pastebin.conf.urls'
+ROOT_URLCONF = 'dpaste.conf.urls'
 
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
@@ -79,7 +79,7 @@ LOGIN_REDIRECT_URL = '/'
 #==============================================================================
 
 MIDDLEWARE_CLASSES = (
-    'pastebin.disable.DisableCSRF',
+    'dpaste.disable.DisableCSRF',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -103,10 +103,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'mptt',
     'south',
-    'pastebin',
-    'pastebin.apps.dpaste',
     'gunicorn',
-    'raven.contrib.django',
+
+    'dpaste',
 )
 
 #==============================================================================

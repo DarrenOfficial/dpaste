@@ -1,8 +1,8 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from pastebin.apps.dpaste.models import Snippet
-from pastebin.apps.dpaste.highlight import LEXER_LIST_ALL, LEXER_LIST, LEXER_DEFAULT
+from dpaste.models import Snippet
+from dpaste.highlight import LEXER_LIST_ALL, LEXER_LIST, LEXER_DEFAULT
 import datetime
 
 #===============================================================================

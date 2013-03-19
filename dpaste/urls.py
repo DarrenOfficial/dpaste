@@ -2,7 +2,7 @@ from django.conf.urls.defaults import patterns, url
 from django.conf import settings
 
 
-urlpatterns = patterns('pastebin.apps.dpaste.views',
+urlpatterns = patterns('dpaste.views',
     url(r'^$', 'snippet_new', name='snippet_new'),
     url(r'^guess/$', 'guess_lexer', name='snippet_guess_lexer'),
     url(r'^diff/$', 'snippet_diff', name='snippet_diff'),

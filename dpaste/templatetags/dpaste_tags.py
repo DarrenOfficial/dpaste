@@ -1,7 +1,7 @@
 from django.template import Library
 from django.utils.safestring import mark_safe
 
-from pastebin.apps.dpaste.highlight import pygmentize
+from dpaste.highlight import pygmentize
 
 register = Library()
 

@@ -2,7 +2,7 @@ import datetime
 import sys
 from optparse import make_option
 from django.core.management.base import CommandError, LabelCommand
-from pastebin.apps.dpaste.models import Snippet
+from dpaste.models import Snippet
 
 class Command(LabelCommand):
     option_list = LabelCommand.option_list + (

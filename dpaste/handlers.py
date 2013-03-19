@@ -2,7 +2,7 @@ import datetime
 import re
 from piston.utils import rc
 from piston.handler import AnonymousBaseHandler
-from pastebin.apps.dpaste.models import Snippet
+from dpaste.models import Snippet
 
 class SnippetHandler(AnonymousBaseHandler):
     allowed_methods = ('POST',)
