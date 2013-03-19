@@ -3,3 +3,6 @@ django-mptt==0.4.2
 django-piston==0.2.2
 pygments==1.4
 raven
+mysql-python==1.2.2
+south==0.7.6
+gunicorn==0.17.2
