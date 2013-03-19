@@ -1,8 +1,33 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import *
 from django.conf import settings
+from django.contrib import admin
+from piston.resource import Resource
+from dpaste.handlers import SnippetHandler
 
+admin.autodiscover()
 
-urlpatterns = patterns('dpaste.views',
+snippet_resource = Resource(handler=SnippetHandler)
+
+# -----------------------------------------------------------------------------
+# Generic
+# -----------------------------------------------------------------------------
+urlpatterns = patterns('',
+    url(r'^about/$', 'django.views.generic.simple.direct_to_template', {'template': 'about.html'}, name='about'),
+    url(r'^admin/', include(admin.site.urls)),
+)
+
+# -----------------------------------------------------------------------------
+# API
+# -----------------------------------------------------------------------------
+urlpatterns += patterns('',
+    url(r'^api/(?P<secret_id>[^/]+)/$', snippet_resource),
+    url(r'^api/$', snippet_resource),
+)
+
+# -----------------------------------------------------------------------------
+# Dpaste
+# -----------------------------------------------------------------------------
+urlpatterns += patterns('dpaste.views',
     url(r'^$', 'snippet_new', name='snippet_new'),
     url(r'^guess/$', 'guess_lexer', name='snippet_guess_lexer'),
     url(r'^diff/$', 'snippet_diff', name='snippet_diff'),

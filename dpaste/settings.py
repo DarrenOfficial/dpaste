@@ -68,7 +68,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 MEDIA_ROOT = os.path.join(VAR_ROOT, 'uploads')
 
-ROOT_URLCONF = 'dpaste.conf.urls'
+ROOT_URLCONF = 'dpaste.urls'
 
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
@@ -104,7 +104,6 @@ INSTALLED_APPS = (
     'mptt',
     'south',
     'gunicorn',
-
     'dpaste',
 )
 

@@ -1,7 +1,2 @@
-*~
-*.pyc
-docs/_build/*
-uploads
-dpaste/conf/local/*.py
-dev.db
+dpaste/settings_local.py
 dpaste.egg-info
