@@ -1,1 +1,40 @@
-{% extends "base.html" %}
+{% load i18n %}
+
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>dpaste.de: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
+	<link rel="stylesheet" media="screen, projection" href="{{ STATIC_URL }}theme.css"/>
+	{% block extrahead %}{% endblock %}
+</head>
+<body>
+
+<div id="header">
+    <span class="new_snippet"><a href="{% url snippet_new %}">{% trans "New snippet" %} &rarr;</a></span>
+	{% block headline %}{% endblock %}
+</div>
+
+<div id="sidebar">
+	{% block sidebar %}{% endblock %}
+</div>
+
+
+<div id="content">
+	{% block content %}{% endblock %}
+</div>
+
+<div id="footer">
+    <a href="{% url snippet_userlist %}">{% trans "Recent snippets" %}</a>
+    <a href="{% url snippet_userprefs %}">{% trans "Settings" %}</a>
+    <a href="{% url about %}">{% trans "About" %}</a>
+</div>
+
+{% block script_footer %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{% endblock %}
+
+</body>
+</html>
