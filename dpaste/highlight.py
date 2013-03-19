@@ -8,26 +8,15 @@ from django.utils.html import escape
 import logging
 logger = logging.getLogger(__name__)
 
-LEXER_LIST_ALL = sorted([(i[1][0], i[0]) for i in get_all_lexers()])
-LEXER_LIST = (
-    ('bash', 'Bash'),
-    ('c', 'C'),
-    ('css', 'CSS'),
-    ('diff', 'Diff'),
-    ('django', 'Django/Jinja'),
-    ('html', 'HTML'),
-    ('irc', 'IRC logs'),
-    ('js', 'JavaScript'),
-    ('php', 'PHP'),
-    ('pycon', 'Python console session'),
-    ('pytb', 'Python Traceback'),
-    ('python', 'Python'),
-    ('python3', 'Python 3'),
-    ('rst', 'Restructured Text'),
-    ('sql', 'SQL'),
-    ('text', 'Text only'),
-)
-LEXER_DEFAULT = 'python'
+# Python 3: python3
+LEXER_LIST = sorted([(i[0], i[0]) for i in get_all_lexers() if not (
+    '+' in i[0] or
+    'with' in i[0].lower() or
+    i[0].islower()
+)])
+LEXER_LIST_NAME = dict([(i[0], i[1][0]) for i in get_all_lexers()])
+
+LEXER_DEFAULT = 'Python'
 LEXER_WORDWRAP = ('text', 'rst')
 
 class NakedHtmlFormatter(HtmlFormatter):
@@ -39,6 +28,9 @@ class NakedHtmlFormatter(HtmlFormatter):
             yield i, t
 
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
+    lexer_name = LEXER_LIST_NAME.get(lexer_name, None)
+
+    print lexer_name
     try:
         if lexer_name:
             lexer = get_lexer_by_name(lexer_name)

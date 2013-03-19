@@ -12,8 +12,8 @@ from django.views.defaults import page_not_found as django_page_not_found, \
 
 from dpaste.forms import SnippetForm
 from dpaste.models import Snippet
-from dpaste.highlight import pygmentize, guess_code_lexer, \
-    LEXER_WORDWRAP, LEXER_LIST_ALL, LEXER_LIST
+from dpaste.highlight import guess_code_lexer, \
+    LEXER_WORDWRAP, LEXER_LIST
 
 import difflib
 

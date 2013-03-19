@@ -11,16 +11,14 @@
 
     <div class="control-group form-options">
         <div class="form-options-lexer">
-            {% if request.session.userprefs.display_all_lexer %}
+            {{ snippet_form.lexer.errors }}
             <div class="input-append">
                 {{ snippet_form.lexer }}
                 <button class="btn" id="guess_lexer_btn" type="button">{% trans "Guess lexer" %}</button>
             </div>
-            {% else %}
-                {{ snippet_form.lexer }}
-            {% endif %}
         </div>
         <div class="form-options-expire">
+            {{ snippet_form.expire_options.errors }}
             <div class="input-prepend">
                 <span class="add-on"><i class="icon-trash" title="{% trans "Expire in" %}"></i></span>
                 {{ snippet_form.expire_options }}

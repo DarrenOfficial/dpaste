@@ -2,7 +2,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from dpaste.models import Snippet
-from dpaste.highlight import LEXER_LIST_ALL, LEXER_LIST, LEXER_DEFAULT
+from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT
 import datetime
 
 #===============================================================================
@@ -21,7 +21,6 @@ EXPIRE_DEFAULT = 3600 * 24 * 30
 class SnippetForm(forms.ModelForm):
     lexer = forms.ChoiceField(
         label=_(u'Lexer'),
-        choices=LEXER_LIST,
         initial=LEXER_DEFAULT,
         widget=forms.TextInput,
     )
@@ -42,22 +41,25 @@ class SnippetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)
         self.request = request
+        self.fields['lexer'].choices = LEXER_LIST
+        self.fields['lexer'].widget.attrs = {
+            'autocomplete': 'off',
+            'data-provide': 'typeahead',
+            'data-source': '["%s"]' % '","'.join(dict(LEXER_LIST).keys())
+        }
 
-        try:
-            if self.request.session['userprefs'].get('display_all_lexer', False):
-                self.fields['lexer'].choices = LEXER_LIST_ALL
-        except KeyError:
-            pass
-
-        try:
-            self.fields['author'].initial = self.request.session['userprefs'].get('default_name', '')
-        except KeyError:
-            pass
+    def clean_lexer(self):
+        lexer = self.cleaned_data.get('lexer')
+        if not lexer:
+            return LEXER_DEFAULT
+        lexer = dict(LEXER_LIST).get(lexer, LEXER_DEFAULT)
+        return lexer
 
     def clean(self):
         if self.cleaned_data.get('title'):
             raise forms.ValidationError('This snippet was identified as Spam.')
         return self.cleaned_data
+
 
     def save(self, parent=None, *args, **kwargs):
 
