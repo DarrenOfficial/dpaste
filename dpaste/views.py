@@ -1,12 +1,15 @@
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.template.context import RequestContext
 from django.http import Http404, HttpResponseRedirect, HttpResponseBadRequest, \
-    HttpResponse, HttpResponseForbidden
+                        HttpResponse, HttpResponseForbidden
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
+from django.views.defaults import page_not_found as django_page_not_found, \
+                                  server_error as django_server_error
+
 
 from dpaste.forms import SnippetForm, UserSettingsForm
 from dpaste.models import Snippet
@@ -177,3 +180,10 @@ def guess_lexer(request):
     code_string = request.GET.get('codestring', False)
     response = simplejson.dumps({'lexer': guess_code_lexer(code_string)})
     return HttpResponse(response)
+
+
+def page_not_found(request, template_name='dpaste/404.html'):
+    return django_page_not_found(request, template_name)
+
+def server_error(request, template_name='dpaste/500.html'):
+    return django_server_error(request, template_name)
