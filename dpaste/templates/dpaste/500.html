@@ -1,9 +1,8 @@
 {% extends "dpaste/base.html" %}
 
-{% block headline %}
-    <h1>500 Internal Server Error</h1>
-{% endblock %}
+{% block title %}500 Internal Server Error{% endblock %}
+{% block headline %}500 Internal Server Error{% endblock %}
 
-{% block content %}
-    <p>Sorry, there was an error with your request. My fault!</p>
+{% block page %}
+    <p>Sorry, there was an error with your request. The server notified the admin via email.</p>
 {% endblock %}
