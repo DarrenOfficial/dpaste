@@ -1,39 +1,53 @@
-{% load i18n %}
-
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+{% load i18n staticfiles %}<!DOCTYPE html>
+<html>
 <head>
     <title>dpaste.de: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
-	<link rel="stylesheet" media="screen, projection" href="{{ STATIC_URL }}dpaste/theme.css"/>
+    <link href="{% static "dpaste/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+    <link href="{% static "dpaste/theme.css" %}" rel="stylesheet" media="screen">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	{% block extrahead %}{% endblock %}
 </head>
 <body>
 
-<div id="header">
-    <span class="new_snippet"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></span>
-	{% block headline %}{% endblock %}
+<div class="container-fluid">
+    <header>
+        <ul class="nav nav-pills pull-right">
+            <li class="{% block dpaste_nav_about %}{% endblock %}"><a href="{% url "about" %}">{% trans "About" %}</a></li>
+            <li class="{% block dpaste_nav_history %}{% endblock %}"><a href="{% url "snippet_history" %}">{% trans "History" %}</a></li>
+            <li class="{% block dpaste_nav_new %}{% endblock %}"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
+        </ul>
+        <h3 class="headline">{% block headline %}{% endblock %}</h3>
+    </header>
+
+    <hr>
+
+    {% block page %}
+        PAGE MISSING
+    {% endblock %}
 </div>
 
-<div id="sidebar">
-	{% block sidebar %}{% endblock %}
-</div>
-
-
-<div id="content">
-	{% block content %}{% endblock %}
-</div>
-
-<div id="footer">
-    <a href="{% url "snippet_userlist" %}">{% trans "Recent snippets" %}</a>
-    <a href="{% url "snippet_userprefs" %}">{% trans "Settings" %}</a>
-    <a href="{% url "about" %}">{% trans "About" %}</a>
-</div>
 
 {% block script_footer %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="{% static "dpaste/bootstrap/js/bootstrap.min.js" %}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    {% if request.session.userprefs.display_all_lexer %}
+    $('#guess_lexer_btn').click(function(){
+        $.getJSON('{% url "snippet_guess_lexer" %}',
+            {'codestring': $('#id_content').val()},
+            function(data){
+                if(data.lexer == "unknown"){
+                    $('#guess_lexer_btn').css('color', 'red');
+                }else{
+                    $('#id_lexer').val(data.lexer);
+                    $('#guess_lexer_btn').css('color', 'inherit');
+                }
+            });
+    });
+    {% endif %}
+});
+</script>
 {% endblock %}
 
 </body>

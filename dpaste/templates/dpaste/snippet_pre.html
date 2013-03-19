@@ -1,0 +1,1 @@
+{% load dpaste_tags %}<pre class="prettyprint linenums"><ol class="linenums">{% for line in snippet|highlight %}<li id="{{ forloop.counter0 }}">{{ line|safe|default:"&nbsp;" }}</li>{% endfor %}</ol></pre>

@@ -1,11 +1,11 @@
 {% extends "dpaste/base.html" %}
 
-{% block headline %}
-    <h1>About dpaste.de</h1>
-{% endblock %}
+{% block title %}About dpaste.de{% endblock %}
+{% block headline %}About dpaste.de{% endblock %}
+{% block dpaste_nav_about %}active{% endblock %}
 
-{% block content %}
-<h2>API</h2>
+{% block page %}
+<h3>API</h3>
 
 <pre>#!/usr/bin/env python
 
@@ -31,43 +31,30 @@ if __name__ == '__main__':
 <p>Or you could use <code>curl</code>:
 <code>alias dpaste="curl -F 'content=&lt;-' http://dpaste.de/api/</code></p>
 
-<h2>Applications using the API:</h2>
+<hr>
+
+<h3>Applications using the API:</h3>
 
 <ul>
     <li><a href="https://github.com/bartTC/dpasteGUI/wiki">dpasteGUI</a>, a OS X interface</li>
     <li><a href="https://github.com/bartTC/SubDpaste">a dpaste Sublime 2 plugin</a></li>
     <li><a href="http://marmalade-repo.org/packages/dpaste_de">Marmalade</a>, a Emacs plugin</li>
 </ul>
-{% endblock %}
 
 
-{% block sidebar %}
-    <h2>Imprint</h2>
+<hr/>
 
-    <p>
-        <strong>Address</strong>
-    </p>
-    <p>
-        Martin Mahner<br/>
-        Lauterbacher Str. 4<br/>
-        DE-18581 Putbus<br/>
-        Germany
-    </p>
+<h3>Imprint</h3>
 
-    <p>
-        <strong>Jabber/E-Mail:</strong>
-    </p>
+<p><strong>Address:</strong></p>
+<p>
+    Martin Mahner<br/>
+    Lauterbacher Str. 4<br/>
+    DE-18581 Putbus<br/>
+    Germany
+</p>
 
-    <p>
-        <a href="mailto:martin@mahner.org">martin@mahner.org</a>
-    </p>
+<p><strong>Jabber/E-Mail:</strong></p>
+<p><a href="mailto:martin@mahner.org">martin@mahner.org</a></p>
 
-    <p>
-        <strong>Phone:</strong>
-    </p>
-
-    <p>
-        +49 38301 890(770+8)<sup>1</sup><br/><br/>
-        <small style="font-size:0.9em;"><sup>1</sup> Yes, that's math!</small>
-    </p>
 {% endblock %}

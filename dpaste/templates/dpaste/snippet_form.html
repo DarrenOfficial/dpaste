@@ -1,22 +1,39 @@
 {% load i18n %}
-<form method="post" action="." class="snippetform">
-{% csrf_token %}
 
-{{ snippet_form.non_field_errors }}
+<form method="post" action="" class="form-horizontal">
+    {% csrf_token %}
+    {{ snippet_form.non_field_errors }}
+    <div style="display: none;">{{ snippet_form.title }}</div>
 
-<ol>
-    {% for field in snippet_form %}
-    <li {% ifequal field.name "title" %}style="display: none"{% endifequal %}>
-        {{ field.errors }}
-        {{ field.label_tag }}
-        {{ field }}
-        {% if request.session.userprefs.display_all_lexer %}
-        {% ifequal field.name "lexer" %}
-            <input type="button" value="{% trans "Guess lexer" %}" id="guess_lexer_btn"/>
-        {% endifequal %}
+    <div class="control-group form-content">
+        {{ snippet_form.content }}
+    </div>
+
+    <div class="control-group form-options">
+        <div class="form-options-lexer">
+            {% if request.session.userprefs.display_all_lexer %}
+            <div class="input-append">
+                {{ snippet_form.lexer }}
+                <button class="btn" id="guess_lexer_btn" type="button">{% trans "Guess lexer" %}</button>
+            </div>
+            {% else %}
+                {{ snippet_form.lexer }}
+            {% endif %}
+        </div>
+        <div class="form-options-expire">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-trash" title="{% trans "Expire in" %}"></i></span>
+                {{ snippet_form.expire_options }}
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        {% if follow_button %}
+        <div class="twitter-follow-button-container">
+            <a href="https://twitter.com/bartTC" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @bartTC</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
         {% endif %}
-    </li>
-    {% endfor %}
-    <li class="submit"><input type="submit" value="{% trans "Paste it" %}"/></li>
-</ol>
+        <input tabindex="0" type="submit"class="btn btn-primary" value="{% trans "Paste it" %}"/>
+    </div>
 </form>

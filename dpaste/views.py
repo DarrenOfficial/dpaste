@@ -10,11 +10,10 @@ from django.utils import simplejson
 from django.views.defaults import page_not_found as django_page_not_found, \
                                   server_error as django_server_error
 
-
-from dpaste.forms import SnippetForm, UserSettingsForm
+from dpaste.forms import SnippetForm
 from dpaste.models import Snippet
 from dpaste.highlight import pygmentize, guess_code_lexer, \
-    LEXER_WORDWRAP
+    LEXER_WORDWRAP, LEXER_LIST_ALL, LEXER_LIST
 
 import difflib
 
@@ -70,6 +69,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     template_context = {
         'snippet_form': snippet_form,
         'snippet': snippet,
+        'lexers': LEXER_LIST,
         'lines': range(snippet.get_linecount()),
         'tree': tree,
         'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
@@ -94,11 +94,11 @@ def snippet_delete(request, snippet_id):
     except KeyError:
         return HttpResponseForbidden('You have no recent snippet list, cookie error?')
     if not snippet.pk in snippet_list:
-        return HttpResponseForbidden('That\'s not your snippet, sucka!')
+        return HttpResponseForbidden('That\'s not your snippet!')
     snippet.delete()
     return HttpResponseRedirect(reverse('snippet_new'))
 
-def snippet_userlist(request, template_name='dpaste/snippet_list.html'):
+def snippet_history(request, template_name='dpaste/snippet_list.html'):
 
     try:
         snippet_list = get_list_or_404(Snippet, pk__in=request.session.get('snippet_list', None))
@@ -117,28 +117,6 @@ def snippet_userlist(request, template_name='dpaste/snippet_list.html'):
     )
 
 
-def userprefs(request, template_name='dpaste/userprefs.html'):
-
-    if request.method == 'POST':
-        settings_form = UserSettingsForm(request.POST, initial=request.session.get('userprefs', None))
-        if settings_form.is_valid():
-            request.session['userprefs'] = settings_form.cleaned_data
-            settings_saved = True
-    else:
-        settings_form = UserSettingsForm(initial=request.session.get('userprefs', None))
-        settings_saved = False
-
-    template_context = {
-        'settings_form': settings_form,
-        'settings_saved': settings_saved,
-    }
-
-    return render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request)
-    )
-
 def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
 
     if request.GET.get('a') and request.GET.get('a').isdigit() \
@@ -151,6 +129,11 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
     else:
         return HttpResponseBadRequest(u'You must select two snippets.')
 
+    class DiffText(object):
+        pass
+
+    diff = DiffText()
+
     if fileA.content != fileB.content:
         d = difflib.unified_diff(
             fileA.content.splitlines(),
@@ -159,13 +142,15 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
             'Current',
             lineterm=''
         )
-        difftext = '\n'.join(d)
-        difftext = pygmentize(difftext, 'diff')
+
+        diff.content = '\n'.join(d).strip()
+        diff.lexer = 'diff'
     else:
-        difftext = _(u'No changes were made between this two files.')
+        diff.content = _(u'No changes were made between this two files.')
+        diff.lexer = 'text'
 
     template_context = {
-        'difftext': difftext,
+        'snippet': diff,
         'fileA': fileA,
         'fileB': fileB,
     }

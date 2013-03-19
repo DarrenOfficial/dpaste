@@ -1,13 +1,13 @@
 {% load i18n %}
 
-<h2>
-    <span style="float:right;">(<a href="#" onclick="$('#diff').slideUp('fast'); return false;">{% trans "Close" %}</a>)</span>
+<h4>
     {% blocktrans with fileA.get_absolute_url as filea_url and fileB.get_absolute_url as fileb_url and fileA.id as filea_id and fileB.id as fileb_id %}
-    Diff between
-    <a href="{{ filea_url }}">Snippet #{{ filea_id }}</a>
-    and
-    <a href="{{ fileb_url }}">Snippet #{{ fileb_id }}</a>
+    Diff between <a href="{{ filea_url }}">#{{ filea_id }}</a> and <a href="{{ fileb_url }}">#{{ fileb_id }}</a>
     {% endblocktrans %}
-</h2>
+</h4>
 
-<pre class="code">{{ difftext|safe }}</pre>
+{% if snippet.lexer == 'diff' %}
+    {% include "dpaste/snippet_pre.html" %}
+{% else %}
+    <p>{{ snippet.content }}</p>
+{% endif %}

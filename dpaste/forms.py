@@ -13,18 +13,31 @@ EXPIRE_CHOICES = (
     (3600, _(u'In one hour')),
     (3600 * 24 * 7, _(u'In one week')),
     (3600 * 24 * 30, _(u'In one month')),
-    #(3600*24*30*12*100, _(u'Save forever')), # 100 years, I call it forever ;)
 )
 
 EXPIRE_DEFAULT = 3600 * 24 * 30
 
 
 class SnippetForm(forms.ModelForm):
-    lexer = forms.ChoiceField(choices=LEXER_LIST, initial=LEXER_DEFAULT, label=_(u'Lexer'))
-    expire_options = forms.ChoiceField(choices=EXPIRE_CHOICES, initial=EXPIRE_DEFAULT, label=_(u'Expires'))
+    lexer = forms.ChoiceField(
+        label=_(u'Lexer'),
+        choices=LEXER_LIST,
+        initial=LEXER_DEFAULT,
+        widget=forms.TextInput,
+    )
+
+    expire_options = forms.ChoiceField(
+        label=_(u'Expires'),
+        choices=EXPIRE_CHOICES,
+        initial=EXPIRE_DEFAULT,
+    )
+
     # Honeypot field
-    title = forms.CharField(required=False, label=_(u'Title'),
-        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
+    title = forms.CharField(
+        label=_(u'Title'),
+        required=False,
+        widget=forms.TextInput(attrs={'autocomplete': 'off'}),
+    )
 
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)
@@ -75,39 +88,3 @@ class SnippetForm(forms.ModelForm):
             'content',
             'lexer',
         )
-
-
-#===============================================================================
-# User Settings
-#===============================================================================
-
-USERPREFS_FONT_CHOICES = [(None, _(u'Default'))] + [
-    (i, i) for i in sorted((
-        'Monaco',
-        'Bitstream Vera Sans Mono',
-        'Courier New',
-        'Consolas',
-    ))
-]
-
-USERPREFS_SIZES = [(None, _(u'Default'))] + [(i, '%dpx' % i) for i in range(5, 25)]
-
-
-class UserSettingsForm(forms.Form):
-
-    default_name = forms.CharField(label=_(u'Default Name'), required=False)
-    display_all_lexer = forms.BooleanField(
-        label=_(u'Display all lexer'),
-        required=False,
-        widget=forms.CheckboxInput,
-        help_text=_(u'This also enables the super secret \'guess lexer\' function.'),
-    )
-    wordwrap = forms.BooleanField(
-        label=_('Always enable wordwrap'),
-        required=False,
-        widget=forms.CheckboxInput,
-        help_text=_(u'Wordwrap is always enabled for text lexers such as \'text\' or \'reStructuredText\'.'),
-    )
-    font_family = forms.ChoiceField(label=_(u'Font Family'), required=False, choices=USERPREFS_FONT_CHOICES)
-    font_size = forms.ChoiceField(label=_(u'Font Size'), required=False, choices=USERPREFS_SIZES)
-    line_height = forms.ChoiceField(label=_(u'Line Height'), required=False, choices=USERPREFS_SIZES)
