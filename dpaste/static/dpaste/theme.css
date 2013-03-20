@@ -155,8 +155,8 @@ ol.linenums li.marked {
 /* ----------------------------------------------------------------------------
    Pygments
 ---------------------------------------------------------------------------- */
-pre .gd { background-color: #d68c83; display: block; }
-pre .gi { background-color: #a7cb7d; display: block; }
+pre .gd { background-color: rgba(226, 12, 19, .5); display: block; }
+pre .gi { background-color: rgba(23, 189, 10, .5); display: block; }
 
 
 pre .hll { background-color: #49483e }
