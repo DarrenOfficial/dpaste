@@ -29,6 +29,10 @@ class Snippet(models.Model):
     def content_splitted(self):
         return self.content_highlighted.splitlines()
 
+    @property
+    def is_single(self):
+        return self.is_root_node() and not self.get_children()
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.published = datetime.datetime.now()

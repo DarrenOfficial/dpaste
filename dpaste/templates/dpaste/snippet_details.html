@@ -52,7 +52,9 @@
         {% if snippet.pk|in_list:request.session.snippet_list %}
         <a class="btn" href="{% url "snippet_delete" snippet.secret_id %}" onclick="return confirm('{% trans "Really delete this snippet?" %}');"><i class="icon-trash"></i> {% trans "Delete Now" %}</a>
         {% endif %}
+        {% if not snippet.is_single %}
         <a class="btn snippet-diff-trigger" href="#snippet-diff"><i class="icon-search"></i> {% trans "Compare Snippets" %}</a>
+        {% endif %}
         <a class="btn" href="{% url "snippet_details_raw" snippet.secret_id %}"><i class="icon-align-left"></i> {% trans "View Raw" %}</a>
     </div>
 
