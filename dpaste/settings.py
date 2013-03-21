@@ -89,23 +89,15 @@ MIDDLEWARE_CLASSES = (
     'dpaste.disable.DisableCSRF',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    #'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, PROJECT_MODULE_NAME, 'templates'),
-)
-
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
     'mptt',
     'south',
