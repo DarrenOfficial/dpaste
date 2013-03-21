@@ -7,6 +7,10 @@ from subprocess import Popen, PIPE
 
 
 class EmailBackend(BaseEmailBackend):
+    """
+    EmailBackend that uses a local 'sendmail' binary instead of a local
+    SMTP daemon.
+    """
     def __init__(self, fail_silently=False, **kwargs):
         super(EmailBackend, self).__init__(fail_silently=fail_silently)
         self._lock = threading.RLock()
