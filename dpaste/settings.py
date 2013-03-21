@@ -122,9 +122,6 @@ INSTALLED_APPS = (
 # stored in the user session.
 MAX_SNIPPETS_PER_USER = 25
 
-SENTRY_DSN = 'http://0afbf6df0a9749f9985059ed6c527b19:717d9800ba854149a7e7f6a501b2caa0@ohnoez.mahner.org/2'
-
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
