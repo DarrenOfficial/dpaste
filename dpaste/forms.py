@@ -17,11 +17,13 @@ EXPIRE_CHOICES = (
 
 EXPIRE_DEFAULT = 3600 * 24 * 30
 
+MAX_CONTENT_LENGTH = 250*1024*1024
 
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
         widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
+        max_length=MAX_CONTENT_LENGTH,
     )
 
     lexer = forms.ChoiceField(
