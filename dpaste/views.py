@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
+from django.db.models import Count
 from django.views.defaults import page_not_found as django_page_not_found, \
                                   server_error as django_server_error
 
@@ -16,6 +17,19 @@ from dpaste.highlight import guess_code_lexer, \
     LEXER_WORDWRAP, LEXER_LIST
 
 import difflib
+
+def about(request, template_name='dpaste/about.html'):
+    template_context = {
+        'total': Snippet.objects.count(),
+        'stats': Snippet.objects.values('lexer').annotate(
+            count=Count('lexer')).order_by('-count')[:5],
+    }
+
+    return render_to_response(
+        template_name,
+        template_context,
+        RequestContext(request)
+    )
 
 def snippet_new(request, template_name='dpaste/snippet_new.html'):
 
@@ -167,6 +181,7 @@ def guess_lexer(request):
     code_string = request.GET.get('codestring', False)
     response = simplejson.dumps({'lexer': guess_code_lexer(code_string)})
     return HttpResponse(response)
+
 
 
 def page_not_found(request, template_name='dpaste/404.html'):
