@@ -17,7 +17,7 @@ EXPIRE_CHOICES = (
 
 EXPIRE_DEFAULT = 3600 * 24 * 30
 
-MAX_CONTENT_LENGTH = 250*1024*1024
+MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
@@ -45,6 +45,13 @@ class SnippetForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'autocomplete': 'off'}),
     )
 
+    class Meta:
+        model = Snippet
+        fields = (
+            'content',
+            'lexer',
+        )
+
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)
         self.request = request
@@ -67,11 +74,13 @@ class SnippetForm(forms.ModelForm):
         lexer = dict(LEXER_LIST).get(lexer, LEXER_DEFAULT)
         return lexer
 
+    def clean_content(self):
+        return self.cleaned_data.get('content', '').strip()
+
     def clean(self):
         if self.cleaned_data.get('title'):
             raise forms.ValidationError('This snippet was identified as Spam.')
         return self.cleaned_data
-
 
     def save(self, parent=None, *args, **kwargs):
 
@@ -98,10 +107,3 @@ class SnippetForm(forms.ModelForm):
         self.request.session['lexer'] = self.cleaned_data['lexer']
 
         return self.request, self.instance
-
-    class Meta:
-        model = Snippet
-        fields = (
-            'content',
-            'lexer',
-        )
