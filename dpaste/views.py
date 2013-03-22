@@ -44,6 +44,7 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
 
     template_context = {
         'snippet_form': snippet_form,
+        'is_new': True,
     }
 
     return render_to_response(
