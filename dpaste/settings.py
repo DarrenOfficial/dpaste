@@ -19,8 +19,8 @@ SECRET_KEY = ''
 ALLOWED_HOSTS = (
     'dpaste.de',
     'www.dpaste.de',
-    'localhost',
-    '127.0.0.1',
+    'dpaste.org',
+    'www.dpaste.org',
 )
 
 #==============================================================================
