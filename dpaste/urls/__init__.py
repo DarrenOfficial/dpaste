@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = patterns(
     '',
-    url(r'^about/$', TemplateView.as_view(template_name='dpaste/about.html'), name='about'),
+    url(r'^about/$', 'dpaste.views.about', name='about'),
     url(r'^', include('dpaste.urls.dpaste_api')),
     url(r'^', include('dpaste.urls.dpaste')),
 )
