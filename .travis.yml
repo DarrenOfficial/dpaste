@@ -4,4 +4,4 @@ python:
 install:
   - "pip install -r requirements.txt"
   - "pip install ."
-script: manage.py test dpaste
+script: manage.py test dpaste --settings=dpaste.settings_test
