@@ -5,15 +5,17 @@ from dpaste.models import Snippet
 
 class SnippetHandler(AnonymousBaseHandler):
     allowed_methods = ('POST',)
-    fields = ('title', 'content',)
+    fields = ('content',)
     model = Snippet
 
     def create(self, request):
-        if not request.POST.get('content'):
+        content = request.POST.get('content', '').strip()
+
+        if not content:
             return rc.BAD_REQUEST
 
         s = Snippet.objects.create(
-            content=request.POST.get('content'),
+            content=content,
             expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
         )
         s.save()

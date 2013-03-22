@@ -2,6 +2,8 @@ django==1.5
 django-mptt==0.4.2
 django-piston==0.2.2
 pygments==1.6
-mysql-python==1.2.4
 south==0.7.6
+
+# Deployment specific
+mysql-python==1.2.4
 gunicorn==0.17.2
