@@ -19,6 +19,11 @@ EXPIRE_DEFAULT = 3600 * 24 * 30
 
 
 class SnippetForm(forms.ModelForm):
+    content = forms.CharField(
+        label=_('Content'),
+        widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
+    )
+
     lexer = forms.ChoiceField(
         label=_(u'Lexer'),
         initial=LEXER_DEFAULT,
