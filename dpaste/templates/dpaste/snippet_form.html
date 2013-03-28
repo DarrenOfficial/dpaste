@@ -5,17 +5,25 @@
     {{ snippet_form.non_field_errors }}
     <div style="display: none;">{{ snippet_form.title }}</div>
 
-    <div class="control-group form-content {% if is_new %}autofocus{% endif %}">
+    <div class="
+        control-group
+        form-content
+        {% if is_new %}autofocus{% endif %}
+        {% if snippet_form.content.errors %}error{% endif %}
+    ">
         {{ snippet_form.content }}
     </div>
 
     <div class="control-group form-options">
-        <div class="form-options-lexer">
-            {{ snippet_form.lexer.errors }}
+        <div class="form-options-lexer
+            {% if snippet_form.lexer.errors %}control-group error{% endif %}">
             <div class="input-append">
                 {{ snippet_form.lexer }}
                 <button class="btn" id="guess_lexer_btn" type="button">{% trans "Guess lexer" %}</button>
             </div>
+            {% for error in snippet_form.lexer.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="form-options-expire">
             {{ snippet_form.expire_options.errors }}
