@@ -142,7 +142,7 @@ ol.linenums {
 }
 
 ol.linenums li {
-    color: #888;
+    color: #aaa;
     font-size: 12px;
     line-height: 20px;
     cursor: pointer;
@@ -155,8 +155,8 @@ ol.linenums li.marked {
 /* ----------------------------------------------------------------------------
    Pygments
 ---------------------------------------------------------------------------- */
-pre .gd { background-color: rgba(226, 12, 19, .5); display: block; }
-pre .gi { background-color: rgba(23, 189, 10, .5); display: block; }
+pre .gd { background-color: rgba(226, 12, 19, .5); color: #fff; display: block; }
+pre .gi { background-color: rgba(23, 189, 10, .5); color: #fff; display: block; }
 
 
 pre .hll { background-color: #49483e }
