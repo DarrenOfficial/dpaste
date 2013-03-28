@@ -8,54 +8,59 @@
 
 {% block page %}
 
-<h3>API</h3>
-
-{# Just put the script in dpaste and copy the source node #}
-<pre class="prettyprint linenums"><ol class="linenums"><li id="1"><span class="c">#!/usr/bin/env python</span></li><li id="2">&nbsp;</li><li id="3"><span class="kn">import</span> <span class="nn">urllib</span></li><li id="4"><span class="kn">import</span> <span class="nn">urllib2</span></li><li id="5"><span class="kn">import</span> <span class="nn">sys</span></li><li id="6">&nbsp;</li><li id="7"><span class="k">def</span> <span class="nf">paste_code</span><span class="p">():</span></li><li id="8">    <span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span></li><li id="9">        <span class="s">'http://dpaste.de/api/'</span><span class="p">,</span></li><li id="10">        <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">([(</span><span class="s">'content'</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">())]),</span></li><li id="11">    <span class="p">)</span></li><li id="12">    <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></li><li id="13">    <span class="c"># Strip surrounding quotes (NB: response has no trailing newline)</span></li><li id="14">    <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></li><li id="15">&nbsp;</li><li id="16"><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span></li><li id="17">    <span class="n">paste_code</span><span class="p">()</span></li></ol></pre>
-
-<p>Save this script in <code>/usr/local/bin/dpaste</code> and <code>chmod +x ..filepath</code>.</p>
-<p>Usage: <code>cat foo.txt | dpaste</code></p>
-
-<p>Or you could use <code>curl</code>:
-<code>alias dpaste="curl -F 'content=&lt;-' http://dpaste.de/api/"</code></p>
-
-
 <div class="row-fluid">
-    <div class="span5">
-        <h3>Applications using the API:</h3>
 
-        <ul>
-            <li><a href="https://github.com/bartTC/dpasteGUI/wiki">dpasteGUI</a>, a OS X interface</li>
-            <li><a href="https://github.com/bartTC/SubDpaste">a dpaste Sublime 2 plugin</a></li>
-            <li><a href="http://marmalade-repo.org/packages/dpaste_de">Marmalade</a>, a Emacs plugin</li>
-        </ul>
-    </div>
-    <div class="span4">
-        <p>{% blocktrans %}There are {{ total }} snippets in the database. The most popular languages are:{% endblocktrans %}</p>
-        <table class="table">
-            {% for s in stats %}
-            <tr>
-                <th>{{ s.lexer|upper }}</th>
-                <td>{{ s.count }}</th>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+    <p>
+        dpaste is open source. You can find the source, contribute to it and
+        leave ideas on Github: <a href="https://github.com/bartTC/dpaste">github.com/bartTC/dpaste</a>
+    </p>
 
-    <div class="span3">
-        <h3>Imprint</h3>
+    <h3>API</h3>
 
-        <p><strong>Address:</strong></p>
-        <p>
-            Martin Mahner<br/>
-            Lauterbacher Str. 4<br/>
-            DE-18581 Putbus<br/>
-            Germany
-        </p>
+    {# Just put the script in dpaste and copy the source node #}
+    <pre class="prettyprint linenums"><ol class="linenums"><li id="1"><span class="c">#!/usr/bin/env python</span></li><li id="2">&nbsp;</li><li id="3"><span class="kn">import</span> <span class="nn">urllib</span></li><li id="4"><span class="kn">import</span> <span class="nn">urllib2</span></li><li id="5"><span class="kn">import</span> <span class="nn">sys</span></li><li id="6">&nbsp;</li><li id="7"><span class="k">def</span> <span class="nf">paste_code</span><span class="p">():</span></li><li id="8">    <span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span></li><li id="9">        <span class="s">'http://dpaste.de/api/'</span><span class="p">,</span></li><li id="10">        <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">([(</span><span class="s">'content'</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">())]),</span></li><li id="11">    <span class="p">)</span></li><li id="12">    <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></li><li id="13">    <span class="c"># Strip surrounding quotes (NB: response has no trailing newline)</span></li><li id="14">    <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></li><li id="15">&nbsp;</li><li id="16"><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span></li><li id="17">    <span class="n">paste_code</span><span class="p">()</span></li></ol></pre>
 
-        <p><strong>Jabber/E-Mail:</strong></p>
-        <p><a href="mailto:martin@mahner.org">martin@mahner.org</a></p>
-    </div>
+    <p>Save this script in <code>/usr/local/bin/dpaste</code> and <code>chmod +x ..filepath</code>.</p>
+    <p>Usage: <code>cat foo.txt | dpaste</code></p>
+
+    <p>Or you could use <code>curl</code>:
+    <code>alias dpaste="curl -F 'content=&lt;-' http://dpaste.de/api/"</code></p>
+
+
+    <h3>Applications using the API:</h3>
+
+    <ul>
+        <li><a href="https://github.com/bartTC/dpasteGUI/wiki">dpasteGUI</a>, a OS X interface</li>
+        <li><a href="https://github.com/bartTC/SubDpaste">a dpaste Sublime 2 plugin</a></li>
+        <li><a href="http://marmalade-repo.org/packages/dpaste_de">Marmalade</a>, a Emacs plugin</li>
+    </ul>
+
+    <h3>{% trans "Statistics" %}</h3>
+
+    <p>{% blocktrans %}There are {{ total }} snippets in the database. The most popular languages are:{% endblocktrans %}</p>
+    <table class="table" style="width: 40%">
+        {% for s in stats %}
+        <tr>
+            <th>{{ s.lexer|upper }}</th>
+            <td>{{ s.count }}</th>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="clearfix"/>
+    <hr class="clearfix"/>
+
+    <h3>Imprint</h3>
+
+    <p><strong>Address:</strong></p>
+    <p>
+        Martin Mahner<br/>
+        Lauterbacher Str. 4<br/>
+        DE-18581 Putbus<br/>
+        Germany
+    </p>
+
+    <p><strong>Jabber/E-Mail:</strong></p>
+    <p><a href="mailto:martin@mahner.org">martin@mahner.org</a></p>
 </div>
-
 {% endblock %}
