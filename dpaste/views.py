@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.template.context import RequestContext
 from django.http import Http404, HttpResponseRedirect, HttpResponseBadRequest, \
@@ -53,6 +55,23 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
         RequestContext(request)
     )
 
+
+def snippet_api(request, enclose_quotes=True):
+    content = request.POST.get('content', '').strip()
+
+    if not content:
+        return HttpResponseBadRequest()
+
+    s = Snippet.objects.create(
+        content=content,
+        expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
+    )
+    s.save()
+
+    response = 'http://dpaste.de%s' % s.get_absolute_url()
+    if enclose_quotes:
+        return HttpResponse('"%s"' % response)
+    return HttpResponse(response)
 
 def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.html', is_raw=False):
 
