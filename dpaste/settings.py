@@ -23,6 +23,8 @@ ALLOWED_HOSTS = (
     'www.dpaste.org',
 )
 
+SECRET_KEY = 'CHANGE_ME'
+
 #==============================================================================
 # I18N
 #==============================================================================
@@ -46,18 +48,16 @@ PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
     os.path.dirname(os.path.realpath(dpaste.__file__))
 )
 
+
+# Set the variable root to $VIRTUALENV/var.
 PYTHON_BIN = os.path.dirname(sys.executable)
-if os.path.exists(os.path.join(PYTHON_BIN, 'activate_this.py')):
-    # Assume that the presence of 'activate_this.py' in the python bin/
-    # directory means that we're running in a virtual environment. Set the
-    # variable root to $VIRTUALENV/var.
-    VAR_ROOT = os.path.join(os.path.dirname(PYTHON_BIN), 'var')
-    if not os.path.exists(VAR_ROOT):
-        os.mkdir(VAR_ROOT)
-else:
-    # Set the variable root to the local configuration location (which is
-    # ignored by the repository).
-    VAR_ROOT = os.path.join(PROJECT_DIR, PROJECT_MODULE_NAME, 'conf', 'local')
+
+if not os.path.exists(os.path.join(PYTHON_BIN, 'activate_this.py')):
+    raise RuntimeError('Project needs to run in its own virtuelenv.')
+
+VAR_ROOT = os.path.join(os.path.dirname(PYTHON_BIN), 'var')
+if not os.path.exists(VAR_ROOT):
+    os.mkdir(VAR_ROOT)
 
 #==============================================================================
 # Static files
@@ -104,6 +104,15 @@ INSTALLED_APPS = (
     'gunicorn',
     'dpaste',
 )
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'dev.db',
+        'USER': '',
+        'PASSWORD': '',
+    }
+}
 
 #==============================================================================
 # App specific settings
