@@ -1,4 +1,4 @@
-django==1.5
+django==1.5.1
 django-mptt==0.4.2
 pygments==1.6
 south==0.7.6

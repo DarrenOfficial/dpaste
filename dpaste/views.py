@@ -203,7 +203,6 @@ def guess_lexer(request):
     return HttpResponse(response)
 
 
-
 def page_not_found(request, template_name='dpaste/404.html'):
     return django_page_not_found(request, template_name)
 
