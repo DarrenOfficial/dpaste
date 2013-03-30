@@ -16,5 +16,5 @@ Testing
 ```
 $ pip install -r requirements.txt
 $ pip install -e .
-$ manage.py test dpaste --settings=dpaste.settings_test
+$ manage.py test dpaste 
 ```
