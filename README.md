@@ -5,7 +5,7 @@ dpaste
 dpaste is a Django based pastebin. It's intended to run separatly or installed
 into an existing Django project.
 
-You can find a live example on http://www.dpaste.de/
+You can find a live example on http://dpaste.de/
 
 
 Testing
@@ -16,5 +16,5 @@ Testing
 ```
 $ pip install -r requirements.txt
 $ pip install -e .
-$ manage.py test dpaste 
+$ manage.py test dpaste
 ```
