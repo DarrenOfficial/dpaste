@@ -1,2 +1,3 @@
+*.pyc
 dpaste/settings_local.py
 dpaste.egg-info

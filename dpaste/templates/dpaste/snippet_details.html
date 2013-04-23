@@ -24,8 +24,8 @@
                     {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
                     <div>
                     <span class="diff">
-                        <input type="radio" name="a" value="{{ tree_item.id }}" {% ifequal tree_item.id snippet.parent_id %}checked="checked"{% endifequal %}/>
-                        <input type="radio" name="b" value="{{ tree_item.id }}" {% ifequal snippet tree_item %}checked="checked"{% endifequal %}/>
+                        <input type="radio" name="a" value="{{ tree_item.id }}" {% ifequal tree_item.id snippet.parent_id %}checked="checked"{% endifequal %}>
+                        <input type="radio" name="b" value="{{ tree_item.id }}" {% ifequal snippet tree_item %}checked="checked"{% endifequal %}>
                     </span>
                     {% ifequal snippet tree_item %}
                         <strong>#{{ tree_item.id }}</strong>
@@ -36,7 +36,7 @@
                     {% for level in structure.closed_levels %}</li></ul>{% endfor %}
                     {% endfor %}
                     <div class="submit">
-                        <input type="submit" value="{% trans "Compare" %}"/>
+                        <input type="submit" value="{% trans "Compare" %}">
                     </div>
                 </div>
                 </form>
@@ -66,7 +66,7 @@
     <!-- ======================================================================
     Snippet Reply
     ======================================================================= -->
-    <hr/>
+    <hr>
 
     <div class="snippet-reply snippet-reply-hidden">
         <h3>{% trans "Reply to this snippet" %} &rarr;</h3>
@@ -77,8 +77,8 @@
 
 {% block script_footer %}
 {{ block.super }}
-<script type="text/javascript">
-$(document).ready(function(){
+<script>
+jQuery(document).ready(function($){
     $('.snippet-reply-hidden').click(function(e){
         $(this).removeClass('snippet-reply-hidden');
     });
@@ -93,10 +93,10 @@ $(document).ready(function(){
     });
 
 
-    $("form#diffform").submit(function() {
-        var a = $("input[name=a]:checked").val(),
-            b = $("input[name=b]:checked").val(),
-            hash = 'D'+a+','+b;
+    $('form#diffform').submit(function() {
+        var a = $('input[name="a"]:checked').val(),
+            b = $('input[name="b"]:checked').val(),
+            hash = 'D' + a + ',' + b;
         $.get("{% url "snippet_diff" %}", {
             a: a,
             b: b
@@ -110,26 +110,26 @@ $(document).ready(function(){
     var curLine = document.location.hash,
         hashlist;
 
-    if(curLine.substring(0,2) == '#D'){
+    if (curLine.substring(0, 2) === '#D'){
         hashlist = curLine.substring(2).split(',');
         if (hashlist.length == 2) {
             console.log(hashlist);
-            $('form#diffform input[name=a][value='+hashlist[0]+']').attr('checked', true);
-            $('form#diffform input[name=b][value='+hashlist[1]+']').attr('checked', true);
+            $('form#diffform input[name="a"][value="'+hashlist[0]+'"]').attr('checked', true);
+            $('form#diffform input[name="b"][value="'+hashlist[1]+'"]').attr('checked', true);
             $('#snippet-diff').slideDown('fast');
             $('#snippet-diff form').submit();
         }
     }
 
     /**
-    * Line Highlighting
-    */
+     * Line Highlighting
+     */
     var curLine = document.location.hash,
         hashlist;
 
-    if(curLine.substring(0,2) == '#L'){
+    if (curLine.substring(0, 2) == '#L'){
         hashlist = curLine.substring(2).split(',');
-        if (hashlist.length > 0 && hashlist[0] !== "") {
+        if (hashlist.length > 0 && hashlist[0] !== '') {
             $.each(hashlist, function(index, elem){
                 $('.linenums li#' + elem).addClass('marked');
             });
@@ -147,7 +147,7 @@ $(document).ready(function(){
         }
 
         $('.linenums li.marked').each(function (index, elem) {
-            if (hash !== "L") hash += ',';
+            if (hash !== 'L') hash += ',';
             hash += $(elem).attr('id');
         });
 
