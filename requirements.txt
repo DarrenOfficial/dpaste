@@ -4,5 +4,5 @@ pygments==1.6
 south==0.7.6
 
 # Deployment specific
-mysql-python==1.2.4
+##mysql-python==1.2.4
 gunicorn==0.17.2
