@@ -208,7 +208,7 @@ def snippet_gist(request, snippet_id):
         'description': 'the description for this gist',
         'public': False,
         'files': {
-            'dpaste.de Snippet': {
+            'dpaste.de_snippet.py': {
                 'content': snippet.content,
             }
         }
