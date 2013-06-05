@@ -1,24 +1,26 @@
 import datetime
+import difflib
+import requests
 
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.template.context import RequestContext
-from django.http import Http404, HttpResponseRedirect, HttpResponseBadRequest, \
-                        HttpResponse, HttpResponseForbidden
+from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
+                        HttpResponse, HttpResponseForbidden)
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.db.models import Count
-from django.views.defaults import page_not_found as django_page_not_found, \
-                                  server_error as django_server_error
+from django.views.defaults import (page_not_found as django_page_not_found,
+                                   server_error as django_server_error)
 
 from dpaste.forms import SnippetForm
 from dpaste.models import Snippet
 from dpaste.highlight import guess_code_lexer, \
     LEXER_WORDWRAP, LEXER_LIST
 
-import difflib
+
 
 def about(request, template_name='dpaste/about.html'):
     template_context = {
@@ -196,6 +198,35 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
         template_context,
         RequestContext(request)
     )
+
+def snippet_gist(request, snippet_id):
+    """
+    Put a snippet on Github Gist.
+    """
+    snippet = get_object_or_404(Snippet, secret_id=snippet_id)
+    data = {
+        'description': 'the description for this gist',
+        'public': False,
+        'files': {
+            'dpaste.de Snippet': {
+                'content': snippet.content,
+            }
+        }
+    }
+
+    try:
+        payload = simplejson.dumps(data)
+        response = requests.post('https://api.github.com/gists', data=payload)
+        response_dict = simplejson.loads(response.content)
+        gist_url = response_dict.get('html_url')
+
+    # Github could be down, could return invalid JSON, it's rare
+    except:
+        return HttpResponse('Creating a Github Gist failed. Sorry, please go back and try again.')
+
+    return HttpResponseRedirect(gist_url)
+
+
 
 def guess_lexer(request):
     code_string = request.GET.get('codestring', False)

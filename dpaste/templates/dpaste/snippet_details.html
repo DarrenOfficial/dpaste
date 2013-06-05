@@ -56,6 +56,8 @@
         <a class="btn snippet-diff-trigger" href="#snippet-diff"><i class="icon-search"></i> {% trans "Compare Snippets" %}</a>
         {% endif %}
         <a class="btn" href="{% url "snippet_details_raw" snippet.secret_id %}"><i class="icon-align-left"></i> {% trans "View Raw" %}</a>
+        <a class="btn" href="{% url "snippet_gist" snippet.secret_id %}"
+            rel="nofollow" title="Create a secret Gist"><i class="icon-share"></i> {% trans "Gist" %}</a>
     </div>
 
     <!-- ======================================================================
