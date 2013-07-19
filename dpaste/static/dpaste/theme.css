@@ -7,6 +7,11 @@ body {
     padding: 10px 0 40px 0;
 }
 
+tt strong {
+    background-color: #ffe699;
+    outline: 3px solid #ffe699;
+}
+
 /* Custom container */
 .container-fluid {
     margin: 0 auto;

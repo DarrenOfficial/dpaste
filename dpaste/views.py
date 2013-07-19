@@ -125,16 +125,24 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     else:
         return response
 
-def snippet_delete(request, snippet_id):
+def snippet_delete(request, snippet_id=None):
+    snippet_id = snippet_id or request.POST.get('snippet_id')
+    if not snippet_id:
+        return HttpResponseBadRequest('No snippet given!')
+
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
+    """
+    Anybody can delete anybodys snippets now.
+
     try:
         snippet_list = request.session['snippet_list']
     except KeyError:
         return HttpResponseForbidden('You have no recent snippet list, cookie error?')
     if not snippet.pk in snippet_list:
         return HttpResponseForbidden('That\'s not your snippet!')
+    """
     snippet.delete()
-    return HttpResponseRedirect(reverse('snippet_new'))
+    return HttpResponseRedirect(reverse('snippet_new') + '?delete=1')
 
 def snippet_history(request, template_name='dpaste/snippet_list.html'):
 
