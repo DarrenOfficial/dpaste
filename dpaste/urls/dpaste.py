@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import url, patterns
 
+from . import views
+
 urlpatterns = patterns('dpaste.views',
     url(r'^$', 'snippet_new', name='snippet_new'),
     url(r'^guess/$', 'guess_lexer', name='snippet_guess_lexer'),
