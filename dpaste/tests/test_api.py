@@ -18,11 +18,6 @@ class SnippetAPITestCase(TestCase):
     def test_empty(self):
         """
         The browser sent a content field but with no data.
-
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        ALL tests fail due to a Piston bug:
-        https://bitbucket.org/jespern/django-piston/issue/221/attributeerror-httpresponseservererror
         """
         data = {}
 
