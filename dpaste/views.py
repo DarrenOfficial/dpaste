@@ -104,13 +104,16 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         return response
 
 
-def snippet_delete(request, snippet_id):
+def snippet_delete(request, snippet_id=None):
     """
     Delete a snippet. This is allowed by anybody as long as he knows the
     snippet id. I got too many manual requests to do this, mostly for legal
     reasons and the chance to abuse this is not given anyway, since snippets
     always expire.
     """
+    snippet_id = snippet_id or request.POST.get('snippet_id')
+    if not snippet_id:
+        raise Http404('No snippet id given')
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
     snippet.delete()
     return HttpResponseRedirect(reverse('snippet_new') + '?delete=1')
