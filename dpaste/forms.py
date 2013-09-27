@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from dpaste.models import Snippet
 from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT
 
-
 EXPIRE_CHOICES = (
     (3600, _(u'In one hour')),
     (3600 * 24 * 7, _(u'In one week')),
@@ -17,7 +16,7 @@ EXPIRE_DEFAULT = EXPIRE_CHOICES[2][0]
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
 
-\
+
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
