@@ -8,7 +8,7 @@ from django.template.context import RequestContext
 from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
     HttpResponse, HttpResponseForbidden)
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
