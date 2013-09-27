@@ -19,4 +19,4 @@ DATABASES = {
 
 SECRET_KEY = 'changeme'
 
-EMAIL_BACKEND = 'dpaste.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -1,9 +1,9 @@
-django==1.5.1
-django-mptt==0.4.2
+django==1.5.2
+django-mptt==0.6.0
 pygments==1.6
-south==0.7.6
+south==0.8.2
 requests==1.2.3
 
 # Deployment specific
-##mysql-python==1.2.4
-gunicorn==0.17.2
+#mysql-python==1.2.4
+gunicorn==17.5

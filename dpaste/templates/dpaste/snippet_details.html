@@ -81,15 +81,15 @@
 {{ block.super }}
 <script>
 jQuery(function($) {
-    var diffReq;
-
     $('.snippet-reply-hidden').click(function(e) {
         $(this).removeClass('snippet-reply-hidden');
     });
 
-    /**
-     * Diff Ajax Call
-     */
+    /* ------------------------------------------------------------------------
+       Diff Ajax Call
+    ------------------------------------------------------------------------ */
+    var diffReq;
+
     $('.snippet-diff-trigger').click(function(e) {
         e.preventDefault();
         $('#snippet-diff').slideDown('fast');
@@ -134,10 +134,9 @@ jQuery(function($) {
         }
     }
 
-    /**
-     * Line Highlighting
-     */
-
+    /* ------------------------------------------------------------------------
+       Line Highlighting
+    ------------------------------------------------------------------------ */
     if (curLine.substring(0, 2) === '#L') {
         hashlist = curLine.substring(2).split(',');
         if (hashlist.length > 0 && hashlist[0] !== '') {

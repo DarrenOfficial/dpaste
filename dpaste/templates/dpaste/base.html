@@ -28,33 +28,6 @@
 
 {% block script_footer %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
-<script src="{% static "dpaste/bootstrap/js/bootstrap.min.js" %}"></script>
-<script>
-jQuery(function($) {
-    var lexerReq;
-    $('#guess_lexer_btn').click(function() {
-        // Cancel previous request if it is still pending
-        if (lexerReq) {
-            lexerReq.abort();
-        }
-
-        lexerReq = $.getJSON('{% url "snippet_guess_lexer" %}', {
-            codestring: $('#id_content').val()
-        }).done(function(data) {
-            if (data.lexer === 'unknown') {
-                $('#guess_lexer_btn').css('color', 'red');
-            } else {
-                $('#id_lexer').val(data.lexer);
-                $('#guess_lexer_btn').css('color', 'inherit');
-            }
-        }).complete(function() {
-            lexerReq = null;
-        });
-    });
-
-    $('.autofocus input:text, .autofocus textarea').first().focus();
-});
-</script>
 {% endblock %}
 
 </body>

@@ -19,7 +19,6 @@
             {% if snippet_form.lexer.errors %}control-group error{% endif %}">
             <div class="input-append">
                 {{ snippet_form.lexer }}
-                <button class="btn" id="guess_lexer_btn" type="button">{% trans "Guess lexer" %}</button>
             </div>
             {% for error in snippet_form.lexer.errors %}
             <span class="help-inline">{{ error }}</span>

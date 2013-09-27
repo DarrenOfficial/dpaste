@@ -2,45 +2,36 @@ import datetime
 import difflib
 import requests
 
-from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
+from django.shortcuts import (render_to_response, get_object_or_404,
+    get_list_or_404)
 from django.template.context import RequestContext
 from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
-                        HttpResponse, HttpResponseForbidden)
+    HttpResponse, HttpResponseForbidden)
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.db.models import Count
 from django.views.defaults import (page_not_found as django_page_not_found,
-                                   server_error as django_server_error)
+    server_error as django_server_error)
 
 from dpaste.forms import SnippetForm
 from dpaste.models import Snippet
-from dpaste.highlight import guess_code_lexer, \
-    LEXER_WORDWRAP, LEXER_LIST
+from dpaste.highlight import LEXER_WORDWRAP, LEXER_LIST
 
-
-
-def about(request, template_name='dpaste/about.html'):
-    template_context = {
-        'total': Snippet.objects.count(),
-        'stats': Snippet.objects.values('lexer').annotate(
-            count=Count('lexer')).order_by('-count')[:5],
-    }
-
-    return render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request)
-    )
+# -----------------------------------------------------------------------------
+# Snippet Handling
+# -----------------------------------------------------------------------------
 
 def snippet_new(request, template_name='dpaste/snippet_new.html'):
-
+    """
+    Create a new snippet.
+    """
     if request.method == "POST":
         snippet_form = SnippetForm(data=request.POST, request=request)
         if snippet_form.is_valid():
-            request, new_snippet = snippet_form.save()
+            new_snippet = snippet_form.save()
             url = new_snippet.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
@@ -48,6 +39,7 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
 
     template_context = {
         'snippet_form': snippet_form,
+        'lexer_list': LEXER_LIST,
         'is_new': True,
     }
 
@@ -58,25 +50,11 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
     )
 
 
-def snippet_api(request, enclose_quotes=True):
-    content = request.POST.get('content', '').strip()
-
-    if not content:
-        return HttpResponseBadRequest()
-
-    s = Snippet.objects.create(
-        content=content,
-        expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
-    )
-    s.save()
-
-    response = 'http://dpaste.de%s' % s.get_absolute_url()
-    if enclose_quotes:
-        return HttpResponse('"%s"' % response)
-    return HttpResponse(response)
-
 def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.html', is_raw=False):
-
+    """
+    Details list view of a snippet. Handles the actual view, reply and
+    tree/diff view.
+    """
     try:
         snippet = Snippet.objects.get(secret_id=snippet_id)
     except MultipleObjectsReturned:
@@ -98,7 +76,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     if request.method == "POST":
         snippet_form = SnippetForm(data=request.POST, request=request, initial=new_snippet_initial)
         if snippet_form.is_valid():
-            request, new_snippet = snippet_form.save(parent=snippet)
+            new_snippet = snippet_form.save(parent=snippet)
             url = new_snippet.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
@@ -125,34 +103,31 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     else:
         return response
 
-def snippet_delete(request, snippet_id=None):
-    snippet_id = snippet_id or request.POST.get('snippet_id')
-    if not snippet_id:
-        return HttpResponseBadRequest('No snippet given!')
 
+def snippet_delete(request, snippet_id):
+    """
+    Delete a snippet. This is allowed by anybody as long as he knows the
+    snippet id. I got too many manual requests to do this, mostly for legal
+    reasons and the chance to abuse this is not given anyway, since snippets
+    always expire.
+    """
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
-    """
-    Anybody can delete anybodys snippets now.
-
-    try:
-        snippet_list = request.session['snippet_list']
-    except KeyError:
-        return HttpResponseForbidden('You have no recent snippet list, cookie error?')
-    if not snippet.pk in snippet_list:
-        return HttpResponseForbidden('That\'s not your snippet!')
-    """
     snippet.delete()
     return HttpResponseRedirect(reverse('snippet_new') + '?delete=1')
 
-def snippet_history(request, template_name='dpaste/snippet_list.html'):
 
+def snippet_history(request, template_name='dpaste/snippet_list.html'):
+    """
+    Display the last `n` snippets created by this user (and saved in his
+    session).
+    """
     try:
         snippet_list = get_list_or_404(Snippet, pk__in=request.session.get('snippet_list', None))
     except ValueError:
         snippet_list = None
 
     template_context = {
-        'snippets_max': getattr(settings, 'MAX_SNIPPETS_PER_USER', 10),
+        'snippets_max': getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10),
         'snippet_list': snippet_list,
     }
 
@@ -164,7 +139,9 @@ def snippet_history(request, template_name='dpaste/snippet_list.html'):
 
 
 def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
-
+    """
+    Display a diff between two given snippet secret ids.
+    """
     if request.GET.get('a') and request.GET.get('a').isdigit() \
     and request.GET.get('b') and request.GET.get('b').isdigit():
         try:
@@ -207,6 +184,7 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
         RequestContext(request)
     )
 
+
 def snippet_gist(request, snippet_id):
     """
     Put a snippet on Github Gist.
@@ -235,15 +213,58 @@ def snippet_gist(request, snippet_id):
     return HttpResponseRedirect(gist_url)
 
 
+# -----------------------------------------------------------------------------
+# Static pages
+# -----------------------------------------------------------------------------
 
-def guess_lexer(request):
-    code_string = request.GET.get('codestring', False)
-    response = simplejson.dumps({'lexer': guess_code_lexer(code_string)})
+def about(request, template_name='dpaste/about.html'):
+    """
+    A rather static page, we need a view just to display a couple of
+    statistics.
+    """
+    template_context = {
+        'total': Snippet.objects.count(),
+        'stats': Snippet.objects.values('lexer').annotate(
+            count=Count('lexer')).order_by('-count')[:5],
+    }
+
+    return render_to_response(
+        template_name,
+        template_context,
+        RequestContext(request)
+    )
+
+
+# -----------------------------------------------------------------------------
+# API Handling
+# -----------------------------------------------------------------------------
+
+def snippet_api(request, enclose_quotes=True):
+    content = request.POST.get('content', '').strip()
+
+    if not content:
+        return HttpResponseBadRequest()
+
+    s = Snippet.objects.create(
+        content=content,
+        expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
+    )
+    s.save()
+
+    response = 'http://dpaste.de%s' % s.get_absolute_url()
+    if enclose_quotes:
+        return HttpResponse('"%s"' % response)
     return HttpResponse(response)
 
 
+# -----------------------------------------------------------------------------
+# Custom 404 and 500 views. Its easier to integrate this as a app if we
+# handle them here.
+# -----------------------------------------------------------------------------
+
 def page_not_found(request, template_name='dpaste/404.html'):
     return django_page_not_found(request, template_name)
+
 
 def server_error(request, template_name='dpaste/500.html'):
     return django_server_error(request, template_name)

@@ -1,24 +1,23 @@
+import datetime
+
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+
 from dpaste.models import Snippet
 from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT
-import datetime
 
-#===============================================================================
-# Snippet Form and Handling
-#===============================================================================
 
 EXPIRE_CHOICES = (
     (3600, _(u'In one hour')),
     (3600 * 24 * 7, _(u'In one week')),
     (3600 * 24 * 30, _(u'In one month')),
 )
-
-EXPIRE_DEFAULT = 3600 * 24 * 30
-
+EXPIRE_DEFAULT = EXPIRE_CHOICES[2][0]
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
+MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
 
+\
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
@@ -29,7 +28,7 @@ class SnippetForm(forms.ModelForm):
     lexer = forms.ChoiceField(
         label=_(u'Lexer'),
         initial=LEXER_DEFAULT,
-        widget=forms.TextInput,
+        choices=LEXER_LIST,
     )
 
     expire_options = forms.ChoiceField(
@@ -55,35 +54,23 @@ class SnippetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)
         self.request = request
-        self.fields['lexer'].choices = LEXER_LIST
-        self.fields['lexer'].widget.attrs = {
-            'autocomplete': 'off',
-            'data-provide': 'typeahead',
-            'data-source': '["%s"]' % '","'.join(dict(LEXER_LIST).keys())
-        }
 
         # Set the recently used lexer if we have any
         session_lexer = self.request.session.get('lexer')
         if session_lexer and session_lexer in dict(LEXER_LIST).keys():
             self.fields['lexer'].initial = session_lexer
 
-    def clean_lexer(self):
-        lexer = self.cleaned_data.get('lexer')
-        if not lexer:
-            return LEXER_DEFAULT
-        lexer = dict(LEXER_LIST).get(lexer, LEXER_DEFAULT)
-        return lexer
-
     def clean_content(self):
         return self.cleaned_data.get('content', '').strip()
 
     def clean(self):
+        # The `title` field is a hidden honeypot field. If its filled,
+        # this is likely spam.
         if self.cleaned_data.get('title'):
             raise forms.ValidationError('This snippet was identified as Spam.')
         return self.cleaned_data
 
     def save(self, parent=None, *args, **kwargs):
-
         # Set parent snippet
         if parent:
             self.instance.parent = parent
@@ -97,7 +84,7 @@ class SnippetForm(forms.ModelForm):
 
         # Add the snippet to the user session list
         if self.request.session.get('snippet_list', False):
-            if len(self.request.session['snippet_list']) >= getattr(settings, 'MAX_SNIPPETS_PER_USER', 10):
+            if len(self.request.session['snippet_list']) >= MAX_SNIPPETS_PER_USER:
                 self.request.session['snippet_list'].pop(0)
             self.request.session['snippet_list'] += [self.instance.pk]
         else:
@@ -106,4 +93,4 @@ class SnippetForm(forms.ModelForm):
         # Save the lexer in the session so we can use it later again
         self.request.session['lexer'] = self.cleaned_data['lexer']
 
-        return self.request, self.instance
+        return self.instance
