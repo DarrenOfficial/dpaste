@@ -254,7 +254,7 @@ def snippet_api(request, enclose_quotes=True):
     )
     s.save()
 
-    response = 'http://dpaste.de%s' % s.get_absolute_url()
+    response = 'https://dpaste.de%s' % s.get_absolute_url()
     if enclose_quotes:
         return HttpResponse('"%s"' % response)
     return HttpResponse(response)
