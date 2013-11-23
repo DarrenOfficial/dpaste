@@ -59,6 +59,11 @@ class SnippetForm(forms.ModelForm):
         if session_lexer and session_lexer in dict(LEXER_LIST).keys():
             self.fields['lexer'].initial = session_lexer
 
+        # if the lexer is given via GET, set it
+        if 'l' in request.GET and request.GET['l'] in dict(LEXER_LIST).keys():
+            self.fields['lexer'].initial = request.GET['l']
+
+
     def clean_content(self):
         return self.cleaned_data.get('content', '').strip()
 
