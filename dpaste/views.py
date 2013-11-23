@@ -8,7 +8,7 @@ from django.template.context import RequestContext
 from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
     HttpResponse, HttpResponseForbidden)
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
@@ -57,6 +57,10 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     """
     try:
         snippet = Snippet.objects.get(secret_id=snippet_id)
+    except MultipleObjectsReturned:
+        raise Http404('Multiple snippets exist for this slug. This should never '
+                      'happen but its likely that you are a spam bot, so I dont '
+                      'care.')
     except ObjectDoesNotExist:
         raise Http404('This snippet does not exist anymore. Its likely that its '
                       'lifetime is expired.')
@@ -80,8 +84,8 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
 
     template_context = {
         'snippet_form': snippet_form,
-        'lexer_list': LEXER_LIST,
         'snippet': snippet,
+        'lexers': LEXER_LIST,
         'lines': range(snippet.get_linecount()),
         'tree': tree,
         'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
@@ -100,16 +104,19 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         return response
 
 
-def snippet_delete(request, snippet_id):
+def snippet_delete(request, snippet_id=None):
     """
     Delete a snippet. This is allowed by anybody as long as he knows the
     snippet id. I got too many manual requests to do this, mostly for legal
     reasons and the chance to abuse this is not given anyway, since snippets
     always expire.
     """
+    snippet_id = snippet_id or request.POST.get('snippet_id')
+    if not snippet_id:
+        raise Http404('No snippet id given')
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
     snippet.delete()
-    return HttpResponseRedirect(reverse('snippet_new'))
+    return HttpResponseRedirect(reverse('snippet_new') + '?delete=1')
 
 
 def snippet_history(request, template_name='dpaste/snippet_list.html'):

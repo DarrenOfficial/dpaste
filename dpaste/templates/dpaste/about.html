@@ -47,6 +47,33 @@
         {% endfor %}
     </table>
 
+    <h4>Snippets in the database</h4>
+    <script src="https://www.stathat.com/javascripts/embed.js"></script>
+    <script>StatHatEmbed.render({s1: '3ba1', w: 760, h: 235, tf: 'month'});</script>
+
+    <div class="clearfix"></div>
+    <hr class="clearfix">
+
+    <h3>Delete a snippet</h3>
+
+    <p>
+        If you created a snippet with the API you can't delete it on the webpage
+        since it's not in your history. You can delete a snippet here. Actually
+        you can delete any snippet of anybody, as long as you know the short code.
+    </p>
+    <p>
+        If you deleted a snippet because auf legal issues, please let me know
+        that, I want to keep track of such things and try to avoid in future.
+    </p>
+    <p>
+        Type the 4 letter code of your snippet in the field and submit.
+        Like this yellow one here: <tt>http://dpaste.de/<strong>SiZrT</strong></tt>
+    </p>
+
+    <form method="POST" action="{% url "snippet_delete" %}">
+        <input name="snippet_id"> <input type="Submit" value="Submit"/>
+    </form>
+
     <div class="clearfix"></div>
     <hr class="clearfix">
 
