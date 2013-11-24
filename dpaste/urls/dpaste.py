@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import url, patterns
+from django.conf.urls import url, patterns
 
 urlpatterns = patterns('dpaste.views',
     url(r'^$', 'snippet_new', name='snippet_new'),

@@ -1,5 +1,4 @@
-from django.conf.urls.defaults import url, patterns, include
-from django.views.generic import TemplateView
+from django.conf.urls import url, patterns, include
 
 urlpatterns = patterns(
     '',
