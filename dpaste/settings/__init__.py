@@ -52,9 +52,6 @@ PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
 # Set the variable root to $VIRTUALENV/var.
 PYTHON_BIN = os.path.dirname(sys.executable)
 
-if not os.path.exists(os.path.join(PYTHON_BIN, 'activate_this.py')):
-    raise RuntimeError('Project needs to run in its own virtuelenv.')
-
 VAR_ROOT = os.path.join(os.path.dirname(PYTHON_BIN), 'var')
 if not os.path.exists(VAR_ROOT):
     os.mkdir(VAR_ROOT)
@@ -113,6 +110,12 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 #==============================================================================
@@ -146,4 +149,3 @@ LOGGING = {
         },
     }
 }
-

@@ -3,9 +3,9 @@ django-mptt==0.6.0
 pygments==1.6
 requests==2.0.0
 
+#
 # Deployment specific
 gunicorn==18.0
-mysql-python==1.2.4
 django==1.5.5
 south==0.8.2
 django-redis==3.3
