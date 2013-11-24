@@ -12,7 +12,7 @@
     Snippet Diff View
     ======================================================================= -->
     <div id="snippet-diff" class="snippet-diff container-fluid">
-        <div class="row-fluid">
+        <div class="row-fluid" style="width: auto; padding: 30px 0">
             <div class="span9">
                 <div id="diff" style="display:none;"></div>
             </div>
@@ -71,12 +71,9 @@
         {% include "dpaste/snippet_pre.html" %}
     {% endif %}
 
-
     <!-- ======================================================================
     Snippet Reply
     ======================================================================= -->
-    <hr>
-
     <div class="snippet-reply snippet-reply-hidden">
         <h3>{% trans "Reply to this snippet" %} &rarr;</h3>
         {% include "dpaste/snippet_form.html" %}

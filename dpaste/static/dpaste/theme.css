@@ -15,7 +15,20 @@ tt strong {
 /* Custom container */
 .container-fluid {
     margin: 0 auto;
-    max-width: 1100px;
+    padding: 0;
+}
+
+.container-fluid > div,
+.container-fluid > header,
+.container-fluid > form,
+.container-fluid > h2,
+.container-fluid > h3,
+.container-fluid > h4 {
+    padding: 0 30px;
+}
+
+.row-fluid {
+    width: auto;
 }
 
 .container > hr {
@@ -24,6 +37,10 @@ tt strong {
 
 .headline{
     color: #5393b4;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 300;
 }
 
 /* ----------------------------------------------------------------------------
@@ -68,6 +85,10 @@ tt strong {
 ---------------------------------------------------------------------------- */
 .snippet-options{
     margin-bottom: 20px;
+}
+
+.snippet-reply {
+    margin-top: 30px;
 }
 
 .snippet-reply-hidden {
@@ -143,10 +164,6 @@ div.tree div.submit input{
    Pre
 ---------------------------------------------------------------------------- */
 
-.prettyprint {
-    background-color: #272822;
-    padding: 10px 15px 10px 0;
-}
 
 ol.linenums {
     margin: 0 0 0 45px; /* IE indents via margin-left */
@@ -166,12 +183,20 @@ ol.linenums li.marked {
 /* ----------------------------------------------------------------------------
    Pygments
 ---------------------------------------------------------------------------- */
-pre .gd { background-color: rgba(226, 12, 19, .5); color: #fff; display: block; }
-pre .gi { background-color: rgba(23, 189, 10, .5); color: #fff; display: block; }
+
+pre {
+    background: #232829;
+    color: #f8f8f2;
+    padding: 10px 15px 10px 0;
+    border-radius: 0;
+    padding: 20px 30px;
+}
+
+pre .gd { background-color: rgba(226, 12, 19, .3); color: #fff; display: block; }
+pre .gi { background-color: rgba(23, 189, 10, .2); color: #fff; display: block; }
 
 
 pre .hll { background-color: #49483e }
-pre  { background: #272822; color: #f8f8f2 }
 pre .c { color: #75715e } /* Comment */
 pre .err { color: #960050; background-color: #1e0010 } /* Error */
 pre .k { color: #66d9ef } /* Keyword */

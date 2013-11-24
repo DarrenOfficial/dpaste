@@ -8,13 +8,12 @@
 {% block dpaste_nav_history %}active{% endblock %}
 {% block page %}
     {% for snippet in snippet_list %}
-    <h4>
+    <h4 style="margin-top: 50px;">
         <a title="{{ snippet.published|date:_("DATETIME_FORMAT") }}" href="{{ snippet.get_absolute_url }}">
             {% blocktrans with snippet.published|timesince as since %}{{ since }} ago{% endblocktrans %}
         </a>
     </h4>
     {% include "dpaste/snippet_pre.html" %}
-    {% if not forloop.last %}<hr>{% endif %}
     {% empty %}
     <p>{% trans "No snippets saved. Either all your snippets are expired or your cookie has changed." %}</p>
     {% endfor %}
