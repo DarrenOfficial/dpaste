@@ -3,6 +3,9 @@ python:
   - "2.7"
   - "3.3"
 install:
-  - "pip install -r requirements.txt"
   - "pip install -e ."
-script: manage.py test dpaste --settings=dpaste.settings
+  - "pip install -r requirements.txt"
+script:
+    coverage run --rcfile=.coverage.rc manage.py test
+after_success:
+    coveralls --config_file=.coverage.rc --coveralls_yaml=.coveralls.yml
