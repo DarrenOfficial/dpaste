@@ -2,11 +2,10 @@ import datetime
 import difflib
 import requests
 
-from django.shortcuts import (render_to_response, get_object_or_404,
-    get_list_or_404)
+from django.shortcuts import (render_to_response, get_object_or_404)
 from django.template.context import RequestContext
 from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
-    HttpResponse, HttpResponseForbidden)
+    HttpResponse)
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.translation import ugettext_lazy as _
@@ -19,6 +18,7 @@ from django.views.defaults import (page_not_found as django_page_not_found,
 from dpaste.forms import SnippetForm
 from dpaste.models import Snippet
 from dpaste.highlight import LEXER_WORDWRAP, LEXER_LIST
+from dpaste.highlight import LEXER_DEFAULT, LEXER_KEYS
 
 # -----------------------------------------------------------------------------
 # Snippet Handling
@@ -248,21 +248,54 @@ def about(request, template_name='dpaste/about.html'):
 # API Handling
 # -----------------------------------------------------------------------------
 
-def snippet_api(request, enclose_quotes=True):
+BASE_URL = getattr(settings, 'DPASTE_BASE_URL', 'https://dpaste.de')
+
+def _format_default(s):
+    """The default response is the snippet URL wrapped in quotes."""
+    return u'"%s%s"' % (BASE_URL, s.get_absolute_url())
+
+def _format_url(s):
+    """The `url` format returns the snippet URL, no quotes, but a linebreak after."""
+    return u'%s%s\n' % (BASE_URL, s.get_absolute_url())
+
+def _format_json(s):
+    from json import dumps
+    """The `json` format export."""
+    return dumps({
+        'url': u'%s%s' % (BASE_URL, s.get_absolute_url()),
+        'content': s.content,
+        'lexer': s.lexer,
+    })
+
+FORMAT_MAPPING = {
+    'default': _format_default,
+    'url': _format_url,
+    'json': _format_json,
+}
+def snippet_api(request):
     content = request.POST.get('content', '').strip()
+    lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()
+    format = request.POST.get('format', 'default').strip()
 
     if not content:
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest('No content given')
+
+    if not lexer in LEXER_KEYS:
+        return HttpResponseBadRequest('Invalid lexer given. Valid lexers are: %s' %
+            ', '.join(LEXER_KEYS))
 
     s = Snippet.objects.create(
         content=content,
+        lexer=lexer,
         expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
     )
     s.save()
 
-    response = 'http://dpaste.de%s' % s.get_absolute_url()
-    if enclose_quotes:
-        return HttpResponse('"%s"' % response)
+    if not format in FORMAT_MAPPING:
+        response = _format_default(s)
+    else:
+        response = FORMAT_MAPPING[format](s)
+
     return HttpResponse(response)
 
 

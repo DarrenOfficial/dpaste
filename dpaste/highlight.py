@@ -92,6 +92,8 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ('yaml', 'YAML'),
 ))
 
+LEXER_KEYS = dict(LEXER_LIST).keys()
+
 # The default lexer is python
 LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
 

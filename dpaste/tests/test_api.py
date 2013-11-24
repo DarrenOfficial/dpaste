@@ -44,7 +44,7 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
 
-    def test_valid(self):
+    def test_default_response(self):
         """
         A valid snippet, contains Unicode, tabs, spaces, linebreaks etc.
         """
@@ -65,3 +65,40 @@ class SnippetAPITestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['content'])
+
+    def test_new_url_format(self):
+        """
+        The 'new' url format is just the link with a linebreak.
+        """
+        data = {'content': u"Hello Wörld.\n\tGood Bye", 'format': 'url'}
+
+        response = self.client.post(self.api_url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+        # Response is just the link starting with http(s) and ends with a linebreak
+        self.assertTrue(response.content.startswith('http'))
+        self.assertTrue(response.content.endswith('\n'))
+
+
+    def test_json_format(self):
+        """
+        The 'new' url format is just the link with a linebreak.
+        """
+        data = {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'format': 'json',
+            'lexer': 'haskell'
+        }
+
+        response = self.client.post(self.api_url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+        from json import loads
+        json_data = loads(response.content)
+
+        # Response is valid json, containing, content, lexer and url
+        self.assertEqual(json_data['content'], data['content'])
+        self.assertEqual(json_data['lexer'], data['lexer'])
+        self.assertTrue(json_data['url'].startswith('http'))

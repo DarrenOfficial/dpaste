@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from dpaste.models import Snippet
-from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT
+from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT, LEXER_KEYS
 
 EXPIRE_CHOICES = (
     (3600, _(u'In one hour')),
@@ -56,11 +56,11 @@ class SnippetForm(forms.ModelForm):
 
         # Set the recently used lexer if we have any
         session_lexer = self.request.session.get('lexer')
-        if session_lexer and session_lexer in dict(LEXER_LIST).keys():
+        if session_lexer and session_lexer in LEXER_KEYS:
             self.fields['lexer'].initial = session_lexer
 
         # if the lexer is given via GET, set it
-        if 'l' in request.GET and request.GET['l'] in dict(LEXER_LIST).keys():
+        if 'l' in request.GET and request.GET['l'] in LEXERK_KEYS:
             self.fields['lexer'].initial = request.GET['l']
 
 
