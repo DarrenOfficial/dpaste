@@ -16,7 +16,7 @@
             <li class="{% block dpaste_nav_history %}{% endblock %}"><a href="{% url "snippet_history" %}">{% trans "History" %}</a></li>
             <li class="{% block dpaste_nav_new %}{% endblock %}"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
         </ul>
-        <h3 class="headline">{% block headline %}{% endblock %}</h3>
+        <h3 class="headline"><a href="/">{% block headline %}{% endblock %}</a></h3>
     </header>
 
     <hr>
