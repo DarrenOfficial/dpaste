@@ -1,0 +1,12 @@
+[run]
+source =
+    dpaste
+branch = True
+omit =
+    dpaste/migrations/*
+    dpaste/tests/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
