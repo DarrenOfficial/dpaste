@@ -116,7 +116,7 @@ def snippet_delete(request, snippet_id=None):
         raise Http404('No snippet id given')
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
     snippet.delete()
-    return HttpResponseRedirect(reverse('snippet_new') + '?delete=1')
+    return HttpResponseRedirect(reverse('snippet_new'))
 
 
 def snippet_history(request, template_name='dpaste/snippet_list.html'):
@@ -124,10 +124,16 @@ def snippet_history(request, template_name='dpaste/snippet_list.html'):
     Display the last `n` snippets created by this user (and saved in his
     session).
     """
-    try:
-        snippet_list = get_list_or_404(Snippet, pk__in=request.session.get('snippet_list', None))
-    except ValueError:
-        snippet_list = None
+    snippet_list = None
+    snippet_id_list = request.session.get('snippet_list', None)
+    if snippet_id_list:
+        snippet_list = Snippet.objects.filter(pk__in=snippet_id_list)
+
+    if 'delete-all' in request.GET:
+        if snippet_list:
+            for s in snippet_list:
+                s.delete()
+        return HttpResponseRedirect(reverse('snippet_history'))
 
     template_context = {
         'snippets_max': getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10),
