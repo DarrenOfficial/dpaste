@@ -3,7 +3,10 @@ django-mptt==0.6.0
 pygments==1.6
 requests==2.0.0
 
-#
+# Testing
+python-coveralls==2.4.0
+coverage==3.7
+
 # Deployment specific
 gunicorn==18.0
 django==1.5.5
