@@ -51,17 +51,18 @@ class SnippetAPITestCase(TestCase):
         data = {'content': u"Hello Wörld.\n\tGood Bye"}
 
         response = self.client.post(self.api_url, data)
+        content = response.content.decode('utf-8')
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
         # The response is a URL with quotes
-        self.assertTrue(response.content.startswith('"'))
-        self.assertTrue(response.content.endswith('"'))
+        self.assertTrue(content.startswith('"'))
+        self.assertTrue(content.endswith('"'))
 
         # The URL returned is the absolute url to the snippet.
         # If we call that url our snippet should be in the page content.
-        snippet_url = response.content[1:-1]
-        response = self.client.get(snippet_url)
+        response = self.client.get(content[1:-1])
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['content'])
@@ -73,12 +74,14 @@ class SnippetAPITestCase(TestCase):
         data = {'content': u"Hello Wörld.\n\tGood Bye", 'format': 'url'}
 
         response = self.client.post(self.api_url, data)
+        content = response.content.decode('utf-8')
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
         # Response is just the link starting with http(s) and ends with a linebreak
-        self.assertTrue(response.content.startswith('http'))
-        self.assertTrue(response.content.endswith('\n'))
+        self.assertTrue(content.startswith('http'))
+        self.assertTrue(content.endswith('\n'))
 
 
     def test_json_format(self):
@@ -92,11 +95,13 @@ class SnippetAPITestCase(TestCase):
         }
 
         response = self.client.post(self.api_url, data)
+        content = response.content.decode('utf-8')
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
         from json import loads
-        json_data = loads(response.content)
+        json_data = loads(content)
 
         # Response is valid json, containing, content, lexer and url
         self.assertEqual(json_data['content'], data['content'])
