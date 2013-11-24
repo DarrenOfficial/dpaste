@@ -8,12 +8,6 @@ def in_list(value, arg):
     return value in arg
 
 @register.filter
-def highlight(snippet, maxlines=None):
+def highlight(snippet):
     h = pygmentize(snippet.content, snippet.lexer)
-    if not h:
-        s = snippet.content.splitlines()
-    s = h.splitlines()
-
-    if maxlines:
-        return s[:maxlines]
-    return s
+    return h.splitlines()
