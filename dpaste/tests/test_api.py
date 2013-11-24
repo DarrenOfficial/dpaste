@@ -56,11 +56,11 @@ class SnippetAPITestCase(TestCase):
 
         # The response is a URL with quotes
         self.assertTrue(response.content.startswith('"'))
-        self.assertTrue(response.content.endswith('"'))
+        self.assertTrue(response.content.endswith('"\n'))
 
         # The URL returned is the absolute url to the snippet.
         # If we call that url our snippet should be in the page content.
-        snippet_url = response.content[1:-1]
+        snippet_url = response.content.strip()[1:-1]
         response = self.client.get(snippet_url)
 
         self.assertEqual(response.status_code, 200)
