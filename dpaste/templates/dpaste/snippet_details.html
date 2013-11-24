@@ -63,7 +63,14 @@
     <!-- ======================================================================
     Snippet
     ======================================================================= -->
-    {% include "dpaste/snippet_pre.html" %}
+    {% if snippet.lexer == 'text' %}
+    <div class="snippet-rendered">
+        {{ snippet.content|linebreaks }}
+    </div>
+    {% else %}
+        {% include "dpaste/snippet_pre.html" %}
+    {% endif %}
+
 
     <!-- ======================================================================
     Snippet Reply

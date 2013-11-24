@@ -83,6 +83,7 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ('tcl', 'Tcl'),
     ('tcsh', 'Tcsh'),
     ('tex', 'TeX'),
+    ('text', 'Text'),
     ('vb.net', 'VB.net'),
     ('vim', 'VimL'),
     ('xml', 'XML'),
