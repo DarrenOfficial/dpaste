@@ -7,6 +7,9 @@
 {% block headline %}Snippet History{% endblock %}
 {% block dpaste_nav_history %}active{% endblock %}
 {% block page %}
+
+    <hr>
+
     {% for snippet in snippet_list %}
     <h4 style="{% if not forloop.first %}margin-top: 50px;{% endif %}">
         <a title="{{ snippet.published|date:_("DATETIME_FORMAT") }}" href="{{ snippet.get_absolute_url }}">
