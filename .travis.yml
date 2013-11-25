@@ -3,9 +3,9 @@ python:
   - "2.7"
   - "3.3"
 install:
+  - "pip install Django==1.6
   - "pip install -e ."
-  - "pip install -r requirements.txt"
 script:
-    coverage run --rcfile=.coverage.rc manage.py test
+    coverage run --rcfile=.coverage.rc runtests.py
 after_success:
     coveralls --config_file=.coverage.rc --coveralls_yaml=.coveralls.yml

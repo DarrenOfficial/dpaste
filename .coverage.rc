@@ -1,6 +1,6 @@
 [run]
-source =
-    dpaste
+parallel = True
+source = dpaste
 branch = True
 omit =
     dpaste/migrations/*
@@ -10,3 +10,6 @@ omit =
 exclude_lines =
     pragma: no cover
     def __repr__
+
+[html]
+directory = /tmp/coverage_html_report
