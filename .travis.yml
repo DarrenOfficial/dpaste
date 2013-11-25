@@ -1,11 +1,27 @@
 language: python
+
 python:
   - "2.7"
   - "3.3"
+
+env:
+  - DJANGO=1.4
+  - DJANGO=1.5
+  - DJANGO=1.6
+
+matrix:
+  exclude:
+    - python: 3.3
+      env: DJANGO=1.4
+    - python: 3.3
+      env: DJANGO=1.5
+
 install:
-  - "pip install Django==1.6"
+  - "pip install Django==$DJANGO"
   - "pip install -e ."
+
 script:
     coverage run --rcfile=.coverage.rc runtests.py
+
 after_success:
     coveralls --config_file=.coverage.rc --coveralls_yaml=.coveralls.yml
