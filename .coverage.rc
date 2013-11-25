@@ -4,6 +4,7 @@ branch = True
 omit =
     dpaste/migrations/*
     dpaste/tests/*
+    dpaste/settings/*
 
 [report]
 exclude_lines =
