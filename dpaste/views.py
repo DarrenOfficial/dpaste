@@ -1,16 +1,16 @@
 import datetime
 import difflib
 import requests
+import json
 
 from django.shortcuts import (render_to_response, get_object_or_404)
 from django.template.context import RequestContext
 from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
     HttpResponse)
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from django.utils import simplejson
 from django.db.models import Count
 from django.views.defaults import (page_not_found as django_page_not_found,
     server_error as django_server_error)
@@ -186,7 +186,7 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
     )
 
 
-def snippet_gist(request, snippet_id):
+def snippet_gist(request, snippet_id): # pragma: no cover
     """
     Put a snippet on Github Gist.
     """
@@ -202,9 +202,9 @@ def snippet_gist(request, snippet_id):
     }
 
     try:
-        payload = simplejson.dumps(data)
+        payload = json.dumps(data)
         response = requests.post('https://api.github.com/gists', data=payload)
-        response_dict = simplejson.loads(response.content)
+        response_dict = json.loads(response.content)
         gist_url = response_dict.get('html_url')
 
     # Github could be down, could return invalid JSON, it's rare
@@ -240,8 +240,6 @@ def about(request, template_name='dpaste/about.html'):
 # API Handling
 # -----------------------------------------------------------------------------
 
-BASE_URL = getattr(settings, 'DPASTE_BASE_URL', 'https://dpaste.de')
-
 def _format_default(s):
     """The default response is the snippet URL wrapped in quotes."""
     return u'"%s%s"' % (BASE_URL, s.get_absolute_url())
@@ -251,19 +249,21 @@ def _format_url(s):
     return u'%s%s\n' % (BASE_URL, s.get_absolute_url())
 
 def _format_json(s):
-    from json import dumps
     """The `json` format export."""
-    return dumps({
+    return json.dumps({
         'url': u'%s%s' % (BASE_URL, s.get_absolute_url()),
         'content': s.content,
         'lexer': s.lexer,
     })
+
+BASE_URL = getattr(settings, 'DPASTE_BASE_URL', 'https://dpaste.de')
 
 FORMAT_MAPPING = {
     'default': _format_default,
     'url': _format_url,
     'json': _format_json,
 }
+
 def snippet_api(request):
     content = request.POST.get('content', '').strip()
     lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()
@@ -297,8 +297,7 @@ def snippet_api(request):
 # -----------------------------------------------------------------------------
 
 def page_not_found(request, template_name='dpaste/404.html'):
-    return django_page_not_found(request, template_name)
-
+    return django_page_not_found(request, template_name) # pragma: no cover
 
 def server_error(request, template_name='dpaste/500.html'):
-    return django_server_error(request, template_name)
+    return django_server_error(request, template_name) # pragma: no cover
