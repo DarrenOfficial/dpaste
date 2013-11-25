@@ -3,7 +3,7 @@ python:
   - "2.7"
   - "3.3"
 install:
-  - "pip install Django==1.6
+  - "pip install Django==1.6"
   - "pip install -e ."
 script:
     coverage run --rcfile=.coverage.rc runtests.py
