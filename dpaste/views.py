@@ -55,15 +55,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     Details list view of a snippet. Handles the actual view, reply and
     tree/diff view.
     """
-    try:
-        snippet = Snippet.objects.get(secret_id=snippet_id)
-    except MultipleObjectsReturned:
-        raise Http404('Multiple snippets exist for this slug. This should never '
-                      'happen but its likely that you are a spam bot, so I dont '
-                      'care.')
-    except ObjectDoesNotExist:
-        raise Http404('This snippet does not exist anymore. Its likely that its '
-                      'lifetime is expired.')
+    snippet = get_object_or_404(Snippet, secret_id=snippet_id)
 
     tree = snippet.get_root()
     tree = tree.get_descendants(include_self=True)
