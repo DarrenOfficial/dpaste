@@ -1,5 +1,8 @@
 # -*- encoding: utf-8 -*-
 
+from datetime import timedelta
+
+from django.core import management
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test import TestCase
@@ -22,6 +25,9 @@ class SnippetTestCase(TestCase):
             'expire_options': EXPIRE_DEFAULT,
         }
 
+    # -------------------------------------------------------------------------
+    # New Snippet
+    # -------------------------------------------------------------------------
     def test_empty(self):
         """
         The browser sent a content field but with no data.
@@ -69,6 +75,9 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
+    # -------------------------------------------------------------------------
+    # Reply
+    # -------------------------------------------------------------------------
     def test_reply(self):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
@@ -85,6 +94,9 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
+    # -------------------------------------------------------------------------
+    # Snippet Functions
+    # -------------------------------------------------------------------------
     def test_raw(self):
         data = self.valid_form_data()
         self.client.post(self.new_url, data, follow=True)
@@ -94,6 +106,9 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['content'])
 
+    # -------------------------------------------------------------------------
+    # History
+    # -------------------------------------------------------------------------
     def test_snippet_history(self):
         response = self.client.get(reverse('snippet_history'))
         self.assertEqual(response.status_code, 200)
@@ -123,3 +138,29 @@ class SnippetTestCase(TestCase):
         response = self.client.get(reverse('snippet_history') + '?delete-all', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
+
+    # -------------------------------------------------------------------------
+    # Management Command
+    # -------------------------------------------------------------------------
+    def test_delete_management(self):
+        # Create two snippets
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.count(), 2)
+
+        # But the management command will only remove snippets past
+        # its expiration date, so change one to last month
+        s = Snippet.objects.all()[0]
+        s.expires = s.expires - timedelta(days=30)
+        s.save()
+
+        # You can call the management command with --dry-run which will
+        # list snippets to delete, but wont actually do.
+        management.call_command('cleanup_snippets', dry_run=True)
+        self.assertEqual(Snippet.objects.count(), 2)
+
+        # Calling the management command will delete this one
+        management.call_command('cleanup_snippets')
+        self.assertEqual(Snippet.objects.count(), 1)
