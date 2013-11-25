@@ -48,11 +48,26 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 0)
 
     def test_new_snippet(self):
+        # Simple GET
+        response = self.client.get(self.new_url, follow=True)
+
+        # POST data
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertContains(response, data['content'])
+
+    def test_new_spam_snippet(self):
+        """
+        The form has a `title` field acting as a honeypot, if its filled,
+        the snippet is considered as spam. We let the user know its spam.
+        """
+        data = self.valid_form_data()
+        data['title'] = u'Any content'
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 0)
 
     def test_reply(self):
         data = self.valid_form_data()
@@ -61,3 +76,50 @@ class SnippetTestCase(TestCase):
         self.assertContains(response, data['content'])
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 2)
+
+    def test_reply_invalid(self):
+        data = self.valid_form_data()
+        response = self.client.post(self.new_url, data, follow=True)
+        del data['content']
+        response = self.client.post(response.request['PATH_INFO'], data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+    def test_raw(self):
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        response = self.client.get(reverse('snippet_details_raw', kwargs={
+            'snippet_id': Snippet.objects.all()[0].secret_id}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, data['content'])
+
+    def test_snippet_history(self):
+        response = self.client.get(reverse('snippet_history'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        response = self.client.get(reverse('snippet_history'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+    def test_snippet_history_delete_all(self):
+        # Empty list, delete all raises no error
+        response = self.client.get(reverse('snippet_history') + '?delete-all', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+        # Create two sample pasts
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.count(), 2)
+
+        # Delete all of them
+        response = self.client.get(reverse('snippet_history') + '?delete-all', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 0)

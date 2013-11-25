@@ -44,7 +44,7 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
 
-    def test_default_response(self):
+    def test_default_format(self):
         """
         A valid snippet, contains Unicode, tabs, spaces, linebreaks etc.
         """
@@ -107,3 +107,21 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(json_data['content'], data['content'])
         self.assertEqual(json_data['lexer'], data['lexer'])
         self.assertTrue(json_data['url'].startswith('http'))
+
+    def test_invalid_format(self):
+        """
+        A broken format will not raise an error, just use the default
+        format.
+        """
+
+        data = {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'format': 'broken-format',
+            'lexer': 'haskell'
+        }
+
+        response = self.client.post(self.api_url, data)
+        content = response.content.decode('utf-8')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
