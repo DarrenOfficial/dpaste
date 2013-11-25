@@ -1,8 +1,8 @@
 language: python
 
 python:
-  - "2.7"
-  - "3.3"
+  - 2.7
+  - 3.3
 
 env:
   - DJANGO=1.4
@@ -11,12 +11,14 @@ env:
 
 matrix:
   exclude:
-    - python: "3.3"
+    - python: 3.3
       env: DJANGO=1.4
-    - python: "3.3"
+    - python: 3.3
       env: DJANGO=1.5
 
 install:
+  - "pip install coverage==3.7"
+  - "pip install python-coveralls==2.4.0"
   - "pip install Django==$DJANGO"
   - "pip install -e ."
 
