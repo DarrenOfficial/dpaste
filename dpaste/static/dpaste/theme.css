@@ -166,7 +166,7 @@ div.tree div.submit input{
 
 
 ol.linenums {
-    margin: 0 0 0 45px; /* IE indents via margin-left */
+    margin: 0 0 0 45px;
 }
 
 ol.linenums li {
@@ -174,10 +174,12 @@ ol.linenums li {
     font-size: 12px;
     line-height: 20px;
     cursor: pointer;
+    padding-left: 5px;
 }
 
 ol.linenums li.marked {
-    background-color: #5e6152;
+    color: #f4e009;
+    background-color: #4f4800;
 }
 
 /* ----------------------------------------------------------------------------
@@ -194,7 +196,6 @@ pre {
 
 pre .gd { background-color: rgba(226, 12, 19, .3); color: #fff; display: block; }
 pre .gi { background-color: rgba(23, 189, 10, .2); color: #fff; display: block; }
-
 
 pre .hll { background-color: #49483e }
 pre .c { color: #75715e } /* Comment */
