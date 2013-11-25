@@ -60,7 +60,7 @@ class SnippetForm(forms.ModelForm):
             self.fields['lexer'].initial = session_lexer
 
         # if the lexer is given via GET, set it
-        if 'l' in request.GET and request.GET['l'] in LEXERK_KEYS:
+        if 'l' in request.GET and request.GET['l'] in LEXER_KEYS:
             self.fields['lexer'].initial = request.GET['l']
 
 
