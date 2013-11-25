@@ -1,5 +1,4 @@
 [run]
-parallel = True
 source = dpaste
 branch = True
 omit =
