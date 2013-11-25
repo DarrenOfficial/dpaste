@@ -5,7 +5,7 @@ from django.conf.global_settings import *
 # Generic Django project settings
 #==============================================================================
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Local time zone for this installation. Choices can be found here:
@@ -21,6 +21,7 @@ ALLOWED_HOSTS = (
     'www.dpaste.de',
     'dpaste.org',
     'www.dpaste.org',
+    '127.0.0.1',
 )
 
 SECRET_KEY = 'CHANGE_ME'
@@ -47,7 +48,6 @@ import dpaste
 PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
     os.path.dirname(os.path.realpath(dpaste.__file__))
 )
-
 
 # Set the variable root to $VIRTUALENV/var.
 PYTHON_BIN = os.path.dirname(sys.executable)
