@@ -95,6 +95,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
+    'django.contrib.sessions',
+
     'mptt',
     'south',
     'gunicorn',
@@ -109,14 +111,6 @@ DATABASES = {
         'PASSWORD': '',
     }
 }
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 #==============================================================================
 # App specific settings
