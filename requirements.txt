@@ -1,4 +1,5 @@
 # Project dependencies
+django==1.5.5
 django-mptt==0.6.0
 pygments==1.6
 requests==2.0.0
@@ -6,9 +7,9 @@ requests==2.0.0
 # Testing
 python-coveralls==2.4.0
 coverage==3.7
+tox==1.10.1
 
 # Deployment specific
-gunicorn==18.0
-django==1.5.5
-south==0.8.2
 django-redis==3.3
+gunicorn==18.0
+south==0.8.2
