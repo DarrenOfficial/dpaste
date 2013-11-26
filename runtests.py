@@ -16,7 +16,6 @@ if not settings.configured:
             'mptt',
             'dpaste',
         ],
-
         STATIC_ROOT='/tmp/dpaste_test_static/',
         STATIC_URL='/static/',
         ROOT_URLCONF='dpaste.urls',

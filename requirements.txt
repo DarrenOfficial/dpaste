@@ -7,7 +7,7 @@ requests==2.0.0
 # Testing
 python-coveralls==2.4.0
 coverage==3.7
-tox==1.10.1
+tox==1.6.1
 
 # Deployment specific
 django-redis==3.3
