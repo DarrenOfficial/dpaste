@@ -1,4 +1,8 @@
-{% load i18n staticfiles %}<!DOCTYPE html>
+{% load i18n %}
+{% load staticfiles %}
+{% load url from future %}
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>dpaste.de: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
