@@ -65,7 +65,10 @@ class SnippetForm(forms.ModelForm):
 
 
     def clean_content(self):
-        return self.cleaned_data.get('content', '').strip()
+        content = self.cleaned_data.get('content', '')
+        if content.strip() == '':
+            raise forms.ValidationError(_('Plesae fill out this field.'))
+        return content
 
     def clean(self):
         # The `title` field is a hidden honeypot field. If its filled,
