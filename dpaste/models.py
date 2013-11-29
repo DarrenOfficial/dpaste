@@ -1,14 +1,19 @@
 import datetime
 import random
 import mptt
+
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from dpaste.highlight import LEXER_DEFAULT
 
-t = 'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890'
-def generate_secret_id(length=4):
-    return ''.join([random.choice(t) for i in range(length)])
+L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
+T = getattr(settings, 'DPASTE_SLUG_CHOICES',
+    'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890')
+
+def generate_secret_id(length=L):
+    return ''.join([random.choice(T) for i in range(length)])
 
 class Snippet(models.Model):
     secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True)
