@@ -4,7 +4,7 @@ dpaste
 [![Build Status](https://travis-ci.org/bartTC/dpaste.png?branch=master)](https://travis-ci.org/bartTC/dpaste)
 [![Coverage Status](https://coveralls.io/repos/bartTC/dpaste/badge.png?branch=master)](https://coveralls.io/r/bartTC/dpaste?branch=master)
 
-dpaste is a Django based pastebin. It's intended to run separatly but its also
+dpaste is a Django based pastebin. It's intended to run separately but its also
 possible to be installed into an existing Django project like a regular app.
 
 You can find a live example on http://dpaste.de/
@@ -15,12 +15,14 @@ Testing and local development
 dpaste is continuously tested on [Travis][travis]. You can also run the test
 suite locally with [tox][tox]:
 
+    $ cd dpaste/
     $ pip install tox
     $ tox
 
 A more manual approach is installing it all by hand in a virtual environment.
 This is also the preferred way to setup an environment for local development:
 
+    $ cd dpaste/
     $ pip install -e .
     $ pip install -r requirements.txt
     $ python runtests.py
@@ -31,16 +33,10 @@ This is also the preferred way to setup an environment for local development:
 Integrate dpaste into an existing project
 -----------------------------------------
 
-Dpaste needs at Django 1.4+ and is tested on Python 2.7 as well as Python 3.3.
+Dpaste needs at least Django 1.4+ and is tested on Python 2.7 as well as
+Python 3.3.
 
-You already have a full Django based project running. If not, and you still
-want to proceed just create a simple barebone project:
-
-    $ mkvirtualenv dpaste-example
-    $ pip install django south
-    $ django-admin.py startproject myproject
-
-Install the latest dpaste release in your envoirenment. This will install all
+Install the latest dpaste release in your environment. This will install all
 necessary dependencies of dpaste as well.
 
     pip install https://github.com/bartTC/dpaste
