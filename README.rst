@@ -42,9 +42,9 @@ Dpaste needs at least Django 1.4+ and is tested on Python 2.7 as well as
 Python 3.3.
 
 Install the latest dpaste release in your environment. This will install all
-necessary dependencies of dpaste as well.
+necessary dependencies of dpaste as well::
 
-    pip install https://github.com/bartTC/dpaste
+    pip install dpaste
 
 Add `dpaste` and (preferred) `south` to your `INSTALLED_APPS`::
 
