@@ -2,7 +2,6 @@ from django.conf.urls import url, patterns, include
 
 urlpatterns = patterns(
     '',
-    url(r'^about/$', 'dpaste.views.about', name='about'),
     url(r'^', include('dpaste.urls.dpaste_api')),
     url(r'^', include('dpaste.urls.dpaste')),
 )

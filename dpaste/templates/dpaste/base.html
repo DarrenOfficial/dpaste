@@ -16,7 +16,7 @@
 <div class="container-fluid">
     <header>
         <ul class="nav nav-pills pull-right">
-            <li class="{% block dpaste_nav_about %}{% endblock %}"><a href="{% url "about" %}">{% trans "About" %}</a></li>
+            <li class="{% block dpaste_nav_about %}{% endblock %}"><a href="{% url "dpaste_about" %}">{% trans "About" %}</a></li>
             <li class="{% block dpaste_nav_history %}{% endblock %}"><a href="{% url "snippet_history" %}">{% trans "History" %}</a></li>
             <li class="{% block dpaste_nav_new %}{% endblock %}"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
         </ul>

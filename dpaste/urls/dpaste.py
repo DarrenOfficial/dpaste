@@ -1,6 +1,8 @@
 from django.conf.urls import url, patterns
 
 urlpatterns = patterns('dpaste.views',
+    url(r'^about/$', 'about', name='dpaste_about'),
+
     url(r'^$', 'snippet_new', name='snippet_new'),
     url(r'^diff/$', 'snippet_diff', name='snippet_diff'),
     url(r'^history/$', 'snippet_history', name='snippet_history'),
