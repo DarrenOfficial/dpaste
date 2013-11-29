@@ -16,8 +16,8 @@ You can find a live example on http://dpaste.de/
 Testing and local development
 -----------------------------
 
-dpaste is continuously tested on _Travis. You can also run the test
-suite locally with _tox::
+dpaste is continuously tested on Travis_. You can also run the test
+suite locally with tox_::
 
     $ cd dpaste/
     $ pip install tox
@@ -31,8 +31,8 @@ This is also the preferred way to setup an environment for local development::
     $ pip install -r requirements.txt
     $ python runtests.py
 
-_Travis: https://travis-ci.org/bartTC/dpaste
-_tox: http://tox.readthedocs.org/en/latest/
+.. _Travis: https://travis-ci.org/bartTC/dpaste
+.. _tox: http://tox.readthedocs.org/en/latest/
 
 -----------------------------------------
 Integrate dpaste into an existing project
@@ -46,7 +46,7 @@ necessary dependencies of dpaste as well::
 
     pip install dpaste
 
-Add `dpaste` and (preferred) `south` to your `INSTALLED_APPS`::
+Add ``dpaste`` and (preferred) ``south`` to your ``INSTALLED_APPS``::
 
     INSTALLED_APPS = (
         'django.contrib.sessions',
