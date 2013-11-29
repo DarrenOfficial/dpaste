@@ -5,8 +5,8 @@ import sys
 if __name__ == "__main__":
     # If a 'settings_local' file is present, use it
     try:
-        from dpaste import settings_local
-        settings_module = "dpaste.settings_local"
+        from dpaste.settings import local
+        settings_module = "dpaste.settings.local"
     except ImportError:
         settings_module = "dpaste.settings"
 
