@@ -14,3 +14,4 @@ docutils
 django-redis==3.3
 gunicorn==18.0
 south==0.8.2
+newrelic
