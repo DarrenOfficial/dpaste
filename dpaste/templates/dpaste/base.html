@@ -29,6 +29,17 @@
 
 {% block script_footer %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script>
+jQuery(function($) {
+    $('.autofocus textarea:first').focus();
+    $('.superenter textarea').on('keydown', function(e){
+        if(e.keyCode == 13 && e.metaKey) {
+            $(this).closest('form').submit();
+            return false;
+        }
+    });
+});
+</script>
 {% endblock %}
 
 </body>
