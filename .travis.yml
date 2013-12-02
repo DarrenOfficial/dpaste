@@ -16,6 +16,11 @@ matrix:
     - python: 3.3
       env: DJANGO=1.5.5
 
+branches:
+  only:
+    - master
+    - develop
+
 install:
   - "pip install coverage==3.7"
   - "pip install python-coveralls==2.4.0"
