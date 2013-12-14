@@ -1,0 +1,14 @@
+dpaste Changelog
+================
+
+2.1 (2013-12-14)
+----------------
+
+* Changes and fixes along the package management
+
+2.0 (2013-11-29)
+----------------
+
+* A huge cleanup an nearly total rewrite.
+* dpaste now includes a Django project which is used on www.dpaste.de
+  as well as hooks to get it integrated into existing projcts.

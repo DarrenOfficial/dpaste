@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dpaste',
-    version='2.0',
+    version='2.1',
     description='dpaste is a Django based pastebin. It\'s intended to run '
                 'separately but its also possible to be installed into an '
                 'existing Django project like a regular app.',
