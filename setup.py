@@ -11,8 +11,7 @@ setup(
     author='Martin Mahner',
     author_email='martin@mahner.org',
     url='https://github.com/bartTC/dpaste/',
-
-    classifiers=(
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
@@ -20,15 +19,14 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Django',
-    ),
-
+    ],
     packages=find_packages(),
     package_data={'dpaste': ['static/*.*', 'templates/*.*']},
-    scripts=('manage.py',),
-    install_requires=(
+    include_package_data=True,
+    install_requires=[
         'django>=1.4',
         'django-mptt>=0.6.0',
         'pygments>=1.6',
         'requests>=2.0.0',
-    ),
+    ]
 )

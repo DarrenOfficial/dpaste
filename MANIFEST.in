@@ -1,0 +1,4 @@
+include *.rst
+include LICENSE
+recursive-include dpaste/templates *
+recursive-include dpaste/static *
