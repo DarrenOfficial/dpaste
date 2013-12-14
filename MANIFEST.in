@@ -1,4 +1,5 @@
 include *.rst
 include LICENSE
+include CHANGELOG
 recursive-include dpaste/templates *
 recursive-include dpaste/static *
