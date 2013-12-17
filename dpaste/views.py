@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.views.defaults import (page_not_found as django_page_not_found,
     server_error as django_server_error)
+from django.views.decorators.csrf import csrf_exempt
 
 from dpaste.forms import SnippetForm
 from dpaste.models import Snippet
@@ -265,6 +266,7 @@ FORMAT_MAPPING = {
     'json': _format_json,
 }
 
+@csrf_exempt
 def snippet_api(request):
     content = request.POST.get('content', '').strip()
     lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()

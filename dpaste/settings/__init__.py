@@ -83,7 +83,7 @@ LOGIN_REDIRECT_URL = '/'
 #==============================================================================
 
 MIDDLEWARE_CLASSES = (
-    'dpaste.disable.DisableCSRF',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

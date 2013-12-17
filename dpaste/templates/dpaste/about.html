@@ -72,6 +72,7 @@
     </p>
 
     <form method="POST" action="{% url "snippet_delete" %}">
+        {% csrf_token %}
         <input name="snippet_id"> <input type="Submit" value="Submit"/>
     </form>
 
