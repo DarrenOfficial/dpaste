@@ -1,6 +1,14 @@
 dpaste Changelog
 ================
 
+2.2 (WIP)
+----------------
+
+* Added support for CSRF middleware
+* Windows users can submit the form using Ctrl+Enter
+* The raw view now sends the X-Content-Type-Options=nosniff header
+* Various constants can now be overridden by settings
+
 2.1 (2013-12-14)
 ----------------
 
