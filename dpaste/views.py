@@ -91,6 +91,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
 
     if is_raw:
         response['Content-Type'] = 'text/plain;charset=UTF-8'
+        response['X-Content-Type-Options'] = 'nosniff'
         return response
     else:
         return response
