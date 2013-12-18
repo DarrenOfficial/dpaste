@@ -8,6 +8,7 @@ dpaste Changelog
 * Windows users can submit the form using Ctrl+Enter
 * The raw view now sends the X-Content-Type-Options=nosniff header
 * Various constants can now be overridden by settings
+* Support for `python setup.py test` to run the tox suite
 
 2.1 (2013-12-14)
 ----------------
