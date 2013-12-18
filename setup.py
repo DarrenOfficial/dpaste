@@ -35,7 +35,10 @@ setup(
         'Framework :: Django',
     ],
     packages=find_packages(),
-    package_data={'dpaste': ['static/*.*', 'templates/*.*']},
+    package_data={
+        'dpaste': ['static/*.*', 'templates/*.*'],
+        'docs': ['*'],
+    },
     include_package_data=True,
     install_requires=[
         'django>=1.4',
