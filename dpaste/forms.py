@@ -14,8 +14,6 @@ EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
 ))
 EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', EXPIRE_CHOICES[2][0])
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
-MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
-
 
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
@@ -78,6 +76,8 @@ class SnippetForm(forms.ModelForm):
         return self.cleaned_data
 
     def save(self, parent=None, *args, **kwargs):
+        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
+
         # Set parent snippet
         if parent:
             self.instance.parent = parent
