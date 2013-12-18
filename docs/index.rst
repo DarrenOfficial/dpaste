@@ -1,22 +1,24 @@
-.. dpaste documentation master file, created by
-   sphinx-quickstart on Wed Dec 18 10:56:20 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+======
+dpaste
+======
 
-Welcome to dpaste's documentation!
-==================================
+dpaste is a Django based pastebin. It's intended to run separately but its also
+possible to be installed into an existing Django project like a regular app.
+
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   testing
+   integration
+   settings
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+..
+    Indices and tables
+    ==================
+    * :ref:`genindex`
+    * :ref:`modindex`
+    * :ref:`search`
 
