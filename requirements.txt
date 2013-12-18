@@ -1,5 +1,5 @@
 # Project dependencies
-django==1.6
+django==1.6.1
 django-mptt==0.6.0
 pygments==1.6
 requests==2.0.0
