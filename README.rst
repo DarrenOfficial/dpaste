@@ -6,10 +6,6 @@ dpaste
     :target: https://travis-ci.org/bartTC/dpaste
 .. image:: https://coveralls.io/repos/bartTC/dpaste/badge.png?branch=master
     :target: https://coveralls.io/r/bartTC/dpaste?branch=master
-.. image:: https://pypip.in/v/dpaste/badge.png
-    :target: https://crate.io/packages/dpaste/
-.. image:: https://pypip.in/d/dpaste/badge.png
-    :target: https://crate.io/packages/dpaste/
 
 dpaste is a Django based pastebin. It's intended to run separately but its also
 possible to be installed into an existing Django project like a regular app.
