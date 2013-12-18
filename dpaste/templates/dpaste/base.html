@@ -33,12 +33,13 @@
 jQuery(function($) {
     $('.autofocus textarea:first').focus();
     $('.superenter textarea').on('keydown', function(e){
-        // Windows does not have a metaKey, use ctrl instead.
-        // https://github.com/jquery/jquery/blob/633ca9c1610c49dbb780e565f4f1202e1fe20fae/src/event.js#L552-555
-        if (event.metaKey === undefined) {
-            event.metaKey = event.ctrlKey;
+        var metaKey;
+        if (navigator.appVersion.indexOf("Win")!=-1) {
+            metaKey = e.ctrlKey;
+        } else {
+            metaKey = event.metaKey;
         }
-        if (e.keyCode == 13 && e.metaKey) {
+        if (e.keyCode == 13 && metaKey) {
             $(this).closest('form').submit();
             return false;
         }
