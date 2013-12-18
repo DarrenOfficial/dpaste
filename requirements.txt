@@ -8,7 +8,8 @@ requests==2.0.0
 python-coveralls==2.4.0
 coverage==3.7
 tox==1.6.1
-docutils
+docutils==0.11
+sphinx==1.2
 
 # Deployment specific
 django-redis==3.3
