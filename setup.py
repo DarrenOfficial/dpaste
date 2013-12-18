@@ -15,13 +15,18 @@ class Tox(TestCommand):
         errno = tox.cmdline(self.test_args)
         exit(errno)
 
+long_description = u'\n\n'.join((
+    open('README.rst').read(),
+    open('CHANGELOG').read()
+))
+
 setup(
     name='dpaste',
-    version='2.1',
+    version='2.2',
     description='dpaste is a Django based pastebin. It\'s intended to run '
                 'separately but its also possible to be installed into an '
                 'existing Django project like a regular app.',
-    long_description=open('README.rst').read(),
+    long_description=long_description,
     author='Martin Mahner',
     author_email='martin@mahner.org',
     url='https://github.com/bartTC/dpaste/',

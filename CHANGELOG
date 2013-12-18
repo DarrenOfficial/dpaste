@@ -1,9 +1,10 @@
-dpaste Changelog
-================
+Changelog
+=========
 
-2.2 (WIP)
+2.2 (2013-12-18)
 ----------------
 
+* Added documentation: http://dpaste.readthedocs.org/en/latest/
 * Added support for CSRF middleware
 * Windows users can submit the form using Ctrl+Enter
 * The raw view now sends the X-Content-Type-Options=nosniff header
