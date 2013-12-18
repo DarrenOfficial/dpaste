@@ -30,9 +30,6 @@ class Snippet(models.Model):
     def get_linecount(self):
         return len(self.content.splitlines())
 
-    def content_splitted(self):
-        return self.content.splitlines()
-
     @property
     def is_single(self):
         return self.is_root_node() and not self.get_children()
