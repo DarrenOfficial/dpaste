@@ -44,7 +44,7 @@ setup(
         'requests>=2.0.0',
     ],
     tests_require=[
-        'tox==1.6.1'
+        'tox>=1.6.1'
     ],
     cmdclass={
         'test': Tox
