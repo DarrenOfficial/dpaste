@@ -6,6 +6,7 @@ from django.core import management
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test import TestCase
+from django.test.utils import override_settings
 
 from ..models import Snippet
 from ..forms import EXPIRE_DEFAULT
@@ -24,6 +25,11 @@ class SnippetTestCase(TestCase):
             'lexer': LEXER_DEFAULT,
             'expire_options': EXPIRE_DEFAULT,
         }
+
+
+    def test_about(self):
+        response = self.client.get(reverse('dpaste_about'))
+        self.assertEqual(response.status_code, 200)
 
     # -------------------------------------------------------------------------
     # New Snippet
@@ -64,6 +70,29 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertContains(response, data['content'])
 
+        # The unicode method contains the snippet id so we can easily print
+        # the id using {{ snippet }}
+        snippet = Snippet.objects.all()[0]
+        self.assertTrue(snippet.secret_id in snippet.__unicode__())
+
+    def test_new_snippet_custom_lexer(self):
+        # You can pass a lexer key in GET.l
+        data = self.valid_form_data()
+        url = '%s?l=haskell' % self.new_url
+        response = self.client.post(url, data, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+        # If you pass an invalid key it wont fail and just fallback
+        # to the default lexer.
+        data = self.valid_form_data()
+        url = '%s?l=invalid-lexer' % self.new_url
+        response = self.client.post(url, data, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 2)
+
     def test_new_spam_snippet(self):
         """
         The form has a `title` field acting as a honeypot, if its filled,
@@ -95,6 +124,48 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 1)
 
     # -------------------------------------------------------------------------
+    # Delete
+    # -------------------------------------------------------------------------
+    def test_snippet_delete_post(self):
+        """
+        You can delete a snippet by passing the slug in POST.snippet_id
+        """
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        snippet_id = Snippet.objects.all()[0].secret_id
+        response = self.client.post(reverse('snippet_delete'),
+            {'snippet_id': snippet_id}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+    def test_snippet_delete_urlarg(self):
+        """
+        You can delete a snippet by having the snippet id in the URL.
+        """
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        snippet_id = Snippet.objects.all()[0].secret_id
+        response = self.client.get(reverse('snippet_delete',
+            kwargs={'snippet_id': snippet_id}), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+    def test_snippet_delete_that_doesnotexist_returns_404(self):
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+
+        # Pass a random snippet id
+        response = self.client.post(reverse('snippet_delete'),
+            {'snippet_id': 'doesnotexist'}, follow=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+        # Do not pass any snippet_id
+        response = self.client.post(reverse('snippet_delete'), follow=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+    # -------------------------------------------------------------------------
     # Snippet Functions
     # -------------------------------------------------------------------------
     def test_raw(self):
@@ -105,6 +176,51 @@ class SnippetTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['content'])
+
+    # -------------------------------------------------------------------------
+    # The diff function takes two snippet primary keys via GET.a and GET.b
+    # and compares them.
+    # -------------------------------------------------------------------------
+    def test_snippet_diff_no_args(self):
+        # Do not pass `a` or `b` is a bad request.
+        response = self.client.get(reverse('snippet_diff'))
+        self.assertEqual(response.status_code, 400)
+
+
+    def test_snippet_diff_invalid_args(self):
+        # Random snippet ids that dont exist
+        url = '%s?a=%s&b=%s' % (reverse('snippet_diff'), 123, 456)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 400)
+
+    def test_snippet_diff_valid_nochanges(self):
+        # A diff of two snippets is which are the same is OK.
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        self.client.post(self.new_url, data, follow=True)
+
+        self.assertEqual(Snippet.objects.count(), 2)
+        a = Snippet.objects.all()[0].id
+        b = Snippet.objects.all()[1].id
+        url = '%s?a=%s&b=%s' % (reverse('snippet_diff'), a, b)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_snippet_diff_valid(self):
+        # Create two valid snippets with different content.
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        data['content'] = 'new content'
+        self.client.post(self.new_url, data, follow=True)
+
+        self.assertEqual(Snippet.objects.count(), 2)
+        a = Snippet.objects.all()[0].id
+        b = Snippet.objects.all()[1].id
+        url = '%s?a=%s&b=%s' % (reverse('snippet_diff'), a, b)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
 
     # -------------------------------------------------------------------------
     # History
@@ -139,6 +255,35 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
+    @override_settings(DPASTE_MAX_SNIPPETS_PER_USER=2)
+    def test_snippet_that_exceed_history_limit_get_trashed(self):
+        """
+        The maximum number of snippets a user can save in the session are
+        defined by `DPASTE_MAX_SNIPPETS_PER_USER`. Exceed that number will
+        remove the oldest snippet from the list.
+        """
+        # Create three snippets but since the setting is 2 only the latest two
+        # will displayed on the history.
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        self.client.post(self.new_url, data, follow=True)
+        self.client.post(self.new_url, data, follow=True)
+
+        response = self.client.get(reverse('snippet_history'), follow=True)
+        one, two, three = Snippet.objects.order_by('published')
+
+        # Only the last two are saved in the session
+        self.assertEqual(len(self.client.session['snippet_list']), 2)
+        self.assertFalse(one.id in self.client.session['snippet_list'])
+        self.assertTrue(two.id in self.client.session['snippet_list'])
+        self.assertTrue(three.id in self.client.session['snippet_list'])
+
+        # And only the last two are displayed on the history page
+        self.assertNotContains(response, one.secret_id)
+        self.assertContains(response, two.secret_id)
+        self.assertContains(response, three.secret_id)
+
+
     # -------------------------------------------------------------------------
     # Management Command
     # -------------------------------------------------------------------------
@@ -164,3 +309,10 @@ class SnippetTestCase(TestCase):
         # Calling the management command will delete this one
         management.call_command('cleanup_snippets')
         self.assertEqual(Snippet.objects.count(), 1)
+
+    def test_highlighting(self):
+        # You can pass any lexer to the pygmentize function and it will
+        # never fail loudly.
+        from dpaste.highlight import pygmentize
+        pygmentize('code', lexer_name='python')
+        pygmentize('code', lexer_name='doesnotexist')

@@ -125,3 +125,16 @@ class SnippetAPITestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
+
+    def test_invalid_lexer(self):
+        """
+        A broken lexer will fail loudly.
+        """
+        data = {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'lexer': 'foobar'
+        }
+        response = self.client.post(self.api_url, data)
+        content = response.content.decode('utf-8')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(Snippet.objects.count(), 0)
