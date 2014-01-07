@@ -15,8 +15,8 @@ L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
 T = getattr(settings, 'DPASTE_SLUG_CHOICES',
     'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890')
 
-def generate_secret_id(length=L):
-    return ''.join([R.choice(T) for i in range(L)])
+def generate_secret_id(length=L, alphabet=T):
+    return ''.join([R.choice(alphabet) for i in range(length)])
 
 class Snippet(models.Model):
     secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True)
