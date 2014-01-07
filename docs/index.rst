@@ -14,6 +14,7 @@ Contents:
    testing
    integration
    settings
+   api
 
 ..
     Indices and tables
