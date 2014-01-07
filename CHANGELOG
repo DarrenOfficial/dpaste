@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.3 (2014-01-07)
+----------------
+
+* API Documentation
+* Full test coverage
+* Removed Twitter button from homepage
+* Slug generation is less predictable
+
 2.2 (2013-12-18)
 ----------------
 
