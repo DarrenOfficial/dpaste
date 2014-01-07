@@ -5,8 +5,6 @@ from django.test.client import Client
 from django.test import TestCase
 
 from ..models import Snippet
-from ..forms import EXPIRE_DEFAULT
-from ..highlight import LEXER_DEFAULT
 
 class SnippetAPITestCase(TestCase):
 
@@ -121,8 +119,6 @@ class SnippetAPITestCase(TestCase):
         }
 
         response = self.client.post(self.api_url, data)
-        content = response.content.decode('utf-8')
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
@@ -135,6 +131,5 @@ class SnippetAPITestCase(TestCase):
             'lexer': 'foobar'
         }
         response = self.client.post(self.api_url, data)
-        content = response.content.decode('utf-8')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)

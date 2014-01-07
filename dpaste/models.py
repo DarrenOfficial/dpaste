@@ -1,5 +1,4 @@
 from datetime import datetime
-from os import urandom
 from random import SystemRandom
 
 from django.db import models

@@ -112,7 +112,7 @@ class NakedHtmlFormatter(HtmlFormatter):
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     try:
         lexer = lexer_name and get_lexer_by_name(lexer_name) \
-                         or PythonLexer()
-    except Exception as e:
+                            or PythonLexer()
+    except Exception:
         lexer = PythonLexer()
     return highlight(code_string, lexer, NakedHtmlFormatter())
