@@ -1,19 +1,22 @@
-import datetime
-import random
-import mptt
+from datetime import datetime
+from os import urandom
+from random import SystemRandom
 
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+import mptt
+
 from dpaste.highlight import LEXER_DEFAULT
 
+R = SystemRandom()
 L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
 T = getattr(settings, 'DPASTE_SLUG_CHOICES',
-    'abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890')
+    'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890')
 
 def generate_secret_id(length=L):
-    return ''.join([random.choice(T) for i in range(length)])
+    return ''.join([R.choice(T) for i in range(L)])
 
 class Snippet(models.Model):
     secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True)
@@ -36,7 +39,7 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.published = datetime.datetime.now()
+            self.published = datetime.now()
             self.secret_id = generate_secret_id()
         super(Snippet, self).save(*args, **kwargs)
 
