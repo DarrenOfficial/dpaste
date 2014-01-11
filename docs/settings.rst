@@ -55,6 +55,15 @@ behavior without touching the code:
                 (3600 * 24 * 30 * 12 * 100, ugettext(u'100 Years')),
             )
 
+        You can keep snippets forever when you set the choice key to ``never``.
+        The management command will ignore these snippets::
+
+            ugettext = lambda s: s
+            DPASTE_EXPIRE_CHOICES = (
+                (3600, ugettext(u'In one hour')),
+                (u'never', ugettext(u'Never')),
+            )
+
     ``DPASTE_EXPIRE_DEFAULT``
         The key of the default value of ``DPASTE_EXPIRE_CHOICES``. Default:
         ``3600 * 24 * 30 * 12 * 100`` or simpler: ``DPASTE_EXPIRE_CHOICES[2][0]``.

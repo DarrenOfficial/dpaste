@@ -310,6 +310,22 @@ class SnippetTestCase(TestCase):
         management.call_command('cleanup_snippets')
         self.assertEqual(Snippet.objects.count(), 1)
 
+    def test_delete_management_snippet_that_never_expires_will_not_get_deleted(self):
+        """
+        Snippets without an expiration date wont get deleted automatically.
+        """
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+
+        self.assertEqual(Snippet.objects.count(), 1)
+
+        s = Snippet.objects.all()[0]
+        s.expires = None
+        s.save()
+
+        management.call_command('cleanup_snippets')
+        self.assertEqual(Snippet.objects.count(), 1)
+
     def test_highlighting(self):
         # You can pass any lexer to the pygmentize function and it will
         # never fail loudly.

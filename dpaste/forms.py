@@ -61,7 +61,6 @@ class SnippetForm(forms.ModelForm):
         if 'l' in request.GET and request.GET['l'] in LEXER_KEYS:
             self.fields['lexer'].initial = request.GET['l']
 
-
     def clean_content(self):
         content = self.cleaned_data.get('content', '')
         if content.strip() == '':
@@ -75,6 +74,12 @@ class SnippetForm(forms.ModelForm):
             raise forms.ValidationError('This snippet was identified as Spam.')
         return self.cleaned_data
 
+    def clean_expire_options(self):
+        expires = self.cleaned_data['expire_options']
+        if expires == u'never':
+            return None
+        return expires
+
     def save(self, parent=None, *args, **kwargs):
         MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
 
@@ -82,9 +87,12 @@ class SnippetForm(forms.ModelForm):
         if parent:
             self.instance.parent = parent
 
-        # Add expire datestamp
-        self.instance.expires = datetime.datetime.now() + \
-            datetime.timedelta(seconds=int(self.cleaned_data['expire_options']))
+        # Add expire datestamp. None indicates 'keep forever', use the default
+        # null state of the db column for that.
+        expires = self.cleaned_data['expire_options']
+        if expires:
+            self.instance.expires = datetime.datetime.now() + \
+                datetime.timedelta(seconds=int(expires))
 
         # Save snippet in the db
         super(SnippetForm, self).save(*args, **kwargs)

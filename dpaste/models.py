@@ -18,11 +18,11 @@ def generate_secret_id(length=L, alphabet=T):
     return ''.join([R.choice(alphabet) for i in range(length)])
 
 class Snippet(models.Model):
-    secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True)
-    content = models.TextField(_(u'Content'), )
+    secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True, null=True)
+    content = models.TextField(_(u'Content'))
     lexer = models.CharField(_(u'Lexer'), max_length=30, default=LEXER_DEFAULT)
-    published = models.DateTimeField(_(u'Published'), blank=True)
-    expires = models.DateTimeField(_(u'Expires'), blank=True)
+    published = models.DateTimeField(_(u'Published'), auto_now_add=True)
+    expires = models.DateTimeField(_(u'Expires'), blank=True, null=True)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
     class Meta:
@@ -37,8 +37,7 @@ class Snippet(models.Model):
         return self.is_root_node() and not self.get_children()
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.published = datetime.now()
+        if not self.secret_id:
             self.secret_id = generate_secret_id()
         super(Snippet, self).save(*args, **kwargs)
 

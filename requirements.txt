@@ -1,3 +1,9 @@
+# -----------------------------------------------------------------------------
+# These requirements are only required for local testing or development.
+# To use dpaste it's enough to install the package, all, and only the
+# necessary dependencies are installed automatically.
+# -----------------------------------------------------------------------------
+
 # Project dependencies
 django==1.6.1
 django-mptt==0.6.0

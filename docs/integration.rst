@@ -35,6 +35,9 @@ Finally just ``syncdb`` or if you use South, migrate::
 
     manage.py migrate dpaste
 
+Purge expired snippets
+======================
+
 Do not forget to setup a cron job to purge expired snippets. You need to
 run the management command ``cleanup_snippets``. A cron job I use looks like::
 

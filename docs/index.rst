@@ -9,7 +9,7 @@ possible to be installed into an existing Django project like a regular app.
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    testing
    integration
