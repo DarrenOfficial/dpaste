@@ -10,7 +10,7 @@ do is a simple ``POST`` request to the API endpoint ``/api/``::
 
 
 Available POST data for an API call:
-----------------------------------------
+====================================
 
 ``content`` (required)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -54,3 +54,31 @@ Optional. The format of the API response. Choices are:
     history page since they are related to a browser session.
 
 .. _lexer list: https://github.com/bartTC/dpaste/blob/master/dpaste/highlight.py#L25
+
+Example code snippets:
+======================
+
+A sample Python 2 script to publish snippets::
+
+    #!/usr/bin/env python
+
+    import urllib
+    import urllib2
+    import sys
+
+    def paste_code():
+        request = urllib2.Request(
+            'https://dpaste.de/api/',
+            urllib.urlencode([('content', sys.stdin.read())]),
+        )
+        response = urllib2.urlopen(request)
+        # Strip surrounding quotes (NB: response has no trailing newline)
+        print response.read()[1:-1]
+
+    if __name__ == '__main__':
+        paste_code()
+
+You can simply use curl to publish a whole file::
+
+    $ alias dpaste="curl -F 'content=<-' https://dpaste.de/api/"
+    $ cat foo.txt | dpaste
