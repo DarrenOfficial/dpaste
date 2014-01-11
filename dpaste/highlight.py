@@ -25,6 +25,7 @@ LEXER_LIST = sorted(LEXER_LIST)
 LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ('text', 'Text'),
     ('text', '----------'),
+    ('abap', 'ABAP'),
     ('apacheconf', 'ApacheConf'),
     ('applescript', 'AppleScript'),
     ('as', 'ActionScript'),
