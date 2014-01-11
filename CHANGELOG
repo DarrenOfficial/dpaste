@@ -1,30 +1,31 @@
 Changelog
 =========
 
-2.4 (dev)
+2.4 (2014-01-11)
 ----------------
 
 * API accepts the format or lexer via GET too. You can call an API url like
   ``example.com/api/?format=json`` and have the body in POST only.
-* Added an option to keep snippets forever
+* Added an option to keep snippets forever.
+* ABAP lexr is now in the default lexer list.
 
 2.3 (2014-01-07)
 ----------------
 
-* API Documentation
-* Full test coverage
-* Removed Twitter button from homepage
-* Slug generation is less predictable
+* API Documentation.
+* Full test coverage.
+* Removed Twitter button from homepage.
+* Slug generation is less predictable.
 
 2.2 (2013-12-18)
 ----------------
 
 * Added documentation: http://dpaste.readthedocs.org/en/latest/
-* Added support for CSRF middleware
-* Windows users can submit the form using Ctrl+Enter
-* The raw view now sends the X-Content-Type-Options=nosniff header
-* Various constants can now be overridden by settings
-* Support for `python setup.py test` to run the tox suite
+* Added support for CSRF middleware.
+* Windows users can submit the form using Ctrl+Enter.
+* The raw view now sends the X-Content-Type-Options=nosniff header.
+* Various constants can now be overridden by settings.
+* Support for `python setup.py test` to run the tox suite.
 
 2.1 (2013-12-14)
 ----------------
