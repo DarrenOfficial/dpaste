@@ -20,13 +20,13 @@ Required. The UTF-8 encoded string you want to paste.
 ``lexer`` (optional)
 ~~~~~~~~~~~~~~~~~~~~
 
-Optional. The lexer string key used for highlighting. See `lexer list`_  for
-a full list of choices. Default: ``python``.
+Optional. Can also be set via GET. The lexer string key used for highlighting.
+See `lexer list`_  for a full list of choices. Default: ``python``.
 
 ``format`` (optional)
 ~~~~~~~~~~~~~~~~~~~~~
 
-Optional. The format of the API response. Choices are:
+Optional. Can also be set via GET. The format of the API response. Choices are:
 
 * ``default`` — Returns a full qualified URL wrapped in quotes. Example::
 
@@ -80,5 +80,6 @@ A sample Python 2 script to publish snippets::
 
 You can simply use curl to publish a whole file::
 
-    $ alias dpaste="curl -F 'content=<-' https://dpaste.de/api/"
+    $ alias dpaste="curl -F 'content=<-' https://dpaste.de/api/?format=url"
     $ cat foo.txt | dpaste
+    https://dpaste.de/ke2pB

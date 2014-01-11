@@ -269,8 +269,8 @@ FORMAT_MAPPING = {
 @csrf_exempt
 def snippet_api(request):
     content = request.POST.get('content', '').strip()
-    lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()
-    format = request.POST.get('format', 'default').strip()
+    lexer = request.REQUEST.get('lexer', LEXER_DEFAULT).strip()
+    format = request.REQUEST.get('format', 'default').strip()
 
     if not content:
         return HttpResponseBadRequest('No content given')

@@ -4,6 +4,8 @@ Changelog
 2.4 (dev)
 ----------------
 
+* API accepts the format or lexer via GET too. You can call an API url like
+  ``example.com/api/?format=json`` and have the body in POST only.
 * Added an option to keep snippets forever
 
 2.3 (2014-01-07)
