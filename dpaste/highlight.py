@@ -49,6 +49,7 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ('html', 'HTML'),
     ('http', 'HTTP'),
     ('ini', 'INI'),
+    ('irc', 'IRC'),
     ('java', 'Java'),
     ('js', 'JavaScript'),
     ('json', 'JSON'),
