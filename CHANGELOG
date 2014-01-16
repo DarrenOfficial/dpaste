@@ -1,13 +1,18 @@
 Changelog
 =========
 
+2.5 (DEV)
+----------------
+
+* IRC lexer is now in the default lexer list.
+
 2.4 (2014-01-11)
 ----------------
 
 * API accepts the format or lexer via GET too. You can call an API url like
   ``example.com/api/?format=json`` and have the body in POST only.
 * Added an option to keep snippets forever.
-* ABAP lexr is now in the default lexer list.
+* ABAP lexer is now in the default lexer list.
 
 2.3 (2014-01-07)
 ----------------
