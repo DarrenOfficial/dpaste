@@ -68,6 +68,9 @@
         <a class="btn" href="{% url "snippet_details_raw" snippet.secret_id %}"><i class="icon-align-left"></i> {% trans "View Raw" %}</a>
         <a class="btn" href="{% url "snippet_gist" snippet.secret_id %}"
             rel="nofollow" title="Create a secret Gist"><i class="icon-share"></i> {% trans "Gist" %}</a>
+        {% if snippet.lexer != 'text' %}
+        <a class="btn" href="#" id="toggleWordwrap">Wordwrap</a>
+        {% endif %}
     </div>
 
     {% if snippet.expire_type == 3 %}
@@ -88,7 +91,7 @@
     ======================================================================= -->
     {% if snippet.lexer == 'text' %}
     <div class="snippet-rendered">
-        {{ snippet.content|linebreaks }}
+        {{ snippet.content|linebreaksbr }}
     </div>
     {% else %}
         {% include "dpaste/snippet_pre.html" %}
@@ -168,23 +171,31 @@ jQuery(function($) {
         hashlist = curLine.substring(2).split(',');
         if (hashlist.length > 0 && hashlist[0] !== '') {
             $.each(hashlist, function(index, elem){
-                $('.linenums li#' + elem).addClass('marked');
+                $('.code li#' + elem).addClass('marked');
             });
         }
     }
 
-    $('.linenums li').click(function(e) {
+    $('.code li').click(function(e) {
         var line = $(this),
             hash = 'L';
 
         line.toggleClass('marked');
 
-        $('.linenums li.marked').each(function (index, elem) {
+        $('.code li.marked').each(function (index, elem) {
             if (hash !== 'L') hash += ',';
             hash += $(elem).attr('id');
         });
 
         window.location.hash = hash;
+    });
+
+    /* ------------------------------------------------------------------------
+       Line Highlighting
+    ------------------------------------------------------------------------ */
+    $('#toggleWordwrap').click(function(e){
+        e.preventDefault();
+        $('.code').toggleClass('wordwrap');
     });
 });
 </script>
