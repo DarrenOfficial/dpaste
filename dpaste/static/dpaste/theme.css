@@ -12,6 +12,23 @@ tt strong {
     outline: 3px solid #ffe699;
 }
 
+.news {
+    max-width: 400px;
+    color: #999;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.news h2 {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.news p {
+    margin: 5px 0 10px;
+}
+
 .message {
     margin: 0;
     padding: 10px 30px;
@@ -197,6 +214,14 @@ ol.linenums li {
 ol.linenums li.marked {
     color: #f4e009;
     background-color: #4f4800;
+}
+
+@media (max-width: 580px) {
+    .form-options-expire {
+        float: left;
+        clear: left;
+        margin-top: 10px;
+    }
 }
 
 /* ----------------------------------------------------------------------------
