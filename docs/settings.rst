@@ -55,8 +55,28 @@ behavior without touching the code:
                 (3600 * 24 * 30 * 12 * 100, ugettext(u'100 Years')),
             )
 
-        You can keep snippets forever when you set the choice key to ``never``.
-        The management command will ignore these snippets::
+        **One-time snippets** are supported. One time snippets are automatically
+        deleted once a defined view count has reached (Default: ``2``). To
+        enable one-time snippets you have to add a choice ``onetime`` to the
+        expire choices::
+
+            ugettext = lambda s: s
+            DPASTE_EXPIRE_CHOICES = (
+                ('onetime', ugettext(u'One-Time snippet')),
+                (3600, ugettext(u'In one hour')),
+                (3600 * 24 * 7, ugettext(u'In one week')),
+                (3600 * 24 * 30, ugettext(u'In one month')),
+            )
+
+        You can also set the maximum view count after what the snippet gets
+        deleted. The default is ``2``. One view is from the author, one view
+        is from another user::
+
+            DPASTE_ONETIME_LIMIT = 2
+
+        **Infinite snippets** are supported. You can keep snippets forever when
+        you set the choice key to ``never``. The management command will ignore
+        these snippets::
 
             ugettext = lambda s: s
             DPASTE_EXPIRE_CHOICES = (

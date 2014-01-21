@@ -8,11 +8,13 @@ from dpaste.models import Snippet
 from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT, LEXER_KEYS
 
 EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
+    ('onetime', _(u'One Time Snippet')),
     (3600, _(u'In one hour')),
     (3600 * 24 * 7, _(u'In one week')),
     (3600 * 24 * 30, _(u'In one month')),
+    # ('never', _(u'Never')),
 ))
-EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', EXPIRE_CHOICES[2][0])
+EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', EXPIRE_CHOICES[3][0])
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
 class SnippetForm(forms.ModelForm):

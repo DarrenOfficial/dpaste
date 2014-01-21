@@ -104,6 +104,31 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
+    def test_new_snippet_onetime(self):
+        """
+        One-time snippets get deleted after two views.
+        """
+        # POST data
+        data = self.valid_form_data()
+        data['expires'] = 'onetime'
+
+        # First view, the author gets redirected after posting
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertContains(response, data['content'])
+
+        # Second View, another user looks at the snippet
+        response = self.client.get(response.request['PATH_INFO'], follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertContains(response, data['content'])
+
+        # Third/Further View, another user looks at the snippet but it was deleted
+        response = self.client.get(response.request['PATH_INFO'], follow=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Snippet.objects.count(), 0)
+
     # -------------------------------------------------------------------------
     # Reply
     # -------------------------------------------------------------------------
