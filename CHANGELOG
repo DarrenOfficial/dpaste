@@ -5,6 +5,8 @@ Changelog
 ----------------
 
 * IRC lexer is now in the default lexer list.
+* One-time snippet support. Snippets get automatically deleted after the
+  another user looks at it.
 
 2.4 (2014-01-11)
 ----------------
