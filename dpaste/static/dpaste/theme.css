@@ -60,6 +60,7 @@ h1, h2, h3, h4 {
     font-family: monospace;
     font-size: 12px;
     line-height: 16px;
+    border-radius: 0;
 }
 
 .form-options-lexer {
