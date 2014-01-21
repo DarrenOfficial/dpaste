@@ -14,7 +14,7 @@ class Command(LabelCommand):
     def handle(self, *args, **options):
         deleteable_snippets = Snippet.objects.filter(
             expires__isnull=False,
-            expire_type__in=[Snippet.EXPIRE_TIME, Snippet.EXPIRE_ONETIME],
+            expire_type=Snippet.EXPIRE_TIME,
             expires__lte=datetime.datetime.now()
         )
         sys.stdout.write(u"%s snippets gets deleted:\n" % deleteable_snippets.count())

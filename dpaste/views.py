@@ -59,7 +59,8 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
 
     # One time snippet get deleted if the view count matches our limit
-    if snippet.view_count >= ONETIME_LIMIT:
+    if snippet.expire_type == Snippet.EXPIRE_ONETIME \
+    and snippet.view_count >= ONETIME_LIMIT:
         snippet.delete()
         raise Http404()
 
