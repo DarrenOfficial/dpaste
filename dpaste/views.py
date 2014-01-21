@@ -17,7 +17,7 @@ from django.views.defaults import (page_not_found as django_page_not_found,
 from django.views.decorators.csrf import csrf_exempt
 
 from dpaste.forms import SnippetForm
-from dpaste.models import Snippet
+from dpaste.models import Snippet, ONETIME_LIMIT
 from dpaste.highlight import LEXER_WORDWRAP, LEXER_LIST
 from dpaste.highlight import LEXER_DEFAULT, LEXER_KEYS
 
@@ -58,6 +58,15 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     """
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
 
+    # One time snippet get deleted if the view count matches our limit
+    if snippet.view_count >= ONETIME_LIMIT:
+        snippet.delete()
+        raise Http404()
+
+    # Increase the view count of the snippet
+    snippet.view_count += 1
+    snippet.save()
+
     tree = snippet.get_root()
     tree = tree.get_descendants(include_self=True)
 
@@ -67,13 +76,18 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     }
 
     if request.method == "POST":
-        snippet_form = SnippetForm(data=request.POST, request=request, initial=new_snippet_initial)
+        snippet_form = SnippetForm(
+            data=request.POST,
+            request=request,
+            initial=new_snippet_initial)
         if snippet_form.is_valid():
             new_snippet = snippet_form.save(parent=snippet)
             url = new_snippet.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
-        snippet_form = SnippetForm(initial=new_snippet_initial, request=request)
+        snippet_form = SnippetForm(
+            initial=new_snippet_initial,
+            request=request)
 
     template_context = {
         'snippet_form': snippet_form,

@@ -14,12 +14,13 @@ class Command(LabelCommand):
     def handle(self, *args, **options):
         deleteable_snippets = Snippet.objects.filter(
             expires__isnull=False,
+            expire_type__in=[Snippet.EXPIRE_TIME, Snippet.EXPIRE_ONETIME],
             expires__lte=datetime.datetime.now()
         )
         sys.stdout.write(u"%s snippets gets deleted:\n" % deleteable_snippets.count())
         for d in deleteable_snippets:
             sys.stdout.write(u"- %s (%s)\n" % (d.secret_id, d.expires))
         if options.get('dry_run'):
-            sys.stdout.write(u'Dry run - Doing nothing! *crossingfingers*\n')
+            sys.stdout.write(u'Dry run - Not actually deleting snippets!\n')
         else:
             deleteable_snippets.delete()

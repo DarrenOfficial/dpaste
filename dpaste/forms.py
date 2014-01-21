@@ -28,7 +28,7 @@ class SnippetForm(forms.ModelForm):
         choices=LEXER_LIST,
     )
 
-    expire_options = forms.ChoiceField(
+    expires = forms.ChoiceField(
         label=_(u'Expires'),
         choices=EXPIRE_CHOICES,
         initial=EXPIRE_DEFAULT,
@@ -74,10 +74,18 @@ class SnippetForm(forms.ModelForm):
             raise forms.ValidationError('This snippet was identified as Spam.')
         return self.cleaned_data
 
-    def clean_expire_options(self):
-        expires = self.cleaned_data['expire_options']
+    def clean_expires(self):
+        expires = self.cleaned_data['expires']
+
         if expires == u'never':
+            self.cleaned_data['expire_type'] = Snippet.EXPIRE_KEEP
             return None
+
+        if expires == u'onetime':
+            self.cleaned_data['expire_type'] = Snippet.EXPIRE_ONETIME
+            return None
+
+        self.cleaned_data['expire_type'] = Snippet.EXPIRE_TIME
         return expires
 
     def save(self, parent=None, *args, **kwargs):
@@ -89,7 +97,9 @@ class SnippetForm(forms.ModelForm):
 
         # Add expire datestamp. None indicates 'keep forever', use the default
         # null state of the db column for that.
-        expires = self.cleaned_data['expire_options']
+        self.instance.expire_type = self.cleaned_data['expire_type']
+
+        expires = self.cleaned_data['expires']
         if expires:
             self.instance.expires = datetime.datetime.now() + \
                 datetime.timedelta(seconds=int(expires))

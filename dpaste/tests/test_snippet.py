@@ -23,7 +23,7 @@ class SnippetTestCase(TestCase):
         return {
             'content': u"Hello Wörld.\n\tGood Bye",
             'lexer': LEXER_DEFAULT,
-            'expire_options': EXPIRE_DEFAULT,
+            'expires': EXPIRE_DEFAULT,
         }
 
 

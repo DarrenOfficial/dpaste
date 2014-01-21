@@ -51,6 +51,9 @@
     ======================================================================= -->
     <div class="btn-group snippet-options">
         <button disabled class="btn">Expires in: {{ snippet.expires|timeuntil  }}</button>
+        <span class="btn disabled">
+            {% blocktrans count counter=snippet.view_count %}{{ counter }} View{% plural %}{{ counter }} Views{% endblocktrans %}
+        </span>
         {% if snippet.pk|in_list:request.session.snippet_list %}
         <a class="btn" href="{% url "snippet_delete" snippet.secret_id %}" onclick="return confirm('{% trans "Really delete this snippet?" %}');"><i class="icon-trash"></i> {% trans "Delete Now" %}</a>
         {% endif %}
@@ -61,6 +64,19 @@
         <a class="btn" href="{% url "snippet_gist" snippet.secret_id %}"
             rel="nofollow" title="Create a secret Gist"><i class="icon-share"></i> {% trans "Gist" %}</a>
     </div>
+
+    {% if snippet.expire_type == 3 %}
+    <p class="message">
+        {% trans "This is a one-time snippet." %}
+        {% if snippet.remaining_views > 1 %}
+            {% trans "It will automatically get deleted after {{ remaining }} further views." %}
+        {% elif snippet.remaining_views == 1 %}
+            {% trans "It will automatically get deleted after the next view." %}
+        {% else %}
+            {% trans "It was automatically deleted and cannot be viewed again." %}
+        {% endif %}
+    </p>
+    {% endif %}
 
     <!-- ======================================================================
     Snippet

@@ -12,6 +12,13 @@ tt strong {
     outline: 3px solid #ffe699;
 }
 
+.message {
+    margin: 0;
+    padding: 10px 30px;
+    background-color: gold;
+    text-shadow: 0 1px 0 #ffea90;
+}
+
 /* Custom container */
 .container-fluid {
     margin: 0 auto;
