@@ -59,9 +59,6 @@
                 {% trans "One-time snippet" %}
             {% endif %}
         </span>
-        <span class="btn disabled">
-            {% blocktrans count counter=snippet.view_count %}{{ counter }} View{% plural %}{{ counter }} Views{% endblocktrans %}
-        </span>
         {% if snippet.pk|in_list:request.session.snippet_list %}
         <a class="btn" href="{% url "snippet_delete" snippet.secret_id %}" onclick="return confirm('{% trans "Really delete this snippet?" %}');"><i class="icon-trash"></i> {% trans "Delete Now" %}</a>
         {% endif %}
@@ -81,7 +78,7 @@
         {% elif snippet.remaining_views == 1 %}
             {% trans "It will automatically get deleted after the next view." %}
         {% else %}
-            {% trans "It was automatically deleted and cannot be viewed again." %}
+            {% trans "It cannot be viewed again." %}
         {% endif %}
     </p>
     {% endif %}
