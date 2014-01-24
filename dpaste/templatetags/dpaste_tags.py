@@ -11,4 +11,5 @@ def in_list(value, arg):
 def highlight(snippet):
     h = pygmentize(snippet.content, snippet.lexer)
     h = h.replace(u'  ', u' &nbsp;')
+    h = h.replace(u'\t', ' &nbsp; &nbsp;')
     return h.splitlines()
