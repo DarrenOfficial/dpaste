@@ -1,12 +1,14 @@
 Changelog
 =========
 
-2.5 (DEV)
+2.5 (2014-01-21)
 ----------------
 
 * IRC lexer is now in the default lexer list.
 * One-time snippet support. Snippets get automatically deleted after the
   another user looks at it.
+* Toggle wordwrap for code snippets.
+* General UI and readability improvements.
 
 2.4 (2014-01-11)
 ----------------
