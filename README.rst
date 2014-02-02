@@ -13,3 +13,9 @@ possible to be installed into an existing Django project like a regular app.
 You can find a live example on http://dpaste.de/
 
 Further documentation can be found here: http://dpaste.readthedocs.org/en/latest/
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/bartTC/dpaste/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
