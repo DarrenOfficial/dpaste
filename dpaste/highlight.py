@@ -1,7 +1,8 @@
 from pygments import highlight
 from pygments.lexers import *
 from pygments.formatters import HtmlFormatter
-from django.conf import settings
+
+from dpaste.conf import settings
 
 """
 # Get a list of all lexer, and then remove all lexer which have '-' or '+'
@@ -22,85 +23,15 @@ LEXER_LIST = sorted(LEXER_LIST)
 
 # The list of lexers. Its not worth to autogenerate this. See above how to
 # retrieve this.
-LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
-    ('text', 'Text'),
-    ('text', '----------'),
-    ('abap', 'ABAP'),
-    ('apacheconf', 'ApacheConf'),
-    ('applescript', 'AppleScript'),
-    ('as', 'ActionScript'),
-    ('bash', 'Bash'),
-    ('bbcode', 'BBCode'),
-    ('c', 'C'),
-    ('clojure', 'Clojure'),
-    ('cobol', 'COBOL'),
-    ('css', 'CSS'),
-    ('cuda', 'CUDA'),
-    ('dart', 'Dart'),
-    ('delphi', 'Delphi'),
-    ('diff', 'Diff'),
-    ('django', 'Django'),
-    ('erlang', 'Erlang'),
-    ('fortran', 'Fortran'),
-    ('go', 'Go'),
-    ('groovy', 'Groovy'),
-    ('haml', 'Haml'),
-    ('haskell', 'Haskell'),
-    ('html', 'HTML'),
-    ('http', 'HTTP'),
-    ('ini', 'INI'),
-    ('irc', 'IRC'),
-    ('java', 'Java'),
-    ('js', 'JavaScript'),
-    ('json', 'JSON'),
-    ('lua', 'Lua'),
-    ('make', 'Makefile'),
-    ('mako', 'Mako'),
-    ('mason', 'Mason'),
-    ('matlab', 'Matlab'),
-    ('modula2', 'Modula'),
-    ('monkey', 'Monkey'),
-    ('mysql', 'MySQL'),
-    ('numpy', 'NumPy'),
-    ('ocaml', 'OCaml'),
-    ('perl', 'Perl'),
-    ('php', 'PHP'),
-    ('postscript', 'PostScript'),
-    ('powershell', 'PowerShell'),
-    ('prolog', 'Prolog'),
-    ('properties', 'Properties'),
-    ('puppet', 'Puppet'),
-    ('python', 'Python'),
-    ('rb', 'Ruby'),
-    ('rst', 'reStructuredText'),
-    ('rust', 'Rust'),
-    ('sass', 'Sass'),
-    ('scala', 'Scala'),
-    ('scheme', 'Scheme'),
-    ('scilab', 'Scilab'),
-    ('scss', 'SCSS'),
-    ('smalltalk', 'Smalltalk'),
-    ('smarty', 'Smarty'),
-    ('sql', 'SQL'),
-    ('tcl', 'Tcl'),
-    ('tcsh', 'Tcsh'),
-    ('tex', 'TeX'),
-    ('text', 'Text'),
-    ('vb.net', 'VB.net'),
-    ('vim', 'VimL'),
-    ('xml', 'XML'),
-    ('xquery', 'XQuery'),
-    ('xslt', 'XSLT'),
-    ('yaml', 'YAML'),
-))
+LEXER_LIST = settings.DPASTE_LEXER_LIST
 
 LEXER_KEYS = dict(LEXER_LIST).keys()
 
 # The default lexer is python
-LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
+LEXER_DEFAULT = settings.DPASTE_LEXER_DEFAULT
 
 # Lexers which have wordwrap enabled by default
-LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', ('text', 'rst'))
+LEXER_WORDWRAP = settings.DPASTE_LEXER_WORDWRAP
 
 
 class NakedHtmlFormatter(HtmlFormatter):

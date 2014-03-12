@@ -2,20 +2,15 @@ from random import SystemRandom
 
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 import mptt
 
+from dpaste.conf import settings
 from dpaste.highlight import LEXER_DEFAULT
 
 R = SystemRandom()
-L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
-T = getattr(settings, 'DPASTE_SLUG_CHOICES',
-    'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890')
 
-ONETIME_LIMIT = getattr(settings, 'DPASTE_ONETIME_LIMIT', 2)
-
-def generate_secret_id(length=L, alphabet=T):
+def generate_secret_id(length=settings.DPASTE_SLUG_LENGTH, alphabet=settings.DPASTE_SLUG_CHOICES):
     return ''.join([R.choice(alphabet) for i in range(length)])
 
 class Snippet(models.Model):
@@ -48,7 +43,7 @@ class Snippet(models.Model):
     @property
     def remaining_views(self):
         if self.expire_type == self.EXPIRE_ONETIME:
-            remaining = ONETIME_LIMIT - self.view_count
+            remaining = settings.DPASTE_ONETIME_LIMIT - self.view_count
             return remaining > 0 and remaining or 0
         return None
 
