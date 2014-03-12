@@ -8,9 +8,9 @@ from django.test.client import Client
 from django.test import TestCase
 from django.test.utils import override_settings
 
+from dpaste.conf import settings
+
 from ..models import Snippet
-from ..forms import EXPIRE_DEFAULT
-from ..highlight import LEXER_DEFAULT
 
 
 class SnippetTestCase(TestCase):
@@ -22,8 +22,8 @@ class SnippetTestCase(TestCase):
     def valid_form_data(self):
         return {
             'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': LEXER_DEFAULT,
-            'expires': EXPIRE_DEFAULT,
+            'lexer': settings.DPASTE_LEXER_DEFAULT,
+            'expires': settings.DPASTE_EXPIRE_DEFAULT,
         }
 
 

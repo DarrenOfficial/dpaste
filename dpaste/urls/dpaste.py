@@ -1,7 +1,10 @@
-from django.conf.urls import url, patterns
-from django.conf import settings
+from __future__ import absolute_import
 
-L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
+from django.conf.urls import url, patterns
+
+from dpaste.conf import settings
+
+L = settings.DPASTE_SLUG_LENGTH
 
 urlpatterns = patterns('dpaste.views',
     url(r'^about/$', 'about', name='dpaste_about'),

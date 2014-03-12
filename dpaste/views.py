@@ -7,7 +7,6 @@ from django.shortcuts import (render_to_response, get_object_or_404)
 from django.template.context import RequestContext
 from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
     HttpResponse)
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
@@ -16,8 +15,9 @@ from django.views.defaults import (page_not_found as django_page_not_found,
     server_error as django_server_error)
 from django.views.decorators.csrf import csrf_exempt
 
+from dpaste.conf import settings
 from dpaste.forms import SnippetForm
-from dpaste.models import Snippet, ONETIME_LIMIT
+from dpaste.models import Snippet
 from dpaste.highlight import LEXER_WORDWRAP, LEXER_LIST
 from dpaste.highlight import LEXER_DEFAULT, LEXER_KEYS
 
@@ -60,7 +60,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
 
     # One time snippet get deleted if the view count matches our limit
     if snippet.expire_type == Snippet.EXPIRE_ONETIME \
-    and snippet.view_count >= ONETIME_LIMIT:
+    and snippet.view_count >= settings.DPASTE_ONETIME_LIMIT:
         snippet.delete()
         raise Http404()
 
@@ -145,7 +145,7 @@ def snippet_history(request, template_name='dpaste/snippet_list.html'):
         return HttpResponseRedirect(reverse('snippet_history'))
 
     template_context = {
-        'snippets_max': getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10),
+        'snippets_max': settings.DPASTE_MAX_SNIPPETS_PER_USER,
         'snippet_list': snippet_list,
     }
 
@@ -259,21 +259,20 @@ def about(request, template_name='dpaste/about.html'):
 
 def _format_default(s):
     """The default response is the snippet URL wrapped in quotes."""
-    return u'"%s%s"' % (BASE_URL, s.get_absolute_url())
+    return u'"%s%s"' % (settings.DPASTE_BASE_URL, s.get_absolute_url())
 
 def _format_url(s):
     """The `url` format returns the snippet URL, no quotes, but a linebreak after."""
-    return u'%s%s\n' % (BASE_URL, s.get_absolute_url())
+    return u'%s%s\n' % (settings.DPASTE_BASE_URL, s.get_absolute_url())
 
 def _format_json(s):
     """The `json` format export."""
     return json.dumps({
-        'url': u'%s%s' % (BASE_URL, s.get_absolute_url()),
+        'url': u'%s%s' % (settings.DPASTE_BASE_URL, s.get_absolute_url()),
         'content': s.content,
         'lexer': s.lexer,
     })
 
-BASE_URL = getattr(settings, 'DPASTE_BASE_URL', 'https://dpaste.de')
 
 FORMAT_MAPPING = {
     'default': _format_default,
@@ -297,7 +296,7 @@ def snippet_api(request):
     s = Snippet.objects.create(
         content=content,
         lexer=lexer,
-        expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
+        expires=datetime.datetime.now() + datetime.timedelta(seconds=60*60*24*30)
     )
     s.save()
 

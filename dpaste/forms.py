@@ -1,27 +1,18 @@
 import datetime
 
 from django import forms
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+from dpaste.conf import settings
 from dpaste.models import Snippet
 from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT, LEXER_KEYS
 
-EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
-    ('onetime', _(u'One Time Snippet')),
-    (3600, _(u'In one hour')),
-    (3600 * 24 * 7, _(u'In one week')),
-    (3600 * 24 * 30, _(u'In one month')),
-    # ('never', _(u'Never')),
-))
-EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', EXPIRE_CHOICES[3][0])
-MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
         widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
-        max_length=MAX_CONTENT_LENGTH,
+        max_length=settings.DPASTE_MAX_CONTENT_LENGTH,
     )
 
     lexer = forms.ChoiceField(
@@ -32,8 +23,8 @@ class SnippetForm(forms.ModelForm):
 
     expires = forms.ChoiceField(
         label=_(u'Expires'),
-        choices=EXPIRE_CHOICES,
-        initial=EXPIRE_DEFAULT,
+        choices=settings.DPASTE_EXPIRE_CHOICES,
+        initial=settings.DPASTE_EXPIRE_DEFAULT,
     )
 
     # Honeypot field
@@ -91,8 +82,6 @@ class SnippetForm(forms.ModelForm):
         return expires
 
     def save(self, parent=None, *args, **kwargs):
-        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
-
         # Set parent snippet
         if parent:
             self.instance.parent = parent
@@ -111,7 +100,7 @@ class SnippetForm(forms.ModelForm):
 
         # Add the snippet to the user session list
         if self.request.session.get('snippet_list', False):
-            if len(self.request.session['snippet_list']) >= MAX_SNIPPETS_PER_USER:
+            if len(self.request.session['snippet_list']) >= settings.DPASTE_MAX_SNIPPETS_PER_USER:
                 self.request.session['snippet_list'].pop(0)
             self.request.session['snippet_list'] += [self.instance.pk]
         else:
