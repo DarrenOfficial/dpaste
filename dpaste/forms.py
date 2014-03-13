@@ -91,7 +91,7 @@ class SnippetForm(forms.ModelForm):
         return expires
 
     def save(self, parent=None, *args, **kwargs):
-        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 15)
+        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10)
 
         # Set parent snippet
         if parent:
