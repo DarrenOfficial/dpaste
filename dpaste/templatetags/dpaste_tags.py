@@ -10,6 +10,6 @@ def in_list(value, arg):
 @register.filter
 def highlight(snippet):
     h = pygmentize(snippet.content, snippet.lexer)
-    h = h.replace(u'  ', u' &nbsp;')
-    h = h.replace(u'\t', ' &nbsp; &nbsp;')
+    h = h.replace(u'  ', u'&nbsp;&nbsp;')
+    h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
     return h.splitlines()
