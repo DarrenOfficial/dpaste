@@ -1,7 +1,9 @@
 from pygments import highlight
 from pygments.lexers import *
 from pygments.formatters import HtmlFormatter
+
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 """
 # Get a list of all lexer, and then remove all lexer which have '-' or '+'
@@ -25,7 +27,7 @@ LEXER_LIST = sorted(LEXER_LIST)
 LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ('text', 'Text'),
     ('code', 'Code'),
-    ('Specific Code', (
+    (_('Specific Code'), (
         ('abap', 'ABAP'),
         ('apacheconf', 'ApacheConf'),
         ('applescript', 'AppleScript'),
@@ -97,7 +99,7 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ))
 ))
 
-LEXER_KEYS = dict(LEXER_LIST).keys()
+LEXER_KEYS = ['text', 'code'] + [i for i in dict(LEXER_LIST[2][1]).keys()]
 
 # The default lexer is python
 LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
