@@ -23,6 +23,10 @@ if not settings.configured:
 
 def runtests(*test_args):
     from django.test.simple import DjangoTestSuiteRunner
+    from django import VERSION
+    if VERSION[0] >= 1 and VERSION[1] >= 7:
+        from django import setup
+        setup() # New Django 1.7 app registry
     test_runner = DjangoTestSuiteRunner(verbosity=1)
     failures = test_runner.run_tests(['dpaste', ])
     if failures:
