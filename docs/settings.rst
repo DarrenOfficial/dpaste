@@ -9,7 +9,9 @@ behavior without touching the code:
 .. glossary::
 
     ``DPASTE_SLUG_LENGTH``
-        Integer. Length of the random slug for each new snippet.
+        Integer. Length of the random slug for each new snippet. In the rare
+        case an existing slug is generated again, the length will increase by
+        one more character.
         Default: ``4``
 
     ``DPASTE_SLUG_CHOICES``

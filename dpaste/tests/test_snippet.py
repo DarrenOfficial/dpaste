@@ -358,15 +358,16 @@ class SnippetTestCase(TestCase):
         pygmentize('code', lexer_name='python')
         pygmentize('code', lexer_name='doesnotexist')
 
-    # This is actually a bad test. It is possible to have duplicates
-    # because even if its random, it can generate two random, equal strings.
-    #
-    # def test_random_slug_generation(self):
-    #     """
-    #     Generate 1000 random slugs, make sure we have no duplicates.
-    #     """
-    #     from dpaste.models import generate_secret_id
-    #     result_list = []
-    #     for i in range(0, 1000):
-    #         result_list.append(generate_secret_id())
-    #     self.assertEqual(len(set(result_list)), 1000)
+    @override_settings(DPASTE_SLUG_LENGTH=1)
+    def test_random_slug_generation(self):
+        """
+        Set the max length of a slug to 1, so we wont have more than 60
+        different slugs (with the default slug choice string). With 100
+        random slug generation we will run into duplicates, but those
+        slugs are extended now.
+        """
+        for i in range(0, 100):
+            Snippet.objects.create(content='foobar')
+        slug_list = Snippet.objects.values_list(
+            'secret_id', flat=True).order_by('published')
+        self.assertEqual(len(set(slug_list)), 100)

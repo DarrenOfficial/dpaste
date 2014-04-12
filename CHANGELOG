@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.6 (dev)
+----------------
+
+* Fix for the rare case of duplicate slug (secret id) generation.
+
 2.5 (2014-01-21)
 ----------------
 

@@ -1,5 +1,6 @@
 from random import SystemRandom
 
+from django.db import IntegrityError
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -9,14 +10,23 @@ import mptt
 from dpaste.highlight import LEXER_DEFAULT
 
 R = SystemRandom()
-L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
-T = getattr(settings, 'DPASTE_SLUG_CHOICES',
-    'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890')
-
 ONETIME_LIMIT = getattr(settings, 'DPASTE_ONETIME_LIMIT', 2)
 
-def generate_secret_id(length=L, alphabet=T):
-    return ''.join([R.choice(alphabet) for i in range(length)])
+def generate_secret_id(length=None, alphabet=None, tries=0):
+    length = length or getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
+    alphabet = alphabet or getattr(settings, 'DPASTE_SLUG_CHOICES',
+        'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890')
+    secret_id = ''.join([R.choice(alphabet) for i in range(length)])
+
+    # Check if this slug already exists, if not, return this new slug
+    try:
+        Snippet.objects.get(secret_id=secret_id)
+    except Snippet.DoesNotExist:
+        return secret_id
+
+    # Otherwise create a new slug which is +1 character longer than the
+    # regular one.
+    return generate_secret_id(length=length+1, tries=tries)
 
 class Snippet(models.Model):
     EXPIRE_TIME = 1
@@ -28,7 +38,8 @@ class Snippet(models.Model):
         (EXPIRE_ONETIME, _(u'One time snippet')),
     )
 
-    secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True, null=True)
+    secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True, null=True,
+        unique=True)
     content = models.TextField(_(u'Content'))
     lexer = models.CharField(_(u'Lexer'), max_length=30, default=LEXER_DEFAULT)
     published = models.DateTimeField(_(u'Published'), auto_now_add=True)
