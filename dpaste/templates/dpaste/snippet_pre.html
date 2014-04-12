@@ -1,1 +1,1 @@
-{% load dpaste_tags %}<div class="code"><ol>{% for line in snippet|highlight %}<li id="{{ forloop.counter }}">{{ line|safe|default:"&nbsp;" }}</li>{% endfor %}</ol></div>
+{% load dpaste_tags %}<div class="code {{ snippet.lexer }}"><ol>{% for line in snippet|highlight %}<li id="{{ forloop.counter }}">{{ line|safe|default:"&nbsp;" }}</li>{% endfor %}</ol></div>

@@ -24,10 +24,13 @@ LEXER_LIST = sorted(LEXER_LIST)
 
 # The list of lexers. Its not worth to autogenerate this. See above how to
 # retrieve this.
+PLAIN_TEXT = 'text'  # lexer name whats rendered as text (paragraphs)
+PLAIN_CODE = 'plain' # lexer name of code with no hihglighting
+
 LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
-    ('text', 'Text'),
-    ('code', 'Code'),
-    (_('Specific Code'), (
+    (PLAIN_TEXT, 'Text'),
+    (PLAIN_CODE, 'Code'),
+    (_('Highlighted'), (
         ('abap', 'ABAP'),
         ('apacheconf', 'ApacheConf'),
         ('applescript', 'AppleScript'),
@@ -99,14 +102,13 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ))
 ))
 
-LEXER_KEYS = ['text', 'code'] + [i for i in dict(LEXER_LIST[2][1]).keys()]
+LEXER_KEYS = [PLAIN_TEXT, PLAIN_CODE] + [i for i in dict(LEXER_LIST[2][1]).keys()]
 
 # The default lexer is python
 LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
 
 # Lexers which have wordwrap enabled by default
 LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', ('text', 'rst'))
-
 
 class NakedHtmlFormatter(HtmlFormatter):
     def wrap(self, source, outfile):
@@ -117,6 +119,11 @@ class NakedHtmlFormatter(HtmlFormatter):
             yield i, t
 
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
+    # Plain code is noth hihglighted
+    if lexer_name == PLAIN_CODE:
+        return '\n'.join([u'<span class="nn">{}</span>'.format(l)
+            for l in code_string.splitlines()])
+
     try:
         lexer = lexer_name and get_lexer_by_name(lexer_name) \
                             or PythonLexer()
