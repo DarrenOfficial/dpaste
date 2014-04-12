@@ -1,9 +1,6 @@
-================
-installation.rst
-================
-
-Get Started!
-------------
+============
+Installation
+============
 
 Ready to contribute? Here's how to set up `dpaste` for local development.
 

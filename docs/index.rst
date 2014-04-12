@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 1
 
    testing
+   installation
    integration
    settings
    api
