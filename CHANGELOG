@@ -1,10 +1,14 @@
 Changelog
 =========
 
-2.6 (dev)
+2.6 (2014-04-12)
 ----------------
 
 * Fix for the rare case of duplicate slug (secret id) generation.
+* A new 'code' lexer renders source code with no highlighting.
+* Whitespace fixes with tab indention and word wrap mode.
+* Installation docs.
+
 
 2.5 (2014-01-21)
 ----------------
