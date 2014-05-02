@@ -20,7 +20,7 @@ MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*102
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
-        widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
+        widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...'), 'class': 'form-control'}),
         max_length=MAX_CONTENT_LENGTH,
     )
 
@@ -28,12 +28,14 @@ class SnippetForm(forms.ModelForm):
         label=_(u'Lexer'),
         initial=LEXER_DEFAULT,
         choices=LEXER_LIST,
+        widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
     expires = forms.ChoiceField(
         label=_(u'Expires'),
         choices=EXPIRE_CHOICES,
         initial=EXPIRE_DEFAULT,
+        widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
     # Honeypot field
