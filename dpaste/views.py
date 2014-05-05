@@ -209,10 +209,10 @@ def snippet_gist(request, snippet_id): # pragma: no cover
     """
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
     data = {
-        'description': 'the description for this gist',
+        'description': getattr(settings, 'DPASTE_DEFAULT_GIST_DESCRIPTION', 'the description for this gist'),
         'public': False,
         'files': {
-            'dpaste.de_snippet.py': {
+            getattr(settings, 'DPASTE_DEFAULT_GIST_NAME', 'dpaste.de_snippet.py'): {
                 'content': snippet.content,
             }
         }
@@ -221,7 +221,7 @@ def snippet_gist(request, snippet_id): # pragma: no cover
     try:
         payload = json.dumps(data)
         response = requests.post('https://api.github.com/gists', data=payload)
-        response_dict = json.loads(response.content)
+        response_dict = response.json()
         gist_url = response_dict.get('html_url')
 
     # Github could be down, could return invalid JSON, it's rare
