@@ -221,7 +221,7 @@ def snippet_gist(request, snippet_id): # pragma: no cover
     try:
         payload = json.dumps(data)
         response = requests.post('https://api.github.com/gists', data=payload)
-        response_dict = json.loads(response.content)
+        response_dict = response.json()
         gist_url = response_dict.get('html_url')
 
     # Github could be down, could return invalid JSON, it's rare
