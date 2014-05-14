@@ -1,7 +1,7 @@
-import datetime
 import sys
 from optparse import make_option
 from django.core.management.base import LabelCommand
+from django.utils import timezone
 from dpaste.models import Snippet
 
 class Command(LabelCommand):
@@ -15,7 +15,7 @@ class Command(LabelCommand):
         deleteable_snippets = Snippet.objects.filter(
             expires__isnull=False,
             expire_type=Snippet.EXPIRE_TIME,
-            expires__lte=datetime.datetime.now()
+            expires__lte=timezone.now()
         )
         sys.stdout.write(u"%s snippets gets deleted:\n" % deleteable_snippets.count())
         for d in deleteable_snippets:
