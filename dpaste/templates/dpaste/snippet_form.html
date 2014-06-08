@@ -39,17 +39,3 @@
         <span class="shortcut">&#8984;+&#9166; or Ctrl+&#9166;</span>
     </div>
 </form>
-
-{% if is_new %}
-    <div class="news">
-        <h2>Recent Changes</h2>
-
-        <p>{{ DPASTE_NEW_EXTRA }}</p>
-        <p>dpaste now supports one time snippets as an option in the
-            expiration dropdown. One time snippets are deleted as soon as
-            another person views the snippet.</p>
-        <p>There is an extensive API and plugins for various text editors
-            to post snippets directly from there. See the <a href="/about/">About</a>
-            section for details.</p>
-    </div>
-{% endif %}
