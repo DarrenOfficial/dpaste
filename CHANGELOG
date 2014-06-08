@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.7 (2014-06-08)
+----------------
+
+* "never" as an expiration choice is enable by default! This creates snippets
+  in the database which are never purged.
+* The API create call now supports to set the exiration time.
+* Some simple Bootstrap 3 support.
+* Gist fixes on Python 3 .
+
 2.6 (2014-04-12)
 ----------------
 
