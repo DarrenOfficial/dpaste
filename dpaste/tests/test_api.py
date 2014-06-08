@@ -3,6 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test import TestCase
+from django.test.utils import override_settings
 
 from ..models import Snippet
 
@@ -133,3 +134,53 @@ class SnippetAPITestCase(TestCase):
         response = self.client.post(self.api_url, data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
+
+    def test_expire_choices_none_given(self):
+        # No expire choice given will set a default expiration of one month
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertTrue(Snippet.objects.all()[0].expires)
+
+    def test_expire_choices_invalid_given(self):
+        # A expire choice that does not exist returns a BadRequest
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'foobar'})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+    def test_valid_expiration_choices(self):
+        """
+        Test all the different expiration choices. We dont actually test
+        the deletion, since thats handled in the `test_snippet` section.
+        """
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'onetime'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertEqual(Snippet.objects.all()[0].expire_type, Snippet.EXPIRE_ONETIME)
+
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'never'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 2)
+        self.assertEqual(Snippet.objects.all()[0].expire_type, Snippet.EXPIRE_KEEP)
+
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 3)
+        self.assertTrue(Snippet.objects.all()[0].expires)
+
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 7})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 4)
+        self.assertTrue(Snippet.objects.all()[0].expires)
+
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 30})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 5)
+        self.assertTrue(Snippet.objects.all()[0].expires)

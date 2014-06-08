@@ -340,14 +340,10 @@ class SnippetTestCase(TestCase):
         Snippets without an expiration date wont get deleted automatically.
         """
         data = self.valid_form_data()
+        data['expires'] = 'never'
         self.client.post(self.new_url, data, follow=True)
 
         self.assertEqual(Snippet.objects.count(), 1)
-
-        s = Snippet.objects.all()[0]
-        s.expires = None
-        s.save()
-
         management.call_command('cleanup_snippets')
         self.assertEqual(Snippet.objects.count(), 1)
 

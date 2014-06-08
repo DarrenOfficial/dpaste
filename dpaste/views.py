@@ -16,7 +16,7 @@ from django.views.defaults import (page_not_found as django_page_not_found,
     server_error as django_server_error)
 from django.views.decorators.csrf import csrf_exempt
 
-from dpaste.forms import SnippetForm
+from dpaste.forms import SnippetForm, get_expire_values, EXPIRE_CHOICES
 from dpaste.models import Snippet, ONETIME_LIMIT
 from dpaste.highlight import LEXER_WORDWRAP, LEXER_LIST
 from dpaste.highlight import LEXER_DEFAULT, LEXER_KEYS
@@ -285,6 +285,7 @@ FORMAT_MAPPING = {
 def snippet_api(request):
     content = request.POST.get('content', '').strip()
     lexer = request.REQUEST.get('lexer', LEXER_DEFAULT).strip()
+    expires = request.REQUEST.get('expires', '').strip()
     format = request.REQUEST.get('format', 'default').strip()
 
     if not content:
@@ -294,10 +295,21 @@ def snippet_api(request):
         return HttpResponseBadRequest('Invalid lexer given. Valid lexers are: %s' %
             ', '.join(LEXER_KEYS))
 
+    if expires:
+        expire_options = [str(i) for i in dict(EXPIRE_CHOICES).keys()]
+        if not expires in expire_options:
+            return HttpResponseBadRequest('Invalid expire choice "{}" given. '
+                'Valid values are: {}'.format(expires, ', '.join(expire_options)))
+        expires, expire_type = get_expire_values(expires)
+    else:
+        expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24 * 30)
+        expire_type = Snippet.EXPIRE_TIME
+
     s = Snippet.objects.create(
         content=content,
         lexer=lexer,
-        expires=datetime.datetime.now()+datetime.timedelta(seconds=60*60*24*30)
+        expires=expires,
+        expire_type=expire_type,
     )
     s.save()
 

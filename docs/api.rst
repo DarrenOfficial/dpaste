@@ -15,18 +15,18 @@ Available POST data for an API call:
 ``content`` (required)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Required. The UTF-8 encoded string you want to paste.
+The UTF-8 encoded string you want to paste.
 
 ``lexer`` (optional)
 ~~~~~~~~~~~~~~~~~~~~
 
-Optional. Can also be set via GET. The lexer string key used for highlighting.
+Can also be set via GET. The lexer string key used for highlighting.
 See `lexer list`_  for a full list of choices. Default: ``python``.
 
 ``format`` (optional)
 ~~~~~~~~~~~~~~~~~~~~~
 
-Optional. Can also be set via GET. The format of the API response. Choices are:
+Can also be set via GET. The format of the API response. Choices are:
 
 * ``default`` — Returns a full qualified URL wrapped in quotes. Example::
 
@@ -46,6 +46,21 @@ Optional. Can also be set via GET. The format of the API response. Choices are:
         "lexer": "python",
         "conent": "The text body of the snippet."
     }
+
+
+``expires`` (optional)
+~~~~~~~~~~~~~~~~~~~~~~
+
+Can also be set via GET. A keyword to indicate the lifetime of a
+snippetn in seconds. The values are predefined by the server. Calling this with
+an invalid value returns a HTTP 400 BadRequest together with a list of valid
+values. Default: ``2592000``. In the default configuration valid values are:
+
+* onetime
+* never
+* 3600
+* 604800
+* 2592000
 
 .. hint:: You need to adjust the setting ``DPASTE_BASE_URL`` which is used
     to generate the full qualified URL in the API response. See :doc:`settings`.
