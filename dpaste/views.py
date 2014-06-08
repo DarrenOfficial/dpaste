@@ -209,7 +209,7 @@ def snippet_gist(request, snippet_id): # pragma: no cover
     """
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
     data = {
-        'description': getattr(settings, 'DPASTE_DEFAULT_GIST_DESCRIPTION', 'the description for this gist'),
+        'description': getattr(settings, 'DPASTE_DEFAULT_GIST_DESCRIPTION', ''),
         'public': False,
         'files': {
             getattr(settings, 'DPASTE_DEFAULT_GIST_NAME', 'dpaste.de_snippet.py'): {

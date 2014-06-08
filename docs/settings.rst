@@ -90,6 +90,12 @@ behavior without touching the code:
         The key of the default value of ``DPASTE_EXPIRE_CHOICES``. Default:
         ``3600 * 24 * 30 * 12 * 100`` or simpler: ``DPASTE_EXPIRE_CHOICES[2][0]``.
 
+    ``DPASTE_DEFAULT_GIST_NAME``
+        String. The filename used when pasting a snippet on Github Gist.
+        Default: ``dpaste.de_snippet.py``
 
+    ``DPASTE_DEFAULT_GIST_DESCRIPTION``
+        String. The filename used when pasting a snippet on Github Gist.
+        Default: ``dpaste.de_snippet.py``
 
 .. _lexer list: https://github.com/bartTC/dpaste/blob/master/dpaste/highlight.py#L25
