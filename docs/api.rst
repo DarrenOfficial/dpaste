@@ -88,6 +88,9 @@ This will create a ``python`` highlighted snippet. However in this example::
 
 Since the lexer is set too, we will create a ``php`` highlighted snippet.
 
+.. note:: Since ``lexer`` defaults to ``python`` you have to specifically
+    unset it when using ``filename``.
+
 .. hint:: You need to adjust the setting ``DPASTE_BASE_URL`` which is used
     to generate the full qualified URL in the API response. See :doc:`settings`.
 
