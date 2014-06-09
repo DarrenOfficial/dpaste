@@ -150,37 +150,41 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
 
-    def test_valid_expiration_choices(self):
-        """
-        Test all the different expiration choices. We dont actually test
-        the deletion, since thats handled in the `test_snippet` section.
-        """
+    """
+    Test all the different expiration choices. We dont actually test
+    the deletion, since thats handled in the `test_snippet` section.
+    """
+    def test_valid_expiration_choices_onetime(self):
         response = self.client.post(self.api_url, {
             'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'onetime'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].expire_type, Snippet.EXPIRE_ONETIME)
 
+    def test_valid_expiration_choices_never(self):
         response = self.client.post(self.api_url, {
             'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'never'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Snippet.objects.count(), 2)
+        self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].expire_type, Snippet.EXPIRE_KEEP)
 
+    def test_valid_expiration_choices_hour(self):
         response = self.client.post(self.api_url, {
             'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Snippet.objects.count(), 3)
+        self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
 
+    def test_valid_expiration_choices_week(self):
         response = self.client.post(self.api_url, {
             'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 7})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Snippet.objects.count(), 4)
+        self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
 
+    def test_valid_expiration_choices_month(self):
         response = self.client.post(self.api_url, {
             'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 30})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Snippet.objects.count(), 5)
+        self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
