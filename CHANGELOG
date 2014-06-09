@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.8 (DEV)
+---------
+
+* The API create view has a new argument 'filename' which is used to determine
+  the lexer out of a given filename.
+
 2.7 (2014-06-08)
 ----------------
 
@@ -8,7 +14,7 @@ Changelog
   in the database which are never purged.
 * The API create call now supports to set the exiration time.
 * Some simple Bootstrap 3 support.
-* Gist fixes on Python 3 .
+* Gist fixes on Python 3.
 
 2.6 (2014-04-12)
 ----------------
