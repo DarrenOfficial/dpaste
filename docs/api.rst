@@ -62,6 +62,32 @@ values. Default: ``2592000``. In the default configuration valid values are:
 * 604800
 * 2592000
 
+``filename`` (optional)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Can also be set via GET. A filename which we use to determine a lexer, if
+``lexer`` is not set. In case we can't determine a file, the lexer will fallback
+to ``plain`` code (no highlighting). A given ``lexer`` will overwrite any
+filename! Example::
+
+    {
+        "url": "https://dpaste.de/xsWd",
+        "lexer": "",
+        "filename": "python",
+        "conent": "The text body of the snippet."
+    }
+
+This will create a ``python`` highlighted snippet. However in this example::
+
+    {
+        "url": "https://dpaste.de/xsWd",
+        "lexer": "php",
+        "filename": "python",
+        "conent": "The text body of the snippet."
+    }
+
+Since the lexer is set too, we will create a ``php`` highlighted snippet.
+
 .. hint:: You need to adjust the setting ``DPASTE_BASE_URL`` which is used
     to generate the full qualified URL in the API response. See :doc:`settings`.
 

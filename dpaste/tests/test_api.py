@@ -3,9 +3,9 @@
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test import TestCase
-from django.test.utils import override_settings
 
 from ..models import Snippet
+from ..highlight import PLAIN_CODE
 
 class SnippetAPITestCase(TestCase):
 
@@ -188,3 +188,53 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
+
+    def test_filename_not_given(self):
+        """
+        No lexer and no filename given returns a BadRequest.
+        """
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'lexer': '',
+            'filename': ''
+        })
+        self.assertEqual(response.status_code, 400)
+
+    def test_filename_given(self):
+        """
+        No lexer and a Python filename will set a 'python' lexer.
+        """
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'lexer': '',
+            'filename': 'helloworld.py'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertEqual(Snippet.objects.all()[0].lexer, 'python')
+
+    def test_awkward_filename_given(self):
+        """
+        A unknown filename will create a 'plain' code snippet.
+        """
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'lexer': '',
+            'filename': 'helloworld.helloworld'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertEqual(Snippet.objects.all()[0].lexer, PLAIN_CODE)
+
+    def test_filename_and_lexer_given(self):
+        """
+        A given lexer will overwrite whats the filename guessing.
+        """
+        response = self.client.post(self.api_url, {
+            'content': u"Hello Wörld.\n\tGood Bye",
+            'lexer': 'php',
+            'filename': 'helloworld.py'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.count(), 1)
+        self.assertEqual(Snippet.objects.all()[0].lexer, 'php')

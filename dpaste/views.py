@@ -16,10 +16,13 @@ from django.views.defaults import (page_not_found as django_page_not_found,
     server_error as django_server_error)
 from django.views.decorators.csrf import csrf_exempt
 
+from pygments.lexers import get_lexer_for_filename
+from pygments.util import ClassNotFound
+
 from dpaste.forms import SnippetForm, get_expire_values, EXPIRE_CHOICES
 from dpaste.models import Snippet, ONETIME_LIMIT
-from dpaste.highlight import LEXER_WORDWRAP, LEXER_LIST
-from dpaste.highlight import LEXER_DEFAULT, LEXER_KEYS
+from dpaste.highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_WORDWRAP,
+    LEXER_LIST, PLAIN_CODE)
 
 # -----------------------------------------------------------------------------
 # Snippet Handling
@@ -285,15 +288,32 @@ FORMAT_MAPPING = {
 def snippet_api(request):
     content = request.POST.get('content', '').strip()
     lexer = request.REQUEST.get('lexer', LEXER_DEFAULT).strip()
+    filename = request.REQUEST.get('filename', '').strip()
     expires = request.REQUEST.get('expires', '').strip()
     format = request.REQUEST.get('format', 'default').strip()
 
     if not content:
         return HttpResponseBadRequest('No content given')
 
-    if not lexer in LEXER_KEYS:
-        return HttpResponseBadRequest('Invalid lexer given. Valid lexers are: %s' %
-            ', '.join(LEXER_KEYS))
+    # We need at least a lexer or a filename
+    if not lexer and not filename:
+        return HttpResponseBadRequest('No lexer or filename given. Unable to '
+            'determine a highlight. Valid lexers are: %s' % ', '.join(LEXER_KEYS))
+
+    # A lexer is given, check if its valid at all
+    if lexer and lexer not in LEXER_KEYS:
+        return HttpResponseBadRequest('Invalid lexer "%s" given. Valid lexers are: %s' % (
+            lexer, ', '.join(LEXER_KEYS)))
+
+    # No lexer is given, but we have a filename, try to get the lexer out of it.
+    # In case Pygments cannot determine the lexer of the filename, we fallback
+    # to 'plain' code.
+    if not lexer and filename:
+        try:
+            lexer_cls = get_lexer_for_filename(filename)
+            lexer = lexer_cls.aliases[0]
+        except (ClassNotFound, IndexError):
+            lexer = PLAIN_CODE
 
     if expires:
         expire_options = [str(i) for i in dict(EXPIRE_CHOICES).keys()]
