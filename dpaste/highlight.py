@@ -4,6 +4,7 @@ from pygments.formatters import HtmlFormatter
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import escape
 
 """
 # Get a list of all lexer, and then remove all lexer which have '-' or '+'
@@ -121,7 +122,7 @@ class NakedHtmlFormatter(HtmlFormatter):
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     # Plain code is noth hihglighted
     if lexer_name == PLAIN_CODE:
-        return '\n'.join([u'<span class="nn">{}</span>'.format(l)
+        return '\n'.join([u'<span class="nn">{}</span>'.format(escape(l))
             for l in code_string.splitlines()])
 
     try:
