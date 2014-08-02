@@ -10,7 +10,7 @@ from django.test.utils import override_settings
 
 from ..models import Snippet
 from ..forms import EXPIRE_DEFAULT
-from ..highlight import LEXER_DEFAULT
+from ..highlight import LEXER_DEFAULT, PLAIN_TEXT, PLAIN_CODE
 
 
 class SnippetTestCase(TestCase):
@@ -19,13 +19,15 @@ class SnippetTestCase(TestCase):
         self.client = Client()
         self.new_url = reverse('snippet_new')
 
-    def valid_form_data(self):
-        return {
+    def valid_form_data(self, **kwargs):
+        data = {
             'content': u"Hello Wörld.\n\tGood Bye",
             'lexer': LEXER_DEFAULT,
             'expires': EXPIRE_DEFAULT,
         }
-
+        if kwargs:
+            data.update(kwargs)
+        return data
 
     def test_about(self):
         response = self.client.get(reverse('dpaste_about'))
@@ -246,6 +248,31 @@ class SnippetTestCase(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
+
+    # -------------------------------------------------------------------------
+    # XSS and correct escaping
+    # -------------------------------------------------------------------------
+    XSS_ORIGINAL = u'<script>hello</script>'
+    XSS_ESCAPED = u'&lt;script&gt;hello&lt;/script&gt;'
+
+    def test_xss_text_lexer(self):
+        # Simple 'text' lexer
+        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer=PLAIN_TEXT)
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertContains(response, self.XSS_ESCAPED)
+
+    def test_xss_code_lexer(self):
+        # Simple 'code' lexer
+        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer=PLAIN_CODE)
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertContains(response, self.XSS_ESCAPED)
+
+    def test_xss_pygments_lexer(self):
+        # Pygments based lexer
+        data = self.valid_form_data(content=self.XSS_ORIGINAL,
+            lexer='python')
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertContains(response, self.XSS_ESCAPED)
 
     # -------------------------------------------------------------------------
     # History
