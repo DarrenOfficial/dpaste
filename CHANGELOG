@@ -1,11 +1,13 @@
 Changelog
 =========
 
-2.8 (DEV)
+2.8 (2014-08-02)
 ---------
 
 * The API create view has a new argument 'filename' which is used to determine
   the lexer out of a given filename.
+* Fixed a XSS bug where HTML tags were not properly escaped with the simple
+  ``code`` lexer.
 
 2.7 (2014-06-08)
 ----------------
