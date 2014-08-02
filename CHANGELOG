@@ -1,8 +1,13 @@
 Changelog
 =========
 
+2.9 (DEV)
+----------------
+
+* TBD
+
 2.8 (2014-08-02)
----------
+----------------
 
 * The API create view has a new argument 'filename' which is used to determine
   the lexer out of a given filename.
