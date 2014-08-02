@@ -32,8 +32,8 @@ Can also be set via GET. The format of the API response. Choices are:
 
     "https://dpaste.de/xsWd"
 
-* ``url`` — Returns the full qualified URL to the snippet, without breaks,
-  but with a line break. Example::
+* ``url`` — Returns the full qualified URL to the snippet, without surrounding
+  quotes, but with a line break. Example::
 
     https://dpaste.de/xsWd\n
 
