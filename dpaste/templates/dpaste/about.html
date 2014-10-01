@@ -3,8 +3,8 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block title %}About dpaste.de{% endblock %}
-{% block headline %}About dpaste.de{% endblock %}
+{% block title %}About {{ site_name }}{% endblock %}
+{% block headline %}About {{ site_name }}{% endblock %}
 {% block dpaste_nav_about %}active{% endblock %}
 
 {% block page %}
@@ -12,8 +12,9 @@
 <div class="row-fluid">
 
     <p>
-        dpaste is open source. You can find the source, contribute to it and
-        leave ideas on Github: <a href="https://github.com/bartTC/dpaste">github.com/bartTC/dpaste</a>
+        {{ site_name }} is powered by dpaste, which is open source. You can
+        find the source, contribute to it and leave ideas on Github:
+        <a href="https://github.com/bartTC/dpaste">github.com/bartTC/dpaste</a>
     </p>
 
     <h3>API</h3>
