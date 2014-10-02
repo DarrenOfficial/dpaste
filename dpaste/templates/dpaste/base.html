@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>dpaste.de: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
+    <title>{{ site_name }}: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static "dpaste/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "dpaste/theme.css" %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
 </div>
 
 {% block script_footer %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<script src="{{ jquery_url }}"></script>
 <script>
 jQuery(function($) {
     $('.autofocus textarea:first').focus();

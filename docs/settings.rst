@@ -34,6 +34,10 @@ behavior without touching the code:
         String. The full qualified hostname and path to the dpaste instance.
         This is used to generate a link in the API response. Default: ``https://dpaste.de``
 
+    ``DPASTE_SITE_NAME``
+        String. Site name to display in page titles. Default:
+        ``dpaste.de``
+
     ``DPASTE_LEXER_LIST``
         Choices. A tuple of choices of Pygments lexers used in the lexer
         dropdown. Here is the full `lexer list`_ which is currently used.
@@ -90,6 +94,10 @@ behavior without touching the code:
         The key of the default value of ``DPASTE_EXPIRE_CHOICES``. Default:
         ``3600 * 24 * 30 * 12 * 100`` or simpler: ``DPASTE_EXPIRE_CHOICES[2][0]``.
 
+    ``DPASTE_ENABLE_GIST``
+        Boolean. Whether to display the Gist button for re-pasting to GitHub.
+        Default: ``True``
+
     ``DPASTE_DEFAULT_GIST_NAME``
         String. The filename used when pasting a snippet on Github Gist.
         Default: ``dpaste.de_snippet.py``
@@ -97,5 +105,9 @@ behavior without touching the code:
     ``DPASTE_DEFAULT_GIST_DESCRIPTION``
         String. The filename used when pasting a snippet on Github Gist.
         Default: ``dpaste.de_snippet.py``
+
+    ``DPASTE_JQUERY_URL``
+        String. URL to use for jQuery.
+        Default: ``//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js``
 
 .. _lexer list: https://github.com/bartTC/dpaste/blob/master/dpaste/highlight.py#L25

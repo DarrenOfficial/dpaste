@@ -24,6 +24,12 @@ from dpaste.models import Snippet, ONETIME_LIMIT
 from dpaste.highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_WORDWRAP,
     LEXER_LIST, PLAIN_CODE)
 
+template_globals = {
+    'site_name': getattr(settings, 'DPASTE_SITE_NAME', 'dpaste.de'),
+    'jquery_url': getattr(settings, 'DPASTE_JQUERY_URL',
+        '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'),
+}
+
 # -----------------------------------------------------------------------------
 # Snippet Handling
 # -----------------------------------------------------------------------------
@@ -50,7 +56,7 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
     return render_to_response(
         template_name,
         template_context,
-        RequestContext(request)
+        RequestContext(request, template_globals)
     )
 
 
@@ -100,12 +106,13 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         'lines': range(snippet.get_linecount()),
         'tree': tree,
         'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
+        'gist': getattr(settings, 'DPASTE_ENABLE_GIST', True),
     }
 
     response = render_to_response(
         template_name,
         template_context,
-        RequestContext(request)
+        RequestContext(request, template_globals)
     )
 
     if is_raw:
@@ -155,7 +162,7 @@ def snippet_history(request, template_name='dpaste/snippet_list.html'):
     return render_to_response(
         template_name,
         template_context,
-        RequestContext(request)
+        RequestContext(request, template_globals)
     )
 
 
@@ -202,7 +209,7 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
     return render_to_response(
         template_name,
         template_context,
-        RequestContext(request)
+        RequestContext(request, template_globals)
     )
 
 
@@ -210,6 +217,9 @@ def snippet_gist(request, snippet_id): # pragma: no cover
     """
     Put a snippet on Github Gist.
     """
+    if not getattr(settings, 'DPASTE_ENABLE_GIST', True):
+        raise Http404('Gist creation is disabled on this installation.')
+
     snippet = get_object_or_404(Snippet, secret_id=snippet_id)
     data = {
         'description': getattr(settings, 'DPASTE_DEFAULT_GIST_DESCRIPTION', ''),
@@ -252,7 +262,7 @@ def about(request, template_name='dpaste/about.html'):
     return render_to_response(
         template_name,
         template_context,
-        RequestContext(request)
+        RequestContext(request, template_globals)
     )
 
 
