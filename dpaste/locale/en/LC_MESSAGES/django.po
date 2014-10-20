@@ -58,7 +58,7 @@ msgid "Title"
 msgstr ""
 
 #: forms.py:85
-msgid "Plesae fill out this field."
+msgid "Please fill out this field."
 msgstr ""
 
 #: highlight.py:34
