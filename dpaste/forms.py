@@ -82,7 +82,7 @@ class SnippetForm(forms.ModelForm):
     def clean_content(self):
         content = self.cleaned_data.get('content', '')
         if content.strip() == '':
-            raise forms.ValidationError(_('Plesae fill out this field.'))
+            raise forms.ValidationError(_('Please fill out this field.'))
         return content
 
     def clean_expires(self):
