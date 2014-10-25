@@ -5,7 +5,7 @@ from django.conf.global_settings import *
 # Generic Django project settings
 #==============================================================================
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Local time zone for this installation. Choices can be found here:
