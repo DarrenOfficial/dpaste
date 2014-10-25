@@ -75,7 +75,7 @@ msgid "Keep Forever"
 msgstr "Não expira"
 
 #: models.py:38
-msgid "One time snippet"
+msgid "One-Time snippet"
 msgstr "Expira após uma visualização"
 
 #: models.py:41

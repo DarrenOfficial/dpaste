@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-17 06:33+0000\n"
-"PO-Revision-Date: 2014-10-17 08:43+0100\n"
+"POT-Creation-Date: 2014-10-25 10:06+0000\n"
+"PO-Revision-Date: 2014-10-25 12:07+0100\n"
 "Last-Translator: Martin Mahner <martin@mahner.org>\n"
 "Language-Team: DE <LL@li.org>\n"
 "Language: de\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: forms.py:11
 msgid "One Time Snippet"
-msgstr "One-Time Snippet"
+msgstr "One-Time snippet"
 
 #: forms.py:12
 msgid "In one hour"
@@ -59,8 +59,8 @@ msgid "Title"
 msgstr "Titel"
 
 #: forms.py:85
-msgid "Plesae fill out this field."
-msgstr "Bitte dieses Feld ausfüllen."
+msgid "This field is required."
+msgstr "Dieses Feld ist erforderlich."
 
 #: highlight.py:34
 msgid "Highlighted"
@@ -75,8 +75,8 @@ msgid "Keep Forever"
 msgstr "Für immer behalten"
 
 #: models.py:38
-msgid "One time snippet"
-msgstr "One-Time Snippet"
+msgid "One-Time snippet"
+msgstr "One-Time snippet"
 
 #: models.py:41
 msgid "Secret ID"
@@ -141,7 +141,7 @@ msgstr "Snippet erlischt niemals"
 
 #: templates/dpaste/snippet_details.html:59
 msgid "One-time snippet"
-msgstr "One-Time Snippet"
+msgstr "One-Time snippet"
 
 #: templates/dpaste/snippet_details.html:63
 msgid "Really delete this snippet?"
@@ -165,15 +165,16 @@ msgstr "Gist"
 
 #: templates/dpaste/snippet_details.html:82
 msgid "This is a one-time snippet."
-msgstr "Dies ist ein One-Time Snippet"
+msgstr "Dies ist ein One-Time snippet"
 
 #: templates/dpaste/snippet_details.html:84
-msgid "It will automatically get deleted after {{ remaining }} further views."
-msgstr "Es wird automatisch nach {{ remaining }} weiteren Ansichten gelöscht."
+#, python-format
+msgid "It is automatically removed after %(remaining)s further views."
+msgstr "Es wird automatisch nach %(remaining)s weiteren Ansichten entfernt."
 
 #: templates/dpaste/snippet_details.html:86
-msgid "It will automatically get deleted after the next view."
-msgstr "Es wird automatisch nach der nächsten Ansicht gelöscht."
+msgid "It is automatically removed after the next view."
+msgstr "Es wird automatisch nach der nächsten Ansicht entfernt."
 
 #: templates/dpaste/snippet_details.html:88
 msgid "It cannot be viewed again."
@@ -220,3 +221,7 @@ msgid ""
 msgstr ""
 "Keine Snippets gespeichert. Entweder alle deine Snippets sind erloschen oder "
 "dein Cookie hat sich geändert."
+
+#, fuzzy
+#~ msgid "Please fill out this field."
+#~ msgstr "Bitte dieses Feld ausfüllen."

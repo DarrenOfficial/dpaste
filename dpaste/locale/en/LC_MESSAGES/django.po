@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-15 14:43-0300\n"
+"POT-Creation-Date: 2014-10-25 10:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgid "Title"
 msgstr ""
 
 #: forms.py:85
-msgid "Please fill out this field."
+msgid "This field is required."
 msgstr ""
 
 #: highlight.py:34
@@ -74,7 +74,7 @@ msgid "Keep Forever"
 msgstr ""
 
 #: models.py:38
-msgid "One time snippet"
+msgid "One-Time snippet"
 msgstr ""
 
 #: models.py:41
@@ -93,11 +93,15 @@ msgstr ""
 msgid "View count"
 msgstr ""
 
-#: templates/dpaste/about.html:43
+#: views.py:200
+msgid "No changes were made between this two files."
+msgstr ""
+
+#: templates/dpaste/about.html:44
 msgid "Statistics"
 msgstr ""
 
-#: templates/dpaste/about.html:45
+#: templates/dpaste/about.html:46
 #, python-format
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages are:"
@@ -154,27 +158,28 @@ msgstr ""
 msgid "View Raw"
 msgstr ""
 
-#: templates/dpaste/snippet_details.html:72
+#: templates/dpaste/snippet_details.html:73
 msgid "Gist"
 msgstr ""
 
-#: templates/dpaste/snippet_details.html:80
+#: templates/dpaste/snippet_details.html:82
 msgid "This is a one-time snippet."
 msgstr ""
 
-#: templates/dpaste/snippet_details.html:82
-msgid "It will automatically get deleted after {{ remaining }} further views."
-msgstr ""
-
 #: templates/dpaste/snippet_details.html:84
-msgid "It will automatically get deleted after the next view."
+#, python-format
+msgid "It is automatically removed after %(remaining)s further views."
 msgstr ""
 
 #: templates/dpaste/snippet_details.html:86
+msgid "It is automatically removed after the next view."
+msgstr ""
+
+#: templates/dpaste/snippet_details.html:88
 msgid "It cannot be viewed again."
 msgstr ""
 
-#: templates/dpaste/snippet_details.html:106
+#: templates/dpaste/snippet_details.html:108
 msgid "Reply to this snippet"
 msgstr ""
 
@@ -208,8 +213,4 @@ msgstr ""
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
-msgstr ""
-
-#: views.py:193
-msgid "No changes were made between this two files."
 msgstr ""
