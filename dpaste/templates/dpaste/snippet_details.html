@@ -81,9 +81,9 @@
     <p class="message">
         {% trans "This is a one-time snippet." %}
         {% if snippet.remaining_views > 1 %}
-            {% trans "It will automatically get deleted after {{ remaining }} further views." %}
+            {% blocktrans with remaining=snippet.remaining_views %}It is automatically removed after {{ remaining }} further views.{% endblocktrans %}
         {% elif snippet.remaining_views == 1 %}
-            {% trans "It will automatically get deleted after the next view." %}
+            {% trans "It is automatically removed after the next view." %}
         {% else %}
             {% trans "It cannot be viewed again." %}
         {% endif %}

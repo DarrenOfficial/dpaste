@@ -35,7 +35,7 @@ class Snippet(models.Model):
     EXPIRE_CHOICES = (
         (EXPIRE_TIME, _(u'Expire by timestamp')),
         (EXPIRE_KEEP, _(u'Keep Forever')),
-        (EXPIRE_ONETIME, _(u'One time snippet')),
+        (EXPIRE_ONETIME, _(u'One-Time snippet')),
     )
 
     secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True, null=True,

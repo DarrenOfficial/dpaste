@@ -61,7 +61,7 @@ behavior without touching the code:
                 (3600 * 24 * 30 * 12 * 100, ugettext(u'100 Years')),
             )
 
-        **One-time snippets** are supported. One time snippets are automatically
+        **One-time snippets** are supported. One-Time snippets are automatically
         deleted once a defined view count has reached (Default: ``2``). To
         enable one-time snippets you have to add a choice ``onetime`` to the
         expire choices::
