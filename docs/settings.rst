@@ -16,7 +16,7 @@ behavior without touching the code:
 
     ``DPASTE_SLUG_CHOICES``
         String. A string of characters which are used to create the random slug.
-        Default: ``abcdefghijkmnopqrstuvwwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ1234567890``
+        Default: ``abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890``
 
     ``DPASTE_LEXER_DEFAULT``
         String. The lexer key that is pre-selected in the dropdown. Note that
