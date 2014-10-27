@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[dpaste.dpaste]
+file_filter = dpaste/locale/<lang>/LC_MESSAGES/django.po
+source_file = dpaste/locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO
+
