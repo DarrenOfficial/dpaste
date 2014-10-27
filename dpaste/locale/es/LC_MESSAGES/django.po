@@ -9,42 +9,42 @@ msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-25 10:08+0000\n"
-"PO-Revision-Date: 2014-10-25 14:25+0000\n"
+"PO-Revision-Date: 2014-10-25 14:31+0000\n"
 "Last-Translator: Sergio Oliveira <seocam@seocam.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/dpaste/language/pt_BR/)\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/dpaste/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: forms.py:11
 msgid "One Time Snippet"
-msgstr "Uma única visualização"
+msgstr "Apenas una visualización"
 
 #: forms.py:12
 msgid "In one hour"
-msgstr "Em uma hora"
+msgstr "Una hora"
 
 #: forms.py:13
 msgid "In one week"
-msgstr "Em uma semana"
+msgstr "Una semana"
 
 #: forms.py:14
 msgid "In one month"
-msgstr "Em um mês"
+msgstr "Un mes"
 
 #: forms.py:15
 msgid "Never"
-msgstr "Nunca expira"
+msgstr "Nunca"
 
 #: forms.py:36 models.py:43
 msgid "Content"
-msgstr "Conteúdo"
+msgstr "Contenido"
 
 #: forms.py:37
 msgid "Awesome code goes here..."
-msgstr "Cole seu texto ou código aqui..."
+msgstr "Su código increíble va aquí..."
 
 #: forms.py:42 models.py:44
 msgid "Lexer"
@@ -52,7 +52,7 @@ msgstr "Lexer"
 
 #: forms.py:49 models.py:48
 msgid "Expires"
-msgstr "Validade"
+msgstr "Caduca"
 
 #: forms.py:57
 msgid "Title"
@@ -60,7 +60,7 @@ msgstr "Título"
 
 #: forms.py:85
 msgid "This field is required."
-msgstr "Campo obrigatório."
+msgstr "Este campo es obligatorio."
 
 #: highlight.py:34
 msgid "Highlighted"
@@ -68,15 +68,15 @@ msgstr "Highlighted"
 
 #: models.py:36
 msgid "Expire by timestamp"
-msgstr "Expira por tempo"
+msgstr "Caduca por fecha y hora"
 
 #: models.py:37
 msgid "Keep Forever"
-msgstr "Não expira"
+msgstr "Guarde por siempre"
 
 #: models.py:38
 msgid "One-Time snippet"
-msgstr "Uma única visualização"
+msgstr "Apenas una visualización"
 
 #: models.py:41
 msgid "Secret ID"
@@ -88,35 +88,35 @@ msgstr "Publicado"
 
 #: models.py:46
 msgid "Expire Type"
-msgstr "Tipo de validade"
+msgstr "Tipo de Caducación  "
 
 #: models.py:49
 msgid "View count"
-msgstr "Visualizações"
+msgstr "Visualizaciones"
 
 #: views.py:200
 msgid "No changes were made between this two files."
-msgstr "Nenhuma alterção feita entre esses dois arquivos."
+msgstr "No hay cambios entre estos dos archivos."
 
 #: templates/dpaste/about.html:44
 msgid "Statistics"
-msgstr "Estatísticas"
+msgstr " Estadísticas"
 
 #: templates/dpaste/about.html:46
 #, python-format
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages "
 "are:"
-msgstr "Existem %(total)s pastes no banco de dados. A linguagem mais popular é"
+msgstr "Hay %(total)s snippets en la base de datos. Los lenguajes más populares son:"
 
 #: templates/dpaste/base.html:8 templates/dpaste/base.html.py:21
 #: templates/dpaste/snippet_new.html:6 templates/dpaste/snippet_new.html:7
 msgid "New snippet"
-msgstr "Novo paste"
+msgstr "Nuevo snippet"
 
 #: templates/dpaste/base.html:19
 msgid "About"
-msgstr "Sobre"
+msgstr "Acerca"
 
 #: templates/dpaste/base.html:20
 msgid "History"
@@ -125,7 +125,7 @@ msgstr "Histórico"
 #: templates/dpaste/snippet_details.html:8
 #: templates/dpaste/snippet_details.html:9
 msgid "Snippet"
-msgstr "Paste"
+msgstr "Snippet"
 
 #: templates/dpaste/snippet_details.html:41
 msgid "Compare"
@@ -134,31 +134,31 @@ msgstr "Comparar"
 #: templates/dpaste/snippet_details.html:55
 #, python-format
 msgid "Expires in: %(date)s"
-msgstr "Expira em: %(date)s"
+msgstr "Caduca en: %(date)s"
 
 #: templates/dpaste/snippet_details.html:57
 msgid "Snippet never expires"
-msgstr "Paste nunca expira"
+msgstr "Snippet nunca caduca"
 
 #: templates/dpaste/snippet_details.html:59
 msgid "One-time snippet"
-msgstr "Uma única visualização"
+msgstr "Apenas una visualización"
 
 #: templates/dpaste/snippet_details.html:63
 msgid "Really delete this snippet?"
-msgstr "Deseja realmente remover esse paste?"
+msgstr "Desea remover este snippet?"
 
 #: templates/dpaste/snippet_details.html:63
 msgid "Delete Now"
-msgstr "Remover agora"
+msgstr "Remover Ahora"
 
 #: templates/dpaste/snippet_details.html:66
 msgid "Compare Snippets"
-msgstr "Comparar pastes"
+msgstr "Comparar Snippets"
 
 #: templates/dpaste/snippet_details.html:69
 msgid "View Raw"
-msgstr "Visualizar sem formatação"
+msgstr "Ver en Bruto"
 
 #: templates/dpaste/snippet_details.html:73
 msgid "Gist"
@@ -166,24 +166,24 @@ msgstr "Gist"
 
 #: templates/dpaste/snippet_details.html:82
 msgid "This is a one-time snippet."
-msgstr "Este paste só pode ser visualizado uma vez."
+msgstr "Este snippet podrá ser visualizado apenas sólo una vez."
 
 #: templates/dpaste/snippet_details.html:84
 #, python-format
 msgid "It is automatically removed after %(remaining)s further views."
-msgstr "Automaticamente deletado depois de %(remaining)s visualizações"
+msgstr "Automáticamente removido después de %(remaining)s visualizaciones más."
 
 #: templates/dpaste/snippet_details.html:86
 msgid "It is automatically removed after the next view."
-msgstr "Automaticamente deletado após a próxima visualização."
+msgstr "Automáticamente removido después de la próxima visualización."
 
 #: templates/dpaste/snippet_details.html:88
 msgid "It cannot be viewed again."
-msgstr "Não pode ser visto novamente."
+msgstr "No puede más ser visualizado."
 
 #: templates/dpaste/snippet_details.html:108
 msgid "Reply to this snippet"
-msgstr "Responder paste"
+msgstr "Contestar snippet"
 
 #: templates/dpaste/snippet_diff.html:5
 #, python-format
@@ -191,11 +191,11 @@ msgid ""
 "\n"
 "    Diff between <a href=\"%(filea_url)s\">#%(filea_id)s</a> and <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
 "    "
-msgstr "\n    Diff entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> e <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>\n    "
+msgstr "\nDiff entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> e <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>"
 
 #: templates/dpaste/snippet_form.html:32
 msgid "Expire in"
-msgstr "Expira em"
+msgstr "Caduca en"
 
 #: templates/dpaste/snippet_form.html:38
 msgid "Paste it"
@@ -214,4 +214,4 @@ msgstr "%(since)s atrás"
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
-msgstr "Nenhum paste salvo. Ou todos os seus pastes expiraram ou seu cookie foi alterado."
+msgstr "No hay snippets salvados. O sus snippets han caducado o su cookie cambió."
