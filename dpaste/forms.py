@@ -8,7 +8,7 @@ from dpaste.models import Snippet
 from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT, LEXER_KEYS
 
 EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
-    ('onetime', _(u'One Time Snippet')),
+    ('onetime', _(u'One-Time snippet')),
     (3600, _(u'In one hour')),
     (3600 * 24 * 7, _(u'In one week')),
     (3600 * 24 * 30, _(u'In one month')),

@@ -56,7 +56,7 @@
             {% elif snippet.expire_type == 2 %}
                 {% trans "Snippet never expires" %}
             {% elif snippet.expire_type == 3 %}
-                {% trans "One-time snippet" %}
+                {% trans "One-Time snippet" %}
             {% endif %}
         </span>
         {% if snippet.pk|in_list:request.session.snippet_list %}

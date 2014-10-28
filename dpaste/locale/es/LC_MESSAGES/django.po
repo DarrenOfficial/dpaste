@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2014
 # Sergio Oliveira <seocam@seocam.com>, 2014
@@ -9,18 +9,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-25 10:08+0000\n"
+"POT-Creation-Date: 2014-10-28 11:02+0000\n"
 "PO-Revision-Date: 2014-10-27 17:05+0000\n"
 "Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/dpaste/language/es/)\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/dpaste/language/"
+"es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:11
-msgid "One Time Snippet"
+#: forms.py:11 models.py:38 templates/dpaste/snippet_details.html:59
+msgid "One-Time snippet"
 msgstr "Apenas una visualización"
 
 #: forms.py:12
@@ -75,10 +76,6 @@ msgstr "Caduca por fecha y hora"
 msgid "Keep Forever"
 msgstr "Guarde por siempre"
 
-#: models.py:38
-msgid "One-Time snippet"
-msgstr "Apenas una visualización"
-
 #: models.py:41
 msgid "Secret ID"
 msgstr "ID secreto"
@@ -95,20 +92,17 @@ msgstr "Tipo de Caducidad  "
 msgid "View count"
 msgstr "Visualizaciones"
 
-#: views.py:200
-msgid "No changes were made between this two files."
-msgstr "No hay cambios entre estos dos archivos."
-
-#: templates/dpaste/about.html:44
+#: templates/dpaste/about.html:59
 msgid "Statistics"
 msgstr " Estadísticas"
 
-#: templates/dpaste/about.html:46
+#: templates/dpaste/about.html:61
 #, python-format
 msgid ""
-"There are %(total)s snippets in the database. The most popular languages "
-"are:"
-msgstr "Hay %(total)s fragmentos en la base de datos. Los lenguajes más populares son:"
+"There are %(total)s snippets in the database. The most popular languages are:"
+msgstr ""
+"Hay %(total)s fragmentos en la base de datos. Los lenguajes más populares "
+"son:"
 
 #: templates/dpaste/base.html:8 templates/dpaste/base.html.py:21
 #: templates/dpaste/snippet_new.html:6 templates/dpaste/snippet_new.html:7
@@ -141,10 +135,6 @@ msgstr "Caduca en: %(date)s"
 msgid "Snippet never expires"
 msgstr "El fragmento nunca caduca"
 
-#: templates/dpaste/snippet_details.html:59
-msgid "One-time snippet"
-msgstr "Apenas una visualización"
-
 #: templates/dpaste/snippet_details.html:63
 msgid "Really delete this snippet?"
 msgstr "¿Realmente desea eliminar este fragmento?"
@@ -172,7 +162,8 @@ msgstr "Este fragmento podrá ser visualizado apenas sólo una vez."
 #: templates/dpaste/snippet_details.html:84
 #, python-format
 msgid "It is automatically removed after %(remaining)s further views."
-msgstr "Automáticamente eliminado después de más %(remaining)s visualizaciones."
+msgstr ""
+"Automáticamente eliminado después de más %(remaining)s visualizaciones."
 
 #: templates/dpaste/snippet_details.html:86
 msgid "It is automatically removed after the next view."
@@ -190,9 +181,13 @@ msgstr "Responder fragmento"
 #, python-format
 msgid ""
 "\n"
-"    Diff between <a href=\"%(filea_url)s\">#%(filea_id)s</a> and <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
+"    Diff between <a href=\"%(filea_url)s\">#%(filea_id)s</a> and <a href="
+"\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
 "    "
-msgstr "\nComparar entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> y <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>"
+msgstr ""
+"\n"
+"Comparar entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> y <a href="
+"\"%(fileb_url)s\">#%(fileb_id)s</a>"
 
 #: templates/dpaste/snippet_form.html:32
 msgid "Expire in"
@@ -201,6 +196,10 @@ msgstr "Caduca en"
 #: templates/dpaste/snippet_form.html:38
 msgid "Paste it"
 msgstr "Pegarlo"
+
+#: templates/dpaste/snippet_form.html:39
+msgid "or"
+msgstr ""
 
 #: templates/dpaste/snippet_list.html:16
 msgid "DATETIME_FORMAT"
@@ -215,4 +214,10 @@ msgstr "%(since)s atrás"
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
-msgstr "No hay fragmentos guardados. O sus fragmentos han caducado o su cookie cambió."
+msgstr ""
+"No hay fragmentos guardados. O sus fragmentos han caducado o su cookie "
+"cambió."
+
+#: views.py:200
+msgid "No changes were made between this two files."
+msgstr "No hay cambios entre estos dos archivos."

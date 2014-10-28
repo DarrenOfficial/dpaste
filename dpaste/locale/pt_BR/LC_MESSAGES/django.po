@@ -1,25 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Sergio Oliveira <seocam@seocam.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-25 10:08+0000\n"
+"POT-Creation-Date: 2014-10-28 11:03+0000\n"
 "PO-Revision-Date: 2014-10-25 14:25+0000\n"
 "Last-Translator: Sergio Oliveira <seocam@seocam.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/dpaste/language/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
+"dpaste/language/pt_BR/)\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: forms.py:11
-msgid "One Time Snippet"
+#: forms.py:11 models.py:38 templates/dpaste/snippet_details.html:59
+msgid "One-Time snippet"
 msgstr "Uma única visualização"
 
 #: forms.py:12
@@ -74,10 +75,6 @@ msgstr "Expira por tempo"
 msgid "Keep Forever"
 msgstr "Não expira"
 
-#: models.py:38
-msgid "One-Time snippet"
-msgstr "Uma única visualização"
-
 #: models.py:41
 msgid "Secret ID"
 msgstr "ID secreto"
@@ -94,19 +91,14 @@ msgstr "Tipo de validade"
 msgid "View count"
 msgstr "Visualizações"
 
-#: views.py:200
-msgid "No changes were made between this two files."
-msgstr "Nenhuma alterção feita entre esses dois arquivos."
-
-#: templates/dpaste/about.html:44
+#: templates/dpaste/about.html:59
 msgid "Statistics"
 msgstr "Estatísticas"
 
-#: templates/dpaste/about.html:46
+#: templates/dpaste/about.html:61
 #, python-format
 msgid ""
-"There are %(total)s snippets in the database. The most popular languages "
-"are:"
+"There are %(total)s snippets in the database. The most popular languages are:"
 msgstr "Existem %(total)s pastes no banco de dados. A linguagem mais popular é"
 
 #: templates/dpaste/base.html:8 templates/dpaste/base.html.py:21
@@ -139,10 +131,6 @@ msgstr "Expira em: %(date)s"
 #: templates/dpaste/snippet_details.html:57
 msgid "Snippet never expires"
 msgstr "Paste nunca expira"
-
-#: templates/dpaste/snippet_details.html:59
-msgid "One-time snippet"
-msgstr "Uma única visualização"
 
 #: templates/dpaste/snippet_details.html:63
 msgid "Really delete this snippet?"
@@ -189,9 +177,14 @@ msgstr "Responder paste"
 #, python-format
 msgid ""
 "\n"
-"    Diff between <a href=\"%(filea_url)s\">#%(filea_id)s</a> and <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
+"    Diff between <a href=\"%(filea_url)s\">#%(filea_id)s</a> and <a href="
+"\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
 "    "
-msgstr "\n    Diff entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> e <a href=\"%(fileb_url)s\">#%(fileb_id)s</a>\n    "
+msgstr ""
+"\n"
+"    Diff entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> e <a href="
+"\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
+"    "
 
 #: templates/dpaste/snippet_form.html:32
 msgid "Expire in"
@@ -200,6 +193,10 @@ msgstr "Expira em"
 #: templates/dpaste/snippet_form.html:38
 msgid "Paste it"
 msgstr "Criar paste"
+
+#: templates/dpaste/snippet_form.html:39
+msgid "or"
+msgstr ""
 
 #: templates/dpaste/snippet_list.html:16
 msgid "DATETIME_FORMAT"
@@ -214,4 +211,10 @@ msgstr "%(since)s atrás"
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
-msgstr "Nenhum paste salvo. Ou todos os seus pastes expiraram ou seu cookie foi alterado."
+msgstr ""
+"Nenhum paste salvo. Ou todos os seus pastes expiraram ou seu cookie foi "
+"alterado."
+
+#: views.py:200
+msgid "No changes were made between this two files."
+msgstr "Nenhuma alterção feita entre esses dois arquivos."

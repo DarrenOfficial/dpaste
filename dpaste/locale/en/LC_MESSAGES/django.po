@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-25 10:08+0000\n"
+"POT-Creation-Date: 2014-10-28 11:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:11
-msgid "One Time Snippet"
+#: forms.py:11 models.py:38 templates/dpaste/snippet_details.html:59
+msgid "One-Time snippet"
 msgstr ""
 
 #: forms.py:12
@@ -73,10 +73,6 @@ msgstr ""
 msgid "Keep Forever"
 msgstr ""
 
-#: models.py:38
-msgid "One-Time snippet"
-msgstr ""
-
 #: models.py:41
 msgid "Secret ID"
 msgstr ""
@@ -93,15 +89,11 @@ msgstr ""
 msgid "View count"
 msgstr ""
 
-#: views.py:200
-msgid "No changes were made between this two files."
-msgstr ""
-
-#: templates/dpaste/about.html:44
+#: templates/dpaste/about.html:59
 msgid "Statistics"
 msgstr ""
 
-#: templates/dpaste/about.html:46
+#: templates/dpaste/about.html:61
 #, python-format
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages are:"
@@ -136,10 +128,6 @@ msgstr ""
 
 #: templates/dpaste/snippet_details.html:57
 msgid "Snippet never expires"
-msgstr ""
-
-#: templates/dpaste/snippet_details.html:59
-msgid "One-time snippet"
 msgstr ""
 
 #: templates/dpaste/snippet_details.html:63
@@ -200,6 +188,10 @@ msgstr ""
 msgid "Paste it"
 msgstr ""
 
+#: templates/dpaste/snippet_form.html:39
+msgid "or"
+msgstr ""
+
 #: templates/dpaste/snippet_list.html:16
 msgid "DATETIME_FORMAT"
 msgstr ""
@@ -213,4 +205,8 @@ msgstr ""
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
+msgstr ""
+
+#: views.py:200
+msgid "No changes were made between this two files."
 msgstr ""

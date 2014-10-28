@@ -108,7 +108,7 @@ class SnippetTestCase(TestCase):
 
     def test_new_snippet_onetime(self):
         """
-        One-time snippets get deleted after two views.
+        One-Time snippets get deleted after two views.
         """
         # POST data
         data = self.valid_form_data()

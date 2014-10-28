@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-25 10:06+0000\n"
+"POT-Creation-Date: 2014-10-28 11:00+0000\n"
 "PO-Revision-Date: 2014-10-28 11:20+0100\n"
 "Last-Translator: Martin Mahner <martin@mahner.org>\n"
 "Language-Team: DE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.10\n"
 
-#: forms.py:11
-msgid "One Time Snippet"
+#: forms.py:11 models.py:38 templates/dpaste/snippet_details.html:59
+msgid "One-Time snippet"
 msgstr "One-Time snippet"
 
 #: forms.py:12
@@ -74,10 +74,6 @@ msgstr "Nach Zeitstempel auslaufen lassen"
 msgid "Keep Forever"
 msgstr "Für immer behalten"
 
-#: models.py:38
-msgid "One-Time snippet"
-msgstr "One-Time snippet"
-
 #: models.py:41
 msgid "Secret ID"
 msgstr "Geheime ID"
@@ -94,15 +90,11 @@ msgstr "Auslauftyp"
 msgid "View count"
 msgstr "Anzahl der Besuche"
 
-#: views.py:200
-msgid "No changes were made between this two files."
-msgstr "Zwischen diesen beiden Dateien wurden keine Änderungen gemacht."
-
-#: templates/dpaste/about.html:44
+#: templates/dpaste/about.html:59
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: templates/dpaste/about.html:46
+#: templates/dpaste/about.html:61
 #, python-format
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages are:"
@@ -139,10 +131,6 @@ msgstr "Erlischt in: %(date)s"
 msgid "Snippet never expires"
 msgstr "Snippet erlischt niemals"
 
-#: templates/dpaste/snippet_details.html:59
-msgid "One-time snippet"
-msgstr "One-Time snippet"
-
 #: templates/dpaste/snippet_details.html:63
 msgid "Really delete this snippet?"
 msgstr "Dieses Snippet wirklich löschen?"
@@ -165,7 +153,7 @@ msgstr "Gist"
 
 #: templates/dpaste/snippet_details.html:82
 msgid "This is a one-time snippet."
-msgstr "Dies ist ein One-Time snippet"
+msgstr "Dies ist ein One-Time Snippet."
 
 #: templates/dpaste/snippet_details.html:84
 #, python-format
@@ -205,6 +193,10 @@ msgstr "Erlischt in"
 msgid "Paste it"
 msgstr "Paste"
 
+#: templates/dpaste/snippet_form.html:39
+msgid "or"
+msgstr ""
+
 #: templates/dpaste/snippet_list.html:16
 msgid "DATETIME_FORMAT"
 msgstr "DATETIME_FORMAT"
@@ -212,7 +204,7 @@ msgstr "DATETIME_FORMAT"
 #: templates/dpaste/snippet_list.html:17
 #, python-format
 msgid "%(since)s ago"
-msgstr "seit %(since)s"
+msgstr "Vor %(since)s"
 
 #: templates/dpaste/snippet_list.html:23
 msgid ""
@@ -221,6 +213,10 @@ msgid ""
 msgstr ""
 "Keine Snippets gespeichert. Entweder sind alle deine Snippets erloschen oder "
 "dein Cookie hat sich geändert."
+
+#: views.py:200
+msgid "No changes were made between this two files."
+msgstr "Zwischen diesen beiden Dateien wurden keine Änderungen gemacht."
 
 #, fuzzy
 #~ msgid "Please fill out this field."
