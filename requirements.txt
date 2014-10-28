@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------
 
 # Project dependencies
-django==1.6.5
+django==1.7.1
 django-mptt==0.6.0
 pygments==1.6
 requests==2.0.0
@@ -22,4 +22,4 @@ sphinx_rtd_theme
 django-redis==3.3
 gunicorn==18.0
 south==0.8.2
-newrelic
+
