@@ -17,6 +17,21 @@
         <a href="https://github.com/bartTC/dpaste">github.com/bartTC/dpaste</a>
     </p>
 
+<form action="{% url 'set_language' %}" method="post">
+    {% csrf_token %}
+    Change the language:
+    <input name="next" type="hidden" value="{{ redirect_to }}" />
+    <select name="language">
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+            {{ language.name_local }} ({{ language.code }})
+        </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Go" />
+</form>
+
     <h3>API</h3>
 
     <p>dpaste provides a simple API documented in detail <a href="http://dpaste.readthedocs.org/en/latest/api.html">

@@ -1,6 +1,25 @@
 # Import global settings to make it easier to extend settings.
 from django.conf.global_settings import *
 
+
+#==============================================================================
+# Calculation of directories relative to the module location
+#==============================================================================
+import os
+import sys
+import dpaste
+
+PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
+    os.path.dirname(os.path.realpath(dpaste.__file__))
+)
+
+# Set the variable root to $VIRTUALENV/var.
+PYTHON_BIN = os.path.dirname(sys.executable)
+
+VAR_ROOT = os.path.join(os.path.dirname(PYTHON_BIN), 'var')
+if not os.path.exists(VAR_ROOT):
+    os.mkdir(VAR_ROOT)
+
 #==============================================================================
 # Generic Django project settings
 #==============================================================================
@@ -30,31 +49,20 @@ SECRET_KEY = 'CHANGE_ME'
 # I18N
 #==============================================================================
 
-USE_I18N = False
+USE_I18N = True
 USE_L10N = False
 
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', 'English'),
+    ('de', 'German'),
+    ('es', 'Spanish'),
+    ('pt-br', 'Portugese (Brasil)'),
 )
 
-#==============================================================================
-# Calculation of directories relative to the module location
-#==============================================================================
-import os
-import sys
-import dpaste
-
-PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
-    os.path.dirname(os.path.realpath(dpaste.__file__))
+LOCALE_PATHS = (
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
 )
-
-# Set the variable root to $VIRTUALENV/var.
-PYTHON_BIN = os.path.dirname(sys.executable)
-
-VAR_ROOT = os.path.join(os.path.dirname(PYTHON_BIN), 'var')
-if not os.path.exists(VAR_ROOT):
-    os.mkdir(VAR_ROOT)
 
 #==============================================================================
 # Static files
@@ -84,13 +92,15 @@ LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
+    'django.core.context_processors.i18n',
 )
 
 INSTALLED_APPS = (
