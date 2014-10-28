@@ -53,12 +53,12 @@ behavior without touching the code:
         Choices. A tuple of seconds and a descriptive string used in the lexer
         expiration dropdown. Example::
 
-            ugettext = lambda s: s
+            from django.utils.translation import ugettext_lazy as _
             DPASTE_EXPIRE_CHOICES = (
-                (3600, ugettext(u'In one hour')),
-                (3600 * 24 * 7, ugettext(u'In one week')),
-                (3600 * 24 * 30, ugettext(u'In one month')),
-                (3600 * 24 * 30 * 12 * 100, ugettext(u'100 Years')),
+                (3600, _(u'In one hour')),
+                (3600 * 24 * 7, _(u'In one week')),
+                (3600 * 24 * 30, _(u'In one month')),
+                (3600 * 24 * 30 * 12 * 100, _(u'100 Years')),
             )
 
         **One-Time snippets** are supported. One-Time snippets are automatically
@@ -66,12 +66,12 @@ behavior without touching the code:
         enable one-time snippets you have to add a choice ``onetime`` to the
         expire choices::
 
-            ugettext = lambda s: s
+            from django.utils.translation import ugettext_lazy as _
             DPASTE_EXPIRE_CHOICES = (
-                ('onetime', ugettext(u'One-Time snippet')),
-                (3600, ugettext(u'In one hour')),
-                (3600 * 24 * 7, ugettext(u'In one week')),
-                (3600 * 24 * 30, ugettext(u'In one month')),
+                ('onetime', _(u'One-Time snippet')),
+                (3600, _(u'In one hour')),
+                (3600 * 24 * 7, _(u'In one week')),
+                (3600 * 24 * 30, _(u'In one month')),
             )
 
         You can also set the maximum view count after what the snippet gets
@@ -84,10 +84,10 @@ behavior without touching the code:
         you set the choice key to ``never``. The management command will ignore
         these snippets::
 
-            ugettext = lambda s: s
+            from django.utils.translation import ugettext_lazy as _
             DPASTE_EXPIRE_CHOICES = (
-                (3600, ugettext(u'In one hour')),
-                (u'never', ugettext(u'Never')),
+                (3600, _(u'In one hour')),
+                (u'never', _(u'Never')),
             )
 
     ``DPASTE_EXPIRE_DEFAULT``
