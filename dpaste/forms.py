@@ -14,7 +14,7 @@ EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
     (3600 * 24 * 30, _(u'In one month')),
     ('never', _(u'Never')),
 ))
-EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', EXPIRE_CHOICES[3][0])
+EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', 3600)
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
 def get_expire_values(expires):
