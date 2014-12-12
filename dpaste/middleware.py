@@ -1,4 +1,5 @@
 import socket
+from django.http import HttpResponseBadRequest
 
 tor_bl = (
     '{remote_addr}.{server_port}.{server_ip}'
@@ -6,6 +7,12 @@ tor_bl = (
 open_proxy_bl = ('{remote_addr}.dnsbl.proxybl.org')
 rev_ip = lambda ip: '.'.join(reversed(ip.split('.')))
 
+response = """<html><body><h1>Access denied</h1>
+<p>It appears you're requesting this page from an open proxy or
+the TOR network. These networks are blocked due to numerous
+statutory violation related posts in the past.</p>
+<p>If you think this is wrong, <a href="https://github.com/bartTC/dpaste">file
+a bug on Github please</a>.</p></body></html>"""
 
 def in_blacklist(request, bl, ip=None):
     ip = ip or request.META['REMOTE_ADDR']
@@ -52,3 +59,6 @@ class SuspiciousIPMiddleware(object):
             return request.is_tor_exit_node() or request.is_open_proxy()
 
         request.is_suspicious = check_suspicious
+
+        if request.method == 'POST' and request.is_suspicious():
+            return HttpResponseBadRequest(response)
