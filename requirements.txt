@@ -6,20 +6,20 @@
 
 # Project dependencies
 django==1.7.1
-django-mptt==0.6.0
-pygments==1.6
-requests==2.0.0
+django-mptt==0.6.1
+pygments==2.0.1
+requests==2.5.0
 
 # Testing
-python-coveralls==2.4.0
-coverage==3.7
-tox==1.6.1
-docutils==0.11
-sphinx==1.2
+python-coveralls==2.4.3
+coverage==3.7.1
+tox==1.8.1
+docutils==0.12
+sphinx==1.2.3
 sphinx_rtd_theme
 
 # Deployment specific
-django-redis==3.3
-gunicorn==18.0
-south==0.8.2
+django-redis==3.8.0
+gunicorn==19.1.1
+south==1.0.1
 
