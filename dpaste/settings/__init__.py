@@ -108,7 +108,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
 
     'mptt',
-    'south',
     'gunicorn',
     'dpaste',
 )
