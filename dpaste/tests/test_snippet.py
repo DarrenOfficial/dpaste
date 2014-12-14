@@ -4,13 +4,13 @@ from datetime import timedelta
 
 from django.core import management
 from django.core.urlresolvers import reverse
-from django.test.client import Client
 from django.test import TestCase
+from django.test.client import Client
 from django.test.utils import override_settings
 
-from ..models import Snippet
 from ..forms import EXPIRE_DEFAULT
-from ..highlight import LEXER_DEFAULT, PLAIN_TEXT, PLAIN_CODE
+from ..highlight import LEXER_DEFAULT, PLAIN_CODE, PLAIN_TEXT
+from ..models import Snippet
 
 
 class SnippetTestCase(TestCase):
@@ -377,7 +377,7 @@ class SnippetTestCase(TestCase):
     def test_highlighting(self):
         # You can pass any lexer to the pygmentize function and it will
         # never fail loudly.
-        from dpaste.highlight import pygmentize
+        from ..highlight import pygmentize
         pygmentize('code', lexer_name='python')
         pygmentize('code', lexer_name='doesnotexist')
 

@@ -1,5 +1,5 @@
-from django.conf.urls import url, patterns
 from django.conf import settings
+from django.conf.urls import patterns, url
 
 L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
 

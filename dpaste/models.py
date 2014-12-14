@@ -1,13 +1,12 @@
 from random import SystemRandom
 
-from django.db import IntegrityError
-from django.db import models
-from django.core.urlresolvers import reverse
-from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
 import mptt
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
-from dpaste.highlight import LEXER_DEFAULT
+from .highlight import LEXER_DEFAULT
 
 R = SystemRandom()
 ONETIME_LIMIT = getattr(settings, 'DPASTE_ONETIME_LIMIT', 2)

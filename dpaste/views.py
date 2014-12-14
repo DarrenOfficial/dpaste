@@ -1,28 +1,27 @@
 import datetime
 import difflib
-import requests
 import json
 
-from django.shortcuts import (render_to_response, get_object_or_404)
-from django.template.context import RequestContext
-from django.http import (Http404, HttpResponseRedirect, HttpResponseBadRequest,
-    HttpResponse)
+import requests
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.db.models import Count
-from django.views.defaults import (page_not_found as django_page_not_found,
-    server_error as django_server_error)
+from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
+                         HttpResponseRedirect)
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template.context import RequestContext
+from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-
+from django.views.defaults import page_not_found as django_page_not_found
+from django.views.defaults import server_error as django_server_error
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
-from dpaste.forms import SnippetForm, get_expire_values, EXPIRE_CHOICES
-from dpaste.models import Snippet, ONETIME_LIMIT
-from dpaste.highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_WORDWRAP,
-    LEXER_LIST, PLAIN_CODE)
+from .forms import EXPIRE_CHOICES, get_expire_values, SnippetForm
+from .highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST,
+                              LEXER_WORDWRAP, PLAIN_CODE)
+from .models import ONETIME_LIMIT, Snippet
 
 template_globals = {
     'site_name': getattr(settings, 'DPASTE_SITE_NAME', 'dpaste.de'),

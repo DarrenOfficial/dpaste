@@ -1,5 +1,6 @@
 from django.template import Library
-from dpaste.highlight import pygmentize
+
+from ..highlight import pygmentize
 
 register = Library()
 

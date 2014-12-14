@@ -4,8 +4,8 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from dpaste.models import Snippet
-from dpaste.highlight import LEXER_LIST, LEXER_DEFAULT, LEXER_KEYS
+from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST
+from .models import Snippet
 
 EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
     ('onetime', _(u'One-Time snippet')),

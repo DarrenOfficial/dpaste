@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
 from sys import exit
+
+from setuptools import find_packages, setup
+from setuptools.command.test import test as TestCommand
+
 
 class Tox(TestCommand):
     def finalize_options(self):

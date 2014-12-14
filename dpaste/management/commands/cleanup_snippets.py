@@ -1,8 +1,11 @@
 import sys
 from optparse import make_option
+
 from django.core.management.base import LabelCommand
 from django.utils import timezone
+
 from dpaste.models import Snippet
+
 
 class Command(LabelCommand):
     option_list = LabelCommand.option_list + (

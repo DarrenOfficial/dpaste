@@ -1,10 +1,9 @@
-from pygments import highlight
-from pygments.lexers import *
-from pygments.formatters import HtmlFormatter
-
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import escape
+from django.utils.translation import ugettext_lazy as _
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import *
 
 """
 # Get a list of all lexer, and then remove all lexer which have '-' or '+'

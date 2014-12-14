@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 from django.core.urlresolvers import reverse
-from django.test.client import Client
 from django.test import TestCase
+from django.test.client import Client
 
-from ..models import Snippet
 from ..highlight import PLAIN_CODE
+from ..models import Snippet
+
 
 class SnippetAPITestCase(TestCase):
 
