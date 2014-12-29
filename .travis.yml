@@ -28,7 +28,6 @@ branches:
 
 install:
   - "pip install coverage==3.7"
-  - "pip install python-coveralls==2.4.0"
   - "pip install Django==$DJANGO"
   - "pip install -e ."
 
