@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-28 11:02+0000\n"
+"POT-Creation-Date: 2014-12-29 10:42+0000\n"
 "PO-Revision-Date: 2014-10-27 17:05+0000\n"
 "Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/dpaste/language/"
@@ -20,83 +20,84 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:11 models.py:38 templates/dpaste/snippet_details.html:59
+#: dpaste/forms.py:11 dpaste/models.py:37
+#: dpaste/templates/dpaste/snippet_details.html:59
 msgid "One-Time snippet"
 msgstr "Apenas una visualización"
 
-#: forms.py:12
+#: dpaste/forms.py:12
 msgid "In one hour"
 msgstr "En una hora"
 
-#: forms.py:13
+#: dpaste/forms.py:13
 msgid "In one week"
 msgstr "En una semana"
 
-#: forms.py:14
+#: dpaste/forms.py:14
 msgid "In one month"
 msgstr "En un mes"
 
-#: forms.py:15
+#: dpaste/forms.py:15
 msgid "Never"
 msgstr "Nunca"
 
-#: forms.py:36 models.py:43
+#: dpaste/forms.py:36 dpaste/models.py:42
 msgid "Content"
 msgstr "Contenido"
 
-#: forms.py:37
+#: dpaste/forms.py:37
 msgid "Awesome code goes here..."
 msgstr "Su código increíble va aquí..."
 
-#: forms.py:42 models.py:44
+#: dpaste/forms.py:42 dpaste/models.py:43
 msgid "Lexer"
 msgstr "Lexer"
 
-#: forms.py:49 models.py:48
+#: dpaste/forms.py:49 dpaste/models.py:47
 msgid "Expires"
 msgstr "Caduca"
 
-#: forms.py:57
+#: dpaste/forms.py:57
 msgid "Title"
 msgstr "Título"
 
-#: forms.py:85
+#: dpaste/forms.py:85
 msgid "This field is required."
 msgstr "Este campo es obligatorio."
 
-#: highlight.py:34
+#: dpaste/highlight.py:33
 msgid "Highlighted"
 msgstr "Destacado"
 
-#: models.py:36
+#: dpaste/models.py:35
 msgid "Expire by timestamp"
 msgstr "Caduca por fecha y hora"
 
-#: models.py:37
+#: dpaste/models.py:36
 msgid "Keep Forever"
 msgstr "Guarde por siempre"
 
-#: models.py:41
+#: dpaste/models.py:40
 msgid "Secret ID"
 msgstr "ID secreto"
 
-#: models.py:45
+#: dpaste/models.py:44
 msgid "Published"
 msgstr "Publicado"
 
-#: models.py:46
+#: dpaste/models.py:45
 msgid "Expire Type"
 msgstr "Tipo de Caducidad  "
 
-#: models.py:49
+#: dpaste/models.py:48
 msgid "View count"
 msgstr "Visualizaciones"
 
-#: templates/dpaste/about.html:59
+#: dpaste/templates/dpaste/about.html:59
 msgid "Statistics"
 msgstr " Estadísticas"
 
-#: templates/dpaste/about.html:61
+#: dpaste/templates/dpaste/about.html:61
 #, python-format
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages are:"
@@ -104,80 +105,81 @@ msgstr ""
 "Hay %(total)s fragmentos en la base de datos. Los lenguajes más populares "
 "son:"
 
-#: templates/dpaste/base.html:8 templates/dpaste/base.html.py:21
-#: templates/dpaste/snippet_new.html:6 templates/dpaste/snippet_new.html:7
+#: dpaste/templates/dpaste/base.html:8 dpaste/templates/dpaste/base.html:21
+#: dpaste/templates/dpaste/snippet_new.html:6
+#: dpaste/templates/dpaste/snippet_new.html:7
 msgid "New snippet"
 msgstr "Nuevo fragmento"
 
-#: templates/dpaste/base.html:19
+#: dpaste/templates/dpaste/base.html:19
 msgid "About"
 msgstr "Acerca"
 
-#: templates/dpaste/base.html:20
+#: dpaste/templates/dpaste/base.html:20
 msgid "History"
 msgstr "Histórico"
 
-#: templates/dpaste/snippet_details.html:8
-#: templates/dpaste/snippet_details.html:9
+#: dpaste/templates/dpaste/snippet_details.html:8
+#: dpaste/templates/dpaste/snippet_details.html:9
 msgid "Snippet"
 msgstr "Fragmento"
 
-#: templates/dpaste/snippet_details.html:41
+#: dpaste/templates/dpaste/snippet_details.html:41
 msgid "Compare"
 msgstr "Comparar"
 
-#: templates/dpaste/snippet_details.html:55
+#: dpaste/templates/dpaste/snippet_details.html:55
 #, python-format
 msgid "Expires in: %(date)s"
 msgstr "Caduca en: %(date)s"
 
-#: templates/dpaste/snippet_details.html:57
+#: dpaste/templates/dpaste/snippet_details.html:57
 msgid "Snippet never expires"
 msgstr "El fragmento nunca caduca"
 
-#: templates/dpaste/snippet_details.html:63
+#: dpaste/templates/dpaste/snippet_details.html:63
 msgid "Really delete this snippet?"
 msgstr "¿Realmente desea eliminar este fragmento?"
 
-#: templates/dpaste/snippet_details.html:63
+#: dpaste/templates/dpaste/snippet_details.html:63
 msgid "Delete Now"
 msgstr "Eliminar ahora"
 
-#: templates/dpaste/snippet_details.html:66
+#: dpaste/templates/dpaste/snippet_details.html:66
 msgid "Compare Snippets"
 msgstr "Comparar Snippets"
 
-#: templates/dpaste/snippet_details.html:69
+#: dpaste/templates/dpaste/snippet_details.html:69
 msgid "View Raw"
 msgstr "Ver en crudo"
 
-#: templates/dpaste/snippet_details.html:73
+#: dpaste/templates/dpaste/snippet_details.html:73
 msgid "Gist"
 msgstr "Gist"
 
-#: templates/dpaste/snippet_details.html:82
+#: dpaste/templates/dpaste/snippet_details.html:82
 msgid "This is a one-time snippet."
 msgstr "Este fragmento podrá ser visualizado apenas sólo una vez."
 
-#: templates/dpaste/snippet_details.html:84
+#: dpaste/templates/dpaste/snippet_details.html:84
 #, python-format
 msgid "It is automatically removed after %(remaining)s further views."
 msgstr ""
 "Automáticamente eliminado después de más %(remaining)s visualizaciones."
 
-#: templates/dpaste/snippet_details.html:86
+#: dpaste/templates/dpaste/snippet_details.html:86
 msgid "It is automatically removed after the next view."
 msgstr "Automáticamente eliminado después de la próxima visualización."
 
-#: templates/dpaste/snippet_details.html:88
+#: dpaste/templates/dpaste/snippet_details.html:88
 msgid "It cannot be viewed again."
 msgstr "No puede sera más visualizado."
 
-#: templates/dpaste/snippet_details.html:108
+#: dpaste/templates/dpaste/snippet_details.html:108
 msgid "Reply to this snippet"
 msgstr "Responder fragmento"
 
-#: templates/dpaste/snippet_diff.html:5
+#: dpaste/templates/dpaste/snippet_diff.html:5
 #, python-format
 msgid ""
 "\n"
@@ -189,28 +191,28 @@ msgstr ""
 "Comparar entre <a href=\"%(filea_url)s\">#%(filea_id)s</a> y <a href="
 "\"%(fileb_url)s\">#%(fileb_id)s</a>"
 
-#: templates/dpaste/snippet_form.html:32
+#: dpaste/templates/dpaste/snippet_form.html:32
 msgid "Expire in"
 msgstr "Caduca en"
 
-#: templates/dpaste/snippet_form.html:38
+#: dpaste/templates/dpaste/snippet_form.html:38
 msgid "Paste it"
 msgstr "Pegarlo"
 
-#: templates/dpaste/snippet_form.html:39
+#: dpaste/templates/dpaste/snippet_form.html:39
 msgid "or"
 msgstr ""
 
-#: templates/dpaste/snippet_list.html:16
+#: dpaste/templates/dpaste/snippet_list.html:16
 msgid "DATETIME_FORMAT"
 msgstr "DATETIME_FORMAT"
 
-#: templates/dpaste/snippet_list.html:17
+#: dpaste/templates/dpaste/snippet_list.html:17
 #, python-format
 msgid "%(since)s ago"
 msgstr "%(since)s atrás"
 
-#: templates/dpaste/snippet_list.html:23
+#: dpaste/templates/dpaste/snippet_list.html:23
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
@@ -218,6 +220,6 @@ msgstr ""
 "No hay fragmentos guardados. O sus fragmentos han caducado o su cookie "
 "cambió."
 
-#: views.py:200
+#: dpaste/views.py:199
 msgid "No changes were made between this two files."
 msgstr "No hay cambios entre estos dos archivos."
