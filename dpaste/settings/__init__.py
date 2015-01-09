@@ -74,11 +74,8 @@ STATIC_ROOT = os.path.join(VAR_ROOT, 'static')
 # Project URLS and media settings
 #==============================================================================
 
-MEDIA_URL = '/uploads/'
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-
-MEDIA_ROOT = os.path.join(VAR_ROOT, 'uploads')
 
 ROOT_URLCONF = 'dpaste.urls'
 
