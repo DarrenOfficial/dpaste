@@ -7,7 +7,7 @@ suite locally with tox_::
 
     $ cd dpaste/
     $ pip install tox
-    $ tox
+    $ tox --skip-missing-interpreters
 
 A more manual approach is installing it all by hand in a virtual environment.
 This is also the preferred way to setup an environment for local development::
