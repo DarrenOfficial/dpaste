@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpaste\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-29 10:42+0000\n"
+"POT-Creation-Date: 2015-08-12 04:00+0000\n"
 "PO-Revision-Date: 2014-10-28 11:20+0100\n"
 "Last-Translator: Martin Mahner <martin@mahner.org>\n"
 "Language-Team: DE <LL@li.org>\n"
@@ -197,7 +197,7 @@ msgstr "Paste"
 
 #: dpaste/templates/dpaste/snippet_form.html:39
 msgid "or"
-msgstr ""
+msgstr "oder"
 
 #: dpaste/templates/dpaste/snippet_list.html:16
 msgid "DATETIME_FORMAT"
