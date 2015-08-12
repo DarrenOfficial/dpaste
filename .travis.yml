@@ -26,4 +26,4 @@ install:
   - "pip install -e ."
 
 script:
-    runtests.py
+    python runtests.py
