@@ -3,30 +3,39 @@ import sys
 
 from django.conf import settings
 
-if not settings.configured:
-    settings.configure(
-        DATABASES={
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': 'dev.db',
-            }
+SETTINGS = {
+    'DATABASES': {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'dev.db',
         },
-        INSTALLED_APPS=[
-            'django.contrib.sessions',
-            'django.contrib.staticfiles',
-            'mptt',
-            'dpaste',
-        ],
-        MIDDLEWARE_CLASSES=(
-            'django.contrib.sessions.middleware.SessionMiddleware',
-        ),
-        STATIC_ROOT='/tmp/dpaste_test_static/',
-        STATIC_URL='/static/',
-        ROOT_URLCONF='dpaste.urls',
-    )
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.mysql',
+        #     'NAME': 'dpaste',
+        #     'USER': 'root',
+        #     'PASSWORD': '',
+        # }
+    },
+    'INSTALLED_APPS': [
+        'django.contrib.sessions',
+        'django.contrib.staticfiles',
+        'mptt',
+        'dpaste',
+    ],
+    'MIDDLEWARE_CLASSES': (
+        'django.contrib.sessions.middleware.SessionMiddleware',
+    ),
+    'STATIC_ROOT': '/tmp/dpaste_test_static/',
+    'STATIC_URL': '/static/',
+    'ROOT_URLCONF': 'dpaste.urls'
+}
 
 def runtests(*test_args):
-    # New Django 1.7 app registry
+    # Setup settings
+    if not settings.configured:
+        settings.configure(**SETTINGS)
+
+    # New Django 1.7 app registry setup
     try:
         from django import setup
         setup()
@@ -40,7 +49,7 @@ def runtests(*test_args):
         from django.test.simple import DjangoTestSuiteRunner as TestRunner
 
     test_runner = TestRunner(verbosity=1)
-    failures = test_runner.run_tests(['dpaste', ])
+    failures = test_runner.run_tests(['dpaste'])
     if failures:
         sys.exit(failures)
 
