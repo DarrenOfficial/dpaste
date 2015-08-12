@@ -5,7 +5,7 @@ from django.conf import settings
 
 if not settings.configured:
     settings.configure(
-        DATABASES = {
+        DATABASES={
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': 'dev.db',
@@ -17,7 +17,7 @@ if not settings.configured:
             'mptt',
             'dpaste',
         ],
-        MIDDLEWARE_CLASSES = (
+        MIDDLEWARE_CLASSES=(
             'django.contrib.sessions.middleware.SessionMiddleware',
         ),
         STATIC_ROOT='/tmp/dpaste_test_static/',
@@ -26,8 +26,6 @@ if not settings.configured:
     )
 
 def runtests(*test_args):
-    from django.test.simple import DjangoTestSuiteRunner
-
     # New Django 1.7 app registry
     try:
         from django import setup
@@ -35,7 +33,13 @@ def runtests(*test_args):
     except ImportError:
         pass
 
-    test_runner = DjangoTestSuiteRunner(verbosity=1)
+    # New Django 1.8 test runner
+    try:
+        from django.test.runner import DiscoverRunner as TestRunner
+    except ImportError:
+        from django.test.simple import DjangoTestSuiteRunner as TestRunner
+
+    test_runner = TestRunner(verbosity=1)
     failures = test_runner.run_tests(['dpaste', ])
     if failures:
         sys.exit(failures)

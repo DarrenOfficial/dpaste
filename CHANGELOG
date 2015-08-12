@@ -1,10 +1,15 @@
 Changelog
 =========
 
+
+
 2.9 (DEV)
 ----------------
 
-* Fully Django 1.7 support
+* Full Django 1.7 support
+* Full Django 1.8 support
+* New Django migrations, with fallback to South migrations if South is
+  installed.
 * Added i18n support and several languages
 * More settings can be overrridden, like the jQuery URL, site name and wether
   you want to enable Gthub Gist.
