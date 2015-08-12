@@ -3,6 +3,7 @@ source = dpaste
 branch = True
 omit =
     dpaste/migrations/*
+    dpaste/south_migrations/*
     dpaste/tests/*
     dpaste/settings/*
 
