@@ -11,12 +11,12 @@ pygments==2.0.1
 requests==2.5.1
 
 # Testing
-python-coveralls==2.4.3
-coverage==3.7.1
-tox==1.8.1
-docutils==0.12
-sphinx==1.2.3
+coverage
+tox
+docutils
+sphinx
 sphinx_rtd_theme
+mysql-python
 
 # Deployment specific
 django-redis==3.8.0
