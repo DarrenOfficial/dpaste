@@ -10,7 +10,7 @@ necessary dependencies of dpaste as well::
 
     pip install dpaste
 
-Add ``dpaste`` and (preferred) ``south`` to your ``INSTALLED_APPS``::
+Add ``dpaste`` and ``mptt`` to your ``INSTALLED_APPS``::
 
     INSTALLED_APPS = (
         'django.contrib.sessions',
@@ -19,10 +19,9 @@ Add ``dpaste`` and (preferred) ``south`` to your ``INSTALLED_APPS``::
 
         'mptt',
         'dpaste',
-        # 'south', (supported)
     )
 
-Add ``dpaste`` and if you want the ``dpaste_api`` to your urlpatterns::
+Add ``dpaste`` — and if you want — the ``dpaste_api`` to your urlpatterns::
 
     urlpatterns = patterns('',
         # ...
@@ -31,7 +30,7 @@ Add ``dpaste`` and if you want the ``dpaste_api`` to your urlpatterns::
         url(r'pastebin/api/', include('dpaste.urls.dpaste_api')),
     )
 
-Finally just ``syncdb`` or if you use South, migrate::
+Finally just migrate the database schema::
 
     manage.py migrate dpaste
 
