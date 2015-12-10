@@ -44,7 +44,7 @@ Can also be set via GET. The format of the API response. Choices are:
     {
         "url": "https://dpaste.de/xsWd",
         "lexer": "python",
-        "conent": "The text body of the snippet."
+        "content": "The text body of the snippet."
     }
 
 
@@ -74,7 +74,7 @@ filename! Example::
         "url": "https://dpaste.de/xsWd",
         "lexer": "",
         "filename": "python",
-        "conent": "The text body of the snippet."
+        "content": "The text body of the snippet."
     }
 
 This will create a ``python`` highlighted snippet. However in this example::
@@ -83,7 +83,7 @@ This will create a ``python`` highlighted snippet. However in this example::
         "url": "https://dpaste.de/xsWd",
         "lexer": "php",
         "filename": "python",
-        "conent": "The text body of the snippet."
+        "content": "The text body of the snippet."
     }
 
 Since the lexer is set too, we will create a ``php`` highlighted snippet.
