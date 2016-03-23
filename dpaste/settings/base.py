@@ -25,7 +25,6 @@ if not os.path.exists(VAR_ROOT):
 #==============================================================================
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -95,15 +94,24 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'django.core.context_processors.request',
-    'django.core.context_processors.i18n',
-)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+            ],
+        },
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sessions',
-
     'mptt',
     'gunicorn',
     'dpaste',

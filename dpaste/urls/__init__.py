@@ -1,12 +1,10 @@
-from django.conf.urls import url, patterns, include
+from django.conf.urls import url, include
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^', include('dpaste.urls.dpaste_api')),
     url(r'^', include('dpaste.urls.dpaste')),
-
-    (r'^i18n/', include('django.conf.urls.i18n')),
-)
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+]
 
 # Custom error handlers which load `dpaste/<code>.html` instead of `<code>.html`
 handler404 = 'dpaste.views.page_not_found'
