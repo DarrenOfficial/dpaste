@@ -20,13 +20,13 @@ The UTF-8 encoded string you want to paste.
 ``lexer`` (optional)
 ~~~~~~~~~~~~~~~~~~~~
 
-Can also be set via GET. The lexer string key used for highlighting.
-See `lexer list`_  for a full list of choices. Default: ``python``.
+The lexer string key used for highlighting. See `lexer list`_  for a full list
+of choices. Default: ``python``.
 
 ``format`` (optional)
 ~~~~~~~~~~~~~~~~~~~~~
 
-Can also be set via GET. The format of the API response. Choices are:
+The format of the API response. Choices are:
 
 * ``default`` — Returns a full qualified URL wrapped in quotes. Example::
 
@@ -51,10 +51,10 @@ Can also be set via GET. The format of the API response. Choices are:
 ``expires`` (optional)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Can also be set via GET. A keyword to indicate the lifetime of a
-snippetn in seconds. The values are predefined by the server. Calling this with
-an invalid value returns a HTTP 400 BadRequest together with a list of valid
-values. Default: ``2592000``. In the default configuration valid values are:
+A keyword to indicate the lifetime of a snippetn in seconds. The values are
+predefined by the server. Calling this with an invalid value returns a HTTP 400
+BadRequest together with a list of valid values. Default: ``2592000``. In the
+default configuration valid values are:
 
 * onetime
 * never
@@ -65,10 +65,9 @@ values. Default: ``2592000``. In the default configuration valid values are:
 ``filename`` (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Can also be set via GET. A filename which we use to determine a lexer, if
-``lexer`` is not set. In case we can't determine a file, the lexer will fallback
-to ``plain`` code (no highlighting). A given ``lexer`` will overwrite any
-filename! Example::
+A filename which we use to determine a lexer, if ``lexer`` is not set. In case
+we can't determine a file, the lexer will fallback to ``plain`` code (no
+highlighting). A given ``lexer`` will overwrite any filename! Example::
 
     {
         "url": "https://dpaste.de/xsWd",
