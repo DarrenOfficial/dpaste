@@ -38,6 +38,7 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
         ('bash', 'Bash'),
         ('bbcode', 'BBCode'),
         ('c', 'C'),
+        ('cpp', 'C++'),
         ('clojure', 'Clojure'),
         ('cobol', 'COBOL'),
         ('css', 'CSS'),
