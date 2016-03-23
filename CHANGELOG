@@ -1,10 +1,16 @@
 Changelog
 =========
 
-2.10 (...)
-----------------
+2.10 (2016-03-23)
+-----------------
 
-* tbd
+* Dropped Django 1.4 and 1.7 support!
+* Full Django 1.8 support
+* Full Django 1.9 support
+* C++ Lexer is enabled by default
+* (Backwards incompatible) All API calls must pass the data within a POST
+  request. It can't mix POST and GET arguments anymore. This was weird behavior
+  anyway and is likely no issue for any paste plugin out there.
 
 2.9 (2015-08-12)
 ----------------
