@@ -49,8 +49,8 @@ setup(
     },
     include_package_data=True,
     install_requires=[
-        'django>=1.4',
-        'django-mptt>=0.7.4',
+        'django>=1.8',
+        'django-mptt>=0.8.3',
         'pygments>=1.6',
         'requests>=2.0.0',
     ],

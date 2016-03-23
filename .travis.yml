@@ -1,31 +1,22 @@
-sudo: false
-
 language: python
 
 python:
   - 2.7
-  - 3.4
+  - 3.5
 
 env:
-  - DJANGO=1.4.21
-  - DJANGO=1.7.9
-  - DJANGO=1.8.3
+  - DJANGO=1.8.*
+  - DJANGO=1.9.*
 
-matrix:
-  exclude:
-    - python: 3.4
-      env: DJANGO=1.4.21
-    - python: 3.4
-      env: DJANGO=1.7.9
-
-branches:
-  only:
-    - master
-    - develop
+before_install:
+  - pip install codecov
 
 install:
-  - "pip install Django==$DJANGO"
-  - "pip install -e ."
+  - pip install django==$DJANGO
+  - pip install -e .
 
 script:
-    python runtests.py
+  - coverage run runtests.py
+
+after_success:
+  - codecov

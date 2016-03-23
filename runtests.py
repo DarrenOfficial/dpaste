@@ -16,6 +16,19 @@ SETTINGS = {
         #     'PASSWORD': '',
         # }
     },
+    'TEMPLATES': [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                ],
+            },
+        },
+    ],
     'INSTALLED_APPS': [
         'django.contrib.sessions',
         'django.contrib.staticfiles',
