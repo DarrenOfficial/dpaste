@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.11 (master)
+-----------------
+
+* Dropped the Github Gist export function.
+* All views are now class based and use the latest generic based views sugar
+  provided by Django.
+
 2.10 (2016-03-23)
 -----------------
 
