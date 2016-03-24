@@ -53,6 +53,7 @@ setup(
         'django-mptt>=0.8.3',
         'pygments>=1.6',
         'requests>=2.0.0',
+        'django-markup>=1.0',
     ],
     tests_require=[
         'tox>=1.6.1'

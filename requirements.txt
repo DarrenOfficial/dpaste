@@ -7,6 +7,7 @@
 # Project dependencies
 django==1.9.*
 django-mptt
+django-markup
 pygments
 requests
 
@@ -16,7 +17,6 @@ tox
 docutils
 sphinx
 sphinx_rtd_theme
-mysql-python
 
 # Deployment specific
 django-redis==3.8.0

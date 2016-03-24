@@ -24,13 +24,18 @@ LEXER_LIST = sorted(LEXER_LIST)
 
 # The list of lexers. Its not worth to autogenerate this. See above how to
 # retrieve this.
-PLAIN_TEXT = 'text'  # lexer name whats rendered as text (paragraphs)
-PLAIN_CODE = 'plain' # lexer name of code with no hihglighting
+PLAIN_TEXT = '_text_plain'  # lexer name whats rendered as text (paragraphs)
+PLAIN_CODE = '_code' # lexer name of code with no hihglighting
 
 LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
-    (PLAIN_TEXT, 'Text'),
-    (PLAIN_CODE, 'Code'),
-    (_('Highlighted'), (
+    (_('Text'), (
+        ('_text_plain', 'Plain Text'),
+        ('_text_markdown', 'Markdown'),
+        ('_text_rst', 'reStructuredText'),
+        ('_text_textile', 'Textile'),
+    )),
+    (_('Code'), (
+        (PLAIN_CODE, 'Plain Code'),
         ('abap', 'ABAP'),
         ('apacheconf', 'ApacheConf'),
         ('applescript', 'AppleScript'),
@@ -103,13 +108,20 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     ))
 ))
 
-LEXER_KEYS = [PLAIN_TEXT, PLAIN_CODE] + [i for i in dict(LEXER_LIST[2][1]).keys()]
+# Generate a list of all keys of all lexer
+LEXER_KEYS = []
+
+for i in LEXER_LIST:
+    for j, k in i[1]:
+        LEXER_KEYS.append(j)
 
 # The default lexer is python
 LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
 
 # Lexers which have wordwrap enabled by default
-LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', ('text', 'rst'))
+LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', 
+    ('text', 'rst')
+)
 
 class NakedHtmlFormatter(HtmlFormatter):
     def wrap(self, source, outfile):
