@@ -15,6 +15,5 @@ urlpatterns = [
 
     url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/?$' % L, views.SnippetDetailView.as_view(), name='snippet_details'),
     url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/delete/$' % L, views.SnippetDeleteView.as_view(), name='snippet_delete'),
-    url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/gist/$' % L, views.snippet_gist, name='snippet_gist'),
     url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/raw/?$' % L, views.SnippetRawView.as_view(), name='snippet_details_raw'),
 ]

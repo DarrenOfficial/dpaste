@@ -227,37 +227,6 @@ class SnippetDiffView(TemplateView):
         return ctx
 
 
-def snippet_gist(request, snippet_id): # pragma: no cover
-    """
-    Put a snippet on Github Gist.
-    """
-    if not getattr(settings, 'DPASTE_ENABLE_GIST', True):
-        raise Http404('Gist creation is disabled on this installation.')
-
-    snippet = get_object_or_404(Snippet, secret_id=snippet_id)
-    data = {
-        'description': getattr(settings, 'DPASTE_DEFAULT_GIST_DESCRIPTION', ''),
-        'public': False,
-        'files': {
-            getattr(settings, 'DPASTE_DEFAULT_GIST_NAME', 'dpaste.de_snippet.py'): {
-                'content': snippet.content,
-            }
-        }
-    }
-
-    try:
-        payload = json.dumps(data)
-        response = requests.post('https://api.github.com/gists', data=payload)
-        response_dict = response.json()
-        gist_url = response_dict.get('html_url')
-
-    # Github could be down, could return invalid JSON, it's rare
-    except:
-        return HttpResponse('Creating a Github Gist failed. Sorry, please go back and try again.')
-
-    return HttpResponseRedirect(gist_url)
-
-
 # -----------------------------------------------------------------------------
 # Static pages
 # -----------------------------------------------------------------------------

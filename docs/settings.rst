@@ -98,6 +98,8 @@ behavior without touching the code:
         Boolean. Whether to display the Gist button for re-pasting to GitHub.
         Default: ``True``
 
+        ..warning: This feature was removed in v2.11.
+
     ``DPASTE_DEFAULT_GIST_NAME``
         String. The filename used when pasting a snippet on Github Gist.
         Default: ``dpaste.de_snippet.py``

@@ -67,10 +67,6 @@
         {% if snippet.expire_type != 3 %}
         <a class="btn" href="{% url "snippet_details_raw" snippet.secret_id %}"><i class="icon-align-left"></i> {% trans "View Raw" %}</a>
         {% endif %}
-        {% if gist %}
-        <a class="btn" href="{% url "snippet_gist" snippet.secret_id %}"
-            rel="nofollow" title="Create a secret Gist"><i class="icon-share"></i> {% trans "Gist" %}</a>
-        {% endif %}
         {% if snippet.lexer != 'text' %}
         <a class="btn" href="#" id="toggleWordwrap">Wordwrap</a>
         {% endif %}
