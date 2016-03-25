@@ -2,7 +2,6 @@ import datetime
 import difflib
 import json
 
-import requests
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
@@ -22,7 +21,7 @@ from pygments.util import ClassNotFound
 
 from .forms import EXPIRE_CHOICES, get_expire_values, SnippetForm
 from .highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST,
-                              LEXER_WORDWRAP, PLAIN_CODE)
+                              LEXER_WORDWRAP, PLAIN_CODE, pygmentize)
 from .models import ONETIME_LIMIT, Snippet
 
 template_globals = {
@@ -107,13 +106,18 @@ class SnippetDetailView(SnippetView, DetailView):
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
         ctx.update(template_globals)
         ctx.update({
-            'lines': range(snippet.get_linecount()),
+            'highlighted': self.highlight_snippet().splitlines(),
             'tree': tree,
             'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
-            'gist': getattr(settings, 'DPASTE_ENABLE_GIST', True),
         })
         return ctx
 
+    def highlight_snippet(self):
+        snippet = self.get_object()
+        h = pygmentize(snippet.content, snippet.lexer)
+        h = h.replace(u'  ', u'&nbsp;&nbsp;')
+        h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        return h
 
 class SnippetRawView(SnippetDetailView):
     """
@@ -216,11 +220,20 @@ class SnippetDiffView(TemplateView):
 
         return diff
 
+    def highlight_snippet(self, content):
+        h = pygmentize(content, 'diff')
+        h = h.replace(u'  ', u'&nbsp;&nbsp;')
+        h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+        return h
+
     def get_context_data(self, **kwargs):
+        diff = self.get_diff()
+        highlighted = self.highlight_snippet(diff.content)
         ctx = super(SnippetDiffView, self).get_context_data(**kwargs)
         ctx.update(template_globals)
         ctx.update({
-            'snippet': self.get_diff(),
+            'snippet': diff,
+            'highlighted': highlighted.splitlines(),
             'fileA': self.fileA,
             'fileB': self.fileB,
         })

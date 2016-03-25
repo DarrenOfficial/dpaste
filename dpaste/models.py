@@ -52,9 +52,6 @@ class Snippet(models.Model):
         ordering = ('-published',)
         db_table = 'dpaste_snippet'
 
-    def get_linecount(self):
-        return len(self.content.splitlines())
-
     @property
     def remaining_views(self):
         if self.expire_type == self.EXPIRE_ONETIME:
