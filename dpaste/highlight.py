@@ -79,6 +79,7 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
         ('properties', 'Properties'),
         ('puppet', 'Puppet'),
         ('python', 'Python'),
+        ('r', 'R'),
         ('rb', 'Ruby'),
         ('rst', 'reStructuredText'),
         ('rust', 'Rust'),
