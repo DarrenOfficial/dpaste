@@ -1,3 +1,4 @@
+
 # Import global settings to make it easier to extend settings.
 from django.conf.global_settings import *
 
@@ -57,6 +58,7 @@ LANGUAGES = (
     ('de', 'German'),
     ('es', 'Spanish'),
     ('pt-br', 'Portugese (Brasil)'),
+    ('fr', 'Français'),
 )
 
 LOCALE_PATHS = (
