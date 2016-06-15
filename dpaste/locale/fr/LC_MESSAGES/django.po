@@ -45,7 +45,7 @@ msgstr "Contenu"
 
 #: dpaste/forms.py:37
 msgid "Awesome code goes here..."
-msgstr "Copier-coller votre code ici"
+msgstr "Copier-coller votre fragment de code ici"
 
 #: dpaste/forms.py:42 dpaste/models.py:43
 msgid "Lexer"
@@ -73,7 +73,7 @@ msgstr ""
 
 #: dpaste/models.py:36
 msgid "Keep Forever"
-msgstr ""
+msgstr "Ce snippet ne sera jamais supprimer "
 
 #: dpaste/models.py:40
 msgid "Secret ID"
@@ -100,6 +100,8 @@ msgstr "Statistiques"
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages are:"
 msgstr ""
+"Il y a %(total)s snippets dans la base de données. Les langages de programmation "
+"les plus populaire sont:"
 
 #: dpaste/templates/dpaste/base.html:7 dpaste/templates/dpaste/base.html:20
 #: dpaste/templates/dpaste/snippet_new.html:5
@@ -113,7 +115,7 @@ msgstr "À propos"
 
 #: dpaste/templates/dpaste/base.html:19
 msgid "History"
-msgstr "historique"
+msgstr "Historique"
 
 #: dpaste/templates/dpaste/snippet_details.html:7
 #: dpaste/templates/dpaste/snippet_details.html:8
@@ -127,7 +129,7 @@ msgstr "Comparer"
 #: dpaste/templates/dpaste/snippet_details.html:54
 #, python-format
 msgid "Expires in: %(date)s"
-msgstr "Échu dans: %(date)s"
+msgstr "Expire le: %(date)s"
 
 #: dpaste/templates/dpaste/snippet_details.html:56
 msgid "Snippet never expires"
@@ -139,7 +141,7 @@ msgstr "Voulez-vous vraiment supprimer ce snippet"
 
 #: dpaste/templates/dpaste/snippet_details.html:62
 msgid "Delete Now"
-msgstr "Supprimer maintenant"
+msgstr "Supprimer ce snippet"
 
 #: dpaste/templates/dpaste/snippet_details.html:65
 msgid "Compare Snippets"
@@ -147,7 +149,7 @@ msgstr "Comparer les snippets"
 
 #: dpaste/templates/dpaste/snippet_details.html:68
 msgid "View Raw"
-msgstr "Affichage en format brute"
+msgstr "Afficher sans formatter l'afficage"
 
 #: dpaste/templates/dpaste/snippet_details.html:72
 msgid "Gist"
@@ -155,7 +157,7 @@ msgstr "Gist"
 
 #: dpaste/templates/dpaste/snippet_details.html:81
 msgid "This is a one-time snippet."
-msgstr "Ceci est un snippet à usage unique"
+msgstr "Ceci est un snippet à usage unique."
 
 #: dpaste/templates/dpaste/snippet_details.html:83
 #, python-format
@@ -189,11 +191,11 @@ msgstr ""
 
 #: dpaste/templates/dpaste/snippet_form.html:31
 msgid "Expire in"
-msgstr "Échu dans"
+msgstr "Expire dans"
 
 #: dpaste/templates/dpaste/snippet_form.html:37
 msgid "Paste it"
-msgstr "Coller-le"
+msgstr "Enregistrer ce snippet"
 
 #: dpaste/templates/dpaste/snippet_form.html:38
 msgid "or"
@@ -206,7 +208,7 @@ msgstr "FORMATTAGE_DE_LA_DATE"
 #: dpaste/templates/dpaste/snippet_list.html:16
 #, python-format
 msgid "%(since)s ago"
-msgstr "depuis %(since)s"
+msgstr "Snippet crée depuis environ %(since)s"
 
 #: dpaste/templates/dpaste/snippet_list.html:22
 msgid ""
