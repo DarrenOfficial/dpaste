@@ -33,7 +33,7 @@ TIME_ZONE = 'UTC'
 SITE_ID = 1
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
+SECRET_KEY = 'sdkjf;lajdfjwjerjqwe'
 
 ALLOWED_HOSTS = (
     'dpaste.de',
@@ -43,7 +43,7 @@ ALLOWED_HOSTS = (
     '127.0.0.1',
 )
 
-SECRET_KEY = 'CHANGE_ME'
+SECRET_KEY = 'sdkjf;lajdfjwjerjqwe'
 
 #==============================================================================
 # I18N
