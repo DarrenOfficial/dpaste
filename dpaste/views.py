@@ -26,7 +26,7 @@ from .models import ONETIME_LIMIT, Snippet
 template_globals = {
     'site_name': getattr(settings, 'DPASTE_SITE_NAME', 'dpaste.de'),
     'jquery_url': getattr(settings, 'DPASTE_JQUERY_URL',
-        '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'),
+        'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'),
 }
 
 # -----------------------------------------------------------------------------
