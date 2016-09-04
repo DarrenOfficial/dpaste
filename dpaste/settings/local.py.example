@@ -1,7 +1,6 @@
 from dpaste.settings.base import *
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     #('Your Name', 'name@example.com'),

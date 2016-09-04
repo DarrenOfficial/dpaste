@@ -40,7 +40,9 @@ SETTINGS = {
     ),
     'STATIC_ROOT': '/tmp/dpaste_test_static/',
     'STATIC_URL': '/static/',
-    'ROOT_URLCONF': 'dpaste.urls'
+    'ROOT_URLCONF': 'dpaste.urls',
+    'LANGUAGE_CODE': 'en',
+    'LANGUAGES': (('en', 'English'),),
 }
 
 def runtests(*test_args):
