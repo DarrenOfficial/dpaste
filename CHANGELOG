@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.11 (2016-09-04)
+-----------------
+
+* Django 1.10 Support
+* R Lexer is enabled by default
+* Minor fixes and improvements.
+
 2.10 (2016-03-23)
 -----------------
 
