@@ -20,10 +20,10 @@ class Command(LabelCommand):
             expire_type=Snippet.EXPIRE_TIME,
             expires__lte=timezone.now()
         )
-        sys.stdout.write(u"%s snippets gets deleted:\n" % deleteable_snippets.count())
+        self.stdout.write(u"%s snippets gets deleted:\n" % deleteable_snippets.count())
         for d in deleteable_snippets:
-            sys.stdout.write(u"- %s (%s)\n" % (d.secret_id, d.expires))
+            self.stdout.write(u"- %s (%s)\n" % (d.secret_id, d.expires))
         if options.get('dry_run'):
-            sys.stdout.write(u'Dry run - Not actually deleting snippets!\n')
+            self.stdout.write(u'Dry run - Not actually deleting snippets!\n')
         else:
             deleteable_snippets.delete()
