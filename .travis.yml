@@ -5,15 +5,15 @@ python:
   - 3.5
 
 env:
-  - DJANGO=1.8.*
-  - DJANGO=1.9.*
-  - DJANGO=1.10.*
+  - DJANGO: django>=1.8,<1.9
+  - DJANGO: django>=1.9,<1.10
+  - DJANGO: django>=1.10
 
 before_install:
   - pip install codecov
 
 install:
-  - pip install django==$DJANGO
+  - pip install $DJANGO
   - pip install -e .
 
 script:

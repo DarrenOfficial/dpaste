@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------
 
 # Project dependencies
-django==1.10.*
+django>=1.10
 django-mptt
 pygments
 requests
@@ -16,10 +16,7 @@ tox
 docutils
 sphinx
 sphinx_rtd_theme
-mysql-python
 
 # Deployment specific
-django-redis==3.8.0
-gunicorn==19.1.1
-south==1.0.2
-
+gunicorn
+mysql-python
