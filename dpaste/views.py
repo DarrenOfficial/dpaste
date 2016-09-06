@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect)
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
@@ -22,12 +22,6 @@ from .forms import EXPIRE_CHOICES, get_expire_values, SnippetForm
 from .highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST,
                               LEXER_WORDWRAP, PLAIN_CODE)
 from .models import ONETIME_LIMIT, Snippet
-
-template_globals = {
-    'site_name': getattr(settings, 'DPASTE_SITE_NAME', 'dpaste.de'),
-    'jquery_url': getattr(settings, 'DPASTE_JQUERY_URL',
-        'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'),
-}
 
 # -----------------------------------------------------------------------------
 # Snippet Handling
@@ -51,12 +45,7 @@ def snippet_new(request, template_name='dpaste/snippet_new.html'):
         'lexer_list': LEXER_LIST,
         'is_new': True,
     }
-
-    return render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request, template_globals)
-    )
+    return render(request, template_name, template_context)
 
 
 def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.html', is_raw=False):
@@ -108,11 +97,7 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         'gist': getattr(settings, 'DPASTE_ENABLE_GIST', True),
     }
 
-    response = render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request, template_globals)
-    )
+    response = render(request, template_name, template_context)
 
     if is_raw:
         response['Content-Type'] = 'text/plain;charset=UTF-8'
@@ -158,11 +143,7 @@ def snippet_history(request, template_name='dpaste/snippet_list.html'):
         'snippet_list': snippet_list,
     }
 
-    return render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request, template_globals)
-    )
+    return render(request, template_name, template_context)
 
 
 def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
@@ -205,11 +186,7 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
         'fileB': fileB,
     }
 
-    return render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request, template_globals)
-    )
+    return render(request, template_name, template_context)
 
 
 def snippet_gist(request, snippet_id): # pragma: no cover
@@ -258,11 +235,7 @@ def about(request, template_name='dpaste/about.html'):
             count=Count('lexer')).order_by('-count')[:5],
     }
 
-    return render_to_response(
-        template_name,
-        template_context,
-        RequestContext(request, template_globals)
-    )
+    return render(request, template_name, template_context)
 
 
 # -----------------------------------------------------------------------------
