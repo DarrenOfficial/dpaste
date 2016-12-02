@@ -9,9 +9,9 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dpaste',
-        'USER': 'root',
+        'USER': '',
         'PASSWORD': '',
     }
 }

@@ -19,4 +19,4 @@ sphinx_rtd_theme
 
 # Deployment specific
 gunicorn
-mysql-python
+psycopg2
