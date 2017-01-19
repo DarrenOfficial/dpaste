@@ -1,6 +1,18 @@
 Changelog
 =========
 
+2.13a (2017-01-19)
+------------------
+
+* (Backwards incompatible) Removal of django-mptt and therefor the removal of a
+  tree based snippet list, due to performance reasons with large snippet counts.
+  Snippets still have a 'parent' relation if it's an answer of another snippet,
+  however this is no longer a Nested Set. The UI is simplified too and the user
+  can now only compare an answer to it's parent snippet. I believe this is the
+  major use case anyway.
+* (Backwards incompatible) Removal of the "Gist" button feature.
+* Python 3.6 compatibility and tests.
+
 2.12 (2016-09-06)
 -----------------
 
