@@ -1,6 +1,5 @@
 {% extends "dpaste/base.html" %}
 
-{% load mptt_tags %}
 {% load i18n %}
 {% load dpaste_tags %}
 
@@ -21,33 +20,8 @@
     ======================================================================= -->
     <div id="snippet-diff" class="snippet-diff container-fluid">
         <div class="row-fluid" style="width: auto; padding: 30px 0">
-            <div class="span9">
+            <div class="span12">
                 <div id="diff" style="display:none;"></div>
-            </div>
-            <div class="span3">
-                <form method="get" id="diffform" action="{% url "snippet_diff" %}">
-                {% csrf_token %}
-                <div class="tree">
-                    {% for tree_item,structure in tree|tree_info %}
-                    {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
-                    <div>
-                    <span class="diff">
-                        <input type="radio" name="a" value="{{ tree_item.id }}" {% ifequal tree_item.id snippet.parent_id %}checked="checked"{% endifequal %}>
-                        <input type="radio" name="b" value="{{ tree_item.id }}" {% ifequal snippet tree_item %}checked="checked"{% endifequal %}>
-                    </span>
-                    {% ifequal snippet tree_item %}
-                        <strong>#{{ tree_item.id }}</strong>
-                   {% else %}
-                   <a href="{{ tree_item.get_absolute_url }}">#{{ tree_item.id }}</a>
-                    {% endifequal %}
-                    </div>
-                    {% for level in structure.closed_levels %}</li></ul>{% endfor %}
-                    {% endfor %}
-                    <div class="submit">
-                        <input type="submit" value="{% trans "Compare" %}">
-                    </div>
-                </div>
-                </form>
             </div>
         </div>
     </div>
@@ -68,8 +42,8 @@
         {% if snippet.pk|in_list:request.session.snippet_list %}
         <a class="btn" href="{% url "snippet_delete" snippet.secret_id %}" onclick="return confirm('{% trans "Really delete this snippet?" %}');"><i class="icon-trash"></i> {% trans "Delete Now" %}</a>
         {% endif %}
-        {% if not snippet.is_single %}
-        <a class="btn snippet-diff-trigger" href="#snippet-diff"><i class="icon-search"></i> {% trans "Compare Snippets" %}</a>
+        {% if snippet.parent %}
+        <a class="btn snippet-diff-trigger" href="#snippet-diff"><i class="icon-search"></i> {% trans "Compare this Answer" %}</a>
         {% endif %}
         {% if snippet.expire_type != 3 %}
         <a class="btn" href="{% url "snippet_details_raw" snippet.secret_id %}"><i class="icon-align-left"></i> {% trans "View Raw" %}</a>
@@ -125,21 +99,15 @@ jQuery(function($) {
         $(this).removeClass('snippet-reply-hidden');
     });
 
+    var curLine = document.location.hash;
+
+    {% if snippet.parent %}
     /* ------------------------------------------------------------------------
        Diff Ajax Call
     ------------------------------------------------------------------------ */
-    var diffReq;
-
-    $('.snippet-diff-trigger').click(function(e) {
-        e.preventDefault();
-        $('#snippet-diff').slideDown('fast');
-        $('#snippet-diff form').submit();
-    });
-
-
-    $('#diffform').submit(function() {
-        var a = $('input[name="a"]:checked').val(),
-            b = $('input[name="b"]:checked').val();
+    function fetchDiff() {
+        var a = {{ snippet.parent.pk }},
+            b = {{ snippet.pk }};
 
         window.location.hash = 'D' + a + ',' + b;
 
@@ -156,23 +124,20 @@ jQuery(function($) {
         }).complete(function() {
             diffReq = null;
         });
+    }
 
-        return false;
+    var diffReq;
+    $('.snippet-diff-trigger').click(function(e) {
+        e.preventDefault();
+        fetchDiff();
+        $('#snippet-diff').slideDown('fast');
     });
 
-    var curLine = document.location.hash,
-        hashlist;
-
     if (curLine.substring(0, 2) === '#D') {
-        hashlist = curLine.substring(2).split(',');
-        if (hashlist.length === 2) {
-            console.log(hashlist);
-            $('#diffform input[name="a"][value="' + hashlist[0] + '"]').prop('checked', true);
-            $('#diffform input[name="b"][value="' + hashlist[1] + '"]').prop('checked', true);
-            $('#snippet-diff').slideDown('fast');
-            $('#snippet-diff form').submit();
-        }
+        fetchDiff();
+        $('#snippet-diff').slideDown('fast');
     }
+    {% endif %}
 
     /* ------------------------------------------------------------------------
        Line Highlighting
@@ -201,7 +166,7 @@ jQuery(function($) {
     });
 
     /* ------------------------------------------------------------------------
-       Line Highlighting
+       Wordwrap
     ------------------------------------------------------------------------ */
     $('#toggleWordwrap').click(function(e){
         e.preventDefault();

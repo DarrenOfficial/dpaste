@@ -65,9 +65,6 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
     snippet.view_count += 1
     snippet.save()
 
-    tree = snippet.get_root()
-    tree = tree.get_descendants(include_self=True)
-
     new_snippet_initial = {
         'content': snippet.content,
         'lexer': snippet.lexer,
@@ -92,7 +89,6 @@ def snippet_details(request, snippet_id, template_name='dpaste/snippet_details.h
         'snippet': snippet,
         'lexers': LEXER_LIST,
         'lines': range(snippet.get_linecount()),
-        'tree': tree,
         'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
         'gist': getattr(settings, 'DPASTE_ENABLE_GIST', True),
     }

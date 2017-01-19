@@ -32,7 +32,6 @@ SETTINGS = {
     'INSTALLED_APPS': [
         'django.contrib.sessions',
         'django.contrib.staticfiles',
-        'mptt',
         'dpaste',
     ],
     'MIDDLEWARE_CLASSES': (
