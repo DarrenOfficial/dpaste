@@ -14,6 +14,5 @@ urlpatterns = [
     url(r'^delete/$', views.snippet_delete, name='snippet_delete'),
     url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/?$' % L, views.snippet_details, name='snippet_details'),
     url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/delete/$' % L, views.snippet_delete, name='snippet_delete'),
-    url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/gist/$' % L, views.snippet_gist, name='snippet_gist'),
     url(r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/raw/?$' % L, views.snippet_details, {'template_name': 'dpaste/snippet_details_raw.html', 'is_raw': True}, name='snippet_details_raw'),
 ]

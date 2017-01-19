@@ -95,14 +95,17 @@ behavior without touching the code:
         ``3600 * 24 * 30 * 12 * 100`` or simpler: ``DPASTE_EXPIRE_CHOICES[2][0]``.
 
     ``DPASTE_ENABLE_GIST``
+        **Removed in Version 2.13!**
         Boolean. Whether to display the Gist button for re-pasting to GitHub.
         Default: ``True``
 
     ``DPASTE_DEFAULT_GIST_NAME``
+        **Removed in Version 2.13!**
         String. The filename used when pasting a snippet on Github Gist.
         Default: ``dpaste.de_snippet.py``
 
     ``DPASTE_DEFAULT_GIST_DESCRIPTION``
+        **Removed in Version 2.13!**
         String. The filename used when pasting a snippet on Github Gist.
         Default: ``dpaste.de_snippet.py``
 

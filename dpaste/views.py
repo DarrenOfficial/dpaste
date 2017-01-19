@@ -2,7 +2,6 @@ import datetime
 import difflib
 import json
 
-import requests
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
@@ -10,7 +9,6 @@ from django.db.models import Count
 from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect)
 from django.shortcuts import get_object_or_404, render
-from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.defaults import page_not_found as django_page_not_found
@@ -22,6 +20,7 @@ from .forms import EXPIRE_CHOICES, get_expire_values, SnippetForm
 from .highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST,
                               LEXER_WORDWRAP, PLAIN_CODE)
 from .models import ONETIME_LIMIT, Snippet
+
 
 # -----------------------------------------------------------------------------
 # Snippet Handling
@@ -183,37 +182,6 @@ def snippet_diff(request, template_name='dpaste/snippet_diff.html'):
     }
 
     return render(request, template_name, template_context)
-
-
-def snippet_gist(request, snippet_id): # pragma: no cover
-    """
-    Put a snippet on Github Gist.
-    """
-    if not getattr(settings, 'DPASTE_ENABLE_GIST', True):
-        raise Http404('Gist creation is disabled on this installation.')
-
-    snippet = get_object_or_404(Snippet, secret_id=snippet_id)
-    data = {
-        'description': getattr(settings, 'DPASTE_DEFAULT_GIST_DESCRIPTION', ''),
-        'public': False,
-        'files': {
-            getattr(settings, 'DPASTE_DEFAULT_GIST_NAME', 'dpaste.de_snippet.py'): {
-                'content': snippet.content,
-            }
-        }
-    }
-
-    try:
-        payload = json.dumps(data)
-        response = requests.post('https://api.github.com/gists', data=payload)
-        response_dict = response.json()
-        gist_url = response_dict.get('html_url')
-
-    # Github could be down, could return invalid JSON, it's rare
-    except:
-        return HttpResponse('Creating a Github Gist failed. Sorry, please go back and try again.')
-
-    return HttpResponseRedirect(gist_url)
 
 
 # -----------------------------------------------------------------------------
