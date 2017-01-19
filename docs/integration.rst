@@ -10,14 +10,12 @@ necessary dependencies of dpaste as well::
 
     pip install dpaste
 
-Add ``dpaste`` and ``mptt`` to your ``INSTALLED_APPS``::
+Add ``dpaste`` to your ``INSTALLED_APPS``::
 
     INSTALLED_APPS = (
         'django.contrib.sessions',
         'django.contrib.staticfiles',
         # ...
-
-        'mptt',
         'dpaste',
     )
 
