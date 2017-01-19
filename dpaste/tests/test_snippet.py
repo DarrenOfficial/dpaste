@@ -131,15 +131,11 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(Snippet.objects.count(), 0)
 
-    # def test_new_snippet_`_whitespace(self):
-    #     # POST data
-    #     data = self.valid_form_data(content='    abc')
-    #     response = self.client.post(self.new_url, data, follow=True)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(Snippet.objects.count(), 1)
-    #     print(response.content)
-    #     self.assertContains(response, '&nbsp;&nbsp;&nbsp;&nbsp;abc')
 
+    def test_snippet_notfound(self):
+        url = reverse('snippet_details', kwargs={'snippet_id': 'abcd'})
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 404)
 
     # -------------------------------------------------------------------------
     # Reply
