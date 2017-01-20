@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.14 (master)
+-------------
+
+* Removed "Suspicious" middleware which was never been used, documented, 
+  and also not functional for a while. 
+
 2.13 (2017-01-20)
 -----------------
 
