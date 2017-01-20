@@ -1,4 +1,4 @@
-.. image:: https://travis-ci.org/bartTC/dpaste.png?branch=master
+.. image:: https://travis-ci.org/bartTC/dpaste.svg?branch=master
     :target: https://travis-ci.org/bartTC/dpaste
 
 .. image:: https://codecov.io/github/bartTC/dpaste/coverage.svg?branch=master
