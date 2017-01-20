@@ -11,7 +11,8 @@ Changelog
   can now only compare an answer to it's parent snippet. I believe this is the
   major use case anyway.
 * (Backwards incompatible) Removal of the "Gist" button feature.
-* Python 3.6 compatibility and tests.
+* Fixed broken 404 view handler in Django 1.9+.
+* Python 3.6 and Django 1.10 compatibility and tests.
 
 2.12 (2016-09-06)
 -----------------
