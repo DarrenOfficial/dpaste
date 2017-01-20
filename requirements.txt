@@ -6,7 +6,6 @@
 
 # Project dependencies
 django>=1.10
-django-mptt
 pygments
 requests
 
