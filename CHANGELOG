@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.13a (2017-01-19)
-------------------
+2.13 (2017-01-20)
+-----------------
 
 * (Backwards incompatible) Removal of django-mptt and therefor the removal of a
   tree based snippet list, due to performance reasons with large snippet counts.
