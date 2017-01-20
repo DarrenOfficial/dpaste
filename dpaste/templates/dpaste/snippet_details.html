@@ -70,9 +70,11 @@
     Snippet
     ======================================================================= -->
     {% if snippet.lexer == 'text' %}
-    <div class="snippet-rendered">
-        {{ snippet.content|linebreaksbr }}
-    </div>
+    {% comment %}
+    Note that the interpolation of snippet_content needs to be a single line- downstream may be
+    using styling that converts snippet-rendered to an effective pre to preserve whitespace indentation.
+    {% endcomment %}
+    <div class="snippet-rendered">{{ snippet.content|linebreaksbr }}</div>
     {% else %}
         {% include "dpaste/snippet_pre.html" %}
     {% endif %}
