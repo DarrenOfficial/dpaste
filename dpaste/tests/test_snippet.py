@@ -131,6 +131,12 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(Snippet.objects.count(), 0)
 
+
+    def test_snippet_notfound(self):
+        url = reverse('snippet_details', kwargs={'snippet_id': 'abcd'})
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 404)
+
     # -------------------------------------------------------------------------
     # Reply
     # -------------------------------------------------------------------------

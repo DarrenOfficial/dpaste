@@ -25,6 +25,8 @@ SETTINGS = {
                 'context_processors': [
                     'django.template.context_processors.debug',
                     'django.template.context_processors.request',
+                    'django.template.context_processors.i18n',
+                    'dpaste.context_processors.dpaste_globals',
                 ],
             },
         },
@@ -32,7 +34,6 @@ SETTINGS = {
     'INSTALLED_APPS': [
         'django.contrib.sessions',
         'django.contrib.staticfiles',
-        'mptt',
         'dpaste',
     ],
     'MIDDLEWARE_CLASSES': (
@@ -40,7 +41,9 @@ SETTINGS = {
     ),
     'STATIC_ROOT': '/tmp/dpaste_test_static/',
     'STATIC_URL': '/static/',
-    'ROOT_URLCONF': 'dpaste.urls'
+    'ROOT_URLCONF': 'dpaste.urls',
+    'LANGUAGE_CODE': 'en',
+    'LANGUAGES': (('en', 'English'),),
 }
 
 def runtests(*test_args):

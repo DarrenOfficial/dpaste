@@ -63,6 +63,20 @@ tt strong {
     color: #5393b4;
 }
 
+input.headline-url {
+    font-size: 20px;
+    height: 40px;
+    width: 210px;
+    color: #5393b4;
+    border: none;
+    box-shadow: none;
+}
+
+button.btn.headline-url-copy {
+    margin-top: -4px;
+    padding: 5px 10px 3px 10px;
+}
+
 h1, h2, h3, h4 {
     font-weight: 300;
 }

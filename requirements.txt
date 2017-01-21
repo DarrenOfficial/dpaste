@@ -5,8 +5,7 @@
 # -----------------------------------------------------------------------------
 
 # Project dependencies
-django==1.9.*
-django-mptt
+django>=1.10
 django-markup
 pygments
 requests
@@ -19,7 +18,5 @@ sphinx
 sphinx_rtd_theme
 
 # Deployment specific
-django-redis==3.8.0
-gunicorn==19.1.1
-south==1.0.2
-
+gunicorn
+psycopg2

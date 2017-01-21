@@ -3,6 +3,7 @@ import difflib
 import json
 
 from django.conf import settings
+from django import get_version
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models import Count
@@ -357,8 +358,10 @@ class APIView(View):
 # handle them here.
 # -----------------------------------------------------------------------------
 
-def page_not_found(request, template_name='dpaste/404.html'):
-    return django_page_not_found(request, template_name) # pragma: no cover
+def page_not_found(request, exception=None, template_name='dpaste/404.html'):
+    if not exception: # Django <1.8
+        return django_page_not_found(request, template_name=template_name)
+    return django_page_not_found(request, exception, template_name=template_name)
 
 def server_error(request, template_name='dpaste/500.html'):
-    return django_server_error(request, template_name) # pragma: no cover
+    return django_server_error(request, template_name=template_name)  # pragma: no cover

@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# GenghisKhan <genghiskhan@gmx.ca>, 2016.
 #
 #, fuzzy
 msgid ""
@@ -10,186 +10,189 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-02 14:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: GenghisKhan <genghiskhan@gmx.ca>\n"
+"Language-Team: Hebrew <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: he\n"
+"X-Source-Language: en\n"
 
 #: forms.py:11 models.py:37 templates/dpaste/snippet_details.html:65
 msgid "One-Time snippet"
-msgstr ""
+msgstr "חתיכה חד-פעמית"
 
 #: forms.py:12
 msgid "In one hour"
-msgstr ""
+msgstr "בתוך שעה אחת"
 
 #: forms.py:13
 msgid "In one week"
-msgstr ""
+msgstr "בתוך שבוע אחד"
 
 #: forms.py:14
 msgid "In one month"
-msgstr ""
+msgstr "בתוך חודש אחד"
 
 #: forms.py:15
 msgid "Never"
-msgstr ""
+msgstr "לעולם לא"
 
 #: forms.py:36 models.py:42
 msgid "Content"
-msgstr ""
+msgstr "תוכן"
 
 #: forms.py:37
 msgid "Awesome code goes here..."
-msgstr ""
+msgstr "קוד מגניב הולך לכאן..."
 
 #: forms.py:42 models.py:43
 msgid "Lexer"
-msgstr ""
+msgstr "Lexer"
 
 #: forms.py:49 models.py:47
 msgid "Expires"
-msgstr ""
+msgstr "פג"
 
 #: forms.py:57
 msgid "Title"
-msgstr ""
+msgstr "כותרת"
 
 #: forms.py:85
 msgid "This field is required."
-msgstr ""
+msgstr "שדה זה הינו נדרש."
 
 #: highlight.py:33
 msgid "Highlighted"
-msgstr ""
+msgstr "מודגשים"
 
 #: models.py:35
 msgid "Expire by timestamp"
-msgstr ""
+msgstr "פוקע לפי חותמת זמן"
 
 #: models.py:36
 msgid "Keep Forever"
-msgstr ""
+msgstr "שמור לנצח"
 
 #: models.py:40
 msgid "Secret ID"
-msgstr ""
+msgstr "מזהה סודי"
 
 #: models.py:44
 msgid "Published"
-msgstr ""
+msgstr "פורסם"
 
 #: models.py:45
 msgid "Expire Type"
-msgstr ""
+msgstr "טיפוס תפוגה"
 
 #: models.py:48
 msgid "View count"
-msgstr ""
+msgstr "מונה צפיות"
 
 #: templates/dpaste/about.html:59
 msgid "Statistics"
-msgstr ""
+msgstr "סטטיסטיקות"
 
 #: templates/dpaste/about.html:61
 #, python-format
 msgid ""
 "There are %(total)s snippets in the database. The most popular languages are:"
-msgstr ""
+msgstr "ישנן %(total)s חתיכות במסד נתונים. השפות השכיחות ביותר הן:"
 
 #: templates/dpaste/base.html:7 templates/dpaste/base.html:20
 #: templates/dpaste/snippet_new.html:5 templates/dpaste/snippet_new.html:6
 msgid "New snippet"
-msgstr ""
+msgstr "חתיכה חדשה"
 
 #: templates/dpaste/base.html:18
 msgid "About"
-msgstr ""
+msgstr "אודות"
 
 #: templates/dpaste/base.html:19
 msgid "History"
-msgstr ""
+msgstr "היסטוריה"
 
 #: templates/dpaste/snippet_details.html:7
 msgid "Snippet"
-msgstr ""
+msgstr "חתיכה"
 
 #: templates/dpaste/snippet_details.html:47
 msgid "Compare"
-msgstr ""
+msgstr "השווה"
 
 #: templates/dpaste/snippet_details.html:61
 #, python-format
 msgid "Expires in: %(date)s"
-msgstr ""
+msgstr "פג ביום: %(date)s"
 
 #: templates/dpaste/snippet_details.html:63
 msgid "Snippet never expires"
-msgstr ""
+msgstr "חתיכה לעלום לא פוקעת"
 
 #: templates/dpaste/snippet_details.html:69
 msgid "Really delete this snippet?"
-msgstr ""
+msgstr "באמת למחוק את חתיכה זו?"
 
 #: templates/dpaste/snippet_details.html:69
 msgid "Delete Now"
-msgstr ""
+msgstr "מחק עכשיו"
 
 #: templates/dpaste/snippet_details.html:72
 msgid "Compare Snippets"
-msgstr ""
+msgstr "השווה חתיכות"
 
 #: templates/dpaste/snippet_details.html:75
 msgid "View Raw"
-msgstr ""
+msgstr "הצג גולמי"
 
 #: templates/dpaste/snippet_details.html:79
 msgid "Gist"
-msgstr ""
+msgstr "Gist"
 
 #: templates/dpaste/snippet_details.html:88
 msgid "This is a one-time snippet."
-msgstr ""
+msgstr "זןהי חתיכה חד-פעמית."
 
 #: templates/dpaste/snippet_details.html:90
 #, python-format
 msgid "It is automatically removed after %(remaining)s further views."
-msgstr ""
+msgstr "זה יוסר אוטומטית לאחר %(remaining)s צפיות נוספות."
 
 #: templates/dpaste/snippet_details.html:92
 msgid "It is automatically removed after the next view."
-msgstr ""
+msgstr "זה יוסר אוטומטית לאחר הצפיה הבאה."
 
 #: templates/dpaste/snippet_details.html:94
 msgid "It cannot be viewed again."
-msgstr ""
+msgstr "אין אפשרות לצפות בזה שוב."
 
 #: templates/dpaste/snippet_details.html:114
 msgid "Reply to this snippet"
-msgstr ""
+msgstr "השב לחתיכה זו"
 
 #: templates/dpaste/snippet_diff.html:4
 #, python-format
 msgid ""
-"\n"
 "    Diff between <a href=\"%(filea_url)s\">#%(filea_id)s</a> and <a href="
 "\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
-"    "
 msgstr ""
+"    הבדל בין <a href=\"%(filea_url)s\">#%(filea_id)s</a> לנגד <a href="
+"\"%(fileb_url)s\">#%(fileb_id)s</a>\n"
 
 #: templates/dpaste/snippet_form.html:31
 msgid "Expire in"
-msgstr ""
+msgstr "פג בתוך"
 
 #: templates/dpaste/snippet_form.html:37
 msgid "Paste it"
-msgstr ""
+msgstr "הדבק זאת"
 
 #: templates/dpaste/snippet_form.html:38
 msgid "or"
-msgstr ""
+msgstr "או"
 
 #: templates/dpaste/snippet_list.html:15
 msgid "DATETIME_FORMAT"
@@ -198,14 +201,14 @@ msgstr ""
 #: templates/dpaste/snippet_list.html:16
 #, python-format
 msgid "%(since)s ago"
-msgstr ""
+msgstr "לפני %(since)s"
 
 #: templates/dpaste/snippet_list.html:22
 msgid ""
 "No snippets saved. Either all your snippets are expired or your cookie has "
 "changed."
-msgstr ""
+msgstr "לא נשמרו חתיכות. או שכל החתיכות שלך פקעו או שהעוגיות שלך שונו."
 
 #: views.py:180
 msgid "No changes were made between this two files."
-msgstr ""
+msgstr "לא נערכו שינויים בין שני קבצים אלה."

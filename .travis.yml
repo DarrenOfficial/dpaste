@@ -2,17 +2,20 @@ language: python
 
 python:
   - 2.7
+  - 3.4
   - 3.5
+  - 3.6
 
 env:
-  - DJANGO=1.8.*
-  - DJANGO=1.9.*
+  - DJANGO: django>=1.8,<1.9
+  - DJANGO: django>=1.9,<1.10
+  - DJANGO: django>=1.10,<1.11
 
 before_install:
   - pip install codecov
 
 install:
-  - pip install django==$DJANGO
+  - pip install $DJANGO
   - pip install -e .
 
 script:

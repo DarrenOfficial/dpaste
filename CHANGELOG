@@ -1,12 +1,40 @@
 Changelog
 =========
 
-2.11 (master)
------------------
+2.14 (master)
+-------------
 
-* Dropped the Github Gist export function.
+* Removed "Suspicious" middleware which was never been used, documented, 
+  and also not functional for a while. 
 * All views are now class based and use the latest generic based views sugar
   provided by Django.
+
+2.13 (2017-01-20)
+-----------------
+
+* (Backwards incompatible) Removal of django-mptt and therefor the removal of a
+  tree based snippet list, due to performance reasons with large snippet counts.
+  Snippets still have a 'parent' relation if it's an answer of another snippet,
+  however this is no longer a Nested Set. The UI is simplified too and the user
+  can now only compare an answer to it's parent snippet. I believe this is the
+  major use case anyway.
+* (Backwards incompatible) Removal of the "Gist" button feature.
+* Fixed broken 404 view handler in Django 1.9+.
+* Python 3.6 and Django 1.10 compatibility and tests.
+
+2.12 (2016-09-06)
+-----------------
+
+* Fixed "Content Type" problem with Django 1.10.
+* Development requirements now use a different version scheme to be
+  compatible with older `pip` versions.
+
+2.11 (2016-09-04)
+-----------------
+
+* Django 1.10 Support
+* R Lexer is enabled by default
+* Minor fixes and improvements.
 
 2.10 (2016-03-23)
 -----------------

@@ -1,6 +1,5 @@
 from random import SystemRandom
 
-import mptt
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -59,10 +58,6 @@ class Snippet(models.Model):
             return remaining > 0 and remaining or 0
         return None
 
-    @property
-    def is_single(self):
-        return self.is_root_node() and not self.get_children()
-
     def save(self, *args, **kwargs):
         if not self.secret_id:
             self.secret_id = generate_secret_id()
@@ -73,5 +68,3 @@ class Snippet(models.Model):
 
     def __unicode__(self):
         return self.secret_id
-
-mptt.register(Snippet, order_insertion_by=['content'])

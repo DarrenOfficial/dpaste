@@ -19,7 +19,9 @@
             <li class="{% block dpaste_nav_history %}{% endblock %}"><a href="{% url "snippet_history" %}">{% trans "History" %}</a></li>
             <li class="{% block dpaste_nav_new %}{% endblock %}"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
         </ul>
-        <h3 class="headline"><a href="/">{% block headline %}{% endblock %}</a></h3>
+        {% block headline_wrapper %}
+        <h3 class="headline"><a href="{% url "snippet_new" %}">{% block headline %}{% endblock %}</a></h3>
+        {% endblock %}
     </header>
     {% block page %}
         PAGE MISSING
@@ -28,8 +30,10 @@
 
 {% block script_footer %}
 <script src="{{ jquery_url }}"></script>
+<script src="{% static "dpaste/clipboardjs.min.js" %}"></script>
 <script>
 jQuery(function($) {
+    new Clipboard('.clip-button');
     $('.autofocus textarea:first').focus();
     $('.superenter textarea').on('keydown', function(e){
         var metaKey;

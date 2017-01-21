@@ -2,7 +2,8 @@
 
 <h4>
     {% blocktrans with fileA.get_absolute_url as filea_url and fileB.get_absolute_url as fileb_url and fileA.id as filea_id and fileB.id as fileb_id %}
-    Diff between <a href="{{ filea_url }}">#{{ filea_id }}</a> and <a href="{{ fileb_url }}">#{{ fileb_id }}</a>
+    Difference between this answer <a href="{{ fileb_url }}">#{{ fileb_id }}</a>
+    and the parent snippet <a href="{{ filea_url }}">#{{ filea_id }}</a>
     {% endblocktrans %}
 </h4>
 
