@@ -3,7 +3,7 @@ import difflib
 import json
 
 from django.conf import settings
-from django import get_version
+from django.views.generic import FormView
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models import Count
@@ -35,7 +35,7 @@ template_globals = {
 # Snippet Handling
 # -----------------------------------------------------------------------------
 
-from django.views.generic import FormView
+
 
 class SnippetView(FormView):
     """
@@ -122,8 +122,6 @@ class SnippetRawView(SnippetDetailView):
     """
     Display the raw content of a snippet
     """
-    template_name = 'dpaste/snippet_details_raw.html'
-
     def render_to_response(self, context, **response_kwargs):
         snippet = self.get_object()
         response = HttpResponse(snippet.content)

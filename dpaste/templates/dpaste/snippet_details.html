@@ -71,10 +71,10 @@
     ======================================================================= -->
     {% if snippet.lexer == 'text' %}
     <div class="snippet-rendered">
-        {{ snippet.content|linebreaksbr }}
+        {% include "dpaste/highlight/text.html" %}
     </div>
     {% else %}
-        {% include "dpaste/snippet_pre.html" %}
+        {% include "dpaste/highlight/code.html" %}
     {% endif %}
 
     <!-- ======================================================================

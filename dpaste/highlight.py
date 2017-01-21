@@ -29,10 +29,10 @@ PLAIN_CODE = '_code' # lexer name of code with no hihglighting
 
 LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     (_('Text'), (
-        ('_text_plain', 'Plain Text'),
-        ('_text_markdown', 'Markdown'),
-        ('_text_rst', 'reStructuredText'),
-        ('_text_textile', 'Textile'),
+        ('text', 'Plain Text'),
+        # ('_text_markdown', 'Markdown'),
+        # ('_text_rst', 'reStructuredText'),
+        # ('_text_textile', 'Textile'),
     )),
     (_('Code'), (
         (PLAIN_CODE, 'Plain Code'),

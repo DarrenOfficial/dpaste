@@ -10,6 +10,7 @@ from .highlight import LEXER_DEFAULT
 R = SystemRandom()
 ONETIME_LIMIT = getattr(settings, 'DPASTE_ONETIME_LIMIT', 2)
 
+
 def generate_secret_id(length=None, alphabet=None, tries=0):
     length = length or getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
     alphabet = alphabet or getattr(settings, 'DPASTE_SLUG_CHOICES',
@@ -26,6 +27,7 @@ def generate_secret_id(length=None, alphabet=None, tries=0):
     # regular one.
     return generate_secret_id(length=length+1, tries=tries)
 
+
 class Snippet(models.Model):
     EXPIRE_TIME = 1
     EXPIRE_KEEP = 2
@@ -39,6 +41,7 @@ class Snippet(models.Model):
     secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True, null=True,
         unique=True)
     content = models.TextField(_(u'Content'))
+    highlighted = models.TextField(_(u'Highlighted Content'))
     lexer = models.CharField(_(u'Lexer'), max_length=30, default=LEXER_DEFAULT)
     published = models.DateTimeField(_(u'Published'), auto_now_add=True)
     expire_type = models.PositiveSmallIntegerField(_(u'Expire Type'),
