@@ -102,13 +102,11 @@ class SnippetDetailView(SnippetView, DetailView):
 
     def get_context_data(self, **kwargs):
         self.object = snippet = self.get_object()
-        tree = snippet.get_root().get_descendants(include_self=True)
 
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
         ctx.update(template_globals)
         ctx.update({
             'highlighted': self.highlight_snippet().splitlines(),
-            'tree': tree,
             'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
         })
         return ctx
