@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import unicode_literals
+
 import sys
 
 from django.conf import settings
@@ -26,7 +28,6 @@ SETTINGS = {
                     'django.template.context_processors.debug',
                     'django.template.context_processors.request',
                     'django.template.context_processors.i18n',
-                    'dpaste.context_processors.dpaste_globals',
                 ],
             },
         },

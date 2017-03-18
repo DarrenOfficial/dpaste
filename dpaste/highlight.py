@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.conf import settings
 from django.template.defaultfilters import escape
 from django.utils.translation import ugettext_lazy as _

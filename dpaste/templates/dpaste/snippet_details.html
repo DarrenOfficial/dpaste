@@ -1,7 +1,6 @@
 {% extends "dpaste/base.html" %}
 
 {% load i18n %}
-{% load dpaste_tags %}
 
 {% block title %}{% trans "Snippet" %} #{{ snippet.pk }}{% endblock %}
 {% block headline_wrapper %}
@@ -39,9 +38,7 @@
                 {% trans "One-Time snippet" %}
             {% endif %}
         </span>
-        {% if snippet.pk|in_list:request.session.snippet_list %}
         <a class="btn" href="{% url "snippet_delete" snippet.secret_id %}" onclick="return confirm('{% trans "Really delete this snippet?" %}');"><i class="icon-trash"></i> {% trans "Delete Now" %}</a>
-        {% endif %}
         {% if snippet.parent %}
         <a class="btn snippet-diff-trigger" href="#snippet-diff"><i class="icon-search"></i> {% trans "Compare this Answer" %}</a>
         {% endif %}
