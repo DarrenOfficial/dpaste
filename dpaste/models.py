@@ -64,6 +64,15 @@ class Snippet(models.Model):
     def save(self, *args, **kwargs):
         if not self.secret_id:
             self.secret_id = generate_secret_id()
+        # Work around performance issues in mptt when dealing with a large number
+        # of trees; note that this is inherintly race, but so is mptt's manager.
+        # We're just short circuiting the invocation so it's not fill in gaps
+        # in the tree_id space.  See ticket #85 for further discussion.
+        if self.parent is None  and self.parent_id is None and self.pk is None:
+            self.lft = 1
+            self.rght = 2
+            self.level = 1
+            self.tree_id = self._tree_manager._get_next_tree_id()
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
