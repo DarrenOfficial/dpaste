@@ -15,11 +15,15 @@ Ready to contribute? Here's how to set up `dpaste` for local development.
     $ cd dpaste/
     $ pip install -r requirements.txt
 
-4. Run the commands::
+4. Copy the settings file and edit it, to meet your needs::
 
-    $ python manage.py syncdb
+    $ cp dpaste/settings/local.py.example dpaste/settings/local.py
+    $ nano dpaste/settings/local.py
+
+5. Initialze the database by running the command::
+
     $ python manage.py migrate
 
-5. Start up the webserver::
+6. Start up the webserver::
 
     $ python manage.py runserver
