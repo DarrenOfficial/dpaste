@@ -123,6 +123,6 @@ A sample Python 2 script to publish snippets::
 
 You can simply use curl to publish a whole file::
 
-    $ alias dpaste="curl -F 'content=<-' https://dpaste.de/api/?format=url"
+    $ alias dpaste="curl -F 'format=url' -F 'content=<-' https://dpaste.de/api/"
     $ cat foo.txt | dpaste
     https://dpaste.de/ke2pB
