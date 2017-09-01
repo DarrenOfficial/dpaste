@@ -87,7 +87,8 @@
 {% block script_footer %}
 {{ block.super }}
 <script>
-jQuery(function($) {
+
+<!--
     $('.snippet-reply-hidden').click(function(e) {
         $(this).removeClass('snippet-reply-hidden');
     });
@@ -166,5 +167,6 @@ jQuery(function($) {
         $('.code').toggleClass('wordwrap');
     });
 });
+-->
 </script>
 {% endblock %}

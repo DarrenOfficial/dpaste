@@ -27,29 +27,5 @@
         PAGE MISSING
     {% endblock %}
 </div>
-
-{% block script_footer %}
-<script src="{{ jquery_url }}"></script>
-<script src="{% static "dpaste/clipboardjs.min.js" %}"></script>
-<script>
-jQuery(function($) {
-    new Clipboard('.clip-button');
-    $('.autofocus textarea:first').focus();
-    $('.superenter textarea').on('keydown', function(e){
-        var metaKey;
-        if (navigator.appVersion.indexOf("Win")!=-1) {
-            metaKey = e.ctrlKey;
-        } else {
-            metaKey = event.metaKey;
-        }
-        if (e.keyCode == 13 && metaKey) {
-            $(this).closest('form').submit();
-            return false;
-        }
-    });
-});
-</script>
-{% endblock %}
-
 </body>
 </html>
