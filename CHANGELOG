@@ -1,13 +1,16 @@
 Changelog
 =========
 
-2.14 (master)
+3.0 (master)
 -------------
 
+* General code cleanup
+* Removed jQuery, all Javascript is native.
+* Removed Bootstrap for theming.
+* Django 1.11 based templates, forms, views, models, etc.
+* All views are now class based and use the latest generic based views sugar.
 * Removed "Suspicious" middleware which was never been used, documented, 
-  and also not functional for a while. 
-* All views are now class based and use the latest generic based views sugar
-  provided by Django.
+  and also not functional for a while.
 
 2.13 (2017-01-20)
 -----------------

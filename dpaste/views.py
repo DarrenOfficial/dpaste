@@ -5,7 +5,6 @@ import difflib
 import json
 
 from django.conf import settings
-from django.views.generic import FormView
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models import Count
@@ -15,16 +14,17 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.defaults import page_not_found as django_page_not_found
-from django.views.defaults import server_error as django_server_error
-from django.views.generic.base import View, TemplateView
+from django.views.defaults import page_not_found as django_page_not_found, \
+    server_error as django_server_error
+from django.views.generic import FormView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
-from .forms import EXPIRE_CHOICES, get_expire_values, SnippetForm
+from .forms import EXPIRE_CHOICES, SnippetForm, get_expire_values
 from .highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST,
-                              LEXER_WORDWRAP, PLAIN_CODE, pygmentize)
+                        LEXER_WORDWRAP, PLAIN_CODE, pygmentize)
 from .models import ONETIME_LIMIT, Snippet
 
 template_globals = {
@@ -36,8 +36,6 @@ template_globals = {
 # -----------------------------------------------------------------------------
 # Snippet Handling
 # -----------------------------------------------------------------------------
-
-
 
 class SnippetView(FormView):
     """
