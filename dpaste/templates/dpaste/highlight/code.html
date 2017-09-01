@@ -1,1 +1,1 @@
-<div class="code {{ snippet.lexer }}"><ol>{% for line in highlighted %}<li id="{{ forloop.counter }}">{{ line|safe|default:"&nbsp;" }}</li>{% endfor %}</ol></div>
+<div class="code {{ snippet.lexer }}"><ol>{% for line in highlighted %}<li id="l{{ forloop.counter }}">{{ line|safe|default:"&nbsp;" }}</li>{% endfor %}</ol></div>

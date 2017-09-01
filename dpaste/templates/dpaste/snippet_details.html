@@ -77,7 +77,7 @@
     <!-- ======================================================================
     Snippet Reply
     ======================================================================= -->
-    <div class="snippet-reply snippet-reply-hidden">
+    <div class="snippet-reply" data-hidden="yes">
         <h3>{% trans "Reply to this snippet" %} &rarr;</h3>
         {% include "dpaste/snippet_form.html" %}
     </div>
@@ -87,86 +87,45 @@
 {% block script_footer %}
 {{ block.super }}
 <script>
+  var reply = document.querySelector('.snippet-reply');
+  reply.onclick = function(e) {
+    this.dataset.hidden = "no";
+  };
 
-<!--
-    $('.snippet-reply-hidden').click(function(e) {
-        $(this).removeClass('snippet-reply-hidden');
-    });
-
-    var curLine = document.location.hash;
-
-    {% if snippet.parent %}
-    /* ------------------------------------------------------------------------
-       Diff Ajax Call
-    ------------------------------------------------------------------------ */
-    function fetchDiff() {
-        var a = {{ snippet.parent.pk }},
-            b = {{ snippet.pk }};
-
-        window.location.hash = 'D' + a + ',' + b;
-
-        // Cancel previous request if it is still pending
-        if (diffReq) {
-            diffReq.abort();
-        }
-
-        diffReq = $.get("{% url "snippet_diff" %}", {
-            a: a,
-            b: b
-        }).done(function(data) {
-            $('#diff').html(data).slideDown('fast');
-        }).complete(function() {
-            diffReq = null;
-        });
+  // Line Highlighting
+  var curLine = document.location.hash;
+  if (curLine.substring(0, 2) === '#L') {
+    hashlist = curLine.substring(2).split(',');
+    window.console.log(hashlist);
+    if (hashlist.length > 0 && hashlist[0] !== '') {
+      hashlist.forEach(function(el) {
+        var line = document.getElementById('l'+el)
+        if (line)
+          line.classList.add('marked');
+      });
     }
+  }
 
-    var diffReq;
-    $('.snippet-diff-trigger').click(function(e) {
-        e.preventDefault();
-        fetchDiff();
-        $('#snippet-diff').slideDown('fast');
-    });
+  document.getElementById('toggleWordwrap').onclick = function(e) {
+    e.preventDefault();
+    document.querySelector('.code').classList.toggle('wordwrap');
+  }
 
-    if (curLine.substring(0, 2) === '#D') {
-        fetchDiff();
-        $('#snippet-diff').slideDown('fast');
+  var lines = document.querySelectorAll('.code li');
+
+  lines.forEach(function(el){
+    el.onclick = function(e) {
+      el.classList.toggle('marked');
+
+      var hash = 'L';
+      var marked = document.querySelectorAll('.code li.marked');
+      marked.forEach(function(line){
+        if (hash !== 'L')
+          hash += ',';
+        hash += line.getAttribute('id').substring(1);
+      });
+      window.location.hash = hash;
     }
-    {% endif %}
-
-    /* ------------------------------------------------------------------------
-       Line Highlighting
-    ------------------------------------------------------------------------ */
-    if (curLine.substring(0, 2) === '#L') {
-        hashlist = curLine.substring(2).split(',');
-        if (hashlist.length > 0 && hashlist[0] !== '') {
-            $.each(hashlist, function(index, elem){
-                $('.code li#' + elem).addClass('marked');
-            });
-        }
-    }
-
-    $('.code li').click(function(e) {
-        var line = $(this),
-            hash = 'L';
-
-        line.toggleClass('marked');
-
-        $('.code li.marked').each(function (index, elem) {
-            if (hash !== 'L') hash += ',';
-            hash += $(elem).attr('id');
-        });
-
-        window.location.hash = hash;
-    });
-
-    /* ------------------------------------------------------------------------
-       Wordwrap
-    ------------------------------------------------------------------------ */
-    $('#toggleWordwrap').click(function(e){
-        e.preventDefault();
-        $('.code').toggleClass('wordwrap');
-    });
-});
--->
+  });
 </script>
 {% endblock %}

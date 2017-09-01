@@ -137,12 +137,12 @@ h1, h2, h3, h4 {
     margin-top: 30px;
 }
 
-.snippet-reply-hidden {
+.snippet-reply[data-hidden=yes] {
     opacity: 0.3;
 }
 
-.snippet-reply-hidden,
-.snippet-reply-hidden *{
+.snippet-reply[data-hidden=yes],
+.snippet-reply[data-hidden=yes] *{
     cursor: pointer;
 }
 

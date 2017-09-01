@@ -38,27 +38,3 @@
         <span class="shortcut">&#8984;+&#9166; {% trans "or" %} Ctrl+&#9166;</span>
     </div>
 </form>
-
-{% block script_footer %}
-<script>
-  var af = document.querySelector(".autofocus textarea");
-  if (af !== null)
-    af.focus();
-
-  var se = document.querySelector(".superenter textarea");
-  if (se !== null) {
-    se.onkeydown = function(e) {
-      var metaKey;
-      if (navigator.appVersion.indexOf("Win") !== -1) {
-        metaKey = e.ctrlKey;
-      } else {
-        metaKey = event.metaKey;
-      }
-      if (e.keyCode == 13 && metaKey) {
-        document.querySelector(".snippet-form").submit();
-        return false;
-      }
-    }
-  }
-</script>
-{% endblock %}
