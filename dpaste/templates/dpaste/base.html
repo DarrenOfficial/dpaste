@@ -4,52 +4,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ site_name }}: {% block title %}{% trans "New snippet" %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static "dpaste/bootstrap/css/bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "dpaste/theme.css" %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	{% block extrahead %}{% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static "dpaste/dpaste.css" %}"/>
+  {% block extrahead %}{% endblock %}
 </head>
 <body>
 
-<div class="container-fluid">
-    <header>
-        <ul class="nav nav-pills pull-right">
-            <li class="{% block dpaste_nav_about %}{% endblock %}"><a href="{% url "dpaste_about" %}">{% trans "About" %}</a></li>
-            <li class="{% block dpaste_nav_history %}{% endblock %}"><a href="{% url "snippet_history" %}">{% trans "History" %}</a></li>
-            <li class="{% block dpaste_nav_new %}{% endblock %}"><a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
-        </ul>
-        {% block headline_wrapper %}
-        <h3 class="headline"><a href="{% url "snippet_new" %}">{% block headline %}{% endblock %}</a></h3>
-        {% endblock %}
-    </header>
-    {% block page %}
-        PAGE MISSING
-    {% endblock %}
-</div>
+
+<header class="box">
+  <h1>{% block headline %}{% endblock %}</h1>
+  <nav>
+    <a href="{% url "dpaste_about" %}">{% trans "About" %}</a>
+    <a href="{% url "snippet_history" %}">{% trans "History" %}</a>
+    <a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
+  </nav>
+</header>
+
+{% block page %}
+  PAGE MISSING
+{% endblock %}
 
 {% block script_footer %}
-<script>
-  var af = document.querySelector(".autofocus textarea");
-  if (af !== null)
-    af.focus();
+  <script>
+    let af = document.querySelector(".autofocus textarea");
+    if (af !== null)
+      af.focus();
 
-  var se = document.querySelector(".superenter textarea");
-  if (se !== null) {
-    se.onkeydown = function(e) {
-      var metaKey;
-      if (navigator.appVersion.indexOf("Win") !== -1) {
-        metaKey = e.ctrlKey;
-      } else {
-        metaKey = event.metaKey;
-      }
-      if (e.keyCode == 13 && metaKey) {
-        document.querySelector(".snippet-form").submit();
-        return false;
+    let se = document.querySelector(".superenter textarea");
+    if (se !== null) {
+      se.onkeydown = function (e) {
+        let metaKey = navigator.appVersion.indexOf("Win") !== -1 ? e.ctrlKey
+            : event.metaKey;
+        if (e.keyCode === 13 && metaKey) {
+          document.querySelector(".snippet-form").submit();
+          return false;
+        }
       }
     }
-  }
-</script>
+  </script>
 {% endblock %}
 
 </body>

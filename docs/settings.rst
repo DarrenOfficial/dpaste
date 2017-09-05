@@ -34,10 +34,6 @@ behavior without touching the code:
         String. The full qualified hostname and path to the dpaste instance.
         This is used to generate a link in the API response. Default: ``https://dpaste.de``
 
-    ``DPASTE_SITE_NAME``
-        String. Site name to display in page titles. Default:
-        ``dpaste.de``
-
     ``DPASTE_LEXER_LIST``
         Choices. A tuple of choices of Pygments lexers used in the lexer
         dropdown. Here is the full `lexer list`_ which is currently used.

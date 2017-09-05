@@ -2,10 +2,11 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "New snippet" %}{% endblock %}
-{% block headline %}{% trans "New snippet" %}{% endblock %}
-{% block dpaste_nav_new %}active{% endblock %}
+{% block title %}{{ SITE_NAME }}{% endblock %}
+{% block headline %}{{ SITE_NAME }}{% endblock %}
 
 {% block page %}
+  <div class="snippet-new">
     {% include "dpaste/snippet_form.html" %}
+  </div>
 {% endblock %}

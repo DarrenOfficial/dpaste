@@ -1,0 +1,60 @@
+// -----------------------------------------------------------------------------
+// Header
+
+header {
+  background: $headerColor2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: $desktopBoxPadding;
+}
+
+header h1 {
+  color: white;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 0;
+}
+
+header h1 input {
+  font-size: 1em;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: white;
+  min-width: 15em;
+  outline: none;
+}
+
+header nav {
+  font-size: .9rem;
+}
+
+header nav a:link,
+header nav a:visited {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  margin: 0 .2em;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+header nav a:last-child {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: .3em .5em;
+
+  &:hover {
+    text-decoration: none;
+    background-color: lighten($headerColor1, 10%);
+  }
+}
+
+
+

@@ -2,16 +2,15 @@
 
 {% load i18n %}
 
-{% block title %}About {{ site_name }}{% endblock %}
-{% block headline %}About {{ site_name }}{% endblock %}
-{% block dpaste_nav_about %}active{% endblock %}
+{% block title %}{% trans "About" %}{% endblock %}
+{% block headline %}{% trans "About" %}{% endblock %}
 
 {% block page %}
-<hr>
-<div class="row-fluid">
+
+<div class="page">
 
     <p>
-        {{ site_name }} is powered by dpaste, which is open source. You can
+        This site is powered by dpaste, which is open source. You can
         find the source, contribute to it and leave ideas on Github:
         <a href="https://github.com/bartTC/dpaste">github.com/bartTC/dpaste</a>
     </p>
@@ -63,13 +62,10 @@
         {% for s in stats %}
         <tr>
             <th>{{ s.lexer|upper }}</th>
-            <td>{{ s.count }}</th>
+            <td>{{ s.count }}</td>
         </tr>
         {% endfor %}
     </table>
-
-    <div class="clearfix"></div>
-    <hr class="clearfix">
 
     <h3>Delete a snippet</h3>
 
@@ -91,9 +87,6 @@
         {% csrf_token %}
         <input name="snippet_id"> <input type="Submit" value="Submit"/>
     </form>
-
-    <div class="clearfix"></div>
-    <hr class="clearfix">
 
     {{ DPASTE_ABOUT_EXTRA }}
 </div>

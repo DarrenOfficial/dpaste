@@ -23,14 +23,11 @@ from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
 from .forms import EXPIRE_CHOICES, SnippetForm, get_expire_values
-from .highlight import (LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST,
-                        LEXER_WORDWRAP, PLAIN_CODE, pygmentize)
+from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST, LEXER_WORDWRAP, \
+    PLAIN_CODE, pygmentize
 from .models import ONETIME_LIMIT, Snippet
 
 template_globals = {
-    'site_name': getattr(settings, 'DPASTE_SITE_NAME', 'dpaste.de'),
-    'jquery_url': getattr(settings, 'DPASTE_JQUERY_URL',
-        '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'),
 }
 
 # -----------------------------------------------------------------------------
@@ -117,6 +114,7 @@ class SnippetDetailView(SnippetView, DetailView):
         h = h.replace(u'  ', u'&nbsp;&nbsp;')
         h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
         return h
+
 
 class SnippetRawView(SnippetDetailView):
     """

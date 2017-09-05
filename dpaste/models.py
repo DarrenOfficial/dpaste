@@ -5,7 +5,9 @@ from random import SystemRandom
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
+from six import python_2_unicode_compatible
 
 from .highlight import LEXER_DEFAULT
 
@@ -30,6 +32,7 @@ def generate_secret_id(length=None, alphabet=None, tries=0):
     return generate_secret_id(length=length+1, tries=tries)
 
 
+@python_2_unicode_compatible
 class Snippet(models.Model):
     EXPIRE_TIME = 1
     EXPIRE_KEEP = 2
@@ -56,11 +59,8 @@ class Snippet(models.Model):
         ordering = ('-published',)
         db_table = 'dpaste_snippet'
 
-    @property
-    def remaining_views(self):
-        if self.expire_type == self.EXPIRE_ONETIME:
-            remaining = ONETIME_LIMIT - self.view_count
-            return remaining > 0 and remaining or 0
+    def __str__(self):
+        return self.secret_id
         return None
 
     def save(self, *args, **kwargs):
@@ -71,5 +71,12 @@ class Snippet(models.Model):
     def get_absolute_url(self):
         return reverse('snippet_details', kwargs={'snippet_id': self.secret_id})
 
-    def __unicode__(self):
-        return self.secret_id
+    @property
+    def remaining_views(self):
+        if self.expire_type == self.EXPIRE_ONETIME:
+            remaining = ONETIME_LIMIT - self.view_count
+            return remaining > 0 and remaining or 0
+
+    @cached_property
+    def excerpt(self):
+        return self.content.replace('\n', '')[:200]

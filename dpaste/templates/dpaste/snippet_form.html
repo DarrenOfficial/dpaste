@@ -1,40 +1,29 @@
 {% load i18n %}
 
-<form method="post" action="" class="form-horizontal snippet-form">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div style="display: none;">{{ form.title }}</div>
+<form method="post" action="" class="snippet-form">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
 
-    <div class="
-        control-group
-        form-content
-        superenter
-        {% if not object %}autofocus{% endif %}
-        {% if form.content.errors %}error{% endif %}
-    ">
-        {{ form.content }}
+  <div style="display: none;">{{ form.title }}</div> {# Honeypot field #}
+
+  <div class="form-content superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
+    {{ form.content }}
+  </div>
+
+  <div class="form-options">
+    <div class="form-options-lexer">
+      <label for="id_lexer">{% trans "Syntax" %}</label>
+      {{ form.lexer }}
     </div>
 
-    <div class="control-group form-options">
-        <div class="form-options-lexer
-            {% if form.lexer.errors %}control-group error{% endif %}">
-            <div class="input-append">
-                {{ form.lexer }}
-            </div>
-            {% for error in form.lexer.errors %}
-            <span class="help-inline">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div class="form-options-expire">
-            {{ form.expires.errors }}
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-trash" title="{% trans "Expire in" %}"></i></span>
-                {{ form.expires }}
-            </div>
-        </div>
+    <div class="form-options-expire">
+      <label for="id_expires">{% trans "Expires in" %}</label>
+      {{ form.expires }}
     </div>
-    <div class="form-actions">
-        <input tabindex="0" type="submit"class="btn btn-primary" value="{% trans "Paste it" %}">
-        <span class="shortcut">&#8984;+&#9166; {% trans "or" %} Ctrl+&#9166;</span>
-    </div>
+  </div>
+
+  <div class="form-actions">
+    <input type="submit" value="{% trans "Paste it" %}">
+    <span class="shortcut">&#8984;+&#9166; {% trans "or" %} Ctrl+&#9166;</span>
+  </div>
 </form>

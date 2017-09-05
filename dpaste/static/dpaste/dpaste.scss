@@ -1,0 +1,67 @@
+// -----------------------------------------------------------------------------
+//
+// dpaste example stylesheet
+//
+// -----------------------------------------------------------------------------
+
+// Color Palette
+$backgroundColor: #F7F8F9;
+$headerColor1: #394c78;
+$headerColor2: #426ca1;
+$headerTextColor: #fff;
+$textColor: #888;
+
+$linkColor: rgb(109, 163, 217);
+$hoverColor: rgb(109, 163, 217);
+
+// The general font for the website
+$siteFont: "SF Mono", "Fira Mono", monospace;
+
+// Font used for "Text" lexer
+$textFont: Helvetica;
+
+// Font used for the code snippet display
+$codeFont: "SF Mono", "Fira Mono", Monaco, Menlo, Consolas, "Courier New", monospace;
+
+$desktopBoxPadding: 1rem 2rem;
+$mobileBoxPadding: 1rem;
+
+// -----------------------------------------------------------------------------
+
+body {
+  color: $textColor;
+  background: $backgroundColor;
+  font-family: $siteFont;
+  font-size: 1em;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+}
+
+a:link,
+a:visited {
+  color: $linkColor;
+  font-family: $siteFont;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+a:hover,
+a:visited {
+  color: $hoverColor;
+  text-decoration: underline;
+}
+
+select, input {
+  font-size: medium;
+}
+
+// -----------------------------------------------------------------------------
+// Imports
+
+@import 'header';
+@import 'form';
+@import 'details';
+@import 'history';
+@import 'about';
+@import 'pygments';

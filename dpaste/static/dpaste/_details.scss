@@ -1,0 +1,94 @@
+// -----------------------------------------------------------------------------
+// Snippet Details
+
+// -----------------------------------------------------------------------------
+// Options
+.snippet-options {
+  padding: $desktopBoxPadding;
+  font-size: .9rem;
+
+  a:link,
+  a:visited {
+    margin: 0 .2em;
+  }
+  a:hover,
+  a:active {
+    text-decoration: underline;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Reply Form
+
+.snippet-reply {
+  h2 {
+    background-color: white;
+    padding: $desktopBoxPadding;
+    padding-bottom: 0;
+    margin: 0;
+
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+}
+
+.snippet-reply[data-hidden=yes] {
+  opacity: 0.3;
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Text lexer
+
+.snippet-text {
+  color: #666;
+  font-size: 16px;
+  line-height: 24px;
+  max-width: 620px;
+  font-family: Helvetica, FreeSerif, serif;
+  font-weight: 300;
+}
+
+// -----------------------------------------------------------------------------
+// Code Lexer
+
+$codeColor: #f8f8f2;
+$codeLineColor: #aaa;
+$codeBackgroundColor: #232829;
+$markerColor: #f4e009;
+
+.snippet-code {
+
+  background: $codeBackgroundColor;
+  color: $codeColor;
+  font-family: $codeFont;
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.1rem;
+  padding: 1rem 0;
+
+  .wordwrap {
+    overflow: auto;
+    white-space: nowrap;
+  }
+
+  ol {
+    margin: 0 0 0 2rem;
+
+    li {
+      color: $codeLineColor;
+      cursor: pointer;
+
+      &.marked {
+        color: $markerColor;
+        background-color: $markerColor;
+      }
+
+    }
+  }
+
+}

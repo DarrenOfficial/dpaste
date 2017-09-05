@@ -10,12 +10,13 @@ from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST
 from .models import Snippet
 
 EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
-    ('onetime', _(u'One-Time snippet')),
-    (3600, _(u'In one hour')),
-    (3600 * 24 * 7, _(u'In one week')),
-    (3600 * 24 * 30, _(u'In one month')),
-    ('never', _(u'Never')),
+    ('onetime', _('One-Time snippet')),
+    (3600, _('In one hour')),
+    (3600 * 24 * 7, _('In one week')),
+    (3600 * 24 * 30, _('In one month')),
+    ('never', _('Never')),
 ))
+
 EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', 3600)
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
@@ -36,27 +37,25 @@ def get_expire_values(expires):
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
-        widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...'), 'class': 'form-control'}),
+        widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
         max_length=MAX_CONTENT_LENGTH,
     )
 
     lexer = forms.ChoiceField(
-        label=_(u'Lexer'),
+        label=_('Lexer'),
         initial=LEXER_DEFAULT,
         choices=LEXER_LIST,
-        widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
     expires = forms.ChoiceField(
-        label=_(u'Expires'),
+        label=_('Expires'),
         choices=EXPIRE_CHOICES,
         initial=EXPIRE_DEFAULT,
-        widget=forms.Select(attrs={'class': 'form-control'}),
     )
 
     # Honeypot field
     title = forms.CharField(
-        label=_(u'Title'),
+        label=_('Title'),
         required=False,
         widget=forms.TextInput(attrs={'autocomplete': 'off'}),
     )
