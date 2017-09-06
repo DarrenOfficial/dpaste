@@ -59,7 +59,8 @@
 $codeColor: #f8f8f2;
 $codeLineColor: #aaa;
 $codeBackgroundColor: #232829;
-$markerColor: #f4e009;
+$markerColor: rgb(244,244,9);
+$markerBackgroundColor: rgba(244,244,9,.2);
 
 .snippet-code {
 
@@ -71,7 +72,7 @@ $markerColor: #f4e009;
   line-height: 1.1rem;
   padding: 1rem 0;
 
-  .wordwrap {
+  &.wordwrap {
     overflow: auto;
     white-space: nowrap;
   }
@@ -85,7 +86,7 @@ $markerColor: #f4e009;
 
       &.marked {
         color: $markerColor;
-        background-color: $markerColor;
+        background-color: $markerBackgroundColor;
       }
 
     }

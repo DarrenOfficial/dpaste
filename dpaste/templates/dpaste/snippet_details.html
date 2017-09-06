@@ -98,12 +98,12 @@
     }
   }
 
-  let lines = document.querySelectorAll('.code li');
+  let lines = document.querySelectorAll('.snippet-code li');
   lines.forEach(function(el){
     el.onclick = function(e) {
       el.classList.toggle('marked');
       let hash = 'L';
-      let marked = document.querySelectorAll('.code li.marked');
+      let marked = document.querySelectorAll('.snippet-code li.marked');
       marked.forEach(function(line){
         if (hash !== 'L')
           hash += ',';
