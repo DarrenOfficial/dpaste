@@ -105,7 +105,6 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.template.context_processors.i18n',
-                'dpaste.context_processors.dpaste_globals',
             ],
         },
     },
