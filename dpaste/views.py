@@ -291,7 +291,6 @@ class APIView(View):
     """
     API View
     """
-    @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
         content = request.POST.get('content', '').strip()
         lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()
