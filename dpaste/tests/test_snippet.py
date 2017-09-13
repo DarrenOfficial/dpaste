@@ -76,7 +76,7 @@ class SnippetTestCase(TestCase):
         # The unicode method contains the snippet id so we can easily print
         # the id using {{ snippet }}
         snippet = Snippet.objects.all()[0]
-        self.assertTrue(snippet.secret_id in snippet.__unicode__())
+        self.assertTrue(snippet.secret_id in snippet.__str__())
 
     def test_new_snippet_custom_lexer(self):
         # You can pass a lexer key in GET.l

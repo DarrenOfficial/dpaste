@@ -145,4 +145,5 @@ def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
                             or PythonLexer()
     except Exception:
         lexer = PythonLexer()
+
     return highlight(code_string, lexer, NakedHtmlFormatter())

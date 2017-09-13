@@ -12,6 +12,7 @@ from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect)
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.defaults import page_not_found as django_page_not_found, \
@@ -210,7 +211,7 @@ class SnippetDiffView(TemplateView):
             diff.content = '\n'.join(d).strip()
             diff.lexer = 'diff'
         else:
-            diff.content = _(u'No changes were made between this two files.')
+            diff.content = force_text(_(u'No changes were made between this two files.'))
             diff.lexer = 'text'
 
         return diff
