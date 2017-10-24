@@ -34,8 +34,7 @@
     let se = document.querySelector(".superenter textarea");
     if (se !== null) {
       se.onkeydown = function (e) {
-        let metaKey = navigator.appVersion.indexOf("Win") !== -1 ? e.ctrlKey
-            : event.metaKey;
+        let metaKey = navigator.appVersion.indexOf("Win") !== -1 ? e.ctrlKey : e.metaKey;
         if (e.keyCode === 13 && metaKey) {
           document.querySelector(".snippet-form").submit();
           return false;
