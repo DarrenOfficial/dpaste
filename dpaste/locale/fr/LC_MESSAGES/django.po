@@ -1,0 +1,215 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Michael Marx <reze.mika@gmail.com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: dpaste\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-03 15:16+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Michael Marx <reze.mika@gmail.com>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: dpaste/forms.py:11 dpaste/models.py:36
+#: dpaste/templates/dpaste/snippet_details.html:39
+msgid "One-Time snippet"
+msgstr "Extrait à usage unique"
+
+#: dpaste/forms.py:12
+msgid "In one hour"
+msgstr "Dans une heure"
+
+#: dpaste/forms.py:13
+msgid "In one week"
+msgstr "Dans une semaine"
+
+#: dpaste/forms.py:14
+msgid "In one month"
+msgstr "Dans un mois"
+
+#: dpaste/forms.py:15
+msgid "Never"
+msgstr "Jamais"
+
+#: dpaste/forms.py:36 dpaste/models.py:41
+msgid "Content"
+msgstr "Contenu"
+
+#: dpaste/forms.py:37
+msgid "Awesome code goes here..."
+msgstr "Le code génial va ici…"
+
+#: dpaste/forms.py:42 dpaste/models.py:42
+msgid "Lexer"
+msgstr "Lexer"
+
+#: dpaste/forms.py:49 dpaste/models.py:46
+msgid "Expires"
+msgstr "Expires"
+
+#: dpaste/forms.py:57
+msgid "Title"
+msgstr "Titre"
+
+#: dpaste/forms.py:85
+msgid "This field is required."
+msgstr "Ce champ est requis."
+
+#: dpaste/highlight.py:33
+msgid "Highlighted"
+msgstr "Surligné"
+
+#: dpaste/models.py:34
+msgid "Expire by timestamp"
+msgstr "Expire selon un timestamp"
+
+#: dpaste/models.py:35
+msgid "Keep Forever"
+msgstr "Garder pour toujours"
+
+#: dpaste/models.py:39
+msgid "Secret ID"
+msgstr "ID secret"
+
+#: dpaste/models.py:43
+msgid "Published"
+msgstr "Publié"
+
+#: dpaste/models.py:44
+msgid "Expire Type"
+msgstr "Type d’expiration"
+
+#: dpaste/models.py:47
+msgid "View count"
+msgstr "Visualisation"
+
+#: dpaste/templates/dpaste/about.html:59
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: dpaste/templates/dpaste/about.html:61
+#, python-format
+msgid ""
+"There are %(total)s snippets in the database. The most popular languages are:"
+msgstr ""
+"Il y a %(total)s extraits dans la base de données. Les langages les plus populaires sont :"
+
+#: dpaste/templates/dpaste/base.html:7 dpaste/templates/dpaste/base.html:20
+#: dpaste/templates/dpaste/snippet_new.html:5
+#: dpaste/templates/dpaste/snippet_new.html:6
+msgid "New snippet"
+msgstr "Nouvel extrait"
+
+#: dpaste/templates/dpaste/base.html:18
+msgid "About"
+msgstr "À propos"
+
+#: dpaste/templates/dpaste/base.html:19
+msgid "History"
+msgstr "Histoire"
+
+#: dpaste/templates/dpaste/snippet_details.html:6
+msgid "Snippet"
+msgstr "Extrait"
+
+#: dpaste/templates/dpaste/snippet_details.html:35
+#, python-format
+msgid "Expires in: %(date)s"
+msgstr "Expires dans : %(date)s"
+
+#: dpaste/templates/dpaste/snippet_details.html:37
+msgid "Snippet never expires"
+msgstr "Ce extrait n’expires jamais"
+
+#: dpaste/templates/dpaste/snippet_details.html:43
+msgid "Really delete this snippet?"
+msgstr "Supprimer cet extrait ?"
+
+#: dpaste/templates/dpaste/snippet_details.html:43
+msgid "Delete Now"
+msgstr "Supprimer maintenant"
+
+#: dpaste/templates/dpaste/snippet_details.html:46
+msgid "Compare this Answer"
+msgstr "Comparer cette réponse"
+
+#: dpaste/templates/dpaste/snippet_details.html:49
+msgid "View Raw"
+msgstr "Voir le texte brut"
+
+#: dpaste/templates/dpaste/snippet_details.html:58
+msgid "This is a one-time snippet."
+msgstr "Cet extrait est à usage unique."
+
+#: dpaste/templates/dpaste/snippet_details.html:60
+#, python-format
+msgid "It is automatically removed after %(remaining)s further views."
+msgstr "Il sera automatiquement supprimé après %(remaining)s consultations."
+
+#: dpaste/templates/dpaste/snippet_details.html:62
+msgid "It is automatically removed after the next view."
+msgstr "Il sera automatiquement supprimé après la prochaine consultation."
+
+#: dpaste/templates/dpaste/snippet_details.html:64
+msgid "It cannot be viewed again."
+msgstr "Il ne peut plus être vu."
+
+#: dpaste/templates/dpaste/snippet_details.html:84
+msgid "Reply to this snippet"
+msgstr "Répondre à cet extrait"
+
+#: dpaste/templates/dpaste/snippet_diff.html:4
+#, python-format
+msgid ""
+"\n"
+"    Difference between this answer <a href=\"%(fileb_url)s\">#%(fileb_id)s</"
+"a>\n"
+"    and the parent snippet <a href=\"%(filea_url)s\">#%(filea_id)s</a>\n"
+"    "
+msgstr ""
+"\n"
+"    Différences entre cette réponse <a href=\"%(fileb_url)s\">#%(fileb_id)s</"
+"a>\n"
+"    et l’extrait parent <a href=\"%(filea_url)s\">#%(filea_id)s</a>\n"
+"    "
+
+#: dpaste/templates/dpaste/snippet_form.html:31
+msgid "Expire in"
+msgstr "Expire dans"
+
+#: dpaste/templates/dpaste/snippet_form.html:37
+msgid "Paste it"
+msgstr "Envoyer ceci"
+
+#: dpaste/templates/dpaste/snippet_form.html:38
+msgid "or"
+msgstr "ou"
+
+#: dpaste/templates/dpaste/snippet_list.html:15
+msgid "DATETIME_FORMAT"
+msgstr "DATETIME_FORMAT"
+
+#: dpaste/templates/dpaste/snippet_list.html:16
+#, python-format
+msgid "%(since)s ago"
+msgstr "il y a %(since)s"
+
+#: dpaste/templates/dpaste/snippet_list.html:22
+msgid ""
+"No snippets saved. Either all your snippets are expired or your cookie has "
+"changed."
+msgstr ""
+"Aucun extrait sauvé. Soit tous vos extraits ont expirés soit votre cookie a "
+"changé."
+
+#: dpaste/views.py:176
+msgid "No changes were made between this two files."
+msgstr "Aucun changement n’a été fait entre ces deux fichiers."
