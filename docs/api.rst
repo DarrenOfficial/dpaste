@@ -21,7 +21,7 @@ The UTF-8 encoded string you want to paste.
 ~~~~~~~~~~~~~~~~~~~~
 
 The lexer string key used for highlighting. See `lexer list`_  for a full list
-of choices. Default: ``python``.
+of choices. Default: ``text``.
 
 ``format`` (optional)
 ~~~~~~~~~~~~~~~~~~~~~
