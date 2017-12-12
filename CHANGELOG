@@ -11,6 +11,7 @@ Changelog
 * All views are now class based and use the latest generic based views sugar.
 * Removed "Suspicious" middleware which was never been used, documented, 
   and also not functional for a while.
+* Fixed CMD+Enter form submission shortcut in Firefox. 
 
 2.13 (2017-01-20)
 -----------------
