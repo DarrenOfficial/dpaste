@@ -4,6 +4,7 @@ Changelog
 2.14 (master)
 -------------
 
+* Django 1.11 compatibility. But not Django 2.0 yet. 
 * Removed "Suspicious" middleware which was never been used, documented, 
   and also not functional for a while. 
 
