@@ -113,7 +113,6 @@ TEMPLATES = [
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sessions',
-    'gunicorn',
     'dpaste',
 )
 

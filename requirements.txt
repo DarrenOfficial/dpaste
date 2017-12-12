@@ -17,6 +17,3 @@ docutils
 sphinx
 sphinx_rtd_theme
 
-# Deployment specific
-gunicorn
-psycopg2
