@@ -49,7 +49,7 @@ setup(
     },
     include_package_data=True,
     install_requires=[
-        'django>=1.8',
+        'django>=1.8,<2.0',
         'pygments>=1.6',
         'django-markup>=1.0',
     ],
