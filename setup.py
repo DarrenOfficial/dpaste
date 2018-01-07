@@ -52,6 +52,7 @@ setup(
         'django>=1.8,<2.0',
         'pygments>=1.6',
         'django-markup>=1.0',
+        'django-csp>=3.3',
     ],
     tests_require=[
         'tox>=1.6.1',
