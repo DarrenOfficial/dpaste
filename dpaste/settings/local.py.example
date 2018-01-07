@@ -19,3 +19,10 @@ DATABASES = {
 SECRET_KEY = 'changeme'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+INSTALLED_APPS += ('sslserver',)
+
+# Disable for local development
+if not 'runsslserver' in sys.argv:
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False

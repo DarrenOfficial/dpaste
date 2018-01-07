@@ -70,14 +70,10 @@ LOCALE_PATHS = (
 )
 
 #==============================================================================
-# Static files
+# Project URLS and media settings
 #==============================================================================
 
 STATIC_ROOT = os.path.join(VAR_ROOT, 'static')
-
-#==============================================================================
-# Project URLS and media settings
-#==============================================================================
 
 STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
@@ -92,14 +88,22 @@ LOGIN_REDIRECT_URL = '/'
 # Templates
 #==============================================================================
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+    'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
+]
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_BROWSER_XSS_FILTER =True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 TEMPLATES = [
     {
