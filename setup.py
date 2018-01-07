@@ -54,7 +54,8 @@ setup(
         'django-markup>=1.0',
     ],
     tests_require=[
-        'tox>=1.6.1'
+        'tox>=1.6.1',
+        'coverage',
     ],
     cmdclass={
         'test': Tox

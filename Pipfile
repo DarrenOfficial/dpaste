@@ -1,0 +1,27 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+docutils = "*"
+sphinx-rtd-theme = "*"
+sphinx = "*"
+"psycopg2" = "*"
+
+
+[packages]
+
+django = ">=1.8,<2.0"
+pygments = ">=1.6"
+django-markup = ">=1.0"
+django-sslserver = "*"
+django-csp = "==3.3"
+
+
+[requires]
+
+python_version = "3.6"

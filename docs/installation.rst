@@ -1,6 +1,6 @@
-============
-Installation
-============
+==================================
+Installation for local development
+==================================
 
 Ready to contribute? Here's how to set up `dpaste` for local development.
 
@@ -9,11 +9,11 @@ Ready to contribute? Here's how to set up `dpaste` for local development.
 
     $ git clone https://github.com/<your_username>/dpaste.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper
+installed, this is how you set up your fork for local development::
 
-    $ mkvirtualenv dpaste
     $ cd dpaste/
-    $ pip install -r requirements.txt
+    $ pipenv install --three --dev
 
 4. Copy the settings file and edit it, to meet your needs::
 
@@ -22,8 +22,8 @@ Ready to contribute? Here's how to set up `dpaste` for local development.
 
 5. Initialze the database by running the command::
 
-    $ python manage.py migrate
+    $ pipenv run ./manage.py migrate
 
 6. Start up the webserver::
 
-    $ python manage.py runserver
+    $ pipenv run ./manage.py runserver
