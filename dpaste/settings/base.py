@@ -98,13 +98,6 @@ MIDDLEWARE_CLASSES = [
     'csp.middleware.CSPMiddleware',
 ]
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_BROWSER_XSS_FILTER =True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -142,6 +135,17 @@ DATABASES = {
 # How many recent snippets to save for every user? IDs of this snippets are
 # stored in the user session.
 MAX_SNIPPETS_PER_USER = 25
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_BROWSER_XSS_FILTER =True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
 LOGGING = {
     'version': 1,
