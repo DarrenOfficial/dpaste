@@ -37,9 +37,6 @@ DEBUG = False
 TIME_ZONE = 'UTC'
 SITE_ID = 1
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
-
 ALLOWED_HOSTS = (
     'dpaste.de',
     'www.dpaste.de',
@@ -48,6 +45,7 @@ ALLOWED_HOSTS = (
     '127.0.0.1',
 )
 
+# Make this unique, and don't share it with anybody.
 SECRET_KEY = 'CHANGE_ME'
 
 #==============================================================================
@@ -114,8 +112,8 @@ TEMPLATES = [
 ]
 
 INSTALLED_APPS = (
-    'django.contrib.staticfiles',
     'django.contrib.sessions',
+    'django.contrib.staticfiles',
     'dpaste',
 )
 
