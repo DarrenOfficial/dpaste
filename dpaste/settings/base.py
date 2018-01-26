@@ -88,7 +88,7 @@ LOGIN_REDIRECT_URL = '/'
 # Templates
 #==============================================================================
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
