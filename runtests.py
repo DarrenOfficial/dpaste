@@ -37,7 +37,7 @@ SETTINGS = {
         'django.contrib.staticfiles',
         'dpaste',
     ],
-    'MIDDLEWARE_CLASSES': (
+    'MIDDLEWARE': (
         'django.contrib.sessions.middleware.SessionMiddleware',
     ),
     'STATIC_ROOT': '/tmp/dpaste_test_static/',
