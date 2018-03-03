@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import sys
 
+import django
 from django.conf import settings
+from django.test.runner import DiscoverRunner as TestRunner
+
 
 SETTINGS = {
     'DATABASES': {
@@ -51,19 +54,10 @@ def runtests(*test_args):
     if not settings.configured:
         settings.configure(**SETTINGS)
 
-    # New Django 1.7 app registry setup
-    try:
-        from django import setup
-        setup()
-    except ImportError:
-        pass
+    # app registry setup
+    django.setup()
 
-    # New Django 1.8 test runner
-    try:
-        from django.test.runner import DiscoverRunner as TestRunner
-    except ImportError:
-        from django.test.simple import DjangoTestSuiteRunner as TestRunner
-
+    # test runner
     test_runner = TestRunner(verbosity=1)
     failures = test_runner.run_tests(['dpaste'])
     if failures:
