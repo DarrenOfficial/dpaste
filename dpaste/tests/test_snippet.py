@@ -8,6 +8,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.test.utils import override_settings
 
+from ..templatetags.dpaste_tags import highlight
 from ..forms import EXPIRE_DEFAULT
 from ..highlight import LEXER_DEFAULT, PLAIN_CODE, PLAIN_TEXT
 from ..models import Snippet
@@ -386,6 +387,60 @@ class SnippetTestCase(TestCase):
         from ..highlight import pygmentize
         pygmentize('code', lexer_name='python')
         pygmentize('code', lexer_name='doesnotexist')
+
+    def test_highlighting_leading_space(self):
+        """
+        Leading spaces in a snippet get converted to
+        &nbsp; in HTML.
+        See https://github.com/bartTC/dpaste/issues/88
+        """
+        content = "first line\n onespace"
+        expected = "&nbsp;<span class=\"n\">onespace</span>"
+
+        # POST data
+        data = self.valid_form_data(content=content)
+        self.client.post(self.new_url, data, follow=True)
+        snippet = Snippet.objects.all()[0]
+
+        # test spacing
+        highlight_filter = highlight(snippet)
+        self.assertIn(expected, highlight_filter)
+
+    def test_highlighting_two_leading_spaces(self):
+        """
+        Two leading spaces in a snippet get
+        converted to &nbsp;&nbsp; in HTML.
+        """
+        content = "first line\n  twospaces"
+        expected = "&nbsp;&nbsp;" \
+                   "<span class=\"n\">twospaces</span>"
+
+        # POST data
+        data = self.valid_form_data(content=content)
+        self.client.post(self.new_url, data, follow=True)
+
+        # test spacing
+        snippet = Snippet.objects.all()[0]
+        highlight_filter = highlight(snippet)
+        self.assertIn(expected, highlight_filter)
+
+    def test_highlighting_tab(self):
+        """
+        Tabs in a snippet get converted to
+        &nbsp;&nbsp;&nbsp;&nbsp; in HTML.
+        """
+        content = "first line\n\ttab"
+        expected = "&nbsp;&nbsp;&nbsp;&nbsp;" \
+                   "<span class=\"n\">tab</span>"
+
+        # POST data
+        data = self.valid_form_data(content=content)
+        self.client.post(self.new_url, data, follow=True)
+
+        # test spacing
+        snippet = Snippet.objects.all()[0]
+        highlight_filter = highlight(snippet)
+        self.assertIn(expected, highlight_filter)
 
     @override_settings(DPASTE_SLUG_LENGTH=1)
     def test_random_slug_generation(self):
