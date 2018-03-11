@@ -121,7 +121,7 @@ class NakedHtmlFormatter(HtmlFormatter):
             yield i, t
 
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
-    # Plain code is noth hihglighted
+    # Plain code is not highlighted
     if lexer_name == PLAIN_CODE:
         return '\n'.join([u'<span class="nn">{}</span>'.format(escape(l))
             for l in code_string.splitlines()])
