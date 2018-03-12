@@ -81,6 +81,7 @@ class SnippetForm(forms.ModelForm):
             self.fields['lexer'].initial = request.GET['l']
 
     def clean_content(self):
+        import ipdb, os; os.system("stty sane"); ipdb.set_trace()
         content = self.cleaned_data.get('content', '')
         if content.strip() == '':
             raise forms.ValidationError(_('This field is required.'))
