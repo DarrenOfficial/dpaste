@@ -74,7 +74,8 @@ $markerBackgroundColor: rgba(244,244,9,.2);
 
   &.wordwrap {
     overflow: auto;
-    white-space: nowrap;
+
+    li { white-space: pre-wrap !important; }
   }
 
   ol {
@@ -83,6 +84,7 @@ $markerBackgroundColor: rgba(244,244,9,.2);
     li {
       color: $codeLineColor;
       cursor: pointer;
+      white-space: pre;
 
       &.marked {
         color: $markerColor;
