@@ -6,15 +6,13 @@ import json
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.urls import reverse
 from django.db.models import Count
 from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
-                         HttpResponseRedirect)
+    HttpResponseRedirect)
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
+from django.urls import reverse
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
-from django.views.decorators.csrf import csrf_exempt
 from django.views.defaults import page_not_found as django_page_not_found, \
     server_error as django_server_error
 from django.views.generic import FormView
@@ -112,7 +110,6 @@ class SnippetDetailView(SnippetView, DetailView):
     def highlight_snippet(self):
         snippet = self.get_object()
         h = pygmentize(snippet.content, snippet.lexer)
-        h = h.replace(u'  ', u'&nbsp;&nbsp;')
         h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
         return h
 

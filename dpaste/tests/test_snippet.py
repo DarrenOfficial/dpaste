@@ -401,3 +401,12 @@ class SnippetTestCase(TestCase):
         slug_list = Snippet.objects.values_list(
             'secret_id', flat=True).order_by('published')
         self.assertEqual(len(set(slug_list)), 100)
+
+    def test_leading_white_is_retained_in_db(self):
+        """
+        Leading Whitespace is retained in the db.
+        """
+        content = u' one\n  two\n   three\n    four'
+        data = self.valid_form_data(content=content)
+        self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.all()[0].content, content)

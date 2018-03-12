@@ -239,3 +239,13 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].lexer, 'php')
+
+    def test_leading_white_is_retained(self):
+        """
+        Leading Whitespace is retained in the db.
+        """
+        content = u' one\n  two\n   three\n    four'
+        self.client.post(self.api_url, {'content': content})
+        self.assertEqual(Snippet.objects.all()[0].content, content)
+
+
