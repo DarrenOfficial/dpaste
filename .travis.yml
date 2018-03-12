@@ -7,21 +7,24 @@ python:
   - 3.6
 
 env:
-  - DJANGO: django>=1.8,<1.9
-  - DJANGO: django>=1.9,<1.10
-  - DJANGO: django>=1.10,<1.11
   - DJANGO: django>=1.11,<2.0
   - DJANGO: django>=2.0
 
+matrix:
+  exclude:
+    - python: "2.7"
+      env: DJANGO=2.0.*
+
 before_install:
   - pip install codecov
+  - coverage erase
 
 install:
   - pip install $DJANGO
-  - pip install -e .
+  - pip install -e .[standalone]
 
 script:
-  - coverage run runtests.py
+  - coverage run --append runtests.py
 
 after_success:
   - codecov
