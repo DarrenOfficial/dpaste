@@ -1,19 +1,24 @@
 Changelog
 =========
 
-3.0 (master)
--------------
+3.0a0 (master)
+--------------
 
 * Dropped support for Django 1.8 to 1.10 due to it's general end of support. 
   The project will likely work well but it's no longer specifically tested.
-* General code cleanup
-* Removed jQuery, all Javascript is native.
-* Removed Bootstrap for theming.
-* Django 1.11 based templates, forms, views, models, etc.
-* All views are now class based and use the latest generic based views sugar.
-* Removed "Suspicious" middleware which was never been used, documented, 
+* Fixed issues around leading whitespace in lines.
+* Fixed CMD+Enter form submission shortcut in Firefox.
+* Removed "Suspicious" middleware which was never been used, documented,
   and also not functional for a while.
-* Fixed CMD+Enter form submission shortcut in Firefox. 
+* Added django-csp to deal with external content (this is required for the
+  upcoming "rendered" markdown feature).
+
+General code cleanup:
+
+* All views are now class based and use the latest generic based views sugar.
+* Django 1.11 based templates, forms, views, models, etc.
+* Removed jQuery dependeny, all Javascript is native.
+* Removed Bootstrap dependendy.
 
 2.13 (2017-01-20)
 -----------------
