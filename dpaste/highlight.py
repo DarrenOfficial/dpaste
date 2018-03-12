@@ -1,16 +1,8 @@
-from __future__ import unicode_literals
-
-from django.conf import settings
-from django.template.defaultfilters import escape
-from django.utils.translation import ugettext_lazy as _
-from pygments import highlight
-from pygments.formatters import HtmlFormatter
-from pygments.lexers import *
-
 """
-# Get a list of all lexer, and then remove all lexer which have '-' or '+'
-# or 'with' in the name. Those are too specific and never used. This produces a
-# tuple list of [(lexer, Lexer Display Name) ...] lexers.
+List of all available lexers.
+
+To get a list of all lexers, and remove some dupes, do:
+
 from pygments.lexers import get_all_lexers
 ALL_LEXER = set([(i[1][0], i[0]) for i in get_all_lexers()])
 LEXER_LIST = [l for l in ALL_LEXER if not (
@@ -24,8 +16,23 @@ LEXER_LIST = [l for l in ALL_LEXER if not (
 LEXER_LIST = sorted(LEXER_LIST)
 """
 
-# The list of lexers. Its not worth to autogenerate this. See above how to
-# retrieve this.
+
+from __future__ import unicode_literals
+
+from logging import getLogger
+
+from django.conf import settings
+from django.template.defaultfilters import escape
+from django.utils.translation import ugettext_lazy as _
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
+from pygments.lexers.python import PythonLexer
+from pygments.util import ClassNotFound
+
+logger = getLogger(__file__)
+
+
 PLAIN_TEXT = '_text_plain'  # lexer name whats rendered as text (paragraphs)
 PLAIN_CODE = '_code' # lexer name of code with no hihglighting
 
@@ -113,7 +120,6 @@ LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
 
 # Generate a list of all keys of all lexer
 LEXER_KEYS = []
-
 for i in LEXER_LIST:
     for j, k in i[1]:
         LEXER_KEYS.append(j)
@@ -126,6 +132,7 @@ LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP',
     ('text', 'rst')
 )
 
+
 class NakedHtmlFormatter(HtmlFormatter):
     def wrap(self, source, outfile):
         return self._wrap_code(source)
@@ -134,16 +141,33 @@ class NakedHtmlFormatter(HtmlFormatter):
         for i, t in source:
             yield i, t
 
+
 def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
-    # Plain code is noth hihglighted
+    """
+    Run given code in ``code string`` through pygments.
+    """
+
+    # Plain code is not highlighted, but we wrap with with regular
+    # Pygments syntax to keep the frontend aligned.
     if lexer_name == PLAIN_CODE:
-        return '\n'.join([u'<span class="nn">{}</span>'.format(escape(l))
+        return '\n'.join(['<span class="nn">{}</span>'.format(escape(l))
             for l in code_string.splitlines()])
 
+    # Everything else is handled by Pygments.
+    lexer = None
     try:
-        lexer = lexer_name and get_lexer_by_name(lexer_name) \
-                            or PythonLexer()
-    except Exception:
+        lexer = get_lexer_by_name(lexer_name)
+    except ClassNotFound as e:
+        if settings.DEBUG:
+            logger.warning('Lexer for given name %s not found', lexer_name)
+            logger.exception(e)
+        pass
+
+    # If yet no lexer is defined, fallback to Python
+    if not lexer:
         lexer = PythonLexer()
 
-    return highlight(code_string, lexer, NakedHtmlFormatter())
+    formatter = NakedHtmlFormatter()
+
+    return highlight(code_string, lexer, formatter)
+

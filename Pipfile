@@ -7,11 +7,8 @@ name = "pypi"
 
 [dev-packages]
 
+django-sslserver = "*"
 sphinx-rtd-theme = "*"
 sphinx = "*"
+
 "e1839a8" = {path = ".", extras = ["standalone"], editable = true}
-
-
-[packages]
-
-pylint = "*"

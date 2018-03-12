@@ -2,17 +2,10 @@ from dpaste.settings.base import *
 
 DEBUG = True
 
-ADMINS = (
-    #('Your Name', 'name@example.com'),
-)
-MANAGERS = ADMINS
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dpaste',
-        'USER': '',
-        'PASSWORD': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'dpaste.db',
     }
 }
 
@@ -22,7 +15,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 INSTALLED_APPS += ('sslserver',)
 
-# Disable for local development
+# Optionally run the runserver as `manage.py runsslserver` to locally
+# test correct cookie and csp behavior.
 if not 'runsslserver' in sys.argv:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False

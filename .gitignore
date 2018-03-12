@@ -2,3 +2,4 @@
 dpaste/settings/local.py
 dpaste.egg-info
 docs/_build
+dpaste.db
