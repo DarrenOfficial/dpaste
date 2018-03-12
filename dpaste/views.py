@@ -26,8 +26,6 @@ from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST, LEXER_WORDWRAP, \
     PLAIN_CODE, pygmentize
 from .models import ONETIME_LIMIT, Snippet
 
-template_globals = {
-}
 
 # -----------------------------------------------------------------------------
 # Snippet Handling
@@ -49,7 +47,6 @@ class SnippetView(FormView):
 
     def get_context_data(self, **kwargs):
         ctx = super(SnippetView, self).get_context_data(**kwargs)
-        ctx.update(template_globals)
         ctx.update({
             'lexer_list': LEXER_LIST,
         })
@@ -100,7 +97,6 @@ class SnippetDetailView(SnippetView, DetailView):
         self.object = snippet = self.get_object()
 
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
-        ctx.update(template_globals)
         ctx.update({
             'highlighted': self.highlight_snippet().splitlines(),
             'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
@@ -160,7 +156,6 @@ class SnippetHistory(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(SnippetHistory, self).get_context_data(**kwargs)
-        ctx.update(template_globals)
         ctx.update({
             'snippets_max': getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10),
             'snippet_list': self.snippet_list,
@@ -223,7 +218,6 @@ class SnippetDiffView(TemplateView):
         diff = self.get_diff()
         highlighted = self.highlight_snippet(diff.content)
         ctx = super(SnippetDiffView, self).get_context_data(**kwargs)
-        ctx.update(template_globals)
         ctx.update({
             'snippet': diff,
             'highlighted': highlighted.splitlines(),
@@ -246,7 +240,6 @@ class AboutView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(AboutView, self).get_context_data(**kwargs)
-        ctx.update(template_globals)
         ctx.update({
             'total': Snippet.objects.count(),
             'stats': Snippet.objects.values('lexer').annotate(
@@ -275,6 +268,7 @@ def _format_json(s):
         'lexer': s.lexer,
     })
 
+
 BASE_URL = getattr(settings, 'DPASTE_BASE_URL', 'https://dpaste.de')
 
 FORMAT_MAPPING = {
@@ -289,13 +283,13 @@ class APIView(View):
     API View
     """
     def post(self, request, *args, **kwargs):
-        content = request.POST.get('content', '').strip()
+        content = request.POST.get('content', '')
         lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()
         filename = request.POST.get('filename', '').strip()
         expires = request.POST.get('expires', '').strip()
         format = request.POST.get('format', 'default').strip()
 
-        if not content:
+        if not content.strip():
             return HttpResponseBadRequest('No content given')
 
         # We need at least a lexer or a filename
