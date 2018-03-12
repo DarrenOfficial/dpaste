@@ -39,25 +39,26 @@ class SnippetForm(forms.ModelForm):
         label=_('Content'),
         widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
         max_length=MAX_CONTENT_LENGTH,
+        strip=False
     )
 
     lexer = forms.ChoiceField(
         label=_('Lexer'),
         initial=LEXER_DEFAULT,
-        choices=LEXER_LIST,
+        choices=LEXER_LIST
     )
 
     expires = forms.ChoiceField(
         label=_('Expires'),
         choices=EXPIRE_CHOICES,
-        initial=EXPIRE_DEFAULT,
+        initial=EXPIRE_DEFAULT
     )
 
     # Honeypot field
     title = forms.CharField(
         label=_('Title'),
         required=False,
-        widget=forms.TextInput(attrs={'autocomplete': 'off'}),
+        widget=forms.TextInput(attrs={'autocomplete': 'off'})
     )
 
     class Meta:
@@ -81,7 +82,6 @@ class SnippetForm(forms.ModelForm):
             self.fields['lexer'].initial = request.GET['l']
 
     def clean_content(self):
-        import ipdb, os; os.system("stty sane"); ipdb.set_trace()
         content = self.cleaned_data.get('content', '')
         if content.strip() == '':
             raise forms.ValidationError(_('This field is required.'))
