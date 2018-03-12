@@ -4,6 +4,8 @@ Changelog
 3.0 (master)
 -------------
 
+* Dropped support for Django 1.8 to 1.10 due to it's general end of support. 
+  The project will likely work well but it's no longer specifically tested.
 * General code cleanup
 * Removed jQuery, all Javascript is native.
 * Removed Bootstrap for theming.

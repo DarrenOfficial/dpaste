@@ -40,15 +40,7 @@ SITE_ID = 1
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ''
 
-ALLOWED_HOSTS = (
-    'dpaste.de',
-    'www.dpaste.de',
-    'dpaste.org',
-    'www.dpaste.org',
-    '127.0.0.1',
-)
-
-SECRET_KEY = 'CHANGE_ME'
+ALLOWED_HOSTS = ['*']
 
 #==============================================================================
 # I18N
@@ -88,7 +80,7 @@ LOGIN_REDIRECT_URL = '/'
 # Templates
 #==============================================================================
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,7 +108,7 @@ TEMPLATES = [
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sessions',
-    'dpaste',
+    'dpaste.apps.dpasteAppConfig',
 )
 
 DATABASES = {

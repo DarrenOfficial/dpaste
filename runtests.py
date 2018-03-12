@@ -3,68 +3,18 @@ from __future__ import unicode_literals
 
 import sys
 
+from django import setup
 from django.conf import settings
+from django.test.runner import DiscoverRunner as TestRunner
 
-SETTINGS = {
-    'DATABASES': {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'dev.db',
-        },
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.mysql',
-        #     'NAME': 'dpaste',
-        #     'USER': 'root',
-        #     'PASSWORD': '',
-        # }
-    },
-    'TEMPLATES': [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.request',
-                    'django.template.context_processors.i18n',
-                ],
-            },
-        },
-    ],
-    'INSTALLED_APPS': [
-        'django.contrib.sessions',
-        'django.contrib.staticfiles',
-        'dpaste',
-    ],
-    'MIDDLEWARE_CLASSES': (
-        'django.contrib.sessions.middleware.SessionMiddleware',
-    ),
-    'STATIC_ROOT': '/tmp/dpaste_test_static/',
-    'STATIC_URL': '/static/',
-    'ROOT_URLCONF': 'dpaste.urls',
-    'LANGUAGE_CODE': 'en',
-    'LANGUAGES': (('en', 'English'),),
-}
+from dpaste.settings import tests as test_settings
+
 
 def runtests(*test_args):
     # Setup settings
     if not settings.configured:
-        settings.configure(**SETTINGS)
-
-    # New Django 1.7 app registry setup
-    try:
-        from django import setup
-        setup()
-    except ImportError:
-        pass
-
-    # New Django 1.8 test runner
-    try:
-        from django.test.runner import DiscoverRunner as TestRunner
-    except ImportError:
-        from django.test.simple import DjangoTestSuiteRunner as TestRunner
-
+        settings.configure(**test_settings.__dict__)
+    setup()
     test_runner = TestRunner(verbosity=1)
     failures = test_runner.run_tests(['dpaste'])
     if failures:

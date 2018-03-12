@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('level', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('parent', models.ForeignKey(related_name='children', blank=True, to='dpaste.Snippet', null=True)),
+                ('parent', models.ForeignKey(related_name='children', blank=True, to='dpaste.Snippet', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('-published',),

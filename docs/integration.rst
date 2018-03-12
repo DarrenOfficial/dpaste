@@ -2,7 +2,7 @@
 Integrate dpaste into an existing project
 =========================================
 
-Dpaste needs at least Django 1.4+ and is tested on Python 2.7 as well as
+Dpaste needs at least Django 1.11+ and is tested on Python 2.7 as well as
 Python 3.3.
 
 Install the latest dpaste release in your environment. This will install all
@@ -10,13 +10,13 @@ necessary dependencies of dpaste as well::
 
     pip install dpaste
 
-Add ``dpaste`` to your ``INSTALLED_APPS``::
+Add ``dpaste.apps.dpasteAppConfig`` to your ``INSTALLED_APPS``::
 
     INSTALLED_APPS = (
         'django.contrib.sessions',
         'django.contrib.staticfiles',
         # ...
-        'dpaste',
+        'dpaste.apps.dpasteAppConfig',
     )
 
 Add ``dpaste`` — and if you want — the ``dpaste_api`` to your urlpatterns::
