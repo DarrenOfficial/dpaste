@@ -77,6 +77,8 @@ LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
 LOGIN_REDIRECT_URL = '/'
 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 #==============================================================================
 # Templates
 #==============================================================================
