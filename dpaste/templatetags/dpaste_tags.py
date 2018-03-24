@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.staticfiles.finders import find
 from django.template.defaulttags import register
 from django.utils.safestring import mark_safe
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 logger = getLogger(__file__)
 
@@ -36,13 +37,22 @@ def inlinestatic(path):
 
 
     """
+    # Filename in build/ directory (when in Watch mode)
     filename = find(path)
-    if not os.path.exists(filename):
+
+    # File in collectstatic target directory (regular deployment)
+    if not filename:
+        if staticfiles_storage.exists(path):
+            filename = staticfiles_storage.path(path)
+
+    # If it wasn't found, raise an error if in DEBUG mode.
+    if not filename or not os.path.exists(filename):
         logger.error('Unable to include inline static file "%s", '
                      'file not found.', filename)
         if settings.DEBUG:
             raise ValueError('Unable to include inline static file "{0}", '
                              'file not found.'.format(filename))
         return ''
+
     return mark_safe(open(filename).read())
 
