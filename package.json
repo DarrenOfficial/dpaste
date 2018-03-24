@@ -4,7 +4,7 @@
   "scripts": {
     "build": "node-sass --output-style compressed -o build client/scss/dpaste.scss && uglifyjs -o build/dpaste.js client/js/dpaste.js",
     "watch-css": "npm run build && node-sass --source-map true -o build/ --watch client/scss/dpaste.scss ",
-    "postinstall": "npm build"
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "node-sass": "^4.7.2",
