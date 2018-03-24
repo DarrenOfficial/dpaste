@@ -30,7 +30,8 @@
       <h3 class="history-header">
         <a href="{{ snippet.get_absolute_url }}">{% blocktrans with snippet.lexer_name as type %}{{ type }} Snippet{% endblocktrans %}</a>
         <span class="sep"></span>
-        {% blocktrans with snippet.published|timesince as since %}{{ since }} ago{% endblocktrans %}
+        {% blocktrans with snippet.published|timesince as since %}Created {{ since }} ago{% endblocktrans %}
+
       </h3>
 
       {% if snippet.lexer == '_text' %}
