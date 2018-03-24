@@ -1,1 +1,1 @@
-<ol>{% for line in snippet.highlight_lines %}<li id="l{{ forloop.counter }}">{{ line|safe|default:"&nbsp;" }}</li>{% endfor %}</ol>
+<ol>{% for line in snippet.highlight_lines %}<li id="l{{ forloop.counter }}">{{ line|safe|default:"&#8203;" }}</li>{% endfor %}</ol>

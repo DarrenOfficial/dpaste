@@ -150,7 +150,7 @@ def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     # Plain code is not highlighted, but we wrap with with regular
     # Pygments syntax to keep the frontend aligned.
     if lexer_name == PLAIN_CODE:
-        return '\n'.join(['<span class="plain">{}</span>'.format(escape(l))
+        return '\n'.join(['<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
             for l in code_string.splitlines()])
 
     # Everything else is handled by Pygments.
