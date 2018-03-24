@@ -109,7 +109,6 @@
 
 }
 
-
 .snippet-text {
   background: $bgColor;
   padding: 20px $boxPadding;
@@ -124,4 +123,17 @@
   & > div {
     max-width: 540px;
   }
+}
+
+.snippet-message {
+  margin: 20px $boxPadding 0 $boxPadding;
+  padding: 8px 20px;
+
+  max-width: 660px;
+
+  color: $messageTextColor;
+  background-color: $messageBgColor;
+
+  font-size: 14px;
+  font-weight: $baseFontDemiBold;
 }
