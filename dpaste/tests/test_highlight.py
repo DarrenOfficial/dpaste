@@ -13,7 +13,7 @@ class HighlightAPITestCase(TestCase):
         PLAIN_CODE is not run through Pygments, test it separately.
         """
         input = 'var'
-        expected = '<span class="nn">var</span>'
+        expected = '<span class="plain">var</span>'
         value = pygmentize(input, lexer_name=PLAIN_CODE)
         self.assertEqual(value, expected)
 
@@ -22,7 +22,7 @@ class HighlightAPITestCase(TestCase):
         Whitespace on the first line is retained.
         """
         input = ' var=1'
-        expected = '<span class="nn"> var=1</span>'
+        expected = '<span class="plain"> var=1</span>'
         value = pygmentize(input, lexer_name=PLAIN_CODE)
         self.assertEqual(value, expected)
 
@@ -35,10 +35,10 @@ class HighlightAPITestCase(TestCase):
                  '   var=3\n'
                  '    var=4')
         expected = (
-            '<span class="nn"> var=1</span>\n'
-            '<span class="nn">  var=2</span>\n'
-            '<span class="nn">   var=3</span>\n'
-            '<span class="nn">    var=4</span>')
+            '<span class="plain"> var=1</span>\n'
+            '<span class="plain">  var=2</span>\n'
+            '<span class="plain">   var=3</span>\n'
+            '<span class="plain">    var=4</span>')
         value = pygmentize(input, lexer_name=PLAIN_CODE)
         self.assertEqual(value, expected)
 

@@ -285,7 +285,7 @@ class APIView(View):
         # We need at least a lexer or a filename
         if not lexer and not filename:
             return HttpResponseBadRequest('No lexer or filename given. Unable to '
-                'determine a highlight. Valid lexers are: %s' % ', '.join(highlight.LEXER_LIST))
+                'determine a highlight. Valid lexers are: %s' % ', '.join(highlight.LEXER_KEYS))
 
         # A lexer is given, check if its valid at all
         if lexer and lexer not in highlight.LEXER_KEYS:
