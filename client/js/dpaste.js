@@ -37,13 +37,13 @@ document.body.onkeydown = function(e) {
 // Toggle Wordwrap
 // -----------------------------------------------------------------------------
 const wordwrapCheckbox = document.getElementById('wordwrap');
-const snippetDiv =  document.querySelector('.snippet-code');
+const snippetDiv =  document.querySelectorAll('.snippet-code');
 
 function toggleWordwrap() {
   if (wordwrapCheckbox.checked) {
-    snippetDiv.classList.add('wordwrap');
+    snippetDiv.forEach(i => i.classList.add('wordwrap'));
   } else {
-    snippetDiv.classList.remove('wordwrap');
+    snippetDiv.forEach(i => i.classList.remove('wordwrap'));
   }
 }
 
