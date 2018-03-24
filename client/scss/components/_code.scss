@@ -1,8 +1,49 @@
-// -----------------------------------------------------------------------------
-// Pygments Theme
 
 .snippet-code {
+  font-family: $codeFont;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 20px;
+  //overflow: auto;
+  color: $codeTextColor;
+  background-color: $codeBgColor;
 
+  padding: 20px $boxPadding;
+
+  &.wordwrap {
+    overflow: auto;
+    li { white-space: pre-wrap !important; }
+  }
+
+  ol {
+    position: relative;
+    list-style: none;
+    counter-reset: lineNumberCounter;
+
+    li {
+      white-space: pre;
+      padding-left: 50px;
+
+      &:before {
+        color: $codeLineNumberColor;
+        counter-increment: lineNumberCounter;
+        content: counter(lineNumberCounter);
+        text-align: right;
+
+        width: 30px;
+        position: absolute;
+        display: inline-block;
+        left: 0px;
+      }
+    }
+
+    li.marked {
+      background-color: $markerBgColor;
+      &:before{ color: $markerLineNumberColor; }
+    }
+  }
+
+  // Pygments
   .gd { background-color: rgba(226, 12, 19, .3); color: #fff; display: block; }
   .gi { background-color: rgba(23, 189, 10, .2); color: #fff; display: block; }
 
@@ -66,4 +107,21 @@
   .vi { color: #f8f8f2 } /* Name.Variable.Instance */
   .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
+}
+
+
+.snippet-text {
+  background: $bgColor;
+  padding: 20px $boxPadding;
+
+  color: $textColor;
+
+  font-family: $textFont;
+  font-weight: $baseFontRegular;
+  font-size: 16px;
+  line-height: 22px;
+
+  & > div {
+    max-width: 540px;
+  }
 }

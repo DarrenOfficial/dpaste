@@ -1,0 +1,49 @@
+{% extends "dpaste/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Snippet History" %}{% endblock %}
+
+{% block body_type %}data-code-snippet{% endblock %}
+
+{% block options %}
+  <ul id="snippetOptions">
+    <li>{% trans "Snippet History" %}</li>
+    {% if snippet_list %}
+    <li class="sep"></li>
+    <li>
+      <a href="?delete-all"
+         onclick="return confirm('{% trans "Are you sure you want to delete all snippets?" %}');">{% trans "Delete all Snippets" %}</a>
+    </li>
+    <li>
+      <label for="wordwrap">
+        {# Wordwrap is enabled by default for all lexer in the history #}
+        <input type="checkbox" id="wordwrap" checked> Wordwrap
+      </label>
+    </li>
+    {% endif %}
+  </ul>
+{% endblock %}
+
+{% block page %}
+    {% for snippet in snippet_list %}
+      <h3 class="history-header">
+        <a href="{{ snippet.get_absolute_url }}">{% blocktrans with snippet.lexer_name as type %}{{ type }} Snippet{% endblocktrans %}</a>
+        <span class="sep"></span>
+        {% blocktrans with snippet.published|timesince as since %}{{ since }} ago{% endblocktrans %}
+      </h3>
+
+      {% if snippet.lexer == 'text' %}
+        <div class="snippet-text">{% include "dpaste/highlight/text.html" %}</div>
+      {% else %}
+        <div class="snippet-code">{% include "dpaste/highlight/code.html" %}</div>
+      {% endif %}
+
+    {% empty %}
+      <p class="history-empty">
+        {% trans "No snippets saved. Either all your snippets are expired or your cookie has changed." %}</p>
+    {% endfor %}
+
+
+
+{% endblock %}

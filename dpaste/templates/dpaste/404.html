@@ -1,8 +1,14 @@
 {% extends "dpaste/base.html" %}
 
-{% block title %}404 Not found{% endblock %}
-{% block headline %}404 Not found{% endblock %}
+{% block title %}404 Snippet not found{% endblock %}
 
 {% block page %}
-  <p>Snippet you have searched is not available (anymore).</p>
+<article>
+  <h2>404 Snippet not found</h2>
+
+  <p>
+    This snippet no longer exists. Snippets are automatically
+    deleted when they reach their expiration date.
+  </p>
+</article>
 {% endblock %}

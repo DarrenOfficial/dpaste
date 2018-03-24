@@ -1,0 +1,35 @@
+{% load i18n %}
+
+<form method="post" action="" class="snippet-form {% if new %}is-new{% endif %}">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+
+
+  <fieldset class="options">
+    <p style="display: none;">{{ form.title }}</p> {# Honeypot field #}
+
+    <p class="options-lexer">
+      <label for="{{ form.lexer.auto_id }}">{% trans "Syntax" %}</label>
+      {{ form.lexer }}
+    </p>
+
+    <p class="options-expire">
+      <label for="{{ form.expires.auto_id }}">{% trans "Expires" %}</label>
+      {{ form.expires }}
+    </p>
+
+    <p class="action">
+      <button class="btn" type="submit">
+        {% trans "Paste Snippet" %}
+        <span class="sep"></span>
+        <span class="platform-mac">{% trans "&#8984;+&#9166;" %}</span>
+        <span class="platform-win">{% trans "Ctrl+&#9166;" %}</span>
+            </button>
+    </p>
+  </fieldset>
+  
+  <p class="content superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
+      <label for="{{ form.content.auto_id }}">{% trans "Content" %}</label>
+    {{ form.content }}
+  </p>
+</form>

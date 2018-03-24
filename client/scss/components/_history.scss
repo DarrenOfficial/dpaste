@@ -1,0 +1,33 @@
+
+
+
+.history-header {
+  padding: 15px $boxPadding;
+  color: $textColor;
+  font-size: 14px;
+  background-color: $borderColor;
+
+  a:link, a:visited {
+    font-weight: $baseFontDemiBold;
+    color: $textColor;
+    text-decoration: underline;
+  }
+
+  a:hover, a:active {
+    color: $hoverColor;
+    text-decoration: underline;
+  }
+
+  .sep {
+    @include separator($metaTextColor, 10px);
+    height: 17px;
+    padding: 0;
+  }
+}
+
+.history-empty {
+  padding: 40px $boxPadding;
+  color: $codeTextColor;
+}
+
+

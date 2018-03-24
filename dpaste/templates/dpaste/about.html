@@ -3,91 +3,28 @@
 {% load i18n %}
 
 {% block title %}{% trans "About" %}{% endblock %}
-{% block headline %}{% trans "About" %}{% endblock %}
 
 {% block page %}
+<article>
 
-<div class="page">
+  <h2>{% trans "About dpaste" %}</h2>
 
-    <p>
-        This site is powered by dpaste, which is open source. You can
-        find the source, contribute to it and leave ideas on Github:
-        <a href="https://github.com/bartTC/dpaste">github.com/bartTC/dpaste</a>
-    </p>
+  <p>
+  {% blocktrans %}
+    This site is powered by dpaste, an <strong>open source</strong>
+    <a href="https://en.wikipedia.org/wiki/Pastebin">pastebin</a> application.
+    You can find the source code, contribute to it or leave feedback
+    <a href="https://github.com/bartTC/dpaste">on Github</a>.
+  {% endblocktrans %}
+  </p>
 
-    <form action="/i18n/setlang/" method="post">
-        Change the language:
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}" />
-        <select name="language">
-            {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                {{ language.name_local }} ({{ language.code }})
-            </option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Go" />
-    </form>
+  <p>
+  {% blocktrans %}
+    dpaste provides an <strong>API</strong> to easily paste snippets out of your shell or editor.
+    See the <a href="https://github.com/bartTC/dpaste/wiki">dpaste wiki</a>
+    for the API documentation and a list of available plugins.
+  {% endblocktrans %}
+  </p>
 
-    <h3>API</h3>
-
-    <p>dpaste provides a simple API documented in detail <a href="http://dpaste.readthedocs.org/en/latest/api.html">
-    on this page</a>. For a quick start here is a code example (Python 2.x):</p>
-
-    {# Just put the script in dpaste and copy the source node #}
-    <div class="code python"><ol><li id="1"><span class="c">#!/usr/bin/env python</span></li><li id="2">&nbsp;</li><li id="3"><span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">urlencode</span></li><li id="4"><span class="kn">from</span> <span class="nn">urllib2</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">urlopen</span></li><li id="5"><span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdin</span></li><li id="6">&nbsp;</li><li id="7"><span class="k">def</span> <span class="nf">paste_code</span><span class="p">():</span></li><li id="8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s">'{{ site_url }}/api/'</span><span class="p">,</span> <span class="n">urlencode</span><span class="p">({</span></li><li id="9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">'content'</span><span class="p">:</span> <span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span></li><li id="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">'lexer'</span><span class="p">:</span> <span class="s">'python'</span><span class="p">,</span></li><li id="11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">'format'</span><span class="p">:</span> <span class="s">'url'</span><span class="p">,</span></li><li id="12">&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}))</span></li><li id="13">&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">print</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></li><li id="14">&nbsp;</li><li id="15"><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span></li><li id="16">&nbsp;&nbsp;&nbsp;&nbsp;<span class="n">paste_code</span><span class="p">()</span></li></ol></div>
-    <br/>
-
-    <p>Save this script in <code>/usr/local/bin/dpaste</code> and give it the executable bit: <code>chmod +x /usr/local/bin/dpaste</code>.</p>
-    <p>Usage: <code>cat foo.txt | dpaste</code></p>
-
-    <p>An alternative would be to just use <code>curl</code>:
-    <code>alias dpaste="curl -F 'content=&lt;-' {{ site_url }}/api/"</code></p>
-
-
-    <h3>Applications using the API:</h3>
-
-    <ul>
-        <li><a href="https://github.com/bartTC/dpasteGUI/wiki">dpasteGUI</a>, a OS X interface</li>
-        <li><a href="https://github.com/bartTC/SubDpaste">a dpaste Sublime 2 plugin</a></li>
-        <li><a href="http://marmalade-repo.org/packages/dpaste_de">Marmalade</a>, a Emacs plugin</li>
-        <li><a href="https://atom.io/packages/atom-dpaste">atom-dpaste</a>, a Atom editor plugin</li>
-    </ul>
-
-    <h3>{% trans "Statistics" %}</h3>
-
-    <p>{% blocktrans %}There are {{ total }} snippets in the database. The most popular languages are:{% endblocktrans %}</p>
-    <table class="table" style="width: 40%">
-        {% for s in stats %}
-        <tr>
-            <th>{{ s.lexer|upper }}</th>
-            <td>{{ s.count }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h3>Delete a snippet</h3>
-
-    <p>
-        If you created a snippet with the API you can't delete it on the webpage
-        since it's not in your history. You can delete a snippet here. Actually
-        you can delete any snippet of anybody, as long as you know the short code.
-    </p>
-    <p>
-        If you deleted a snippet because of legal issues, please let me know
-        that, I want to keep track of such things and try to avoid in future.
-    </p>
-    <p>
-        Type the 4 letter code of your snippet in the field and submit.
-        Like this yellow one here: <tt>{{ site_url }}/<strong>SiZrT</strong></tt>
-    </p>
-
-    <form method="POST" action="{% url "snippet_delete" %}">
-        {% csrf_token %}
-        <input name="snippet_id"> <input type="Submit" value="Submit"/>
-    </form>
-
-    {{ DPASTE_ABOUT_EXTRA }}
-</div>
+</article>
 {% endblock %}

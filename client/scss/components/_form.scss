@@ -1,0 +1,86 @@
+@mixin codeTextArea {
+  color: #7D7D7D;
+  font-family: $codeFont;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+
+.snippet-form {
+  background-color: $bgColor;
+
+  select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+
+    padding: 5px 7px;
+    margin-right: 15px;
+    min-width: 160px;
+
+    color: $selectTextColor;
+    background-color: $selectBgColor;
+
+    border: 1px solid $selectBorderColor;
+    border-radius: 3px;
+
+    font-family: $baseFont;
+    font-weight: $baseFontRegular;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    // Triangle
+    background-image:
+      linear-gradient(45deg, transparent 50%, $selectTriangleColor 50%),
+      linear-gradient(135deg, $selectTriangleColor 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) calc(13px),
+      calc(100% - 13px) calc(13px),
+      calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 3px 1.5em;
+    background-repeat: no-repeat;
+
+    &:hover {
+      border-color: darken($selectBorderColor, 10%);
+    }
+  }
+
+  .options {
+    padding: 0 $boxPadding;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $borderColor;
+
+    label { display: none; }
+
+    .action {
+      margin-left: auto;
+
+      .btn {
+        width: auto;
+        padding: 6px 20px;
+      }
+    }
+  }
+
+  .content {
+    padding: 20px $boxPadding;
+
+    label { display: none; }
+
+    textarea {
+      padding: 20px;
+      @include codeTextArea;
+      min-height: 390px;
+      box-sizing: border-box;
+      width: 100%;
+      border: 1px solid $borderColor;
+
+      &:active, &:focus {
+        border-color: darken($selectBorderColor, 10%)
+      }
+    }
+  }
+}
+

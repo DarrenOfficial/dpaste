@@ -1,0 +1,7 @@
+
+// Vertical dotted separtor
+@mixin separator($color: white, $margin: 4px) {
+  width: 0;
+  border-right: 2px dotted $color;
+  margin: 0 ($margin+2px) 0 $margin;
+}

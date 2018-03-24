@@ -21,10 +21,9 @@ from django.views.generic.detail import DetailView
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
-from .forms import EXPIRE_CHOICES, SnippetForm, get_expire_values
-from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST, LEXER_WORDWRAP, \
-    PLAIN_CODE, pygmentize
-from .models import ONETIME_LIMIT, Snippet
+from dpaste import highlight
+from dpaste.forms import EXPIRE_CHOICES, SnippetForm, get_expire_values
+from dpaste.models import ONETIME_LIMIT, Snippet
 
 
 # -----------------------------------------------------------------------------
@@ -36,7 +35,7 @@ class SnippetView(FormView):
     Create a new snippet.
     """
     form_class = SnippetForm
-    template_name = 'dpaste/snippet_new.html'
+    template_name = 'dpaste/new.html'
 
     def get_form_kwargs(self):
         kwargs = super(SnippetView, self).get_form_kwargs()
@@ -48,7 +47,7 @@ class SnippetView(FormView):
     def get_context_data(self, **kwargs):
         ctx = super(SnippetView, self).get_context_data(**kwargs)
         ctx.update({
-            'lexer_list': LEXER_LIST,
+            'lexer_list': highlight.LEXER_LIST,
         })
         return ctx
 
@@ -63,7 +62,7 @@ class SnippetDetailView(SnippetView, DetailView):
     tree/diff view.
     """
     queryset = Snippet.objects.all()
-    template_name = 'dpaste/snippet_details.html'
+    template_name = 'dpaste/details.html'
     slug_url_kwarg = 'snippet_id'
     slug_field = 'secret_id'
 
@@ -98,17 +97,9 @@ class SnippetDetailView(SnippetView, DetailView):
 
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
         ctx.update({
-            'highlighted': self.highlight_snippet().splitlines(),
-            'wordwrap': snippet.lexer in LEXER_WORDWRAP and 'True' or 'False',
+            'wordwrap': snippet.lexer in highlight.LEXER_WORDWRAP,
         })
         return ctx
-
-    def highlight_snippet(self):
-        snippet = self.get_object()
-        h = pygmentize(snippet.content, snippet.lexer)
-        h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-        return h
-
 
 class SnippetRawView(SnippetDetailView):
     """
@@ -143,7 +134,7 @@ class SnippetHistory(TemplateView):
     Display the last `n` snippets created by this user (and saved in his
     session).
     """
-    template_name = 'dpaste/snippet_list.html'
+    template_name = 'dpaste/history.html'
 
     def get(self, request, *args, **kwargs):
         snippet_id_list = request.session.get('snippet_list', [])
@@ -167,7 +158,7 @@ class SnippetDiffView(TemplateView):
     """
     Display a diff between two given snippet secret ids.
     """
-    template_name = 'dpaste/snippet_diff.html'
+    template_name = 'dpaste/includes/diff.html'
 
     def get(self, request, *args, **kwargs):
         """
@@ -209,8 +200,7 @@ class SnippetDiffView(TemplateView):
         return diff
 
     def highlight_snippet(self, content):
-        h = pygmentize(content, 'diff')
-        h = h.replace(u'  ', u'&nbsp;&nbsp;')
+        h = highlight.pygmentize(content, 'diff')
         h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
         return h
 
@@ -284,7 +274,7 @@ class APIView(View):
     """
     def post(self, request, *args, **kwargs):
         content = request.POST.get('content', '')
-        lexer = request.POST.get('lexer', LEXER_DEFAULT).strip()
+        lexer = request.POST.get('lexer', highlight.LEXER_DEFAULT).strip()
         filename = request.POST.get('filename', '').strip()
         expires = request.POST.get('expires', '').strip()
         format = request.POST.get('format', 'default').strip()
@@ -295,12 +285,12 @@ class APIView(View):
         # We need at least a lexer or a filename
         if not lexer and not filename:
             return HttpResponseBadRequest('No lexer or filename given. Unable to '
-                'determine a highlight. Valid lexers are: %s' % ', '.join(LEXER_KEYS))
+                'determine a highlight. Valid lexers are: %s' % ', '.join(highlight.LEXER_LIST))
 
         # A lexer is given, check if its valid at all
-        if lexer and lexer not in LEXER_KEYS:
+        if lexer and lexer not in highlight.LEXER_KEYS:
             return HttpResponseBadRequest('Invalid lexer "%s" given. Valid lexers are: %s' % (
-                lexer, ', '.join(LEXER_KEYS)))
+                lexer, ', '.join(highlight.LEXER_KEYS)))
 
         # No lexer is given, but we have a filename, try to get the lexer out of it.
         # In case Pygments cannot determine the lexer of the filename, we fallback
@@ -310,7 +300,7 @@ class APIView(View):
                 lexer_cls = get_lexer_for_filename(filename)
                 lexer = lexer_cls.aliases[0]
             except (ClassNotFound, IndexError):
-                lexer = PLAIN_CODE
+                lexer = highlight.PLAIN_CODE
 
         if expires:
             expire_options = [str(i) for i in dict(EXPIRE_CHOICES).keys()]

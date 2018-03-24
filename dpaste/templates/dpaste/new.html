@@ -1,0 +1,11 @@
+{% extends "dpaste/base.html" %}
+
+{% load i18n %}
+
+{% block nav_new %}{% endblock %}
+
+{% block title %}{% trans "dpaste" %}{% endblock %}
+
+{% block page %}
+  {% include "dpaste/includes/form.html" %}
+{% endblock %}

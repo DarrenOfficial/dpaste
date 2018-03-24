@@ -1,0 +1,93 @@
+/* -----------------------------------------------------------------------------
+      Palette
+----------------------------------------------------------------------------- */
+
+// General
+$bgColor: white;    // Regular background color for non-code snippets.
+
+$textColor: #7D7D7D;        // General text color
+$linkColor: #4A90E2;        // Link color in text and content pages
+$hoverColor: #72B4E4;
+
+$borderColor: #EDEDED;       // Used for separators, select borders, etc.
+
+// Header
+$headerTextColor: white;    // Header text color
+$headerBgColor1: #4A90E2;   // Header gradient background left
+$headerBgColor2: #72B4E4;   // Header gradient background right
+
+$btnBgColor: #4A90E2;       // Buttons (Header, Meta)
+$btnBorderColor: #33639C;
+$btnTextColor: white;
+
+// Meta Options
+$metaBgColor: #F9F9F9;      // Meta options of snippet
+$metaTextColor: #BABABA;    // Meta text and link color
+
+$selectBorderColor: #DDDDDD;  // Select dropdowns
+$selectBgColor: white;
+$selectTextColor: #858585;
+$selectTriangleColor: $linkColor;
+
+$confirmTextColor: #6D6D6D; // Yellow confirmation popup
+$confirmBgColor: #FFF9A8;
+
+// Snippet
+$messageTextColor: white;   // One time message color
+$messageBgColor: #F5A623;
+
+$codeTextColor: #dadad4;            // Regular code color (not specified by pygments)
+$codeBgColor: #222829;              // bg color of code views
+$codeDiffBgColor: #2A3335;          // bg color of diff views
+$codeLineNumberColor: #636363;      // Color of code line numbers
+
+$markerLineNumberColor: gold;       // Marked lines number color
+$markerBgColor: rgba(255, 255, 255, .05);
+
+// Mobile Burger Menu
+$burgerBgColor: #3D3D3D;        // Burger Menu background
+$burgerTextColor: #C0C0C0;      // (muted) Text color of burger buttons
+
+$burgerBtnTextColor: #C0C0C0;   // Buttons and select items in Burger Menu
+$burgerBtnBorderColor: #575757;
+
+
+/* -----------------------------------------------------------------------------
+      Fonts
+----------------------------------------------------------------------------- */
+$baseFont: "Avenir Next";
+$codeFont: "SF Mono", "Fira Mono", Monaco, Menlo, Consolas, monospace;
+$textFont: "Apple SD Gothic Neo";
+
+$baseFontLight: 300;
+$baseFontRegular: 400;
+$baseFontDemiBold: 500;
+$baseFontBold: 600;
+$baseFontHeavy: 700;
+
+
+/* -----------------------------------------------------------------------------
+      Grid
+----------------------------------------------------------------------------- */
+$columnWidth: 60px;
+$columnGap: 20px;
+
+$boxPadding: 30px;        // Left/Right padding of all views
+$mobileBoxPadding: 20px;
+
+
+/* -----------------------------------------------------------------------------
+      Imports
+----------------------------------------------------------------------------- */
+
+// Globals.
+@import 'reset';
+@import 'mixins';
+@import 'globals';
+
+// Components.
+@import 'components/header';
+@import 'components/form';
+@import 'components/code';
+@import 'components/article';
+@import 'components/history';

@@ -1,48 +1,29 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load dpaste_tags %}
 
 <!DOCTYPE html>
 <html>
 <head>
   <title>{% block title %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static "dpaste/dpaste.css" %}"/>
-  {% block extrahead %}{% endblock %}
+  <style type="text/css">{% inlinestatic "dpaste.css" %}</style>
 </head>
-<body>
+<body {% block body_type %}{%endblock %}>
 
-
-<header class="box">
-  <h1>{% block headline %}{% endblock %}</h1>
+<header>
+  <h1>{% block headline %}<a class="home" href="{% url "snippet_new" %}">dpaste</a>{% endblock %}</h1>
   <nav>
-    <a href="{% url "dpaste_about" %}">{% trans "About" %}</a>
-    <a href="{% url "snippet_history" %}">{% trans "History" %}</a>
-    <a href="{% url "snippet_new" %}">{% trans "New snippet" %} &rarr;</a></li>
+    <a class="nav-link" href="{% url "dpaste_about" %}">{% trans "About" %}</a>
+    <a class="nav-link" href="{% url "snippet_history" %}">{% trans "History" %}</a>
+    {%block nav_new %}<a class="btn" href="{% url "snippet_new" %}">{% trans "New snippet" %}</a>{% endblock %}
   </nav>
 </header>
 
-{% block page %}
-  PAGE MISSING
-{% endblock %}
+{% block options %}{% endblock %}
 
-{% block script_footer %}
-  <script>
-    let af = document.querySelector(".autofocus textarea");
-    if (af !== null)
-      af.focus();
+<main>{% block page %}{% endblock %}</main>
 
-    let se = document.querySelector(".superenter textarea");
-    if (se !== null) {
-      se.onkeydown = function (e) {
-        let metaKey = navigator.appVersion.indexOf("Win") !== -1 ? e.ctrlKey : e.metaKey;
-        if (e.keyCode === 13 && metaKey) {
-          document.querySelector(".snippet-form").submit();
-          return false;
-        }
-      }
-    }
-  </script>
-{% endblock %}
-
+<script>{% inlinestatic "dpaste.js" %}</script>
 </body>
 </html>

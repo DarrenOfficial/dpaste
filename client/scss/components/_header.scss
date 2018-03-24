@@ -1,0 +1,115 @@
+header {
+  padding: 0 $boxPadding;
+  height: 60px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: $headerTextColor;
+  background: linear-gradient(to right, $headerBgColor1, $headerBgColor2);
+
+  // Subheadline e.g. Reply Bar
+  &.sub {
+    height: 45px;
+  }
+
+  a {
+    display: inline-block;
+
+    color: $headerTextColor;
+    text-decoration: none;
+    text-align: center;
+    font-weight: $baseFontBold;
+
+    &:hover { text-decoration:  underline; }
+
+    // dpaste home link is a bit larger
+    &.home {
+      font-size: 28px;
+      font-weight: $baseFontHeavy;
+
+    }
+
+    // Nav links have a fixed width to align with grid
+    &.nav-link {
+      width: $columnWidth + $columnGap;
+    }
+  }
+
+  .btn {
+    width: 2 * $columnWidth;
+    margin-left: $columnGap / 2;
+  }
+
+  h1 {
+    position: relative;
+    font-size: 24px;
+    font-weight: $baseFontBold;
+
+    strong {
+      font-size: 28px;
+      font-weight: $baseFontHeavy;
+    }
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: $baseFontBold;
+  }
+}
+
+
+ul#snippetOptions {
+  padding: 0 $boxPadding;
+  height: 40px;
+
+  background-color: $metaBgColor;
+  color: $metaTextColor;
+
+  font-size: 13px;
+  font-weight: $baseFontRegular;
+
+  display: flex;
+  align-items: center;
+  
+  a:link, a:visited {
+    color: $metaTextColor;
+    text-decoration: underline;
+  }
+
+  a:hover, a:active {
+    color: $hoverColor;
+    text-decoration: underline;
+  }
+
+  li {
+    padding: 0 7px;
+
+    &:first-child{ padding-left: 0; }
+    &:last-child{ padding-right: 0; }
+  }
+
+  li.sep {
+    @include separator($metaTextColor);
+    height: 17px;
+    margin: 0 2px 0 1px;
+    padding: 0;
+  }
+}
+
+#copyToClipboardField {
+  position: absolute;
+  left: -9999px;
+}
+
+#copyToClipboard svg {
+  height: 30px;
+  position: absolute;
+  top: -8px;
+  right: -40px;
+
+  &:active {
+    top: -7px;
+  }
+}

@@ -1,0 +1,47 @@
+body {
+  min-width: 800px;           // FIXME: MOBILE
+
+  background-color: $bgColor;
+  font-family: $baseFont;
+  font-weight: $baseFontRegular;
+}
+
+body[data-code-snippet] { background-color: $codeBgColor; }
+
+body[data-platform=win] .platform-mac { display: none; }
+body[data-platform=mac] .platform-win { display: none; }
+
+
+.btn {
+  padding: 6px 0;
+  position: relative;
+
+  display: inline-block;
+
+  color: $btnTextColor;
+  background-color: $btnBgColor;
+
+  border: 1px solid $btnBorderColor;
+  border-radius: 3px;
+
+  font-size: 13px;
+  font-weight: $baseFontDemiBold;
+
+  text-decoration: none;
+  text-align: center;
+
+  cursor: pointer;
+
+  .sep {
+    @include separator();
+  }
+
+  &:hover {
+    text-decoration: none;
+    background-color: darken($btnBgColor, 5%);
+  }
+
+  &:active {
+    top: 1px;
+  }
+}
