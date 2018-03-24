@@ -9,6 +9,8 @@
 .snippet-form {
   background-color: $bgColor;
 
+  label { display: none; }
+
   select {
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -52,8 +54,6 @@
     align-items: center;
     border-bottom: 1px solid $borderColor;
 
-    label { display: none; }
-
     .action {
       margin-left: auto;
 
@@ -66,8 +66,6 @@
 
   .content {
     padding: 20px $boxPadding;
-
-    label { display: none; }
 
     textarea {
       padding: 20px;

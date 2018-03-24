@@ -129,7 +129,7 @@ LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
 
 # Lexers which have wordwrap enabled by default
 LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', 
-    ('_text', 'rst')
+    ('rst')
 )
 
 

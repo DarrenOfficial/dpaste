@@ -5,7 +5,7 @@
   {{ form.non_field_errors }}
 
 
-  <fieldset class="options">
+  <div class="options">
     <p style="display: none;">{{ form.title }}</p> {# Honeypot field #}
 
     <p class="options-lexer">
@@ -26,7 +26,7 @@
         <span class="platform-win">{% trans "Ctrl+&#9166;" %}</span>
             </button>
     </p>
-  </fieldset>
+  </div>
   
   <p class="content superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
       <label for="{{ form.content.auto_id }}">{% trans "Content" %}</label>
