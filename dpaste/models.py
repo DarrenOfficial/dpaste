@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 from random import SystemRandom
 
 from django.conf import settings
-from django.urls import reverse
 from django.db import models
-from django.utils.functional import cached_property
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from pygments import highlight
 from six import python_2_unicode_compatible
 
-from .highlight import LEXER_DEFAULT
+from dpaste import highlight
 
 R = SystemRandom()
 ONETIME_LIMIT = getattr(settings, 'DPASTE_ONETIME_LIMIT', 2)
@@ -43,18 +43,22 @@ class Snippet(models.Model):
         (EXPIRE_ONETIME, _(u'One-Time snippet')),
     )
 
-    secret_id = models.CharField(_(u'Secret ID'), max_length=255, blank=True, null=True,
-        unique=True)
+    secret_id = models.CharField(
+        _(u'Secret ID'), max_length=255, blank=True, null=True, unique=True)
     content = models.TextField(_(u'Content'))
-    highlighted = models.TextField(_(u'Highlighted Content'))
-    lexer = models.CharField(_(u'Lexer'), max_length=30, default=LEXER_DEFAULT)
-    published = models.DateTimeField(_(u'Published'), auto_now_add=True)
-    expire_type = models.PositiveSmallIntegerField(_(u'Expire Type'),
-        choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0])
-    expires = models.DateTimeField(_(u'Expires'), blank=True, null=True)
-    view_count = models.PositiveIntegerField(_('View count'), default=0)
-    parent = models.ForeignKey('self', null=True, blank=True, 
-                               related_name='children', on_delete=models.CASCADE)
+    lexer = models.CharField(
+        _(u'Lexer'), max_length=30, default=highlight.LEXER_DEFAULT)
+    published = models.DateTimeField(
+        _(u'Published'), auto_now_add=True)
+    expire_type = models.PositiveSmallIntegerField(
+        _(u'Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0])
+    expires = models.DateTimeField(
+        _(u'Expires'), blank=True, null=True)
+    view_count = models.PositiveIntegerField(
+        _('View count'), default=0)
+    parent = models.ForeignKey(
+        'self', null=True, blank=True, verbose_name=_('Parent Snippet'),
+        related_name='children', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-published',)
@@ -62,7 +66,6 @@ class Snippet(models.Model):
 
     def __str__(self):
         return self.secret_id
-        return None
 
     def save(self, *args, **kwargs):
         if not self.secret_id:
@@ -72,12 +75,25 @@ class Snippet(models.Model):
     def get_absolute_url(self):
         return reverse('snippet_details', kwargs={'snippet_id': self.secret_id})
 
+    def highlight(self):
+        return highlight.pygmentize(self.content, self.lexer)
+
+    def highlight_lines(self):
+        return self.highlight().splitlines()
+
+    @property
+    def lexer_name(self):
+        """Display name for this lexer."""
+        try:
+            return dict(
+                highlight.LEXER_LIST[0][1] +
+                highlight.LEXER_LIST[1][1]
+            )[self.lexer]
+        except KeyError:
+            return _('(Deprecated Lexer)')
+
     @property
     def remaining_views(self):
         if self.expire_type == self.EXPIRE_ONETIME:
             remaining = ONETIME_LIMIT - self.view_count
             return remaining > 0 and remaining or 0
-
-    @cached_property
-    def excerpt(self):
-        return self.content.replace('\n', '')[:200]

@@ -52,10 +52,10 @@ USE_L10N = False
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', 'English'),
-    ('de', 'German'),
-    ('es', 'Spanish'),
-    ('pt-br', 'Portugese (Brasil)'),
-    ('fr', 'French'),
+    # ('de', 'German'),
+    # ('es', 'Spanish'),
+    # ('pt-br', 'Portugese (Brasil)'),
+    # ('fr', 'French'),
 )
 
 LOCALE_PATHS = (
@@ -65,6 +65,17 @@ LOCALE_PATHS = (
 #==============================================================================
 # Project URLS and media settings
 #==============================================================================
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_DIR, 'build'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 STATIC_ROOT = os.path.join(VAR_ROOT, 'static')
 
@@ -76,8 +87,6 @@ ROOT_URLCONF = 'dpaste.urls'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
 LOGIN_REDIRECT_URL = '/'
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 #==============================================================================
 # Templates

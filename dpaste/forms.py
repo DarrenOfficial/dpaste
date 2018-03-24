@@ -106,7 +106,7 @@ class SnippetForm(forms.ModelForm):
         return self.cleaned_data
 
     def save(self, parent=None, *args, **kwargs):
-        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10)
+        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 100)
 
         # Set parent snippet
         self.instance.parent = parent

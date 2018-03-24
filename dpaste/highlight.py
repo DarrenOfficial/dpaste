@@ -33,15 +33,15 @@ from pygments.util import ClassNotFound
 logger = getLogger(__file__)
 
 
-PLAIN_TEXT = '_text_plain'  # lexer name whats rendered as text (paragraphs)
+PLAIN_TEXT = '_text' # lexer name whats rendered as text (paragraphs)
 PLAIN_CODE = '_code' # lexer name of code with no hihglighting
 
 LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
     (_('Text'), (
-        ('text', 'Plain Text'),
-        # ('_text_markdown', 'Markdown'),
-        # ('_text_rst', 'reStructuredText'),
-        # ('_text_textile', 'Textile'),
+        (PLAIN_TEXT, 'Plain Text'),
+        # ('_markdown', 'Markdown'),
+        # ('_rst', 'reStructuredText'),
+        # ('_textile', 'Textile'),
     )),
     (_('Code'), (
         (PLAIN_CODE, 'Plain Code'),
@@ -129,7 +129,7 @@ LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
 
 # Lexers which have wordwrap enabled by default
 LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', 
-    ('text', 'rst')
+    ('_text', 'rst')
 )
 
 
@@ -150,7 +150,7 @@ def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
     # Plain code is not highlighted, but we wrap with with regular
     # Pygments syntax to keep the frontend aligned.
     if lexer_name == PLAIN_CODE:
-        return '\n'.join(['<span class="nn">{}</span>'.format(escape(l))
+        return '\n'.join(['<span class="plain">{}</span>'.format(escape(l))
             for l in code_string.splitlines()])
 
     # Everything else is handled by Pygments.
