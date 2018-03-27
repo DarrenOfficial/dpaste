@@ -4,10 +4,6 @@
 
 {% block title %}dpaste/{{ snippet.secret_id }} ({{ snippet.lexer }}){% endblock %}
 
-{% block body_type %}
-  {% if snippet.lexer == 'text' %}data-text-snippet{% else %}data-code-snippet{% endif %}
-{% endblock %}
-
 {% block headline %}
   <a href="{{ request.build_absolute_uri }}">{{ request.build_absolute_uri }}</a>
 
@@ -69,6 +65,13 @@
         {% trans "It cannot be viewed again." %}
       {% endif %}
     </p>
+  {% endif %}
+
+  {% if diff %}
+  <div class="snippet-diff">
+    <h2>{% trans "Comparision with previous snippet " %}</h2>
+    <div class="snippet-code">{{ diff|safe }}</div>
+  </div>
   {% endif %}
 
   {% if snippet.lexer == '_text' %}

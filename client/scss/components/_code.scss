@@ -1,14 +1,33 @@
+.snippet-diff {
+  color: $codeTextColor;
+  background-color: $codeBgColor;
+
+  h2 {
+    padding: 20px $boxPadding 10px $boxPadding;
+    color: $codeTextColor;
+    font-weight: $baseFontDemiBold;
+    font-size: 14px;
+  }
+
+  .snippet-code {
+    background-color: $codeDiffBgColor;
+    padding: 20px $boxPadding 20px $boxPadding;
+    white-space: pre;
+    font-size: 12px;
+  }
+}
 
 .snippet-code {
+  padding: 20px $boxPadding;
+
   font-family: $codeFont;
   font-size: 13px;
   font-weight: 300;
   line-height: 20px;
   //overflow: auto;
+
   color: $codeTextColor;
   background-color: $codeBgColor;
-
-  padding: 20px $boxPadding;
 
   &.wordwrap {
     overflow: auto;
@@ -43,9 +62,16 @@
     }
   }
 
+  @mixin diffline {
+    display: inline-block;
+    width: 100%;
+    margin: 0 -10px;
+    padding: 0 10px;
+
+  }
   // Pygments
-  .gd { background-color: rgba(226, 12, 19, .3); color: #fff; display: block; }
-  .gi { background-color: rgba(23, 189, 10, .2); color: #fff; display: block; }
+  .gd { background-color: #473335; color: #f8f8f2; @include diffline; }
+  .gi { background-color: #2d4a39; color: #f8f8f2; @include diffline; }
 
   .hll { background-color: #49483e }
   .c { color: #75715e } /* Comment */

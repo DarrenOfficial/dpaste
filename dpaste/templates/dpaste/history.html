@@ -4,8 +4,6 @@
 
 {% block title %}{% trans "Snippet History" %}{% endblock %}
 
-{% block body_type %}data-code-snippet{% endblock %}
-
 {% block options %}
   <ul id="snippetOptions">
     <li>{% trans "Snippet History" %}</li>
@@ -41,7 +39,6 @@
         <a href="{{ snippet.get_absolute_url }}">{% blocktrans with snippet.lexer_name as type %}{{ type }} Snippet{% endblocktrans %}</a>
         <span class="sep"></span>
         {% blocktrans with snippet.published|timesince as since %}Created {{ since }} ago{% endblocktrans %}
-
       </h3>
 
       {% if snippet.lexer == '_text' %}
@@ -54,7 +51,4 @@
       <p class="history-empty">
         {% trans "No snippets saved. Either all your snippets are expired or your cookie has changed." %}</p>
     {% endfor %}
-
-
-
 {% endblock %}

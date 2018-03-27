@@ -5,14 +5,12 @@ import difflib
 import json
 
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
     HttpResponseRedirect)
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.views.defaults import page_not_found as django_page_not_found, \
     server_error as django_server_error
 from django.views.generic import FormView
@@ -76,13 +74,12 @@ class SnippetDetailView(SnippetView, DetailView):
         if 'delete' in self.request.POST:
             snippet = get_object_or_404(Snippet, secret_id=self.kwargs['snippet_id'])
             snippet.delete()
-    
+
             # Append `#` so #delete goes away in Firefox
             url = '{0}#'.format(reverse('snippet_new'))
             return HttpResponseRedirect(url)
-        
+
         return super(SnippetDetailView, self).post(*args, **kwargs)
-        
 
     def get(self, *args, **kwargs):
         snippet = self.get_object()
@@ -110,12 +107,36 @@ class SnippetDetailView(SnippetView, DetailView):
         snippet = form.save(parent=self.get_object())
         return HttpResponseRedirect(snippet.get_absolute_url())
 
+    def get_snippet_diff(self):
+        snippet = self.get_object()
+
+        if not snippet.parent_id:
+            return None
+
+        if snippet.content == snippet.parent.content:
+            return None
+
+        d = difflib.unified_diff(
+            snippet.parent.content.splitlines(),
+            snippet.content.splitlines(),
+            ugettext('Previous Snippet'),
+            ugettext('Current Snippet'),
+            n=1
+        )
+        diff_code = '\n'.join(d).strip()
+        highlighted = highlight.pygmentize(diff_code, lexer_name='diff')
+
+        # Remove blank lines
+        return highlighted.replace('\n\n', '\n')
+
+
     def get_context_data(self, **kwargs):
-        self.object = snippet = self.get_object()
+        snippet = self.get_object()
 
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
         ctx.update({
             'wordwrap': snippet.lexer in highlight.LEXER_WORDWRAP,
+            'diff': self.get_snippet_diff(),
         })
         return ctx
 
@@ -162,69 +183,6 @@ class SnippetHistory(TemplateView):
             'snippet_list': self.get_user_snippets(),
         })
         return ctx
-
-
-# class SnippetDiffView(TemplateView):
-#     """
-#     Display a diff between two given snippet secret ids.
-#     """
-#     template_name = 'dpaste/includes/diff.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         """
-#         Some validation around input files we will compare later.
-#         """
-#         if request.GET.get('a') and request.GET.get('a').isdigit() \
-#         and request.GET.get('b') and request.GET.get('b').isdigit():
-#             try:
-#                 self.fileA = Snippet.objects.get(pk=int(request.GET.get('a')))
-#                 self.fileB = Snippet.objects.get(pk=int(request.GET.get('b')))
-#             except ObjectDoesNotExist:
-#                 return HttpResponseBadRequest(u'Selected file(s) does not exist.')
-#         else:
-#             return HttpResponseBadRequest(u'You must select two snippets.')
-#
-#         return super(SnippetDiffView, self).get(request, *args, **kwargs)
-#
-#     def get_diff(self):
-#         class DiffText(object):
-#             pass
-#
-#         diff = DiffText()
-#
-#         if self.fileA.content != self.fileB.content:
-#             d = difflib.unified_diff(
-#                 self.fileA.content.splitlines(),
-#                 self.fileB.content.splitlines(),
-#                 'Original',
-#                 'Current',
-#                 lineterm=''
-#             )
-#
-#             diff.content = '\n'.join(d).strip()
-#             diff.lexer = 'diff'
-#         else:
-#             diff.content = force_text(_(u'No changes were made between this two files.'))
-#             diff.lexer = 'text'
-#
-#         return diff
-#
-#     def highlight_snippet(self, content):
-#         h = highlight.pygmentize(content, 'diff')
-#         h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-#         return h
-#
-#     def get_context_data(self, **kwargs):
-#         diff = self.get_diff()
-#         highlighted = self.highlight_snippet(diff.content)
-#         ctx = super(SnippetDiffView, self).get_context_data(**kwargs)
-#         ctx.update({
-#             'snippet': diff,
-#             'highlighted': highlighted.splitlines(),
-#             'fileA': self.fileA,
-#             'fileB': self.fileB,
-#         })
-#         return ctx
 
 
 # -----------------------------------------------------------------------------

@@ -6,8 +6,6 @@ body {
   font-weight: $baseFontRegular;
 }
 
-body[data-code-snippet] { background-color: $codeBgColor; }
-
 body[data-platform=win] .platform-mac { display: none; }
 body[data-platform=mac] .platform-win { display: none; }
 
