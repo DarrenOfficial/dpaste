@@ -66,6 +66,24 @@ class SnippetDetailView(SnippetView, DetailView):
     slug_url_kwarg = 'snippet_id'
     slug_field = 'secret_id'
 
+    def post(self, *args, **kwargs):
+        """
+        Delete a snippet. This is allowed by anybody as long as he knows the
+        snippet id. I got too many manual requests to do this, mostly for legal
+        reasons and the chance to abuse this is not given anyway, since snippets
+        always expire.
+        """
+        if 'delete' in self.request.POST:
+            snippet = get_object_or_404(Snippet, secret_id=self.kwargs['snippet_id'])
+            snippet.delete()
+    
+            # Append `#` so #delete goes away in Firefox
+            url = '{0}#'.format(reverse('snippet_new'))
+            return HttpResponseRedirect(url)
+        
+        return super(SnippetDetailView, self).post(*args, **kwargs)
+        
+
     def get(self, *args, **kwargs):
         snippet = self.get_object()
 
@@ -101,6 +119,7 @@ class SnippetDetailView(SnippetView, DetailView):
         })
         return ctx
 
+
 class SnippetRawView(SnippetDetailView):
     """
     Display the raw content of a snippet
@@ -113,22 +132,6 @@ class SnippetRawView(SnippetDetailView):
         return response
 
 
-class SnippetDeleteView(View):
-    """
-    Delete a snippet. This is allowed by anybody as long as he knows the
-    snippet id. I got too many manual requests to do this, mostly for legal
-    reasons and the chance to abuse this is not given anyway, since snippets
-    always expire.
-    """
-    def dispatch(self, request, *args, **kwargs):
-        snippet_id = self.kwargs.get('snippet_id') or request.POST.get('snippet_id')
-        if not snippet_id:
-            raise Http404('No snippet id given')
-        snippet = get_object_or_404(Snippet, secret_id=snippet_id)
-        snippet.delete()
-        return HttpResponseRedirect(reverse('snippet_new'))
-
-
 class SnippetHistory(TemplateView):
     """
     Display the last `n` snippets created by this user (and saved in his
@@ -136,85 +139,92 @@ class SnippetHistory(TemplateView):
     """
     template_name = 'dpaste/history.html'
 
-    def get(self, request, *args, **kwargs):
-        snippet_id_list = request.session.get('snippet_list', [])
-        self.snippet_list = Snippet.objects.filter(pk__in=snippet_id_list)
+    def get_user_snippets(self):
+        snippet_id_list = self.request.session.get('snippet_list', [])
+        return Snippet.objects.filter(pk__in=snippet_id_list)
 
-        if 'delete-all' in request.GET:
-            self.snippet_list.delete()
-            return HttpResponseRedirect(reverse('snippet_history'))
-        return super(SnippetHistory, self).get(request, *args, **kwargs)
+    def post(self, *args, **kwargs):
+        """
+        Delete all user snippets at once.
+        """
+        if 'delete' in self.request.POST:
+            self.get_user_snippets().delete()
+
+        # Append `#` so #delete goes away in Firefox
+        url = '{0}#'.format(reverse('snippet_history'))
+        return HttpResponseRedirect(url)
+
 
     def get_context_data(self, **kwargs):
         ctx = super(SnippetHistory, self).get_context_data(**kwargs)
         ctx.update({
             'snippets_max': getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10),
-            'snippet_list': self.snippet_list,
+            'snippet_list': self.get_user_snippets(),
         })
         return ctx
 
 
-class SnippetDiffView(TemplateView):
-    """
-    Display a diff between two given snippet secret ids.
-    """
-    template_name = 'dpaste/includes/diff.html'
-
-    def get(self, request, *args, **kwargs):
-        """
-        Some validation around input files we will compare later.
-        """
-        if request.GET.get('a') and request.GET.get('a').isdigit() \
-        and request.GET.get('b') and request.GET.get('b').isdigit():
-            try:
-                self.fileA = Snippet.objects.get(pk=int(request.GET.get('a')))
-                self.fileB = Snippet.objects.get(pk=int(request.GET.get('b')))
-            except ObjectDoesNotExist:
-                return HttpResponseBadRequest(u'Selected file(s) does not exist.')
-        else:
-            return HttpResponseBadRequest(u'You must select two snippets.')
-
-        return super(SnippetDiffView, self).get(request, *args, **kwargs)
-
-    def get_diff(self):
-        class DiffText(object):
-            pass
-
-        diff = DiffText()
-
-        if self.fileA.content != self.fileB.content:
-            d = difflib.unified_diff(
-                self.fileA.content.splitlines(),
-                self.fileB.content.splitlines(),
-                'Original',
-                'Current',
-                lineterm=''
-            )
-
-            diff.content = '\n'.join(d).strip()
-            diff.lexer = 'diff'
-        else:
-            diff.content = force_text(_(u'No changes were made between this two files.'))
-            diff.lexer = 'text'
-
-        return diff
-
-    def highlight_snippet(self, content):
-        h = highlight.pygmentize(content, 'diff')
-        h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-        return h
-
-    def get_context_data(self, **kwargs):
-        diff = self.get_diff()
-        highlighted = self.highlight_snippet(diff.content)
-        ctx = super(SnippetDiffView, self).get_context_data(**kwargs)
-        ctx.update({
-            'snippet': diff,
-            'highlighted': highlighted.splitlines(),
-            'fileA': self.fileA,
-            'fileB': self.fileB,
-        })
-        return ctx
+# class SnippetDiffView(TemplateView):
+#     """
+#     Display a diff between two given snippet secret ids.
+#     """
+#     template_name = 'dpaste/includes/diff.html'
+#
+#     def get(self, request, *args, **kwargs):
+#         """
+#         Some validation around input files we will compare later.
+#         """
+#         if request.GET.get('a') and request.GET.get('a').isdigit() \
+#         and request.GET.get('b') and request.GET.get('b').isdigit():
+#             try:
+#                 self.fileA = Snippet.objects.get(pk=int(request.GET.get('a')))
+#                 self.fileB = Snippet.objects.get(pk=int(request.GET.get('b')))
+#             except ObjectDoesNotExist:
+#                 return HttpResponseBadRequest(u'Selected file(s) does not exist.')
+#         else:
+#             return HttpResponseBadRequest(u'You must select two snippets.')
+#
+#         return super(SnippetDiffView, self).get(request, *args, **kwargs)
+#
+#     def get_diff(self):
+#         class DiffText(object):
+#             pass
+#
+#         diff = DiffText()
+#
+#         if self.fileA.content != self.fileB.content:
+#             d = difflib.unified_diff(
+#                 self.fileA.content.splitlines(),
+#                 self.fileB.content.splitlines(),
+#                 'Original',
+#                 'Current',
+#                 lineterm=''
+#             )
+#
+#             diff.content = '\n'.join(d).strip()
+#             diff.lexer = 'diff'
+#         else:
+#             diff.content = force_text(_(u'No changes were made between this two files.'))
+#             diff.lexer = 'text'
+#
+#         return diff
+#
+#     def highlight_snippet(self, content):
+#         h = highlight.pygmentize(content, 'diff')
+#         h = h.replace(u'\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+#         return h
+#
+#     def get_context_data(self, **kwargs):
+#         diff = self.get_diff()
+#         highlighted = self.highlight_snippet(diff.content)
+#         ctx = super(SnippetDiffView, self).get_context_data(**kwargs)
+#         ctx.update({
+#             'snippet': diff,
+#             'highlighted': highlighted.splitlines(),
+#             'fileA': self.fileA,
+#             'fileB': self.fileB,
+#         })
+#         return ctx
 
 
 # -----------------------------------------------------------------------------

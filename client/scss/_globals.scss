@@ -11,7 +11,6 @@ body[data-code-snippet] { background-color: $codeBgColor; }
 body[data-platform=win] .platform-mac { display: none; }
 body[data-platform=mac] .platform-win { display: none; }
 
-
 .btn {
   padding: 6px 0;
   position: relative;
@@ -43,5 +42,36 @@ body[data-platform=mac] .platform-win { display: none; }
 
   &:active {
     top: 1px;
+  }
+}
+
+.confirm-modal {
+  @include colored-links;
+  background-color: $confirmBgColor;
+  color: $confirmTextColor;
+
+  // Hidden by default
+  overflow: hidden;
+  max-height: 0;
+
+  // Foldout animation
+  transition: max-height .15s ease-in;
+
+  form {
+    display: block;
+    padding: 20px $boxPadding;
+  }
+
+  .btn {
+    padding: 6px 15px;
+    margin: 0 10px;
+  }
+
+  .no {
+    font-size: 13px;
+  }
+
+  &:target {
+    max-height: 80px;
   }
 }

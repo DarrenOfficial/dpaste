@@ -5,3 +5,17 @@
   border-right: 2px dotted $color;
   margin: 0 ($margin+2px) 0 $margin;
 }
+
+
+@mixin colored-links() {
+  a:link, a:visited {
+    color: $linkColor;
+    text-decoration: underline;
+    text-decoration-color: lighten($linkColor, 30%);
+  }
+
+  a:hover, a:active {
+    color: $hoverColor;
+    text-decoration: underline;
+  }
+}

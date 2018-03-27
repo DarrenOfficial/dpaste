@@ -29,14 +29,5 @@ article {
     font-weight: $baseFontDemiBold;
   }
 
-  a:link, a:visited {
-    color: $linkColor;
-    text-decoration: underline;
-    text-decoration-color: lighten($linkColor, 30%);
-  }
-
-  a:hover, a:active {
-    color: $hoverColor;
-    text-decoration: underline;
-  }
+  @include colored-links;
 }
