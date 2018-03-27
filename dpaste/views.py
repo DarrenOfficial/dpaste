@@ -129,13 +129,12 @@ class SnippetDetailView(SnippetView, DetailView):
         # Remove blank lines
         return highlighted.replace('\n\n', '\n')
 
-
     def get_context_data(self, **kwargs):
-        snippet = self.get_object()
+        self.object = self.get_object()
 
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
         ctx.update({
-            'wordwrap': snippet.lexer in highlight.LEXER_WORDWRAP,
+            'wordwrap': self.object.lexer in highlight.LEXER_WORDWRAP,
             'diff': self.get_snippet_diff(),
         })
         return ctx
