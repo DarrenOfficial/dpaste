@@ -166,21 +166,11 @@ class SnippetTestCase(TestCase):
         """
         data = self.valid_form_data()
         self.client.post(self.new_url, data, follow=True)
-        snippet_id = Snippet.objects.all()[0].secret_id
-        response = self.client.post(reverse('snippet_delete'),
-            {'snippet_id': snippet_id}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(Snippet.objects.count(), 0)
 
-    def test_snippet_delete_urlarg(self):
-        """
-        You can delete a snippet by having the snippet id in the URL.
-        """
-        data = self.valid_form_data()
-        self.client.post(self.new_url, data, follow=True)
         snippet_id = Snippet.objects.all()[0].secret_id
-        response = self.client.get(reverse('snippet_delete',
-            kwargs={'snippet_id': snippet_id}), follow=True)
+        url = reverse('snippet_details', kwargs={'snippet_id': snippet_id})
+        response = self.client.post(url, {'delete': 1}, follow=True)
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
@@ -188,15 +178,23 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data()
         self.client.post(self.new_url, data, follow=True)
 
-        # Pass a random snippet id
-        response = self.client.post(reverse('snippet_delete'),
-            {'snippet_id': 'doesnotexist'}, follow=True)
+        url = reverse('snippet_details', kwargs={'snippet_id': 'doesnotexist'})
+        response = self.client.post(url, {'delete': 1}, follow=True)
+
         self.assertEqual(response.status_code, 404)
         self.assertEqual(Snippet.objects.count(), 1)
 
-        # Do not pass any snippet_id
-        response = self.client.post(reverse('snippet_delete'), follow=True)
-        self.assertEqual(response.status_code, 404)
+    def test_snippet_delete_do_not_pass_delete_action(self):
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+
+        # Do not pass delete=1
+        snippet_id = Snippet.objects.all()[0].secret_id
+        url = reverse('snippet_details', kwargs={'snippet_id': snippet_id})
+        response = self.client.post(url, {}, follow=True)
+
+        # Returns regular snippet details page
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
     # -------------------------------------------------------------------------
@@ -210,51 +208,6 @@ class SnippetTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['content'])
-
-    # -------------------------------------------------------------------------
-    # The diff function takes two snippet primary keys via GET.a and GET.b
-    # and compares them.
-    # -------------------------------------------------------------------------
-    def test_snippet_diff_no_args(self):
-        # Do not pass `a` or `b` is a bad request.
-        response = self.client.get(reverse('snippet_diff'))
-        self.assertEqual(response.status_code, 400)
-
-
-    def test_snippet_diff_invalid_args(self):
-        # Random snippet ids that dont exist
-        url = '%s?a=%s&b=%s' % (reverse('snippet_diff'), 123, 456)
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 400)
-
-    def test_snippet_diff_valid_nochanges(self):
-        # A diff of two snippets is which are the same is OK.
-        data = self.valid_form_data()
-        self.client.post(self.new_url, data, follow=True)
-        self.client.post(self.new_url, data, follow=True)
-
-        self.assertEqual(Snippet.objects.count(), 2)
-        a = Snippet.objects.all()[0].id
-        b = Snippet.objects.all()[1].id
-        url = '%s?a=%s&b=%s' % (reverse('snippet_diff'), a, b)
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 200)
-
-    def test_snippet_diff_valid(self):
-        # Create two valid snippets with different content.
-        data = self.valid_form_data()
-        self.client.post(self.new_url, data, follow=True)
-        data['content'] = 'new content'
-        self.client.post(self.new_url, data, follow=True)
-
-        self.assertEqual(Snippet.objects.count(), 2)
-        a = Snippet.objects.all()[0].id
-        b = Snippet.objects.all()[1].id
-        url = '%s?a=%s&b=%s' % (reverse('snippet_diff'), a, b)
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 200)
 
     # -------------------------------------------------------------------------
     # XSS and correct escaping
@@ -298,7 +251,8 @@ class SnippetTestCase(TestCase):
 
     def test_snippet_history_delete_all(self):
         # Empty list, delete all raises no error
-        response = self.client.get(reverse('snippet_history') + '?delete-all', follow=True)
+        response = self.client.post(reverse('snippet_history'),
+                                    {'delete': 1}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
@@ -310,7 +264,8 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 2)
 
         # Delete all of them
-        response = self.client.get(reverse('snippet_history') + '?delete-all', follow=True)
+        response = self.client.post(reverse('snippet_history'),
+                                    {'delete': 1}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
