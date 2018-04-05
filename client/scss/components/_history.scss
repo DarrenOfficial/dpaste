@@ -2,9 +2,12 @@
 
 
 .history-header {
+  margin: 0;
   padding: 15px $boxPadding;
+
   color: $textColor;
   font-size: 14px;
+  font-weight: $baseFontRegular;
   background-color: $borderColor;
 
   a:link, a:visited {

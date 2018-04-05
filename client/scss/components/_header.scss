@@ -61,6 +61,7 @@ header {
 
 
 ul#snippetOptions {
+  margin: 0;
   padding: 0 $boxPadding;
   height: 40px;
 
@@ -84,7 +85,9 @@ ul#snippetOptions {
   }
 
   li {
+    margin: 0;
     padding: 0 7px;
+    list-style: none;
 
     &:first-child{ padding-left: 0; }
     &:last-child{ padding-right: 0; }
@@ -112,4 +115,18 @@ ul#snippetOptions {
   &:active {
     top: -7px;
   }
+}
+
+
+.snippet-message {
+  margin: 20px $boxPadding 0 $boxPadding;
+  padding: 8px 20px;
+
+  max-width: 660px;
+
+  color: $messageTextColor;
+  background-color: $messageBgColor;
+
+  font-size: 14px;
+  font-weight: $baseFontDemiBold;
 }

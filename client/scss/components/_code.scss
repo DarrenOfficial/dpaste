@@ -3,7 +3,8 @@
   background-color: $codeBgColor;
 
   h2 {
-    padding: 20px $boxPadding 10px $boxPadding;
+    margin: 0;
+    padding: 20px $boxPadding 20px $boxPadding;
     color: $codeTextColor;
     font-weight: $baseFontDemiBold;
     font-size: 14px;
@@ -11,7 +12,7 @@
 
   .snippet-code {
     background-color: $codeDiffBgColor;
-    padding: 20px $boxPadding 20px $boxPadding;
+    padding: 10px $boxPadding 10px $boxPadding;
     white-space: pre;
     font-size: 12px;
   }
@@ -35,11 +36,15 @@
   }
 
   ol {
+    margin: 0;
+    padding: 0;
     position: relative;
     list-style: none;
     counter-reset: lineNumberCounter;
 
     li {
+    margin: 0;
+    padding: 0;
       white-space: pre;
       padding-left: 50px;
 
@@ -133,33 +138,4 @@
   .vi { color: #f8f8f2 } /* Name.Variable.Instance */
   .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
-}
-
-.snippet-text {
-  background: $bgColor;
-  padding: 20px $boxPadding;
-
-  color: $textColor;
-
-  font-family: $textFont;
-  font-weight: $baseFontRegular;
-  font-size: 16px;
-  line-height: 22px;
-
-  & > div {
-    max-width: 540px;
-  }
-}
-
-.snippet-message {
-  margin: 20px $boxPadding 0 $boxPadding;
-  padding: 8px 20px;
-
-  max-width: 660px;
-
-  color: $messageTextColor;
-  background-color: $messageBgColor;
-
-  font-size: 14px;
-  font-weight: $baseFontDemiBold;
 }
