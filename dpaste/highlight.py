@@ -74,9 +74,27 @@ class MarkdownHighlighter(PlainTextHighlighter):
 
     def highlight(self, code_string, lexer_name=None):
         import misaka
-        return mark_safe(misaka.html(code_string, extensions=self.extensions,
+        return mark_safe(misaka.html(code_string,
+                                     extensions=self.extensions,
                                      render_flags=self.render_flags))
 
+
+class RestructuredTextHighlighter(PlainTextHighlighter):
+    """Restructured Text"""
+    rst_part_name = 'html_body'
+    publish_args = {
+        'writer_name': 'html5_polyglot',
+        'settings_overrides': {
+            'raw_enabled': False,
+            'file_insertion_enabled': False,
+        }
+    }
+
+    def highlight(self, code_string, lexer_name=None):
+        from docutils.core import publish_parts
+        self.publish_args['source'] = code_string
+        parts = publish_parts(**self.publish_args)
+        return mark_safe(parts[self.rst_part_name])
 
 # -----------------------------------------------------------------------------
 
@@ -156,7 +174,7 @@ PLAIN_CODE = '_code' # lexer name of code with no hihglighting
 TEXT_FORMATTER = [
     (PLAIN_TEXT, 'Plain Text',  PlainTextHighlighter),
     ('_markdown', 'Markdown', MarkdownHighlighter),
-    #('_rst', 'reStructuredText', MarkdownHighlighter),
+    ('_rst', 'reStructuredText', RestructuredTextHighlighter),
     #('_textile', 'Textile', MarkdownHighlighter),
 ]
 
