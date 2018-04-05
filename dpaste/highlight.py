@@ -67,13 +67,15 @@ class PlainTextHighlighter(Highlighter):
 
 class MarkdownHighlighter(PlainTextHighlighter):
     """Markdown"""
+    extensions = ('tables', 'fenced-code', 'footnotes', 'autolink,',
+                  'strikethrough', 'underline', 'quote', 'superscript',
+                  'math')
+    render_flags = ('skip-html',)
 
     def highlight(self, code_string, lexer_name=None):
         import misaka
-        extensions = ('tables', 'fenced-code', 'footnotes', 'autolink,',
-                      'strikethrough', 'underline', 'quote', 'superscript',
-                      'math')
-        return mark_safe(misaka.html(code_string, extensions=extensions))
+        return mark_safe(misaka.html(code_string, extensions=self.extensions,
+                                     render_flags=self.render_flags))
 
 
 # -----------------------------------------------------------------------------
