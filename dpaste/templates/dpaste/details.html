@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block title %}dpaste/{{ snippet.secret_id }} ({{ snippet.lexer }}){% endblock %}
+{% block title %}dpaste/{{ snippet.secret_id }} ({{ snippet.lexer_name }}){% endblock %}
 
 {% block headline %}
   <a href="{{ request.build_absolute_uri }}">{{ request.build_absolute_uri }}</a>
