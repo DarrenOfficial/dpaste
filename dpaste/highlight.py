@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from logging import getLogger
 
+from IPython.core.oinspect import is_simple_callable
 from django.conf import settings
 from django.template.defaultfilters import escape, linebreaksbr
 from django.template.loader import render_to_string
@@ -76,15 +77,28 @@ class PygmentsHighlighter(Highlighter):
     determined by the lexer name.
     """
     formatter = NakedHtmlFormatter
-    fallback_lexer = PythonLexer
+    lexer = None
+    lexer_fallback = PythonLexer()
 
     def highlight(self, code_string, lexer_name):
-        try:
-            lexer = get_lexer_by_name(lexer_name)
-        except ClassNotFound:
-            logger.warning('Lexer for given name %s not found', lexer_name)
-            lexer = self.fallback_lexer()
-        return highlight(code_string, lexer, self.formatter())
+        if not self.lexer:
+            try:
+                self.lexer = get_lexer_by_name(lexer_name)
+            except ClassNotFound:
+                logger.warning('Lexer for given name %s not found', lexer_name)
+                self.lexer = self.lexer_fallback
+
+        return highlight(code_string, self.lexer, self.formatter())
+
+
+class SolidityHighlighter(PygmentsHighlighter):
+    """Solidity Specific Highlighter. This uses a 3rd party Pygments  lexer."""
+
+    def __init__(self):
+        # SolidityLexer does not necessarily need to be required
+        # if its imported here and not used later.
+        from pygments_lexer_solidity import SolidityLexer
+        self.lexer = SolidityLexer()
 
 
 def get_highlighter_class(lexer_name):
@@ -189,6 +203,7 @@ CODE_FORMATTER = [
     ('scss', 'SCSS'),
     ('smalltalk', 'Smalltalk'),
     ('smarty', 'Smarty'),
+    ('solidity', 'Solidity', SolidityHighlighter),
     ('sql', 'SQL'),
     ('tcl', 'Tcl'),
     ('tcsh', 'Tcsh'),

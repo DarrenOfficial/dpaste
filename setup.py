@@ -24,7 +24,7 @@ long_description = u'\n\n'.join((
 
 setup(
     name='dpaste',
-    version='3.0a0',
+    version='3.0a1',
     description='dpaste is a Django based pastebin. It\'s intended to run '
                 'separately but its also possible to be installed into an '
                 'existing Django project like a regular app.',
@@ -51,6 +51,7 @@ setup(
     install_requires=[
         'django>=1.11',
         'pygments>=1.6',
+        'pygments-lexer-solidity>=0.1.0',
         'tox',
         'coverage',
     ],
