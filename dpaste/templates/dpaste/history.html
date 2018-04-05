@@ -41,11 +41,7 @@
         {% blocktrans with snippet.published|timesince as since %}Created {{ since }} ago{% endblocktrans %}
       </h3>
 
-      {% if snippet.lexer == '_text' %}
-        <div class="snippet-text">{% include "dpaste/highlight/text.html" %}</div>
-      {% else %}
-        <div class="snippet-code">{% include "dpaste/highlight/code.html" %}</div>
-      {% endif %}
+      {{ snippet.highlight }}
 
     {% empty %}
       <p class="history-empty">
