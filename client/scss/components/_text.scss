@@ -1,0 +1,71 @@
+/*
+
+      Generic Content pages and Text based lexer.
+
+ */
+
+article {
+  padding: 0 $boxPadding 40px $boxPadding;
+  margin-top: 30px;
+
+  font-size: 16px;
+  font-weight: $baseFontRegular;
+  line-height: 24px;
+
+  max-width: 600px;
+
+  color: $textColor;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: $baseFontRegular;
+    line-height: 1.3em;
+    padding-bottom: 5px;
+    border-bottom: 1px solid $borderColor;
+  }
+
+  p {
+    margin: 30px 0;
+  }
+
+  strong, b {
+    font-weight: $baseFontDemiBold;
+  }
+
+  table {
+    margin: 20px 0;
+    border: 1px solid $borderColor;
+    border-collapse: collapse;
+
+
+    td, th {
+      border: 1px solid $borderColor;
+      padding: 5px 10px;
+    }
+  }
+
+   hr {
+     border: 0;
+     height: 1px;
+     background-color: darken($borderColor, 10%);
+   }
+
+  pre {
+    font-family: $codeFont;
+    font-size: 13px;
+    font-weight: 300;
+
+    background-color: #f8f8f8;
+    padding: 10px;
+  }
+
+  blockquote {
+    font-style: italic;
+  }
+
+  @include colored-links;
+}
+
+
+article.content-page {
+  h2 { margin-top: 0; }
+}

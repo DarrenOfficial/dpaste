@@ -5,6 +5,7 @@ from logging import getLogger
 from django.conf import settings
 from django.template.defaultfilters import escape, linebreaksbr
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -61,6 +62,22 @@ class PlainTextHighlighter(Highlighter):
 
     def highlight(self, code_string, lexer_name=None):
         return linebreaksbr(code_string)
+
+
+
+class MarkdownHighlighter(PlainTextHighlighter):
+    """Markdown"""
+
+    def highlight(self, code_string, lexer_name=None):
+        import misaka
+        extensions = ('tables', 'fenced-code', 'footnotes', 'autolink,',
+                      'strikethrough', 'underline', 'quote', 'superscript',
+                      'math')
+        return mark_safe(misaka.html(code_string, extensions=extensions))
+
+
+# -----------------------------------------------------------------------------
+
 
 class PlainCodeHighlighter(Highlighter):
     """Plain Code. No highlighting but Pygments like span tags around each line."""
@@ -136,9 +153,9 @@ PLAIN_CODE = '_code' # lexer name of code with no hihglighting
 
 TEXT_FORMATTER = [
     (PLAIN_TEXT, 'Plain Text',  PlainTextHighlighter),
-    # ('_markdown', 'Markdown'),
-    # ('_rst', 'reStructuredText'),
-    # ('_textile', 'Textile'),
+    ('_markdown', 'Markdown', MarkdownHighlighter),
+    #('_rst', 'reStructuredText', MarkdownHighlighter),
+    #('_textile', 'Textile', MarkdownHighlighter),
 ]
 
 CODE_FORMATTER = [
