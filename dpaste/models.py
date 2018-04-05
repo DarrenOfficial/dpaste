@@ -6,7 +6,6 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from pygments import highlight
 from six import python_2_unicode_compatible
 
 from dpaste import highlight
@@ -76,21 +75,13 @@ class Snippet(models.Model):
         return reverse('snippet_details', kwargs={'snippet_id': self.secret_id})
 
     def highlight(self):
-        return highlight.pygmentize(self.content, self.lexer)
-
-    def highlight_lines(self):
-        return self.highlight().splitlines()
+        HighlighterClass = highlight.get_highlighter_class(self.lexer)
+        return HighlighterClass().render(self.content, self.lexer)
 
     @property
     def lexer_name(self):
         """Display name for this lexer."""
-        try:
-            return dict(
-                highlight.LEXER_LIST[0][1] +
-                highlight.LEXER_LIST[1][1]
-            )[self.lexer]
-        except KeyError:
-            return _('(Deprecated Lexer)')
+        return highlight.Highlighter.get_lexer_display_name(self.lexer)
 
     @property
     def remaining_views(self):

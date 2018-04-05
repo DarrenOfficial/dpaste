@@ -6,7 +6,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_LIST
+from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_CHOICES
 from .models import Snippet
 
 EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
@@ -45,7 +45,7 @@ class SnippetForm(forms.ModelForm):
     lexer = forms.ChoiceField(
         label=_('Lexer'),
         initial=LEXER_DEFAULT,
-        choices=LEXER_LIST
+        choices=LEXER_CHOICES
     )
 
     expires = forms.ChoiceField(

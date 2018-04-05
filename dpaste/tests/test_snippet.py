@@ -9,6 +9,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.test.utils import override_settings
 
+from dpaste.highlight import PygmentsHighlighter
 from ..forms import EXPIRE_DEFAULT
 from ..highlight import LEXER_DEFAULT, PLAIN_CODE, PLAIN_TEXT
 from ..models import Snippet
@@ -339,9 +340,9 @@ class SnippetTestCase(TestCase):
     def test_highlighting(self):
         # You can pass any lexer to the pygmentize function and it will
         # never fail loudly.
-        from ..highlight import pygmentize
-        pygmentize('code', lexer_name='python')
-        pygmentize('code', lexer_name='doesnotexist')
+        PygmentsHighlighter().highlight('code', 'python')
+        PygmentsHighlighter().highlight('code', 'doesnotexist')
+
 
     @override_settings(DPASTE_SLUG_LENGTH=1)
     def test_random_slug_generation(self):

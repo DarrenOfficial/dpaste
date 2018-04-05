@@ -1,28 +1,10 @@
-"""
-List of all available lexers.
-
-To get a list of all lexers, and remove some dupes, do:
-
-from pygments.lexers import get_all_lexers
-ALL_LEXER = set([(i[1][0], i[0]) for i in get_all_lexers()])
-LEXER_LIST = [l for l in ALL_LEXER if not (
-       '-' in l[0]
-    or '+' in l[0]
-    or '+' in l[1]
-    or 'with' in l[1].lower()
-    or ' ' in l[1]
-    or l[0] in IGNORE_LEXER
-)]
-LEXER_LIST = sorted(LEXER_LIST)
-"""
-
-
 from __future__ import unicode_literals
 
 from logging import getLogger
 
 from django.conf import settings
-from django.template.defaultfilters import escape
+from django.template.defaultfilters import escape, linebreaksbr
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -33,107 +15,8 @@ from pygments.util import ClassNotFound
 logger = getLogger(__file__)
 
 
-PLAIN_TEXT = '_text' # lexer name whats rendered as text (paragraphs)
-PLAIN_CODE = '_code' # lexer name of code with no hihglighting
-
-LEXER_LIST = getattr(settings, 'DPASTE_LEXER_LIST', (
-    (_('Text'), (
-        (PLAIN_TEXT, 'Plain Text'),
-        # ('_markdown', 'Markdown'),
-        # ('_rst', 'reStructuredText'),
-        # ('_textile', 'Textile'),
-    )),
-    (_('Code'), (
-        (PLAIN_CODE, 'Plain Code'),
-        ('abap', 'ABAP'),
-        ('apacheconf', 'ApacheConf'),
-        ('applescript', 'AppleScript'),
-        ('as', 'ActionScript'),
-        ('bash', 'Bash'),
-        ('bbcode', 'BBCode'),
-        ('c', 'C'),
-        ('cpp', 'C++'),
-        ('clojure', 'Clojure'),
-        ('cobol', 'COBOL'),
-        ('css', 'CSS'),
-        ('cuda', 'CUDA'),
-        ('dart', 'Dart'),
-        ('delphi', 'Delphi'),
-        ('diff', 'Diff'),
-        ('django', 'Django'),
-        ('erlang', 'Erlang'),
-        ('fortran', 'Fortran'),
-        ('go', 'Go'),
-        ('groovy', 'Groovy'),
-        ('haml', 'Haml'),
-        ('haskell', 'Haskell'),
-        ('html', 'HTML'),
-        ('http', 'HTTP'),
-        ('ini', 'INI'),
-        ('irc', 'IRC'),
-        ('java', 'Java'),
-        ('js', 'JavaScript'),
-        ('json', 'JSON'),
-        ('lua', 'Lua'),
-        ('make', 'Makefile'),
-        ('mako', 'Mako'),
-        ('mason', 'Mason'),
-        ('matlab', 'Matlab'),
-        ('modula2', 'Modula'),
-        ('monkey', 'Monkey'),
-        ('mysql', 'MySQL'),
-        ('numpy', 'NumPy'),
-        ('objc', 'Obj-C'),
-        ('ocaml', 'OCaml'),
-        ('perl', 'Perl'),
-        ('php', 'PHP'),
-        ('postscript', 'PostScript'),
-        ('powershell', 'PowerShell'),
-        ('prolog', 'Prolog'),
-        ('properties', 'Properties'),
-        ('puppet', 'Puppet'),
-        ('python', 'Python'),
-        ('r', 'R'),
-        ('rb', 'Ruby'),
-        ('rst', 'reStructuredText'),
-        ('rust', 'Rust'),
-        ('sass', 'Sass'),
-        ('scala', 'Scala'),
-        ('scheme', 'Scheme'),
-        ('scilab', 'Scilab'),
-        ('scss', 'SCSS'),
-        ('smalltalk', 'Smalltalk'),
-        ('smarty', 'Smarty'),
-        ('sql', 'SQL'),
-        ('tcl', 'Tcl'),
-        ('tcsh', 'Tcsh'),
-        ('tex', 'TeX'),
-        ('text', 'Text'),
-        ('vb.net', 'VB.net'),
-        ('vim', 'VimL'),
-        ('xml', 'XML'),
-        ('xquery', 'XQuery'),
-        ('xslt', 'XSLT'),
-        ('yaml', 'YAML'),
-    ))
-))
-
-# Generate a list of all keys of all lexer
-LEXER_KEYS = []
-for i in LEXER_LIST:
-    for j, k in i[1]:
-        LEXER_KEYS.append(j)
-
-# The default lexer is python
-LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
-
-# Lexers which have wordwrap enabled by default
-LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP', 
-    ('rst')
-)
-
-
 class NakedHtmlFormatter(HtmlFormatter):
+    """Pygments HTML formatter with no further HTML tags."""
     def wrap(self, source, outfile):
         return self._wrap_code(source)
 
@@ -142,32 +25,197 @@ class NakedHtmlFormatter(HtmlFormatter):
             yield i, t
 
 
-def pygmentize(code_string, lexer_name=LEXER_DEFAULT):
-    """
-    Run given code in ``code string`` through pygments.
-    """
+# -----------------------------------------------------------------------------
+# Highlight Code Snippets
+# -----------------------------------------------------------------------------
 
-    # Plain code is not highlighted, but we wrap with with regular
-    # Pygments syntax to keep the frontend aligned.
-    if lexer_name == PLAIN_CODE:
+class Highlighter(object):
+    template_name = 'dpaste/highlight/code.html'
+
+    def highlight(self, code_string, lexer_name=None):
+        """Subclasses need to override this."""
+        return code_string
+
+    @staticmethod
+    def get_lexer_display_name(lexer_name, fallback=_('(Deprecated Lexer)')):
+        for l in TEXT_FORMATTER + CODE_FORMATTER:
+            if l[0] == lexer_name:
+                return l[1]
+        return fallback
+
+    def render(self, code_string, lexer_name, **kwargs):
+        highlighted_string = self.highlight(code_string, lexer_name)
+        context = {
+            'highlighted': highlighted_string,
+            'highlighted_splitted': highlighted_string.splitlines(),
+            'lexer_name': lexer_name,
+            'lexer_display_name': self.get_lexer_display_name(lexer_name),
+        }
+        context.update(kwargs)
+        return render_to_string(self.template_name, context)
+
+
+class PlainTextHighlighter(Highlighter):
+    """Plain Text. Just replace linebreaks."""
+    template_name = 'dpaste/highlight/text.html'
+
+    def highlight(self, code_string, lexer_name=None):
+        return linebreaksbr(code_string)
+
+class PlainCodeHighlighter(Highlighter):
+    """Plain Code. No highlighting but Pygments like span tags around each line."""
+
+    def highlight(self, code_string, lexer_name=None):
         return '\n'.join(['<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
             for l in code_string.splitlines()])
 
-    # Everything else is handled by Pygments.
-    lexer = None
-    try:
-        lexer = get_lexer_by_name(lexer_name)
-    except ClassNotFound as e:
-        if settings.DEBUG:
+
+class PygmentsHighlighter(Highlighter):
+    """
+    Highlight code string with Pygments. The lexer is automaticially
+    determined by the lexer name.
+    """
+    formatter = NakedHtmlFormatter
+    fallback_lexer = PythonLexer
+
+    def highlight(self, code_string, lexer_name):
+        try:
+            lexer = get_lexer_by_name(lexer_name)
+        except ClassNotFound:
             logger.warning('Lexer for given name %s not found', lexer_name)
-            logger.exception(e)
-        pass
+            lexer = self.fallback_lexer()
+        return highlight(code_string, lexer, self.formatter())
 
-    # If yet no lexer is defined, fallback to Python
-    if not lexer:
-        lexer = PythonLexer()
 
-    formatter = NakedHtmlFormatter()
+def get_highlighter_class(lexer_name):
+    """
+    Get Highlighter for lexer name.
 
-    return highlight(code_string, lexer, formatter)
+    If the found lexer tuple does not provide a Highlighter class,
+    use the generic Pygments highlighter.
 
+    If no suitable highlighter is found, return the generic
+    PlainCode Highlighter.
+    """
+    for c in TEXT_FORMATTER + CODE_FORMATTER:
+        if c[0] == lexer_name:
+            if len(c) == 3:
+                return c[2]
+            return PygmentsHighlighter
+    return PlainCodeHighlighter
+
+
+# -----------------------------------------------------------------------------
+# Lexer List
+# -----------------------------------------------------------------------------
+
+# Lexer list. Each list contains a lexer tuple of:
+#
+#   (Lexer key,
+#    Lexer Display Name,
+#    Lexer Highlight Class)
+#
+# If the Highlight Class is not given, PygmentsHighlighter is used.
+
+# Default Highlight Types
+PLAIN_TEXT = '_text' # lexer name whats rendered as text (paragraphs)
+PLAIN_CODE = '_code' # lexer name of code with no hihglighting
+
+TEXT_FORMATTER = [
+    (PLAIN_TEXT, 'Plain Text',  PlainTextHighlighter),
+    # ('_markdown', 'Markdown'),
+    # ('_rst', 'reStructuredText'),
+    # ('_textile', 'Textile'),
+]
+
+CODE_FORMATTER = [
+    (PLAIN_CODE, 'Plain Code', PlainCodeHighlighter),
+    ('abap', 'ABAP'),
+    ('apacheconf', 'ApacheConf'),
+    ('applescript', 'AppleScript'),
+    ('as', 'ActionScript'),
+    ('bash', 'Bash'),
+    ('bbcode', 'BBCode'),
+    ('c', 'C'),
+    ('cpp', 'C++'),
+    ('clojure', 'Clojure'),
+    ('cobol', 'COBOL'),
+    ('css', 'CSS'),
+    ('cuda', 'CUDA'),
+    ('dart', 'Dart'),
+    ('delphi', 'Delphi'),
+    ('diff', 'Diff'),
+    ('django', 'Django'),
+    ('erlang', 'Erlang'),
+    ('fortran', 'Fortran'),
+    ('go', 'Go'),
+    ('groovy', 'Groovy'),
+    ('haml', 'Haml'),
+    ('haskell', 'Haskell'),
+    ('html', 'HTML'),
+    ('http', 'HTTP'),
+    ('ini', 'INI'),
+    ('irc', 'IRC'),
+    ('java', 'Java'),
+    ('js', 'JavaScript'),
+    ('json', 'JSON'),
+    ('lua', 'Lua'),
+    ('make', 'Makefile'),
+    ('mako', 'Mako'),
+    ('mason', 'Mason'),
+    ('matlab', 'Matlab'),
+    ('modula2', 'Modula'),
+    ('monkey', 'Monkey'),
+    ('mysql', 'MySQL'),
+    ('numpy', 'NumPy'),
+    ('objc', 'Obj-C'),
+    ('ocaml', 'OCaml'),
+    ('perl', 'Perl'),
+    ('php', 'PHP'),
+    ('postscript', 'PostScript'),
+    ('powershell', 'PowerShell'),
+    ('prolog', 'Prolog'),
+    ('properties', 'Properties'),
+    ('puppet', 'Puppet'),
+    ('python', 'Python'),
+    ('r', 'R'),
+    ('rb', 'Ruby'),
+    ('rst', 'reStructuredText'),
+    ('rust', 'Rust'),
+    ('sass', 'Sass'),
+    ('scala', 'Scala'),
+    ('scheme', 'Scheme'),
+    ('scilab', 'Scilab'),
+    ('scss', 'SCSS'),
+    ('smalltalk', 'Smalltalk'),
+    ('smarty', 'Smarty'),
+    ('sql', 'SQL'),
+    ('tcl', 'Tcl'),
+    ('tcsh', 'Tcsh'),
+    ('tex', 'TeX'),
+    ('text', 'Text'),
+    ('vb.net', 'VB.net'),
+    ('vim', 'VimL'),
+    ('xml', 'XML'),
+    ('xquery', 'XQuery'),
+    ('xslt', 'XSLT'),
+    ('yaml', 'YAML'),
+]
+
+# Generat a list of Form choices of all lexer.
+LEXER_CHOICES = (
+    (_('Text'), [i[:2] for i in TEXT_FORMATTER]),
+    (_('Code'), [i[:2] for i in CODE_FORMATTER])
+)
+
+# List of all Lexer Keys
+LEXER_KEYS = [i[0] for i in TEXT_FORMATTER] + [i[0] for i in CODE_FORMATTER]
+
+# The default lexer which we fallback in case of
+# an error or if not supplied in an API call.
+LEXER_DEFAULT = getattr(settings, 'DPASTE_LEXER_DEFAULT', 'python')
+
+# Lexers which have wordwrap enabled by default
+LEXER_WORDWRAP = getattr(settings, 'DPASTE_LEXER_WORDWRAP',
+    ('rst',)
+)

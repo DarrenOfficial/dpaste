@@ -34,12 +34,12 @@ behavior without touching the code:
         String. The full qualified hostname and path to the dpaste instance.
         This is used to generate a link in the API response. Default: ``https://dpaste.de``
 
-    ``DPASTE_LEXER_LIST``
+    ``DPASTE_LEXER_CHOICES``
         Choices. A tuple of choices of Pygments lexers used in the lexer
         dropdown. Here is the full `lexer list`_ which is currently used.
         Example::
 
-            DPASTE_LEXER_LIST = (
+            DPASTE_LEXER_CHOICES = (
                 ('delphi', 'Delphi'),
                 ('php', 'PHP'),
                 ('text', 'Text'),

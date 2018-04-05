@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 from django.test import TestCase
 
-from dpaste.highlight import PLAIN_CODE, pygmentize
+from dpaste.highlight import PLAIN_CODE, PygmentsHighlighter, \
+    PlainCodeHighlighter
 
 
 class HighlightAPITestCase(TestCase):
@@ -14,7 +15,7 @@ class HighlightAPITestCase(TestCase):
         """
         input = 'var'
         expected = '<span class="plain">var</span>'
-        value = pygmentize(input, lexer_name=PLAIN_CODE)
+        value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
     def test_plain_code_leading_whitespace(self):
@@ -23,7 +24,7 @@ class HighlightAPITestCase(TestCase):
         """
         input = ' var=1'
         expected = '<span class="plain"> var=1</span>'
-        value = pygmentize(input, lexer_name=PLAIN_CODE)
+        value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
     def test_plain_code_leading_whitespace_multiline(self):
@@ -39,7 +40,7 @@ class HighlightAPITestCase(TestCase):
             '<span class="plain">  var=2</span>\n'
             '<span class="plain">   var=3</span>\n'
             '<span class="plain">    var=4</span>')
-        value = pygmentize(input, lexer_name=PLAIN_CODE)
+        value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
     def test_pygments(self):
@@ -49,7 +50,7 @@ class HighlightAPITestCase(TestCase):
         """
         input = 'var'
         expected = '<span class="n">var</span>\n'
-        value = pygmentize(input, lexer_name='python')
+        value = PygmentsHighlighter().highlight(input, 'python')
         self.assertEqual(value, expected)
 
     def test_pygments_leading_whitespace(self):
@@ -58,7 +59,7 @@ class HighlightAPITestCase(TestCase):
         """
         input = ' var'
         expected = ' <span class="n">var</span>\n'
-        value = pygmentize(input, lexer_name='python')
+        value = PygmentsHighlighter().highlight(input, 'python')
         self.assertEqual(value, expected)
 
     def test_pygments_leading_whitespace_multiline(self):
@@ -74,5 +75,5 @@ class HighlightAPITestCase(TestCase):
             '  <span class="n">var</span>\n'
             '   <span class="n">var</span>\n'
             '    <span class="n">var</span>\n')
-        value = pygmentize(input, lexer_name='python')
+        value = PygmentsHighlighter().highlight(input, 'python')
         self.assertEqual(value, expected)

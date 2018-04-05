@@ -21,6 +21,7 @@ from pygments.util import ClassNotFound
 
 from dpaste import highlight
 from dpaste.forms import EXPIRE_CHOICES, SnippetForm, get_expire_values
+from dpaste.highlight import PygmentsHighlighter
 from dpaste.models import ONETIME_LIMIT, Snippet
 
 
@@ -41,13 +42,6 @@ class SnippetView(FormView):
             'request': self.request,
         })
         return kwargs
-
-    def get_context_data(self, **kwargs):
-        ctx = super(SnippetView, self).get_context_data(**kwargs)
-        ctx.update({
-            'lexer_list': highlight.LEXER_LIST,
-        })
-        return ctx
 
     def form_valid(self, form):
         snippet = form.save()
@@ -124,10 +118,10 @@ class SnippetDetailView(SnippetView, DetailView):
             n=1
         )
         diff_code = '\n'.join(d).strip()
-        highlighted = highlight.pygmentize(diff_code, lexer_name='diff')
+        highlighted = PygmentsHighlighter().render(diff_code, 'diff')
 
         # Remove blank lines
-        return highlighted.replace('\n\n', '\n')
+        return highlighted
 
     def get_context_data(self, **kwargs):
         self.object = self.get_object()
@@ -276,7 +270,7 @@ class APIView(View):
                     'Valid values are: {}'.format(expires, ', '.join(expire_options)))
             expires, expire_type = get_expire_values(expires)
         else:
-            expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24 * 30)
+            expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
             expire_type = Snippet.EXPIRE_TIME
 
         s = Snippet.objects.create(

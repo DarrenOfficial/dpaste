@@ -69,16 +69,11 @@
 
   {% if diff %}
   <div class="snippet-diff">
-    <h2>{% trans "Comparision with previous snippet " %}</h2>
-    <div class="snippet-code">{{ diff|safe }}</div>
+    <h2>{% trans "Comparision with previous snippet " %}</h2>{{ diff|safe }}
   </div>
   {% endif %}
 
-  {% if snippet.lexer == '_text' %}
-    <div class="snippet-text">{% include "dpaste/highlight/text.html" %}</div>
-  {% else %}
-    <div class="snippet-code">{% include "dpaste/highlight/code.html" %}</div>
-  {% endif %}
+  {{ snippet.highlight }}
 
   <header class="sub">
     <h2>{% trans "Edit this Snippet" %}</h2>
