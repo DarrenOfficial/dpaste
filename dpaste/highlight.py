@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 from logging import getLogger
 
-from IPython.core.oinspect import is_simple_callable
 from django.conf import settings
 from django.template.defaultfilters import escape, linebreaksbr
 from django.template.loader import render_to_string
@@ -95,8 +94,8 @@ class SolidityHighlighter(PygmentsHighlighter):
     """Solidity Specific Highlighter. This uses a 3rd party Pygments  lexer."""
 
     def __init__(self):
-        # SolidityLexer does not necessarily need to be required
-        # if its imported here and not used later.
+        # SolidityLexer does not necessarily need to be installed
+        # since its imported here and not used later.
         from pygments_lexer_solidity import SolidityLexer
         self.lexer = SolidityLexer()
 
