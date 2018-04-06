@@ -16,6 +16,8 @@ article {
 
   color: $textColor;
 
+  @include colored-links;
+
   h1, h2, h3, h4, h5, h6 {
     font-weight: $baseFontRegular;
     line-height: 1.3em;
@@ -62,7 +64,36 @@ article {
     font-style: italic;
   }
 
-  @include colored-links;
+  // reStructuredText Specific
+  dl, ul, ol, table {
+    p { margin: 0; }
+  }
+
+  .admonition {
+    padding: 10px 10px;
+    margin: 20px 0;
+    background-color: $metaBgColor;
+
+    .admonition-title { 
+      margin: 0;
+      font-weight: $baseFontBold;
+    }
+
+    p { margin: 20px 0 0 0; }
+  }
+
+  .problematic {
+    background-color: $confirmBgColor;
+  }
+
+  .system-message {
+    background-color: $confirmBgColor;
+    border: 2px dashed darken($confirmBgColor, 30%);
+    padding: 10px 20px;
+    margin: 20px 0;
+    p { margin: 10px 0; }
+
+  }
 }
 
 
