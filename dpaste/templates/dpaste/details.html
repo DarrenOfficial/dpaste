@@ -19,10 +19,13 @@
 {% block options %}
   <ul id="snippetOptions">
     <li>
+      {% blocktrans with snippet.lexer_name as name %}{{ name }} Snippet{% endblocktrans %}
+    <li class="sep"></li>
+    <li>
       {% if snippet.expire_type == 1 %}
         {% blocktrans with date=snippet.expires|timeuntil %}Expires in: {{ date }}{% endblocktrans %}
       {% elif snippet.expire_type == 2 %}
-        {% trans "Snippet never expires" %}
+        {% trans "Never expires" %}
       {% elif snippet.expire_type == 3 %}
         {% trans "One-Time snippet" %}
       {% endif %}
