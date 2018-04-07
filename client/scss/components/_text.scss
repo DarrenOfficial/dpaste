@@ -1,9 +1,6 @@
-/*
 
-      Generic Content pages and Text based lexer.
-
- */
-
+// Generic content pages such as About/404/500
+// and base styles for text based lexer.
 article {
   padding: 0 $boxPadding 40px $boxPadding;
   margin-top: 30px;
@@ -21,12 +18,10 @@ article {
   h1, h2, h3, h4, h5, h6 {
     font-weight: $baseFontRegular;
     line-height: 1.3em;
-    padding-bottom: 5px;
-    border-bottom: 1px solid $borderColor;
   }
 
   p {
-    margin: 30px 0;
+    margin: 10px 0 20px 0;
   }
 
   strong, b {
@@ -64,9 +59,16 @@ article {
     font-style: italic;
   }
 
-  // reStructuredText Specific
   dl, ul, ol, table {
     p { margin: 0; }
+  }
+}
+
+// Specific styles for text based lexer
+article.snippet-text {
+  h1, h2, h3, h4, h5, h6 {
+    padding-bottom: 5px;
+    border-bottom: 1px solid $borderColor;
   }
 
   .admonition {
@@ -74,7 +76,7 @@ article {
     margin: 20px 0;
     background-color: $metaBgColor;
 
-    .admonition-title { 
+    .admonition-title {
       margin: 0;
       font-weight: $baseFontBold;
     }
@@ -97,6 +99,7 @@ article {
 }
 
 
+// Content pages (About page)
 article.content-page {
   h2 { margin-top: 0; }
 }

@@ -1,10 +1,5 @@
 /*jshint strict:false */
 
-if (typeof console === "undefined" || typeof console.log === "undefined") {
-    console = {};
-    console.log = function () { };
-}
-
 // -----------------------------------------------------------------------------
 // Add data-platform to the body tag to show platform related shortcuts
 // -----------------------------------------------------------------------------
@@ -68,12 +63,12 @@ if (curLine.startsWith('#L')) {
   }
 }
 
-let lines = document.querySelectorAll('.snippet-code li');
+const lines = document.querySelectorAll('.snippet-code li');
 lines.forEach(function(el) {
   el.onclick = function() {
     el.classList.toggle('marked');
     let hash = 'L';
-    let marked = document.querySelectorAll('.snippet-code li.marked');
+    const marked = document.querySelectorAll('.snippet-code li.marked');
     marked.forEach(function(line) {
       if (hash !== 'L') {
         hash += ',';

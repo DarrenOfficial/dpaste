@@ -19,9 +19,7 @@
 {% block options %}
   <ul id="snippetOptions">
     <li>
-      {% blocktrans with snippet.lexer_name as name %}{{ name }} Snippet{% endblocktrans %}
-    <li class="sep"></li>
-    <li>
+      <strong>{{ snippet.lexer_name }}</strong>
       {% if snippet.expire_type == 1 %}
         {% blocktrans with date=snippet.expires|timeuntil %}Expires in: {{ date }}{% endblocktrans %}
       {% elif snippet.expire_type == 2 %}

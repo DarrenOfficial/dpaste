@@ -34,8 +34,6 @@ def inlinestatic(path):
     :param path: (string) Filename of the file to include.
     :return: (string) The included File or an empty string `''` if the
         file was not found, and DEBUG is disabled.
-
-
     """
     # Filename in build/ directory (when in Watch mode)
     filename = find(path)

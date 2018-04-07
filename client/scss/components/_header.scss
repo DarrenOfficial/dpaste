@@ -84,6 +84,10 @@ ul#snippetOptions {
     text-decoration: underline;
   }
 
+  strong {
+    font-weight: $baseFontBold;
+  }
+
   li {
     margin: 0;
     padding: 0 7px;
