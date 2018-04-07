@@ -87,6 +87,8 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
         'settings_overrides': {
             'raw_enabled': False,
             'file_insertion_enabled': False,
+            'report_level': 3,
+            'warning_stream': '/dev/null',
         }
     }
 
@@ -95,6 +97,7 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
         self.publish_args['source'] = code_string
         parts = publish_parts(**self.publish_args)
         return mark_safe(parts[self.rst_part_name])
+
 
 # -----------------------------------------------------------------------------
 
@@ -112,7 +115,7 @@ class PygmentsHighlighter(Highlighter):
     Highlight code string with Pygments. The lexer is automaticially
     determined by the lexer name.
     """
-    formatter = NakedHtmlFormatter
+    formatter = NakedHtmlFormatter()
     lexer = None
     lexer_fallback = PythonLexer()
 
@@ -124,7 +127,7 @@ class PygmentsHighlighter(Highlighter):
                 logger.warning('Lexer for given name %s not found', lexer_name)
                 self.lexer = self.lexer_fallback
 
-        return highlight(code_string, self.lexer, self.formatter())
+        return highlight(code_string, self.lexer, self.formatter)
 
 
 class SolidityHighlighter(PygmentsHighlighter):
