@@ -9,9 +9,8 @@ from django.test import TestCase
 from django.test.client import Client
 from django.test.utils import override_settings
 
-from dpaste.highlight import PygmentsHighlighter
 from ..forms import EXPIRE_DEFAULT
-from ..highlight import LEXER_DEFAULT, PLAIN_CODE, PLAIN_TEXT
+from ..highlight import LEXER_DEFAULT, PLAIN_CODE, PLAIN_TEXT, PygmentsHighlighter
 from ..models import Snippet
 
 

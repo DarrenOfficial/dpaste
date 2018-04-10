@@ -295,8 +295,6 @@ class APIView(View):
 # -----------------------------------------------------------------------------
 
 def page_not_found(request, exception=None, template_name='dpaste/404.html'):
-    if not exception: # Django <1.8
-        return django_page_not_found(request, template_name=template_name)
     return django_page_not_found(request, exception, template_name=template_name)
 
 def server_error(request, template_name='dpaste/500.html'):
