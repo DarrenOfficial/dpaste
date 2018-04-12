@@ -1,10 +1,12 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
+from textwrap import dedent
+
 from django.test import TestCase
 
 from dpaste.highlight import PLAIN_CODE, PygmentsHighlighter, \
-    PlainCodeHighlighter
+    PlainCodeHighlighter, RestructuredTextHighlighter
 
 
 class HighlightAPITestCase(TestCase):
@@ -77,3 +79,20 @@ class HighlightAPITestCase(TestCase):
             '    <span class="n">var</span>\n')
         value = PygmentsHighlighter().highlight(input, 'python')
         self.assertEqual(value, expected)
+
+
+    def test_broken_rst_syntax(self):
+        """
+        rst Syntax thats not valid must not raise an exception (SystemMessage)
+        """
+        # (SEVERE/4) Missing matching underline for section title overline.
+        input = dedent("""
+        =========================
+        Generate 15 random numbers
+        70 180 3 179 192 117 75 72 90 190 49 159 63 14 55 
+        =========================
+        """)
+        try:
+            RestructuredTextHighlighter().highlight(input)
+        except Exception as e:
+            self.fail('rst syntax raised unexpected exception: {}'.format(e))

@@ -45,7 +45,7 @@ class Highlighter(object):
         return fallback
 
     def render(self, code_string, lexer_name, **kwargs):
-        highlighted_string = self.highlight(code_string, lexer_name)
+        highlighted_string = self.highlight(code_string, lexer_name=lexer_name)
         context = {
             'highlighted': highlighted_string,
             'highlighted_splitted': highlighted_string.splitlines(),
@@ -60,7 +60,7 @@ class PlainTextHighlighter(Highlighter):
     """Plain Text. Just replace linebreaks."""
     template_name = 'dpaste/highlight/text.html'
 
-    def highlight(self, code_string, lexer_name=None):
+    def highlight(self, code_string, **kwargs):
         return linebreaksbr(code_string)
 
 
@@ -72,7 +72,7 @@ class MarkdownHighlighter(PlainTextHighlighter):
                   'math')
     render_flags = ('skip-html',)
 
-    def highlight(self, code_string, lexer_name=None):
+    def highlight(self, code_string, **kwargs):
         import misaka
         return mark_safe(misaka.html(code_string,
                                      extensions=self.extensions,
@@ -87,12 +87,13 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
         'settings_overrides': {
             'raw_enabled': False,
             'file_insertion_enabled': False,
-            'report_level': 3,
+            'halt_level': 5,
+            'report_level': 2,
             'warning_stream': '/dev/null',
         }
     }
 
-    def highlight(self, code_string, lexer_name=None):
+    def highlight(self, code_string, **kwargs):
         from docutils.core import publish_parts
         self.publish_args['source'] = code_string
         parts = publish_parts(**self.publish_args)
@@ -105,7 +106,7 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
 class PlainCodeHighlighter(Highlighter):
     """Plain Code. No highlighting but Pygments like span tags around each line."""
 
-    def highlight(self, code_string, lexer_name=None):
+    def highlight(self, code_string, **kwargs):
         return '\n'.join(['<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
             for l in code_string.splitlines()])
 
