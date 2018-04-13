@@ -48,7 +48,8 @@
   }
 
   .options {
-    padding: 0 $boxPadding;
+    @include boxPadding(0, 0);
+
     height: 60px;
     display: flex;
     align-items: center;
@@ -65,7 +66,7 @@
   }
 
   .content {
-    padding: 20px $boxPadding;
+    @include boxPadding(20px, 20px);
 
     textarea {
       padding: 20px;

@@ -1,5 +1,5 @@
 header {
-  padding: 0 $boxPadding;
+  @include boxPadding(0, 0);
   height: 60px;
 
   display: flex;
@@ -61,8 +61,8 @@ header {
 
 
 ul#snippetOptions {
+  @include boxPadding(0, 0);
   margin: 0;
-  padding: 0 $boxPadding;
   height: 40px;
 
   background-color: $metaBgColor;
@@ -123,7 +123,7 @@ ul#snippetOptions {
 
 
 .snippet-message {
-  margin: 20px $boxPadding 0 $boxPadding;
+  @include boxPadding(20px, 0);
   padding: 8px 20px;
 
   max-width: 660px;

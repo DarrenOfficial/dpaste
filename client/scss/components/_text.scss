@@ -2,8 +2,7 @@
 // Generic content pages such as About/404/500
 // and base styles for text based lexer.
 article {
-  padding: 0 $boxPadding 40px $boxPadding;
-  padding-top: 30px;
+  @include boxPadding(30px, 40px);
 
   font-size: 16px;
   font-weight: $baseFontRegular;

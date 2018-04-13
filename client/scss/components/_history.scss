@@ -2,8 +2,8 @@
 
 
 .history-header {
+  @include boxPadding(15px, 15px);
   margin: 0;
-  padding: 15px $boxPadding;
 
   color: $textColor;
   font-size: 14px;
@@ -29,7 +29,7 @@
 }
 
 .history-empty {
-  padding: 40px $boxPadding;
+  @include boxPadding(40px, 40px);
   color: $textColor;
 }
 

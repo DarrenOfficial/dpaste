@@ -8,22 +8,24 @@
 
   h2 {
     margin: 0;
-    padding: 20px $boxPadding 20px $boxPadding;
+    @include boxPadding(20px, 20px);
+
     color: $codeTextColor;
     font-weight: $baseFontDemiBold;
     font-size: 14px;
   }
 
   .snippet-code {
+    @include boxPadding(10px, 10px);
+
     background-color: $codeDiffBgColor;
-    padding: 10px $boxPadding 10px $boxPadding;
     white-space: pre;
     font-size: 12px;
   }
 }
 
 .snippet-code {
-  padding: 20px $boxPadding;
+  @include boxPadding(20px, 20px);
 
   font-family: $codeFont;
   font-size: 13px;

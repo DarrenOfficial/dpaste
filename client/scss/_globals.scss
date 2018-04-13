@@ -1,5 +1,4 @@
 body {
-  min-width: 800px;           // FIXME: MOBILE
   font-family: $baseFont;
   font-weight: $baseFontRegular;
 
@@ -66,8 +65,8 @@ body[data-platform=mac] .platform-win { display: none; }
   transition: max-height .15s ease-in;
 
   form {
+    @include boxPadding(20px, 20px);
     display: block;
-    padding: 20px $boxPadding;
   }
 
   .btn {
