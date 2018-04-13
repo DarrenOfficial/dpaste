@@ -4,10 +4,12 @@
 
 {% block title %}{% trans "About" %}{% endblock %}
 
-{% block page %}
-  <article class="content-page">
+{% block body_type %}text-page{%endblock %}
 
-    <h2>{% trans "About dpaste" %}</h2>
+{% block page %}
+  <article>
+    
+    <h2 class="first-item">{% trans "About dpaste" %}</h2>
 
     <p>
       This site is powered by dpaste, an <strong>open source</strong>

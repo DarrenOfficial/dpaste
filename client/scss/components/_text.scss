@@ -3,18 +3,21 @@
 // and base styles for text based lexer.
 article {
   padding: 0 $boxPadding 40px $boxPadding;
-  margin-top: 30px;
+  padding-top: 30px;
 
   font-size: 16px;
   font-weight: $baseFontRegular;
   line-height: 24px;
 
-  max-width: 600px;
-
   color: $textColor;
+  max-width: 600px;
 
   @include colored-links;
 
+  .first-item {
+    margin-top: 0;
+  }
+  
   h1, h2, h3, h4, h5, h6 {
     font-weight: $baseFontRegular;
     line-height: 1.3em;
@@ -96,10 +99,4 @@ article.snippet-text {
     p { margin: 10px 0; }
 
   }
-}
-
-
-// Content pages (About page)
-article.content-page {
-  h2 { margin-top: 0; }
 }

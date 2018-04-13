@@ -1,11 +1,21 @@
 body {
   min-width: 800px;           // FIXME: MOBILE
-
-  background-color: $bgColor;
   font-family: $baseFont;
   font-weight: $baseFontRegular;
+
+  // By default, all pages have a dark background. Since
+  // most pages have 'code' snippets, that allows the code 
+  // that is out of canvas to be visible (scroll right).
+  background-color: $codeBgColor;
 }
 
+// But pure text/content pages have a white background.
+// With that, pages which are shorter than the browser
+// window, won't have a dark stripe at the bottom.
+body[code-page] { background-color: $bgColor; }
+body[text-page] { background-color: $bgColor; }
+
+// Platform is set by Javascript.
 body[data-platform=win] .platform-mac { display: none; }
 body[data-platform=mac] .platform-win { display: none; }
 
