@@ -248,7 +248,6 @@ CODE_FORMATTER = [
     ('tcl', 'Tcl'),
     ('tcsh', 'Tcsh'),
     ('tex', 'TeX'),
-    ('text', 'Text'),
     ('vb.net', 'VB.net'),
     ('vim', 'VimL'),
     ('xml', 'XML'),
