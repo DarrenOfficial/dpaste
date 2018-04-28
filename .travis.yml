@@ -16,7 +16,7 @@ matrix:
       env: DJANGO=2.0.*
 
 before_install:
-  - pip install codecov
+  - pip install codacy-coverage
   - coverage erase
 
 install:
@@ -27,4 +27,5 @@ script:
   - coverage run --append runtests.py
 
 after_success:
-  - codecov
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
