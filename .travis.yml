@@ -15,8 +15,8 @@ matrix:
     - python: "2.7"
       env: DJANGO=2.0.*
 
-before_install:
-  - pip install codacy-coverage
+before_install:    
+  - pip install coverage codacy-coverage
   - coverage erase
 
 install:
