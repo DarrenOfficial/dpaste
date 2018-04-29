@@ -1,6 +1,6 @@
 include README.rst
 include LICENSE
-include CHANGELOG
+include CHANGELOG.rst
 include runtests.py
 include tox.ini
 recursive-include dpaste/templates *

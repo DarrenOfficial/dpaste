@@ -9,7 +9,7 @@ long_description = '\n\n'.join((
 
 setup(
     name='dpaste',
-    version='3.0a4',
+    version='3.0a5',
     description='dpaste is a Django based pastebin. It\'s intended to run '
                 'separately but its also possible to be installed into an '
                 'existing Django project like a regular app.',
