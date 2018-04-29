@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
 
 from textwrap import dedent
 
@@ -89,7 +88,7 @@ class HighlightAPITestCase(TestCase):
         input = dedent("""
         =========================
         Generate 15 random numbers
-        70 180 3 179 192 117 75 72 90 190 49 159 63 14 55 
+        70 180 3 179 192 117 75 72 90 190 49 159 63 14 55
         =========================
         """)
         try:

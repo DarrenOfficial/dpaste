@@ -3,13 +3,13 @@
 // -----------------------------------------------------------------------------
 // Add data-platform to the body tag to show platform related shortcuts
 // -----------------------------------------------------------------------------
-const isWindows = navigator.appVersion.indexOf("Win") !== -1;
+const isWindows = navigator.appVersion.indexOf('Win') !== -1;
 document.body.dataset.platform = isWindows ? 'win' : 'mac';
 
 // -----------------------------------------------------------------------------
 // Autofocus the content field on the homepage
 // -----------------------------------------------------------------------------
-const af = document.querySelector(".autofocus textarea");
+const af = document.querySelector('.autofocus textarea');
 if (af !== null) {
   af.focus();
 }
@@ -19,14 +19,13 @@ if (af !== null) {
 // -----------------------------------------------------------------------------
 document.body.onkeydown = function(e) {
   const metaKey = isWindows ? e.ctrlKey : e.metaKey;
-  const form = document.querySelector(".snippet-form");
+  const form = document.querySelector('.snippet-form');
 
   if (form && e.keyCode === 13 && metaKey) {
     form.submit();
     return false;
   }
 };
-
 
 // -----------------------------------------------------------------------------
 // Toggle Wordwrap
@@ -89,6 +88,6 @@ if (clipboardLink && copyToClipboardField) {
   clipboardLink.onclick = function(e) {
     e.preventDefault();
     copyToClipboardField.select();
-    document.execCommand("Copy");
+    document.execCommand('Copy');
   };
 }

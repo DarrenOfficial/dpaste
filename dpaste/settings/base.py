@@ -1,7 +1,6 @@
 # Import global settings to make it easier to extend settings.
 from django.conf.global_settings import *
 
-
 #==============================================================================
 # Calculation of directories relative to the module location
 #==============================================================================

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from random import SystemRandom
 
 from django.conf import settings
