@@ -20,6 +20,7 @@ before_install:
   - coverage erase
 
 install:
+  - npm install
   - pip install $DJANGO
   - pip install -e .[standalone]
 

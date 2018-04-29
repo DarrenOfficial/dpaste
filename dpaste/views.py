@@ -238,7 +238,7 @@ class APIView(View):
         lexer = request.POST.get('lexer', highlight.LEXER_DEFAULT).strip()
         filename = request.POST.get('filename', '').strip()
         expires = request.POST.get('expires', '').strip()
-        format = request.POST.get('format', 'default').strip()
+        response_format = request.POST.get('format', 'default').strip()
 
         if not content.strip():
             return HttpResponseBadRequest('No content given')
@@ -281,10 +281,10 @@ class APIView(View):
         )
         s.save()
 
-        if not format in FORMAT_MAPPING:
+        if not response_format in FORMAT_MAPPING:
             response = _format_default(s)
         else:
-            response = FORMAT_MAPPING[format](s)
+            response = FORMAT_MAPPING[response_format](s)
 
         return HttpResponse(response)
 

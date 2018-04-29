@@ -1,21 +1,8 @@
 #!/usr/bin/env python
-from sys import exit
+import sys
 
 from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
-
-
-class Tox(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
-        import tox
-        errno = tox.cmdline(self.test_args)
-        exit(errno)
 
 long_description = u'\n\n'.join((
     open('README.rst').read(),
@@ -70,8 +57,5 @@ setup(
         'standalone': {
             'django-csp>=3.3',
         }
-    },
-    cmdclass={
-        'test': Tox
-    },
+    }
 )

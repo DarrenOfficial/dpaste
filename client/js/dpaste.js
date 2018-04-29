@@ -90,6 +90,5 @@ if (clipboardLink && copyToClipboardField) {
     e.preventDefault();
     copyToClipboardField.select();
     document.execCommand("Copy");
-    console.log('Copied URL to clipboard:', copyToClipboardField.value);
   };
 }
