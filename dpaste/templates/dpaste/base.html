@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load staticfiles %}
-{% load dpaste_tags %}
+{% load staticinline %}
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
   <title>{% block title %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   {% block meta %}<meta name="robots" content="noindex, nofollow"/>{% endblock %}
-  <style type="text/css">{% inlinestatic "dpaste.css" %}</style>
+  <style type="text/css">{% staticinline "dpaste.css" %}</style>
 </head>
 <body {% block body_type %}{%endblock %}>
 
@@ -25,6 +25,6 @@
 
 <main>{% block page %}{% endblock %}</main>
 
-<script>{% inlinestatic "dpaste.js" %}</script>
+<script>{% staticinline "dpaste.js" %}</script>
 </body>
 </html>

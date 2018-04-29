@@ -4,12 +4,12 @@ from setuptools import find_packages, setup
 
 long_description = '\n\n'.join((
     open('README.rst').read(),
-    open('CHANGELOG').read()
+    open('CHANGELOG.rst').read()
 ))
 
 setup(
     name='dpaste',
-    version='3.0a3',
+    version='3.0a4',
     description='dpaste is a Django based pastebin. It\'s intended to run '
                 'separately but its also possible to be installed into an '
                 'existing Django project like a regular app.',
@@ -36,6 +36,7 @@ setup(
         # Essential packages
         'django>=1.11',
         'pygments>=1.6',
+        'django-staticinline>=1.0',
 
         # Additional Code Lexer
         'pygments-lexer-solidity>=0.1.0',
