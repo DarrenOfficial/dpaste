@@ -4,7 +4,6 @@ python:
   - 3.4
   - 3.5
   - 3.6
-  - 3.7-dev
 
 env:
   - DJANGO: django>=1.11,<2.0
