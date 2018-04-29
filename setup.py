@@ -2,7 +2,7 @@
 
 from setuptools import find_packages, setup
 
-long_description = u'\n\n'.join((
+long_description = '\n\n'.join((
     open('README.rst').read(),
     open('CHANGELOG').read()
 ))
@@ -23,7 +23,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Framework :: Django',
     ],

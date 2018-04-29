@@ -37,22 +37,22 @@ class Snippet(models.Model):
     EXPIRE_KEEP = 2
     EXPIRE_ONETIME = 3
     EXPIRE_CHOICES = (
-        (EXPIRE_TIME, _(u'Expire by timestamp')),
-        (EXPIRE_KEEP, _(u'Keep Forever')),
-        (EXPIRE_ONETIME, _(u'One-Time snippet')),
+        (EXPIRE_TIME, _('Expire by timestamp')),
+        (EXPIRE_KEEP, _('Keep Forever')),
+        (EXPIRE_ONETIME, _('One-Time snippet')),
     )
 
     secret_id = models.CharField(
-        _(u'Secret ID'), max_length=255, blank=True, null=True, unique=True)
-    content = models.TextField(_(u'Content'))
+        _('Secret ID'), max_length=255, blank=True, null=True, unique=True)
+    content = models.TextField(_('Content'))
     lexer = models.CharField(
-        _(u'Lexer'), max_length=30, default=highlight.LEXER_DEFAULT)
+        _('Lexer'), max_length=30, default=highlight.LEXER_DEFAULT)
     published = models.DateTimeField(
-        _(u'Published'), auto_now_add=True)
+        _('Published'), auto_now_add=True)
     expire_type = models.PositiveSmallIntegerField(
-        _(u'Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0])
+        _('Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0])
     expires = models.DateTimeField(
-        _(u'Expires'), blank=True, null=True)
+        _('Expires'), blank=True, null=True)
     view_count = models.PositiveIntegerField(
         _('View count'), default=0)
     parent = models.ForeignKey(

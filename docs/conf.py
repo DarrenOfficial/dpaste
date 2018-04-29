@@ -42,10 +42,10 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'dpaste'
-copyright = u'2013, Martin Mahner'
+project = 'dpaste'
+copyright = '2013, Martin Mahner'
 
-# The version info for the project you're documenting, acts as replacement for
+# The version info for the project yo're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
@@ -102,7 +102,7 @@ try:
 except ImportError:
     sys.stderr.write('Sphinx "rtd" theme is not installed.'
                       'Fallback to regular theme.')
-                      
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 # html_theme = 'default'
@@ -203,8 +203,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'dpaste.tex', u'dpaste Documentation',
-   u'Martin Mahner', 'manual'),
+  ('index', 'dpaste.tex', 'dpaste Documentation',
+   'Martin Mahner', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -233,8 +233,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'dpaste', u'dpaste Documentation',
-     [u'Martin Mahner'], 1)
+    ('index', 'dpaste', 'dpaste Documentation',
+     ['Martin Mahner'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -247,8 +247,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'dpaste', u'dpaste Documentation',
-   u'Martin Mahner', 'dpaste', 'One line description of project.',
+  ('index', 'dpaste', 'dpaste Documentation',
+   'Martin Mahner', 'dpaste', 'One line description of project.',
    'Miscellaneous'),
 ]
 

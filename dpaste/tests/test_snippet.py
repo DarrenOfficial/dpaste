@@ -102,7 +102,7 @@ class SnippetTestCase(TestCase):
         the snippet is considered as spam. We let the user know its spam.
         """
         data = self.valid_form_data()
-        data['title'] = u'Any content'
+        data['title'] = 'Any content'
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -212,8 +212,8 @@ class SnippetTestCase(TestCase):
     # -------------------------------------------------------------------------
     # XSS and correct escaping
     # -------------------------------------------------------------------------
-    XSS_ORIGINAL = u'<script>hello</script>'
-    XSS_ESCAPED = u'&lt;script&gt;hello&lt;/script&gt;'
+    XSS_ORIGINAL = '<script>hello</script>'
+    XSS_ESCAPED = '&lt;script&gt;hello&lt;/script&gt;'
 
     def test_xss_text_lexer(self):
         # Simple 'text' lexer
@@ -361,7 +361,7 @@ class SnippetTestCase(TestCase):
         """
         Leading Whitespace is retained in the db.
         """
-        content = u' one\n  two\n   three\n    four'
+        content = ' one\n  two\n   three\n    four'
         data = self.valid_form_data(content=content)
         self.client.post(self.new_url, data, follow=True)
         self.assertEqual(Snippet.objects.all()[0].content, content)

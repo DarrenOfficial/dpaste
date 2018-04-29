@@ -21,10 +21,10 @@ EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', 3600)
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
 def get_expire_values(expires):
-    if expires == u'never':
+    if expires == 'never':
         expire_type = Snippet.EXPIRE_KEEP
         expires = None
-    elif expires == u'onetime':
+    elif expires == 'onetime':
         expire_type = Snippet.EXPIRE_ONETIME
         expires = None
     else:

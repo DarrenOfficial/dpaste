@@ -244,7 +244,7 @@ class SnippetAPITestCase(TestCase):
         """
         Leading Whitespace is retained in the db.
         """
-        content = u' one\n  two\n   three\n    four'
+        content = ' one\n  two\n   three\n    four'
         self.client.post(self.api_url, {'content': content})
         self.assertEqual(Snippet.objects.all()[0].content, content)
 

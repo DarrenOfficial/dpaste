@@ -1,21 +1,16 @@
 language: python
 
 python:
-  - 2.7
   - 3.4
   - 3.5
   - 3.6
+  - 3.7-dev
 
 env:
   - DJANGO: django>=1.11,<2.0
   - DJANGO: django>=2.0
 
-matrix:
-  exclude:
-    - python: "2.7"
-      env: DJANGO=2.0.*
-
-before_install:    
+before_install:
   - pip install coverage codacy-coverage
   - coverage erase
 

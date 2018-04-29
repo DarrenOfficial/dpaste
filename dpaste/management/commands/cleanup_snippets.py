@@ -24,6 +24,6 @@ class Command(BaseCommand):
         for d in deleteable_snippets:
             self.stdout.write(u"- %s (%s)\n" % (d.secret_id, d.expires))
         if options.get('dry_run'):
-            self.stdout.write(u'Dry run - Not actually deleting snippets!\n')
+            self.stdout.write('Dry run - Not actually deleting snippets!\n')
         else:
             deleteable_snippets.delete()

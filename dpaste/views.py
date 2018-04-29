@@ -205,16 +205,16 @@ class AboutView(TemplateView):
 
 def _format_default(s):
     """The default response is the snippet URL wrapped in quotes."""
-    return u'"%s%s"' % (BASE_URL, s.get_absolute_url())
+    return '"%s%s"' % (BASE_URL, s.get_absolute_url())
 
 def _format_url(s):
     """The `url` format returns the snippet URL, no quotes, but a linebreak after."""
-    return u'%s%s\n' % (BASE_URL, s.get_absolute_url())
+    return '%s%s\n' % (BASE_URL, s.get_absolute_url())
 
 def _format_json(s):
     """The `json` format export."""
     return json.dumps({
-        'url': u'%s%s' % (BASE_URL, s.get_absolute_url()),
+        'url': '%s%s' % (BASE_URL, s.get_absolute_url()),
         'content': s.content,
         'lexer': s.lexer,
     })

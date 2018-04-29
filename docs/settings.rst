@@ -51,10 +51,10 @@ behavior without touching the code:
 
             from django.utils.translation import ugettext_lazy as _
             DPASTE_EXPIRE_CHOICES = (
-                (3600, _(u'In one hour')),
-                (3600 * 24 * 7, _(u'In one week')),
-                (3600 * 24 * 30, _(u'In one month')),
-                (3600 * 24 * 30 * 12 * 100, _(u'100 Years')),
+                (3600, _('In one hour')),
+                (3600 * 24 * 7, _('In one week')),
+                (3600 * 24 * 30, _('In one month')),
+                (3600 * 24 * 30 * 12 * 100, _('100 Years')),
             )
 
         **One-Time snippets** are supported. One-Time snippets are automatically
@@ -64,10 +64,10 @@ behavior without touching the code:
 
             from django.utils.translation import ugettext_lazy as _
             DPASTE_EXPIRE_CHOICES = (
-                ('onetime', _(u'One-Time snippet')),
-                (3600, _(u'In one hour')),
-                (3600 * 24 * 7, _(u'In one week')),
-                (3600 * 24 * 30, _(u'In one month')),
+                ('onetime', _('One-Time snippet')),
+                (3600, _('In one hour')),
+                (3600 * 24 * 7, _('In one week')),
+                (3600 * 24 * 30, _('In one month')),
             )
 
         You can also set the maximum view count after what the snippet gets
@@ -82,8 +82,8 @@ behavior without touching the code:
 
             from django.utils.translation import ugettext_lazy as _
             DPASTE_EXPIRE_CHOICES = (
-                (3600, _(u'In one hour')),
-                (u'never', _(u'Never')),
+                (3600, _('In one hour')),
+                ('never', _('Never')),
             )
 
     ``DPASTE_EXPIRE_DEFAULT``
