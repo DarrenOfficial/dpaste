@@ -1,8 +1,11 @@
 .. image:: https://travis-ci.org/bartTC/dpaste.svg?branch=master
     :target: https://travis-ci.org/bartTC/dpaste
 
-.. image:: https://codecov.io/github/bartTC/dpaste/coverage.svg?branch=master
-    :target: https://codecov.io/github/bartTC/dpaste?branch=master
+.. image:: https://api.codacy.com/project/badge/Coverage/185cfbe9b4b447e59a40f816c4a5ebf4
+    :target: https://www.codacy.com/app/bartTC/dpaste?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bartTC/dpaste&amp;utm_campaign=Badge_Coverage
+
+.. image:: https://api.codacy.com/project/badge/Grade/185cfbe9b4b447e59a40f816c4a5ebf4
+    :target: https://www.codacy.com/app/bartTC/dpaste?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bartTC/dpaste&amp;utm_campaign=Badge_Grade
 
 ======
 dpaste
