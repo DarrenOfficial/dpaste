@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-import sys
 
 from setuptools import find_packages, setup
-from setuptools.command.test import test as TestCommand
 
 long_description = u'\n\n'.join((
     open('README.rst').read(),
@@ -52,7 +50,7 @@ setup(
         'coverage',
     ],
     extras_require={
-        # Packages required for a standalone setup 
+        # Packages required for a standalone setup
         # (not integrated into an existing setup and settings)
         'standalone': {
             'django-csp>=3.3',

@@ -58,7 +58,7 @@ class SnippetDetailView(SnippetView, DetailView):
     slug_url_kwarg = 'snippet_id'
     slug_field = 'secret_id'
 
-    def post(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """
         Delete a snippet. This is allowed by anybody as long as he knows the
         snippet id. I got too many manual requests to do this, mostly for legal
@@ -73,9 +73,9 @@ class SnippetDetailView(SnippetView, DetailView):
             url = '{0}#'.format(reverse('snippet_new'))
             return HttpResponseRedirect(url)
 
-        return super(SnippetDetailView, self).post(*args, **kwargs)
+        return super(SnippetDetailView, self).post(request, *args, **kwargs)
 
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         snippet = self.get_object()
 
         # One-Time snippet get deleted if the view count matches our limit
@@ -88,7 +88,7 @@ class SnippetDetailView(SnippetView, DetailView):
         snippet.view_count += 1
         snippet.save()
 
-        return super(SnippetDetailView, self).get(*args, **kwargs)
+        return super(SnippetDetailView, self).get(request, *args, **kwargs)
 
     def get_initial(self):
         snippet = self.get_object()
@@ -157,7 +157,7 @@ class SnippetHistory(TemplateView):
         snippet_id_list = self.request.session.get('snippet_list', [])
         return Snippet.objects.filter(pk__in=snippet_id_list)
 
-    def post(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """
         Delete all user snippets at once.
         """
