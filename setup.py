@@ -26,6 +26,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Framework :: Django',
     ],
+    python_requires='>=3.4',
     packages=find_packages(),
     package_data={
         'dpaste': ['static/*.*', 'templates/*.*'],

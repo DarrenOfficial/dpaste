@@ -14,8 +14,8 @@ class HighlightAPITestCase(TestCase):
         """
         PLAIN_CODE is not run through Pygments, test it separately.
         """
-        input = 'var'
-        expected = '<span class="plain">var</span>'
+        input = 'vär'
+        expected = '<span class="plain">vär</span>'
         value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
@@ -23,8 +23,8 @@ class HighlightAPITestCase(TestCase):
         """
         Whitespace on the first line is retained.
         """
-        input = ' var=1'
-        expected = '<span class="plain"> var=1</span>'
+        input = ' vär=1'
+        expected = '<span class="plain"> vär=1</span>'
         value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
@@ -32,15 +32,15 @@ class HighlightAPITestCase(TestCase):
         """
         Whitespace on the first line is retained, also on subsequent lines.
         """
-        input = (' var=1\n'
-                 '  var=2\n'
-                 '   var=3\n'
-                 '    var=4')
+        input = (' vär=1\n'
+                 '  vär=2\n'
+                 '   vär=3\n'
+                 '    vär=4')
         expected = (
-            '<span class="plain"> var=1</span>\n'
-            '<span class="plain">  var=2</span>\n'
-            '<span class="plain">   var=3</span>\n'
-            '<span class="plain">    var=4</span>')
+            '<span class="plain"> vär=1</span>\n'
+            '<span class="plain">  vär=2</span>\n'
+            '<span class="plain">   vär=3</span>\n'
+            '<span class="plain">    vär=4</span>')
         value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
