@@ -20,3 +20,20 @@ INSTALLED_APPS += ('sslserver',)
 if not 'runsslserver' in sys.argv:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+
+#
+# Uncomment the block below to use a custom AppConfig.
+#
+
+# from dpaste.apps import dpasteAppConfig
+#
+# class MyBetterDpasteAppConfig(dpasteAppConfig):
+#     SLUG_LENGTH = 8
+#     LEXER_DEFAULT = 'js'
+#
+# INSTALLED_APPS = (
+#     'staticinline',
+#     'django.contrib.staticfiles',
+#     'django.contrib.sessions',
+#     'dpaste.settings.local.MyBetterDpasteAppConfig',
+# )

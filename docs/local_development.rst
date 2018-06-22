@@ -13,6 +13,8 @@ Local development is done with `pipenv`_ to maintain packages.
 Installation::
 
     $ cd dpaste/
+
+    $ npm install
     $ pipenv install --dev
 
 Copy the settings file and edit it, to meet your needs::
@@ -38,7 +40,7 @@ suite locally with tox_::
 
     $ cd dpaste/
     $ pip install tox
-    $ tox --skip-missing-interpreters
+    $ tox
 
 A more manual approach is installing it all by hand in a virtual environment.
 This is also the preferred way to setup an environment for local development::
@@ -49,8 +51,4 @@ This is also the preferred way to setup an environment for local development::
 
 .. _Travis: https://travis-ci.org/bartTC/dpaste
 .. _tox: http://tox.readthedocs.org/en/latest/
-
-
 .. _pipenv: https://docs.pipenv.org/
-
-
