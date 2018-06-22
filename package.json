@@ -7,7 +7,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
-    "node-sass": "^4.7.2",
-    "uglify-es": "^3.3.9"
+    "node-sass": "^4.9.0",
+    "uglify-es": "^3.3.10"
   }
 }
