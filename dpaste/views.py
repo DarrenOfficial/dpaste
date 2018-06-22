@@ -2,7 +2,7 @@ import datetime
 import difflib
 import json
 
-from django.conf import settings
+from django.apps import apps
 from django.db.models import Count
 from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
     HttpResponseRedirect)
@@ -18,9 +18,11 @@ from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
 from dpaste import highlight
-from dpaste.forms import EXPIRE_CHOICES, SnippetForm, get_expire_values
+from dpaste.forms import SnippetForm, get_expire_values
 from dpaste.highlight import PygmentsHighlighter
-from dpaste.models import ONETIME_LIMIT, Snippet
+from dpaste.models import Snippet
+
+config = apps.get_app_config('dpaste')
 
 
 # -----------------------------------------------------------------------------
@@ -78,7 +80,7 @@ class SnippetDetailView(SnippetView, DetailView):
 
         # One-Time snippet get deleted if the view count matches our limit
         if snippet.expire_type == Snippet.EXPIRE_ONETIME \
-        and snippet.view_count >= ONETIME_LIMIT:
+        and snippet.view_count >= config.ONETIME_LIMIT:
             snippet.delete()
             raise Http404()
 
@@ -201,29 +203,26 @@ class AboutView(TemplateView):
 
 def _format_default(s):
     """The default response is the snippet URL wrapped in quotes."""
-    return '"%s%s"' % (BASE_URL, s.get_absolute_url())
+    return '"%s%s"' % (config.BASE_URL, s.get_absolute_url())
 
 def _format_url(s):
     """The `url` format returns the snippet URL, no quotes, but a linebreak after."""
-    return '%s%s\n' % (BASE_URL, s.get_absolute_url())
+    return '%s%s\n' % (config.BASE_URL, s.get_absolute_url())
 
 def _format_json(s):
     """The `json` format export."""
     return json.dumps({
-        'url': '%s%s' % (BASE_URL, s.get_absolute_url()),
+        'url': '%s%s' % (config.BASE_URL, s.get_absolute_url()),
         'content': s.content,
         'lexer': s.lexer,
     })
 
-
-BASE_URL = getattr(settings, 'DPASTE_BASE_URL', 'https://dpaste.de')
 
 FORMAT_MAPPING = {
     'default': _format_default,
     'url': _format_url,
     'json': _format_json,
 }
-
 
 class APIView(View):
     """
@@ -257,10 +256,10 @@ class APIView(View):
                 lexer_cls = get_lexer_for_filename(filename)
                 lexer = lexer_cls.aliases[0]
             except (ClassNotFound, IndexError):
-                lexer = highlight.PLAIN_CODE
+                lexer = config.PLAIN_CODE_SYMBOL
 
         if expires:
-            expire_options = [str(i) for i in dict(EXPIRE_CHOICES).keys()]
+            expire_options = [str(i) for i in dict(config.EXPIRE_CHOICES).keys()]
             if not expires in expire_options:
                 return HttpResponseBadRequest('Invalid expire choice "{}" given. '
                     'Valid values are: {}'.format(expires, ', '.join(expire_options)))

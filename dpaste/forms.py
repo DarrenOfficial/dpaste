@@ -1,22 +1,13 @@
 import datetime
 
 from django import forms
-from django.conf import settings
+from django.apps import apps
 from django.utils.translation import ugettext_lazy as _
 
-from .highlight import LEXER_DEFAULT, LEXER_KEYS, LEXER_CHOICES
+from .highlight import LEXER_CHOICES, LEXER_DEFAULT, LEXER_KEYS
 from .models import Snippet
 
-EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
-    ('onetime', _('One-Time snippet')),
-    (3600, _('In one hour')),
-    (3600 * 24 * 7, _('In one week')),
-    (3600 * 24 * 30, _('In one month')),
-    ('never', _('Never')),
-))
-
-EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', 3600)
-MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
+config = apps.get_app_config('dpaste')
 
 
 def get_expire_values(expires):
@@ -28,7 +19,7 @@ def get_expire_values(expires):
         expires = None
     else:
         expire_type = Snippet.EXPIRE_TIME
-        expires = expires and expires or EXPIRE_DEFAULT
+        expires = expires and expires or config.EXPIRE_DEFAULT
         expires = datetime.datetime.now() + datetime.timedelta(seconds=int(expires))
     return expires, expire_type
 
@@ -37,7 +28,7 @@ class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
         widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
-        max_length=MAX_CONTENT_LENGTH,
+        max_length=config.MAX_CONTENT_LENGTH,
         strip=False
     )
 
@@ -49,8 +40,8 @@ class SnippetForm(forms.ModelForm):
 
     expires = forms.ChoiceField(
         label=_('Expires'),
-        choices=EXPIRE_CHOICES,
-        initial=EXPIRE_DEFAULT
+        choices=config.EXPIRE_CHOICES,
+        initial=config.EXPIRE_DEFAULT
     )
 
     # Honeypot field

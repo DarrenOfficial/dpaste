@@ -1,6 +1,7 @@
+from logging import getLogger
 from random import SystemRandom
 
-from django.conf import settings
+from django.apps import apps
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -8,15 +9,19 @@ from six import python_2_unicode_compatible
 
 from dpaste import highlight
 
+config = apps.get_app_config('dpaste')
+logger = getLogger(__file__)
 R = SystemRandom()
-ONETIME_LIMIT = getattr(settings, 'DPASTE_ONETIME_LIMIT', 2)
 
 
-def generate_secret_id(length=None, alphabet=None, tries=0):
-    length = length or getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
-    alphabet = alphabet or getattr(settings, 'DPASTE_SLUG_CHOICES',
-        'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890')
-    secret_id = ''.join([R.choice(alphabet) for i in range(length)])
+def generate_secret_id(length=None, tries=0):
+    if tries >= 10000:
+        m = 'Tried to often to generate a unique slug. Inceease the slug length.'
+        logger.critical(m)
+        raise Exception(m)
+
+    secret_id = ''.join([R.choice(config.SLUG_CHOICES)
+                            for i in range(config.SLUG_LENGTH)])
 
     # Check if this slug already exists, if not, return this new slug
     try:
@@ -84,5 +89,6 @@ class Snippet(models.Model):
     @property
     def remaining_views(self):
         if self.expire_type == self.EXPIRE_ONETIME:
-            remaining = ONETIME_LIMIT - self.view_count
+
+            remaining = config.ONETIME_LIMIT - self.view_count
             return remaining > 0 and remaining or 0

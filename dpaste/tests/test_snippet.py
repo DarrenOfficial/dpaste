@@ -2,15 +2,16 @@
 
 from datetime import timedelta
 
+from django.apps import apps
 from django.core import management
-from django.urls import reverse
 from django.test import TestCase
 from django.test.client import Client
-from django.test.utils import override_settings
+from django.urls import reverse
 
-from ..forms import EXPIRE_DEFAULT
-from ..highlight import LEXER_DEFAULT, PLAIN_CODE, PLAIN_TEXT, PygmentsHighlighter
+from ..highlight import PygmentsHighlighter
 from ..models import Snippet
+
+config = apps.get_app_config('dpaste')
 
 
 class SnippetTestCase(TestCase):
@@ -22,8 +23,8 @@ class SnippetTestCase(TestCase):
     def valid_form_data(self, **kwargs):
         data = {
             'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': LEXER_DEFAULT,
-            'expires': EXPIRE_DEFAULT,
+            'lexer': config.LEXER_DEFAULT,
+            'expires': config.EXPIRE_DEFAULT,
         }
         if kwargs:
             data.update(kwargs)
@@ -216,13 +217,15 @@ class SnippetTestCase(TestCase):
 
     def test_xss_text_lexer(self):
         # Simple 'text' lexer
-        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer=PLAIN_TEXT)
+        data = self.valid_form_data(content=self.XSS_ORIGINAL,
+                                    lexer=config.PLAIN_TEXT_SYMBOL)
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
 
     def test_xss_code_lexer(self):
         # Simple 'code' lexer
-        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer=PLAIN_CODE)
+        data = self.valid_form_data(content=self.XSS_ORIGINAL,
+                                    lexer=config.PLAIN_CODE_SYMBOL)
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
 
@@ -313,7 +316,6 @@ class SnippetTestCase(TestCase):
         PygmentsHighlighter().highlight('code', 'doesnotexist')
 
 
-    @override_settings(DPASTE_SLUG_LENGTH=1)
     def test_random_slug_generation(self):
         """
         Set the max length of a slug to 1, so we wont have more than 60

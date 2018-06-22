@@ -1,11 +1,13 @@
 # -*- encoding: utf-8 -*-
 
-from django.urls import reverse
+from django.apps import apps
 from django.test import TestCase
 from django.test.client import Client
+from django.urls import reverse
 
-from ..highlight import PLAIN_CODE
 from ..models import Snippet
+
+config = apps.get_app_config('dpaste')
 
 
 class SnippetAPITestCase(TestCase):
@@ -224,7 +226,7 @@ class SnippetAPITestCase(TestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
-        self.assertEqual(Snippet.objects.all()[0].lexer, PLAIN_CODE)
+        self.assertEqual(Snippet.objects.all()[0].lexer, config.PLAIN_CODE_SYMBOL)
 
     def test_filename_and_lexer_given(self):
         """
