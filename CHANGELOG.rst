@@ -1,27 +1,32 @@
 Changelog
 =========
 
-3.0a0 (master)
---------------
+3.0 (2018-06-22)
+----------------
 
-* Dropped support for Django 1.8 to 1.10 due to it's general end of support. 
+Huge release. Full cleanup and update of the entire codebase. Details:
+
+* Requires Python 3.4 and up.
+* Dropped support for Django 1.8 to 1.10 due to it's general end of support.
   The project will likely work well but it's no longer specifically tested.
-* Fixed issues around leading whitespace in lines.
-* Fixed CMD+Enter form submission shortcut in Firefox.
-* Removed "Suspicious" middleware which was never been used, documented,
-  and also not functional for a while.
-* Added django-csp to deal with external content (this is required for the
-  upcoming "rendered" markdown feature).
-
-General code cleanup:
-
 * All views are now class based and use the latest generic based views sugar.
 * Django 1.11 based templates, forms, views, models, etc.
-* Removed jQuery dependeny, all Javascript is native.
-* Removed Bootstrap dependendy.
+* Added pipenv support for local development.
+* Added AppConfig support to set and maintain settings.
+* Added "Rendered Text" lexer with support for rST and Markdown.
+* Added Content Security Policy features, with django-csp (this is mainly
+  required for the "rendered" text feature).
+* Removed jQuery dependency, all Javascript is native.
+* Removed Bootstrap dependency.
+* Removed 'Maximum History' limit setting.
+* Removed translations.
+* Removed "Suspicious" middleware which was never been used, documented,
+  and also not functional for a while.
+* Fixed issues around leading whitespace in lines.
+* Fixed CMD+Enter form submission shortcut in Firefox.
 
-2.14 (master)
--------------
+2.14 (no public release)
+------------------------
 
 * Django 1.11 compatibility. But not Django 2.0 yet. 
 * Removed "Suspicious" middleware which was never been used, documented, 
