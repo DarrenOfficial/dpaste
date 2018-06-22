@@ -2,9 +2,6 @@
 Integrate dpaste into an existing project
 =========================================
 
-Dpaste needs at least Django 1.11+ and is tested on Python 2.7 as well as
-Python 3.3.
-
 Install the latest dpaste release in your environment. This will install all
 necessary dependencies of dpaste as well::
 
@@ -31,6 +28,7 @@ Add ``dpaste`` — and if you want — the ``dpaste_api`` to your urlpatterns::
 Finally just migrate the database schema::
 
     manage.py migrate dpaste
+
 
 Purge expired snippets
 ======================
