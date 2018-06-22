@@ -6,7 +6,6 @@ long_description = '\n\n'.join((
     open('README.rst').read(),
     open('CHANGELOG.rst').read()
 ))
-
 setup(
     name='dpaste',
     version='3.0a5',
@@ -53,8 +52,18 @@ setup(
     extras_require={
         # Packages required for a standalone setup
         # (not integrated into an existing setup and settings)
-        'standalone': {
+        'standalone': [
             'django-csp>=3.3',
-        }
+        ],
+        # Useful tools for local development
+        'local-development': [
+            'django-csp>=3.3',
+            'django-sslserver',
+            'sphinx',
+            'sphinx-autobuild',
+            'sphinx-rtd-theme',
+            'sphinxcontrib-httpdomain',
+        ]
     }
 )
+
