@@ -26,14 +26,20 @@ if not 'runsslserver' in sys.argv:
 #
 
 # from dpaste.apps import dpasteAppConfig
+# from django.utils.translation import ugettext_lazy as _
 #
-# class MyBetterDpasteAppConfig(dpasteAppConfig):
+# class ProductionDpasteAppConfig(dpasteAppConfig):
 #     SLUG_LENGTH = 8
 #     LEXER_DEFAULT = 'js'
+#     EXPIRE_CHOICES = (
+#         ('onetime', _(u'One Time Snippet')),
+#         (3600, _(u'Expire in one hour')),
+#         (3600 * 24, _('Expire in one day')),
+#         (3600 * 24 * 7, _('Expire in one week')),
+#         (3600 * 24 * 31, _('Expire in one month')),
+#     )
+#     EXPIRE_DEFAULT = 3600 * 24 * 7
 #
-# INSTALLED_APPS = (
-#     'staticinline',
-#     'django.contrib.staticfiles',
-#     'django.contrib.sessions',
-#     'dpaste.settings.local.MyBetterDpasteAppConfig',
-# )
+# INSTALLED_APPS.remove('dpaste.apps.dpasteAppConfig')
+# INSTALLED_APPS.append('dpaste.settings.local.ProductionDpasteAppConfig')
+

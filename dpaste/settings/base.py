@@ -116,12 +116,12 @@ TEMPLATES = [
     },
 ]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'staticinline',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
     'dpaste.apps.dpasteAppConfig',
-)
+]
 
 DATABASES = {
     'default': {
