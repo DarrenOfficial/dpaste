@@ -3,7 +3,6 @@ import difflib
 import json
 
 from django.apps import apps
-from django.db.models import Count
 from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
     HttpResponseRedirect)
 from django.shortcuts import get_object_or_404
@@ -259,7 +258,7 @@ class APIView(View):
         s.save()
 
         formatter = getattr(self, '_format_{0}'.format(response_format), None)
-        if not formatter:
+        if formatter:
             response = self._format_default(s)
         else:
             response = formatter(s)
