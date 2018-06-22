@@ -257,12 +257,13 @@ class APIView(View):
         )
         s.save()
 
+        # Custom formatter for the API response
         formatter = getattr(self, '_format_{0}'.format(response_format), None)
-        if formatter:
-            response = self._format_default(s)
-        else:
-            response = formatter(s)
-        return HttpResponse(response)
+        if callable(formatter):
+            return HttpResponse(formatter(s))
+
+        # Otherwise use the default one.
+        return HttpResponse(self._format_default(s))
 
 
 # -----------------------------------------------------------------------------
