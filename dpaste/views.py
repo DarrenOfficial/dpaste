@@ -177,57 +177,39 @@ class SnippetHistory(TemplateView):
 
 
 # -----------------------------------------------------------------------------
-# Static pages
-# -----------------------------------------------------------------------------
-
-class AboutView(TemplateView):
-    """
-    A rather static page, we need a view just to display a couple of
-    statistics.
-    """
-    template_name = 'dpaste/about.html'
-
-    def get_context_data(self, **kwargs):
-        ctx = super(AboutView, self).get_context_data(**kwargs)
-        ctx.update({
-            'total': Snippet.objects.count(),
-            'stats': Snippet.objects.values('lexer').annotate(
-                count=Count('lexer')).order_by('-count')[:5],
-        })
-        return ctx
-
-
-# -----------------------------------------------------------------------------
 # API Handling
 # -----------------------------------------------------------------------------
 
-def _format_default(s):
-    """The default response is the snippet URL wrapped in quotes."""
-    return '"%s%s"' % (config.BASE_URL, s.get_absolute_url())
-
-def _format_url(s):
-    """The `url` format returns the snippet URL, no quotes, but a linebreak after."""
-    return '%s%s\n' % (config.BASE_URL, s.get_absolute_url())
-
-def _format_json(s):
-    """The `json` format export."""
-    return json.dumps({
-        'url': '%s%s' % (config.BASE_URL, s.get_absolute_url()),
-        'content': s.content,
-        'lexer': s.lexer,
-    })
-
-
-FORMAT_MAPPING = {
-    'default': _format_default,
-    'url': _format_url,
-    'json': _format_json,
-}
 
 class APIView(View):
     """
     API View
     """
+    def _format_default(self, s):
+        """
+        The default response is the snippet URL wrapped in quotes.
+        """
+        return '"{url}{path}"'.format(url=config.BASE_URL,
+                                      path=s.get_absolute_url())
+
+    def _format_url(self, s):
+        """
+        The `url` format returns the snippet URL, no quotes, but a linebreak after.
+        """
+        return '{url}{path}\n'.format(url=config.BASE_URL,
+                                      path=s.get_absolute_url())
+
+    def _format_json(self, s):
+        """
+        The `json` format export.
+        """
+        return json.dumps({
+            'url': '{url}{path}'.format(url=config.BASE_URL,
+                                        path=s.get_absolute_url()),
+            'content': s.content,
+            'lexer': s.lexer,
+        })
+
     def post(self, request, *args, **kwargs):
         content = request.POST.get('content', '')
         lexer = request.POST.get('lexer', highlight.LEXER_DEFAULT).strip()
@@ -276,11 +258,11 @@ class APIView(View):
         )
         s.save()
 
-        if not response_format in FORMAT_MAPPING:
-            response = _format_default(s)
+        formatter = getattr(self, '_format_{0}'.format(response_format), None)
+        if not formatter:
+            response = self._format_default(s)
         else:
-            response = FORMAT_MAPPING[response_format](s)
-
+            response = formatter(s)
         return HttpResponse(response)
 
 
