@@ -136,10 +136,6 @@ DATABASES = {
 # App specific settings
 #==============================================================================
 
-# How many recent snippets to save for every user? IDs of this snippets are
-# stored in the user session.
-MAX_SNIPPETS_PER_USER = 25
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 

@@ -18,6 +18,7 @@ EXPIRE_CHOICES = getattr(settings, 'DPASTE_EXPIRE_CHOICES', (
 EXPIRE_DEFAULT = getattr(settings, 'DPASTE_EXPIRE_DEFAULT', 3600)
 MAX_CONTENT_LENGTH = getattr(settings, 'DPASTE_MAX_CONTENT_LENGTH', 250*1024*1024)
 
+
 def get_expire_values(expires):
     if expires == 'never':
         expire_type = Snippet.EXPIRE_KEEP
@@ -104,8 +105,6 @@ class SnippetForm(forms.ModelForm):
         return self.cleaned_data
 
     def save(self, parent=None, *args, **kwargs):
-        MAX_SNIPPETS_PER_USER = getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 100)
-
         # Set parent snippet
         self.instance.parent = parent
 
@@ -118,12 +117,8 @@ class SnippetForm(forms.ModelForm):
         super(SnippetForm, self).save(*args, **kwargs)
 
         # Add the snippet to the user session list
-        if self.request.session.get('snippet_list', False):
-            if len(self.request.session['snippet_list']) >= MAX_SNIPPETS_PER_USER:
-                self.request.session['snippet_list'].pop(0)
-            self.request.session['snippet_list'] += [self.instance.pk]
-        else:
-            self.request.session['snippet_list'] = [self.instance.pk]
+        self.request.session.setdefault('snippet_list', [])
+        self.request.session['snippet_list'] += [self.instance.pk]
 
         # Save the lexer in the session so we can use it later again
         self.request.session['lexer'] = self.cleaned_data['lexer']

@@ -166,11 +166,9 @@ class SnippetHistory(TemplateView):
         url = '{0}#'.format(reverse('snippet_history'))
         return HttpResponseRedirect(url)
 
-
     def get_context_data(self, **kwargs):
         ctx = super(SnippetHistory, self).get_context_data(**kwargs)
         ctx.update({
-            'snippets_max': getattr(settings, 'DPASTE_MAX_SNIPPETS_PER_USER', 10),
             'snippet_list': self.get_user_snippets(),
         })
         return ctx

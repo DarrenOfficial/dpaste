@@ -268,35 +268,6 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
-    @override_settings(DPASTE_MAX_SNIPPETS_PER_USER=2)
-    def test_snippet_that_exceed_history_limit_get_trashed(self):
-        """
-        The maximum number of snippets a user can save in the session are
-        defined by `DPASTE_MAX_SNIPPETS_PER_USER`. Exceed that number will
-        remove the oldest snippet from the list.
-        """
-        # Create three snippets but since the setting is 2 only the latest two
-        # will displayed on the history.
-        data = self.valid_form_data()
-        self.client.post(self.new_url, data, follow=True)
-        self.client.post(self.new_url, data, follow=True)
-        self.client.post(self.new_url, data, follow=True)
-
-        response = self.client.get(reverse('snippet_history'), follow=True)
-        one, two, three = Snippet.objects.order_by('published')
-
-        # Only the last two are saved in the session
-        self.assertEqual(len(self.client.session['snippet_list']), 2)
-        self.assertFalse(one.id in self.client.session['snippet_list'])
-        self.assertTrue(two.id in self.client.session['snippet_list'])
-        self.assertTrue(three.id in self.client.session['snippet_list'])
-
-        # And only the last two are displayed on the history page
-        self.assertNotContains(response, one.secret_id)
-        self.assertContains(response, two.secret_id)
-        self.assertContains(response, three.secret_id)
-
-
     # -------------------------------------------------------------------------
     # Management Command
     # -------------------------------------------------------------------------
