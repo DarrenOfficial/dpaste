@@ -1,4 +1,3 @@
-
 // Global padding across all first level elements
 @mixin boxPadding($paddingTop: 20px, $paddingBottom: 20px) {
   padding: $paddingTop $boxPadding $paddingBottom $boxPadding;

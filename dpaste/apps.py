@@ -1,6 +1,7 @@
 from django.apps import AppConfig, apps
 from django.utils.translation import ugettext_lazy as _
 
+
 class dpasteAppConfig(AppConfig):
     name = 'dpaste'
     verbose_name = 'dpaste'
@@ -11,6 +12,8 @@ class dpasteAppConfig(AppConfig):
     SLUG_LENGTH = 4
 
     # String. A string of characters which are used to create the random slug.
+    # This is intentionally missing l and I as they look too similar with
+    # sans-serif fonts.
     SLUG_CHOICES = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890'
 
     # String. The lexer key that is pre-selected in the dropdown. Note that
@@ -31,7 +34,6 @@ class dpasteAppConfig(AppConfig):
     #         (3600 * 24 * 30 * 12 * 100, _('100 Years')),
     #     )
     #
-
     # **Infinite snippets** are supported. You can keep snippets forever when
     # you set the choice key to ``never``. The management command will ignore
     # these snippets::
@@ -87,7 +89,6 @@ class dpasteAppConfig(AppConfig):
             if site:
                 return 'https://{0}'.format(site.domain)
         return 'https://dpaste.de'
-
 
     # Key names of the default text and code lexer.
     PLAIN_TEXT_SYMBOL = '_text'

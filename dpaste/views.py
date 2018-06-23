@@ -78,8 +78,8 @@ class SnippetDetailView(SnippetView, DetailView):
         snippet = self.get_object()
 
         # One-Time snippet get deleted if the view count matches our limit
-        if snippet.expire_type == Snippet.EXPIRE_ONETIME \
-        and snippet.view_count >= config.ONETIME_LIMIT:
+        if (snippet.expire_type == Snippet.EXPIRE_ONETIME and
+                snippet.view_count >= config.ONETIME_LIMIT):
             snippet.delete()
             raise Http404()
 
@@ -273,6 +273,7 @@ class APIView(View):
 
 def page_not_found(request, exception=None, template_name='dpaste/404.html'):
     return django_page_not_found(request, exception, template_name=template_name)
+
 
 def server_error(request, template_name='dpaste/500.html'):
     return django_server_error(request, template_name=template_name)  # pragma: no cover

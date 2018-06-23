@@ -40,9 +40,7 @@
         <span class="sep"></span>
         {% blocktrans with snippet.published|timesince as since %}Created {{ since }} ago{% endblocktrans %}
       </h3>
-
       {{ snippet.highlight }}
-
     {% empty %}
       <p class="history-empty">
         {% trans "No snippets saved. Either all your snippets are expired or your cookie has changed." %}</p>

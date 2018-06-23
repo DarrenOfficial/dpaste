@@ -14,15 +14,6 @@ from pygments.util import ClassNotFound
 logger = getLogger(__file__)
 config = apps.get_app_config('dpaste')
 
-class NakedHtmlFormatter(HtmlFormatter):
-    """Pygments HTML formatter with no further HTML tags."""
-    def wrap(self, source, outfile):
-        return self._wrap_code(source)
-
-    def _wrap_code(self, source):
-        for i, t in source:
-            yield i, t
-
 
 # -----------------------------------------------------------------------------
 # Highlight Code Snippets
@@ -60,7 +51,6 @@ class PlainTextHighlighter(Highlighter):
 
     def highlight(self, code_string, **kwargs):
         return linebreaksbr(code_string)
-
 
 
 class MarkdownHighlighter(PlainTextHighlighter):
@@ -101,12 +91,25 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
 # -----------------------------------------------------------------------------
 
 
-class PlainCodeHighlighter(Highlighter):
-    """Plain Code. No highlighting but Pygments like span tags around each line."""
+class NakedHtmlFormatter(HtmlFormatter):
+    """Pygments HTML formatter with no further HTML tags."""
+    def wrap(self, source, outfile):
+        return self._wrap_code(source)
 
+    def _wrap_code(self, source):
+        for i, t in source:
+            yield i, t
+
+
+class PlainCodeHighlighter(Highlighter):
+    """
+    Plain Code. No highlighting but Pygments like span tags around each line.
+    """
     def highlight(self, code_string, **kwargs):
-        return '\n'.join(['<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
-            for l in code_string.splitlines()])
+        return '\n'.join([
+            '<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
+                for l in code_string.splitlines()
+        ])
 
 
 class PygmentsHighlighter(Highlighter):

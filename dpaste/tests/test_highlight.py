@@ -79,7 +79,6 @@ class HighlightAPITestCase(TestCase):
         value = PygmentsHighlighter().highlight(input, 'python')
         self.assertEqual(value, expected)
 
-
     def test_broken_rst_syntax(self):
         """
         rst Syntax thats not valid must not raise an exception (SystemMessage)
