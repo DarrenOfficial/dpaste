@@ -99,7 +99,7 @@ class SnippetForm(forms.ModelForm):
         # Set parent snippet
         self.instance.parent = parent
 
-        # Add expire datestamp. None indicates 'keep forever', use the default
+        # Add expire timestamp. None indicates 'keep forever', use the default
         # null state of the db column for that.
         self.instance.expires = self.cleaned_data['expires']
         self.instance.expire_type = self.cleaned_data['expire_type']

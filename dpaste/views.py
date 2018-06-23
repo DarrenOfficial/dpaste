@@ -188,23 +188,24 @@ class APIView(View):
         """
         The default response is the snippet URL wrapped in quotes.
         """
-        return '"{url}{path}"'.format(url=config.BASE_URL,
-                                      path=s.get_absolute_url())
+        base_url = config.get_base_url(request=self.request)
+        return '"{url}{path}"'.format(url=base_url, path=s.get_absolute_url())
 
     def _format_url(self, s):
         """
-        The `url` format returns the snippet URL, no quotes, but a linebreak after.
+        The `url` format returns the snippet URL,
+        no quotes, but a linebreak at the end.
         """
-        return '{url}{path}\n'.format(url=config.BASE_URL,
-                                      path=s.get_absolute_url())
+        base_url = config.get_base_url(request=self.request)
+        return '{url}{path}\n'.format(url=base_url, path=s.get_absolute_url())
 
     def _format_json(self, s):
         """
         The `json` format export.
         """
+        base_url = config.get_base_url(request=self.request)
         return json.dumps({
-            'url': '{url}{path}'.format(url=config.BASE_URL,
-                                        path=s.get_absolute_url()),
+            'url': '{url}{path}'.format(url=base_url, path=s.get_absolute_url()),
             'content': s.content,
             'lexer': s.lexer,
         })

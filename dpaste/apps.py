@@ -75,21 +75,6 @@ class dpasteAppConfig(AppConfig):
     # Lexers which have wordwrap enabled by default
     LEXER_WORDWRAP = ('rst',)
 
-    @property
-    def BASE_URL(self, request=None):
-        """
-        String. The full qualified hostname and path to the dpaste instance.
-        This is used to generate a link in the API response. If the "Sites"
-        framework is installed, it uses the current Site domain. Otherwise
-        it falls back to 'https://dpaste.de'
-        """
-        if apps.is_installed('django.contrib.sites'):
-            from django.contrib.sites.shortcuts import get_current_site
-            site = get_current_site(request)
-            if site:
-                return 'https://{0}'.format(site.domain)
-        return 'https://dpaste.de'
-
     # Key names of the default text and code lexer.
     PLAIN_TEXT_SYMBOL = '_text'
     PLAIN_CODE_SYMBOL = '_code'
@@ -184,7 +169,7 @@ class dpasteAppConfig(AppConfig):
             ('prolog', 'Prolog'),
             ('properties', 'Properties'),
             ('puppet', 'Puppet'),
-            ('python', 'Python'), # Default lexer
+            ('python', 'Python'),  # Default lexer
             ('r', 'R'),
             ('rb', 'Ruby'),
             ('rst', 'reStructuredText'),
@@ -208,3 +193,18 @@ class dpasteAppConfig(AppConfig):
             ('xslt', 'XSLT'),
             ('yaml', 'YAML'),
         ]
+
+    @staticmethod
+    def get_base_url(request=None):
+        """
+        String. The full qualified hostname and path to the dpaste instance.
+        This is used to generate a link in the API response. If the "Sites"
+        framework is installed, it uses the current Site domain. Otherwise
+        it falls back to 'https://dpaste.de'
+        """
+        if apps.is_installed('django.contrib.sites'):
+            from django.contrib.sites.shortcuts import get_current_site
+            site = get_current_site(request)
+            if site:
+                return 'https://{0}'.format(site.domain)
+        return 'https://dpaste.de'
