@@ -1,128 +1,129 @@
-===
-API
-===
+============
+API Endpoint
+============
 
 dpaste provides a simple API endpoint to create new snippets. All you need to
-do is a simple ``POST`` request to the API endpoint ``/api/``::
+do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
 
+.. http:post:: /api/
 
-    POST http://dpaste.de/api/
+   Create a new Snippet on this dpaste installation. It returns the full
+   URL that snippet was created.
 
+   **Example request**:
 
-Available POST data for an API call:
-====================================
+   .. code-block:: bash
 
-``content`` (required)
-~~~~~~~~~~~~~~~~~~~~~~
+      $ curl -X POST -F "format=url" -F "content=ABC" https:/dpaste.de/api/
 
-The UTF-8 encoded string you want to paste.
+      Host: dpaste.de
+      User-Agent: curl/7.54.0
+      Accept: */*
 
-``lexer`` (optional)
-~~~~~~~~~~~~~~~~~~~~
+   **Example response**:
 
-The lexer string key used for highlighting. See `lexer list`_  for a full list
-of choices. Default: ``text``.
+   .. sourcecode:: json
 
-``format`` (optional)
-~~~~~~~~~~~~~~~~~~~~~
-
-The format of the API response. Choices are:
-
-* ``default`` — Returns a full qualified URL wrapped in quotes. Example::
-
-    "https://dpaste.de/xsWd"
-
-* ``url`` — Returns the full qualified URL to the snippet, without surrounding
-  quotes, but with a line break. Example::
-
-    https://dpaste.de/xsWd\n
-
-* ``json`` — Returns a JSON object containing the URL, lexer and content of the
-  the snippet. Example::
-
-
-    {
-        "url": "https://dpaste.de/xsWd",
+      {
         "lexer": "python",
-        "content": "The text body of the snippet."
-    }
+        "url": "https://dpaste.de/EBKU",
+        "content": "ABC"
+      }
+
+   :form content: (required) The UTF-8 encoded string you want to paste.
+
+   :form lexer: (optional) The lexer string key used for highlighting. See
+    the ``CODE_FORMATTER`` property in :ref:`settings` for a full list
+    of choices. Default: ``_code``.
+
+   :form format: (optional) The format of the API response. Choices are:
+
+    * ``default`` — Returns a full qualified URL wrapped in quotes.
+      Example: ``"https://dpaste.de/xsWd"``
+
+    * ``url`` — Returns the full qualified URL to the snippet, without surrounding
+      quotes, but with a line break. Example: ``https://dpaste.de/xsWd\n``
+
+    * ``json`` — Returns a JSON object containing the URL, lexer and content of the
+      the snippet. Example:
+
+      .. code-block:: json
+
+          {
+            "url": "https://dpaste.de/xsWd",
+            "lexer": "python",
+            "content": "The text body of the snippet."
+          }
 
 
-``expires`` (optional)
-~~~~~~~~~~~~~~~~~~~~~~
+   :form expires: (optional) A keyword to indicate the lifetime of a snippet in
+    seconds. The values are
+    predefined by the server. Calling this with an invalid value returns a HTTP 400
+    BadRequest together with a list of valid values. Default: ``2592000``. In the
+    default configuration valid values are:
 
-A keyword to indicate the lifetime of a snippetn in seconds. The values are
-predefined by the server. Calling this with an invalid value returns a HTTP 400
-BadRequest together with a list of valid values. Default: ``2592000``. In the
-default configuration valid values are:
+    * onetime
+    * never
+    * 3600
+    * 604800
+    * 2592000
 
-* onetime
-* never
-* 3600
-* 604800
-* 2592000
+   :form filename: (optional) A filename which we use to determine a lexer, if
+    ``lexer`` is not set. In case we can't determine a file, the lexer will
+    fallback to ``plain`` code (no highlighting). A given ``lexer`` will overwrite
+    any filename! Example:
 
-``filename`` (optional)
-~~~~~~~~~~~~~~~~~~~~~~~
+    .. code-block:: json
 
-A filename which we use to determine a lexer, if ``lexer`` is not set. In case
-we can't determine a file, the lexer will fallback to ``plain`` code (no
-highlighting). A given ``lexer`` will overwrite any filename! Example::
+        {
+          "url": "https://dpaste.de/xsWd",
+          "lexer": "",
+          "filename": "python",
+          "content": "The text body of the snippet."
+        }
 
-    {
-        "url": "https://dpaste.de/xsWd",
-        "lexer": "",
-        "filename": "python",
-        "content": "The text body of the snippet."
-    }
+    This will create a ``python`` highlighted snippet. However in this example:
 
-This will create a ``python`` highlighted snippet. However in this example::
+    .. code-block:: json
 
-    {
-        "url": "https://dpaste.de/xsWd",
-        "lexer": "php",
-        "filename": "python",
-        "content": "The text body of the snippet."
-    }
+        {
+          "url": "https://dpaste.de/xsWd",
+          "lexer": "php",
+          "filename": "python",
+          "content": "The text body of the snippet."
+        }
 
-Since the lexer is set too, we will create a ``php`` highlighted snippet.
+    Since the lexer is set too, we will create a ``php`` highlighted snippet.
 
-.. note:: Since ``lexer`` defaults to ``python`` you have to specifically
-    unset it when using ``filename``.
+   :statuscode 200: No Error.
+   :statuscode 400: One of the above form options was invalid,
+    the response will contain a meaningful error message.
 
-.. hint:: You need to adjust the setting ``DPASTE_BASE_URL`` which is used
-    to generate the full qualified URL in the API response. See :doc:`settings`.
+.. hint:: If yuo have a standalone installation and your API returns
+    ``https://dpaste.de/`` as the domain, you need to adjust the setting
+    ``BASE_URL`` property. See :ref:`settings`.
 
-.. note:: When creating new snippets via the API, they won't be listed on the
-    history page since they are related to a browser session.
 
-.. _lexer list: https://github.com/bartTC/dpaste/blob/master/dpaste/highlight.py#L25
+Third party API integration into editors
+========================================
 
-Example code snippets:
-======================
+subdpaste
+    a Sublime Editor plugin: https://github.com/bartTC/SubDpaste
+Marmalade
+    an Emacs plugin: http://marmalade-repo.org/packages/dpaste_de
+atom-dpaste
+    for the Atom editor: https://atom.io/packages/atom-dpaste
 
-A sample Python 2 script to publish snippets::
+You can also paste your file content to the API via curl, directly from the
+command line:
 
-    #!/usr/bin/env python
-
-    import urllib
-    import urllib2
-    import sys
-
-    def paste_code():
-        request = urllib2.Request(
-            'https://dpaste.de/api/',
-            urllib.urlencode([('content', sys.stdin.read())]),
-        )
-        response = urllib2.urlopen(request)
-        # Strip surrounding quotes (NB: response has no trailing newline)
-        print response.read()[1:-1]
-
-    if __name__ == '__main__':
-        paste_code()
-
-You can simply use curl to publish a whole file::
+.. code-block:: bash
 
     $ alias dpaste="curl -F 'format=url' -F 'content=<-' https://dpaste.de/api/"
     $ cat foo.txt | dpaste
     https://dpaste.de/ke2pB
+
+.. note:: If you wrote or know a third party dpaste plugin or extension,
+    please open an *Issue* on Github_ and it's added here.
+
+.. _Github: https://github.com/bartTC/dpaste
