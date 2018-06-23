@@ -16,4 +16,4 @@ possible to be installed into an existing Django project like a regular app.
 
 You can find a live example on http://dpaste.de/
 
-Further documentation can be found here: http://dpaste.readthedocs.org/en/latest/
+Further documentation can be found here: https://docs.elephant.house/dpaste/
