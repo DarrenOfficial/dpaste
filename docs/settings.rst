@@ -1,3 +1,5 @@
+.. _settings:
+
 ==========================
 Settings and Configuration
 ==========================
@@ -8,11 +10,11 @@ behavior.
 
 
 To do so, you need to override dpaste's AppConfig. This is a feature
-`introduced in Django 1.9`_ and allows you to set settings more programmatically.
+`introduced in Django 1.9`_ and allows you to set settings more
+programmatically.
 
-Please see the source of ``dpaste.apps.dpasteAppConfig`` for a full list
-of settings and functions you can override.
-
+See :ref:`current_appconfig` for a full list of settings and functions you
+can override.
 
 Example for your custom AppConfig:
 ==================================
@@ -34,3 +36,13 @@ Example for your custom AppConfig:
     ]
 
 .. _introduced in Django 1.9: https://docs.djangoproject.com/en/1.9/ref/applications/
+
+.. _current_appconfig:
+
+Current AppConfig with default values
+=====================================
+
+This is the file content of ``dpaste/apps.py``:
+
+.. literalinclude:: ../dpaste/apps.py
+    :language: python
