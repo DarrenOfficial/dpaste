@@ -1,15 +1,7 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
-"e1839a8" = {path = ".", extras = ["local-development"], editable = true}
-
-
-[packages]
-
 "e1839a8" = {path = ".", extras = ["local-development"], editable = true}
