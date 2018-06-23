@@ -85,7 +85,7 @@ class SnippetDetailView(SnippetView, DetailView):
 
         # Increase the view count of the snippet
         snippet.view_count += 1
-        snippet.save()
+        snippet.save(update_fields=['view_count'])
 
         return super(SnippetDetailView, self).get(request, *args, **kwargs)
 
@@ -251,21 +251,20 @@ class APIView(View):
             expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
             expire_type = Snippet.EXPIRE_TIME
 
-        s = Snippet.objects.create(
+        snippet = Snippet.objects.create(
             content=content,
             lexer=lexer,
             expires=expires,
             expire_type=expire_type,
         )
-        s.save()
 
         # Custom formatter for the API response
         formatter = getattr(self, '_format_{0}'.format(response_format), None)
         if callable(formatter):
-            return HttpResponse(formatter(s))
+            return HttpResponse(formatter(snippet))
 
         # Otherwise use the default one.
-        return HttpResponse(self._format_default(s))
+        return HttpResponse(self._format_default(snippet))
 
 
 # -----------------------------------------------------------------------------
