@@ -14,14 +14,13 @@ logger = getLogger(__file__)
 R = SystemRandom()
 
 
-def generate_secret_id(length=None, tries=0):
-    if tries >= 10000:
-        m = 'Tried to often to generate a unique slug. Inceease the slug length.'
-        logger.critical(m)
-        raise Exception(m)
+def generate_secret_id(length):
+    if length > config.SLUG_LENGTH:
+        logger.warning('Slug creation triggered a duplicate, '
+                       'consider increasing the SLUG_LENGTH.')
 
     secret_id = ''.join([R.choice(config.SLUG_CHOICES)
-                            for i in range(config.SLUG_LENGTH)])
+                            for i in range(length or config.SLUG_LENGTH)])
 
     # Check if this slug already exists, if not, return this new slug
     try:
@@ -29,9 +28,9 @@ def generate_secret_id(length=None, tries=0):
     except Snippet.DoesNotExist:
         return secret_id
 
-    # Otherwise create a new slug which is +1 character longer than the
-    # regular one.
-    return generate_secret_id(length=length+1, tries=tries)
+    # Otherwise create a new slug which is +1 character longer
+    # than the previous one.
+    return generate_secret_id(length=length+1)
 
 
 @python_2_unicode_compatible
@@ -71,7 +70,7 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.secret_id:
-            self.secret_id = generate_secret_id()
+            self.secret_id = generate_secret_id(length=config.SLUG_LENGTH)
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -89,6 +88,5 @@ class Snippet(models.Model):
     @property
     def remaining_views(self):
         if self.expire_type == self.EXPIRE_ONETIME:
-
             remaining = config.ONETIME_LIMIT - self.view_count
             return remaining > 0 and remaining or 0
