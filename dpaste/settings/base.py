@@ -1,9 +1,9 @@
 # Import global settings to make it easier to extend settings.
 from django.conf.global_settings import *
 
-#==============================================================================
+# ==============================================================================
 # Calculation of directories relative to the module location
-#==============================================================================
+# ==============================================================================
 import os
 import sys
 import dpaste
@@ -25,9 +25,9 @@ else:
     # ignored by the repository).
     VAR_ROOT = os.path.join(PROJECT_DIR, PROJECT_MODULE_NAME, 'conf', 'local')
 
-#==============================================================================
+# ==============================================================================
 # Generic Django project settings
-#==============================================================================
+# ==============================================================================
 
 DEBUG = False
 
@@ -41,9 +41,9 @@ SECRET_KEY = ''
 
 ALLOWED_HOSTS = ['*']
 
-#==============================================================================
+# ==============================================================================
 # I18N
-#==============================================================================
+# ==============================================================================
 
 USE_I18N = True
 USE_L10N = False
@@ -51,19 +51,15 @@ USE_L10N = False
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', 'English'),
-    # ('de', 'German'),
-    # ('es', 'Spanish'),
-    # ('pt-br', 'Portugese (Brasil)'),
-    # ('fr', 'French'),
 )
 
-LOCALE_PATHS = (
-    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
-)
+# LOCALE_PATHS = (
+#     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
+# )
 
-#==============================================================================
+# ==============================================================================
 # Project URLS and media settings
-#==============================================================================
+# ==============================================================================
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
@@ -87,9 +83,9 @@ LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
 LOGIN_REDIRECT_URL = '/'
 
-#==============================================================================
+# ==============================================================================
 # Templates
-#==============================================================================
+# ==============================================================================
 
 MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -123,24 +119,24 @@ INSTALLED_APPS = [
     'dpaste.apps.dpasteAppConfig',
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'dev.db',
-        'USER': '',
-        'PASSWORD': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'dev.db',
+#         'USER': '',
+#         'PASSWORD': '',
+#     }
+# }
 
-#==============================================================================
+# ==============================================================================
 # App specific settings
-#==============================================================================
+# ==============================================================================
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_BROWSER_XSS_FILTER =True
+SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CSP_DEFAULT_SRC = ("'none'",)

@@ -230,9 +230,9 @@ class APIView(View):
             return HttpResponseBadRequest('Invalid lexer "%s" given. Valid lexers are: %s' % (
                 lexer, ', '.join(highlight.LEXER_KEYS)))
 
-        # No lexer is given, but we have a filename, try to get the lexer out of it.
-        # In case Pygments cannot determine the lexer of the filename, we fallback
-        # to 'plain' code.
+        # No lexer is given, but we have a filename, try to get the lexer
+        #  out of it. In case Pygments cannot determine the lexer of the
+        # filename, we fallback to 'plain' code.
         if not lexer and filename:
             try:
                 lexer_cls = get_lexer_for_filename(filename)
@@ -242,9 +242,10 @@ class APIView(View):
 
         if expires:
             expire_options = [str(i) for i in dict(config.EXPIRE_CHOICES).keys()]
-            if not expires in expire_options:
-                return HttpResponseBadRequest('Invalid expire choice "{}" given. '
-                    'Valid values are: {}'.format(expires, ', '.join(expire_options)))
+            if expires not in expire_options:
+                return HttpResponseBadRequest(
+                    'Invalid expire choice "{}" given. Valid values are: {}'.format(
+                        expires, ', '.join(expire_options)))
             expires, expire_type = get_expire_values(expires)
         else:
             expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
