@@ -16,11 +16,14 @@ R = SystemRandom()
 
 def generate_secret_id(length):
     if length > config.SLUG_LENGTH:
-        logger.warning('Slug creation triggered a duplicate, '
-                       'consider increasing the SLUG_LENGTH.')
+        logger.warning(
+            'Slug creation triggered a duplicate, '
+            'consider increasing the SLUG_LENGTH.'
+        )
 
-    secret_id = ''.join([R.choice(config.SLUG_CHOICES)
-                            for i in range(length or config.SLUG_LENGTH)])
+    secret_id = ''.join(
+        [R.choice(config.SLUG_CHOICES) for i in range(length or config.SLUG_LENGTH)]
+    )
 
     # Check if this slug already exists, if not, return this new slug
     try:
@@ -30,7 +33,7 @@ def generate_secret_id(length):
 
     # Otherwise create a new slug which is +1 character longer
     # than the previous one.
-    return generate_secret_id(length=length+1)
+    return generate_secret_id(length=length + 1)
 
 
 @python_2_unicode_compatible
@@ -45,21 +48,24 @@ class Snippet(models.Model):
     )
 
     secret_id = models.CharField(
-        _('Secret ID'), max_length=255, blank=True, null=True, unique=True)
+        _('Secret ID'), max_length=255, blank=True, null=True, unique=True
+    )
     content = models.TextField(_('Content'))
-    lexer = models.CharField(
-        _('Lexer'), max_length=30, default=highlight.LEXER_DEFAULT)
-    published = models.DateTimeField(
-        _('Published'), auto_now_add=True)
+    lexer = models.CharField(_('Lexer'), max_length=30, default=highlight.LEXER_DEFAULT)
+    published = models.DateTimeField(_('Published'), auto_now_add=True)
     expire_type = models.PositiveSmallIntegerField(
-        _('Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0])
-    expires = models.DateTimeField(
-        _('Expires'), blank=True, null=True)
-    view_count = models.PositiveIntegerField(
-        _('View count'), default=0)
+        _('Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0]
+    )
+    expires = models.DateTimeField(_('Expires'), blank=True, null=True)
+    view_count = models.PositiveIntegerField(_('View count'), default=0)
     parent = models.ForeignKey(
-        'self', null=True, blank=True, verbose_name=_('Parent Snippet'),
-        related_name='children', on_delete=models.CASCADE)
+        'self',
+        null=True,
+        blank=True,
+        verbose_name=_('Parent Snippet'),
+        related_name='children',
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         ordering = ('-published',)

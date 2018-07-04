@@ -8,14 +8,15 @@ class Command(BaseCommand):
     help = "Purges snippets that are expired"
 
     def add_arguments(self, parser):
-        parser.add_argument('--dry-run', action='store_true', dest='dry_run',
-            help='Don\'t do anything.'),
+        parser.add_argument(
+            '--dry-run', action='store_true', dest='dry_run', help='Don\'t do anything.'
+        ),
 
     def handle(self, *args, **options):
         deleteable_snippets = Snippet.objects.filter(
             expires__isnull=False,
             expire_type=Snippet.EXPIRE_TIME,
-            expires__lte=timezone.now()
+            expires__lte=timezone.now(),
         )
         if len(deleteable_snippets) == 0:
             self.stdout.write(u"No snippets to delete.")

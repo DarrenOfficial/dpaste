@@ -29,34 +29,27 @@ class SnippetForm(forms.ModelForm):
         label=_('Content'),
         widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
         max_length=config.MAX_CONTENT_LENGTH,
-        strip=False
+        strip=False,
     )
 
     lexer = forms.ChoiceField(
-        label=_('Lexer'),
-        initial=LEXER_DEFAULT,
-        choices=LEXER_CHOICES
+        label=_('Lexer'), initial=LEXER_DEFAULT, choices=LEXER_CHOICES
     )
 
     expires = forms.ChoiceField(
-        label=_('Expires'),
-        choices=config.EXPIRE_CHOICES,
-        initial=config.EXPIRE_DEFAULT
+        label=_('Expires'), choices=config.EXPIRE_CHOICES, initial=config.EXPIRE_DEFAULT
     )
 
     # Honeypot field
     title = forms.CharField(
         label=_('Title'),
         required=False,
-        widget=forms.TextInput(attrs={'autocomplete': 'off'})
+        widget=forms.TextInput(attrs={'autocomplete': 'off'}),
     )
 
     class Meta:
         model = Snippet
-        fields = (
-            'content',
-            'lexer',
-        )
+        fields = ('content', 'lexer')
 
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)

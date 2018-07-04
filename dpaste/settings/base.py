@@ -49,9 +49,7 @@ USE_I18N = True
 USE_L10N = False
 
 LANGUAGE_CODE = 'en'
-LANGUAGES = (
-    ('en', 'English'),
-)
+LANGUAGES = (('en', 'English'),)
 
 # LOCALE_PATHS = (
 #     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
@@ -63,9 +61,7 @@ LANGUAGES = (
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, 'build'),
-)
+STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'build'),)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -107,9 +103,9 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.template.context_processors.i18n',
-            ],
+            ]
         },
-    },
+    }
 ]
 
 INSTALLED_APPS = [
@@ -146,16 +142,12 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
+    'filters': {'require_debug_false': {'()': 'django.utils.log.RequireDebugFalse'}},
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
         }
     },
     'loggers': {
@@ -163,6 +155,6 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-        },
-    }
+        }
+    },
 }

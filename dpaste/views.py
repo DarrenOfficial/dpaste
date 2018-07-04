@@ -3,13 +3,19 @@ import difflib
 import json
 
 from django.apps import apps
-from django.http import Http404, HttpResponse, HttpResponseBadRequest, \
-    HttpResponseRedirect
+from django.http import (
+    Http404,
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseRedirect,
+)
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext
-from django.views.defaults import page_not_found as django_page_not_found, \
-    server_error as django_server_error
+from django.views.defaults import (
+    page_not_found as django_page_not_found,
+    server_error as django_server_error,
+)
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
@@ -28,18 +34,18 @@ config = apps.get_app_config('dpaste')
 # Snippet Handling
 # -----------------------------------------------------------------------------
 
+
 class SnippetView(FormView):
     """
     Create a new snippet.
     """
+
     form_class = SnippetForm
     template_name = 'dpaste/new.html'
 
     def get_form_kwargs(self):
         kwargs = super(SnippetView, self).get_form_kwargs()
-        kwargs.update({
-            'request': self.request,
-        })
+        kwargs.update({'request': self.request})
         return kwargs
 
     def form_valid(self, form):
@@ -52,6 +58,7 @@ class SnippetDetailView(SnippetView, DetailView):
     Details list view of a snippet. Handles the actual view, reply and
     tree/diff view.
     """
+
     queryset = Snippet.objects.all()
     template_name = 'dpaste/details.html'
     slug_url_kwarg = 'snippet_id'
@@ -78,8 +85,10 @@ class SnippetDetailView(SnippetView, DetailView):
         snippet = self.get_object()
 
         # One-Time snippet get deleted if the view count matches our limit
-        if (snippet.expire_type == Snippet.EXPIRE_ONETIME and
-                snippet.view_count >= config.ONETIME_LIMIT):
+        if (
+            snippet.expire_type == Snippet.EXPIRE_ONETIME
+            and snippet.view_count >= config.ONETIME_LIMIT
+        ):
             snippet.delete()
             raise Http404()
 
@@ -91,10 +100,7 @@ class SnippetDetailView(SnippetView, DetailView):
 
     def get_initial(self):
         snippet = self.get_object()
-        return {
-            'content': snippet.content,
-            'lexer': snippet.lexer,
-        }
+        return {'content': snippet.content, 'lexer': snippet.lexer}
 
     def form_valid(self, form):
         snippet = form.save(parent=self.get_object())
@@ -114,7 +120,7 @@ class SnippetDetailView(SnippetView, DetailView):
             snippet.content.splitlines(),
             ugettext('Previous Snippet'),
             ugettext('Current Snippet'),
-            n=1
+            n=1,
         )
         diff_code = '\n'.join(d).strip()
         highlighted = PygmentsHighlighter().render(diff_code, 'diff')
@@ -126,10 +132,12 @@ class SnippetDetailView(SnippetView, DetailView):
         self.object = self.get_object()
 
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
-        ctx.update({
-            'wordwrap': self.object.lexer in highlight.LEXER_WORDWRAP,
-            'diff': self.get_snippet_diff(),
-        })
+        ctx.update(
+            {
+                'wordwrap': self.object.lexer in highlight.LEXER_WORDWRAP,
+                'diff': self.get_snippet_diff(),
+            }
+        )
         return ctx
 
 
@@ -137,6 +145,7 @@ class SnippetRawView(SnippetDetailView):
     """
     Display the raw content of a snippet
     """
+
     def render_to_response(self, context, **response_kwargs):
         snippet = self.get_object()
         response = HttpResponse(snippet.content)
@@ -150,6 +159,7 @@ class SnippetHistory(TemplateView):
     Display the last `n` snippets created by this user (and saved in his
     session).
     """
+
     template_name = 'dpaste/history.html'
 
     def get_user_snippets(self):
@@ -169,9 +179,7 @@ class SnippetHistory(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(SnippetHistory, self).get_context_data(**kwargs)
-        ctx.update({
-            'snippet_list': self.get_user_snippets(),
-        })
+        ctx.update({'snippet_list': self.get_user_snippets()})
         return ctx
 
 
@@ -184,6 +192,7 @@ class APIView(View):
     """
     API View
     """
+
     def _format_default(self, s):
         """
         The default response is the snippet URL wrapped in quotes.
@@ -204,11 +213,13 @@ class APIView(View):
         The `json` format export.
         """
         base_url = config.get_base_url(request=self.request)
-        return json.dumps({
-            'url': '{url}{path}'.format(url=base_url, path=s.get_absolute_url()),
-            'content': s.content,
-            'lexer': s.lexer,
-        })
+        return json.dumps(
+            {
+                'url': '{url}{path}'.format(url=base_url, path=s.get_absolute_url()),
+                'content': s.content,
+                'lexer': s.lexer,
+            }
+        )
 
     def post(self, request, *args, **kwargs):
         content = request.POST.get('content', '')
@@ -222,13 +233,18 @@ class APIView(View):
 
         # We need at least a lexer or a filename
         if not lexer and not filename:
-            return HttpResponseBadRequest('No lexer or filename given. Unable to '
-                'determine a highlight. Valid lexers are: %s' % ', '.join(highlight.LEXER_KEYS))
+            return HttpResponseBadRequest(
+                'No lexer or filename given. Unable to '
+                'determine a highlight. Valid lexers are: %s'
+                % ', '.join(highlight.LEXER_KEYS)
+            )
 
         # A lexer is given, check if its valid at all
         if lexer and lexer not in highlight.LEXER_KEYS:
-            return HttpResponseBadRequest('Invalid lexer "%s" given. Valid lexers are: %s' % (
-                lexer, ', '.join(highlight.LEXER_KEYS)))
+            return HttpResponseBadRequest(
+                'Invalid lexer "%s" given. Valid lexers are: %s'
+                % (lexer, ', '.join(highlight.LEXER_KEYS))
+            )
 
         # No lexer is given, but we have a filename, try to get the lexer
         #  out of it. In case Pygments cannot determine the lexer of the
@@ -245,17 +261,16 @@ class APIView(View):
             if expires not in expire_options:
                 return HttpResponseBadRequest(
                     'Invalid expire choice "{}" given. Valid values are: {}'.format(
-                        expires, ', '.join(expire_options)))
+                        expires, ', '.join(expire_options)
+                    )
+                )
             expires, expire_type = get_expire_values(expires)
         else:
             expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
-            content=content,
-            lexer=lexer,
-            expires=expires,
-            expire_type=expire_type,
+            content=content, lexer=lexer, expires=expires, expire_type=expire_type
         )
 
         # Custom formatter for the API response
@@ -271,6 +286,7 @@ class APIView(View):
 # Custom 404 and 500 views. Its easier to integrate this as a app if we
 # handle them here.
 # -----------------------------------------------------------------------------
+
 
 def page_not_found(request, exception=None, template_name='dpaste/404.html'):
     return django_page_not_found(request, exception, template_name=template_name)

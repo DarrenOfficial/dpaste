@@ -11,7 +11,6 @@ config = apps.get_app_config('dpaste')
 
 
 class SnippetAPITestCase(TestCase):
-
     def setUp(self):
         self.api_url = reverse('dpaste_api_create_snippet')
         self.client = Client(enforce_csrf_checks=True)
@@ -84,7 +83,6 @@ class SnippetAPITestCase(TestCase):
         self.assertTrue(content.startswith('http'))
         self.assertTrue(content.endswith('\n'))
 
-
     def test_json_format(self):
         """
         The 'new' url format is just the link with a linebreak.
@@ -92,7 +90,7 @@ class SnippetAPITestCase(TestCase):
         data = {
             'content': u"Hello Wörld.\n\tGood Bye",
             'format': 'json',
-            'lexer': 'haskell'
+            'lexer': 'haskell',
         }
 
         response = self.client.post(self.api_url, data)
@@ -102,6 +100,7 @@ class SnippetAPITestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 1)
 
         from json import loads
+
         json_data = loads(content)
 
         # Response is valid json, containing, content, lexer and url
@@ -118,7 +117,7 @@ class SnippetAPITestCase(TestCase):
         data = {
             'content': u"Hello Wörld.\n\tGood Bye",
             'format': 'broken-format',
-            'lexer': 'haskell'
+            'lexer': 'haskell',
         }
 
         response = self.client.post(self.api_url, data)
@@ -129,26 +128,25 @@ class SnippetAPITestCase(TestCase):
         """
         A broken lexer will fail loudly.
         """
-        data = {
-            'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': 'foobar'
-        }
+        data = {'content': u"Hello Wörld.\n\tGood Bye", 'lexer': 'foobar'}
         response = self.client.post(self.api_url, data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
 
     def test_expire_choices_none_given(self):
         # No expire choice given will set a default expiration of one month
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye"})
+        response = self.client.post(
+            self.api_url, {'content': u"Hello Wörld.\n\tGood Bye"}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
 
     def test_expire_choices_invalid_given(self):
         # A expire choice that does not exist returns a BadRequest
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'foobar'})
+        response = self.client.post(
+            self.api_url, {'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'foobar'}
+        )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
 
@@ -156,37 +154,45 @@ class SnippetAPITestCase(TestCase):
     Test all the different expiration choices. We dont actually test
     the deletion, since thats handled in the `test_snippet` section.
     """
+
     def test_valid_expiration_choices_onetime(self):
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'onetime'})
+        response = self.client.post(
+            self.api_url, {'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'onetime'}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].expire_type, Snippet.EXPIRE_ONETIME)
 
     def test_valid_expiration_choices_never(self):
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'never'})
+        response = self.client.post(
+            self.api_url, {'content': u"Hello Wörld.\n\tGood Bye", 'expires': 'never'}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].expire_type, Snippet.EXPIRE_KEEP)
 
     def test_valid_expiration_choices_hour(self):
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600})
+        response = self.client.post(
+            self.api_url, {'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
 
     def test_valid_expiration_choices_week(self):
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 7})
+        response = self.client.post(
+            self.api_url,
+            {'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 7},
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
 
     def test_valid_expiration_choices_month(self):
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 30})
+        response = self.client.post(
+            self.api_url,
+            {'content': u"Hello Wörld.\n\tGood Bye", 'expires': 3600 * 24 * 30},
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertTrue(Snippet.objects.all()[0].expires)
@@ -195,22 +201,24 @@ class SnippetAPITestCase(TestCase):
         """
         No lexer and no filename given returns a BadRequest.
         """
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': '',
-            'filename': ''
-        })
+        response = self.client.post(
+            self.api_url,
+            {'content': u"Hello Wörld.\n\tGood Bye", 'lexer': '', 'filename': ''},
+        )
         self.assertEqual(response.status_code, 400)
 
     def test_filename_given(self):
         """
         No lexer and a Python filename will set a 'python' lexer.
         """
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': '',
-            'filename': 'helloworld.py'
-        })
+        response = self.client.post(
+            self.api_url,
+            {
+                'content': u"Hello Wörld.\n\tGood Bye",
+                'lexer': '',
+                'filename': 'helloworld.py',
+            },
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].lexer, 'python')
@@ -219,11 +227,14 @@ class SnippetAPITestCase(TestCase):
         """
         A unknown filename will create a 'plain' code snippet.
         """
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': '',
-            'filename': 'helloworld.helloworld'
-        })
+        response = self.client.post(
+            self.api_url,
+            {
+                'content': u"Hello Wörld.\n\tGood Bye",
+                'lexer': '',
+                'filename': 'helloworld.helloworld',
+            },
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].lexer, config.PLAIN_CODE_SYMBOL)
@@ -232,11 +243,14 @@ class SnippetAPITestCase(TestCase):
         """
         A given lexer will overwrite whats the filename guessing.
         """
-        response = self.client.post(self.api_url, {
-            'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': 'php',
-            'filename': 'helloworld.py'
-        })
+        response = self.client.post(
+            self.api_url,
+            {
+                'content': u"Hello Wörld.\n\tGood Bye",
+                'lexer': 'php',
+                'filename': 'helloworld.py',
+            },
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
         self.assertEqual(Snippet.objects.all()[0].lexer, 'php')
@@ -248,5 +262,3 @@ class SnippetAPITestCase(TestCase):
         content = ' one\n  two\n   three\n    four'
         self.client.post(self.api_url, {'content': content})
         self.assertEqual(Snippet.objects.all()[0].content, content)
-
-

@@ -19,6 +19,7 @@ config = apps.get_app_config('dpaste')
 # Highlight Code Snippets
 # -----------------------------------------------------------------------------
 
+
 class Highlighter(object):
     template_name = 'dpaste/highlight/code.html'
 
@@ -47,6 +48,7 @@ class Highlighter(object):
 
 class PlainTextHighlighter(Highlighter):
     """Plain Text. Just replace linebreaks."""
+
     template_name = 'dpaste/highlight/text.html'
 
     def highlight(self, code_string, **kwargs):
@@ -55,20 +57,33 @@ class PlainTextHighlighter(Highlighter):
 
 class MarkdownHighlighter(PlainTextHighlighter):
     """Markdown"""
-    extensions = ('tables', 'fenced-code', 'footnotes', 'autolink,',
-                  'strikethrough', 'underline', 'quote', 'superscript',
-                  'math')
+
+    extensions = (
+        'tables',
+        'fenced-code',
+        'footnotes',
+        'autolink,',
+        'strikethrough',
+        'underline',
+        'quote',
+        'superscript',
+        'math',
+    )
     render_flags = ('skip-html',)
 
     def highlight(self, code_string, **kwargs):
         import misaka
-        return mark_safe(misaka.html(code_string,
-                                     extensions=self.extensions,
-                                     render_flags=self.render_flags))
+
+        return mark_safe(
+            misaka.html(
+                code_string, extensions=self.extensions, render_flags=self.render_flags
+            )
+        )
 
 
 class RestructuredTextHighlighter(PlainTextHighlighter):
     """Restructured Text"""
+
     rst_part_name = 'html_body'
     publish_args = {
         'writer_name': 'html5_polyglot',
@@ -78,11 +93,12 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
             'halt_level': 5,
             'report_level': 2,
             'warning_stream': '/dev/null',
-        }
+        },
     }
 
     def highlight(self, code_string, **kwargs):
         from docutils.core import publish_parts
+
         self.publish_args['source'] = code_string
         parts = publish_parts(**self.publish_args)
         return mark_safe(parts[self.rst_part_name])
@@ -93,6 +109,7 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
 
 class NakedHtmlFormatter(HtmlFormatter):
     """Pygments HTML formatter with no further HTML tags."""
+
     def wrap(self, source, outfile):
         return self._wrap_code(source)
 
@@ -105,11 +122,14 @@ class PlainCodeHighlighter(Highlighter):
     """
     Plain Code. No highlighting but Pygments like span tags around each line.
     """
+
     def highlight(self, code_string, **kwargs):
-        return '\n'.join([
-            '<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
+        return '\n'.join(
+            [
+                '<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
                 for l in code_string.splitlines()
-        ])
+            ]
+        )
 
 
 class PygmentsHighlighter(Highlighter):
@@ -117,6 +137,7 @@ class PygmentsHighlighter(Highlighter):
     Highlight code string with Pygments. The lexer is automatically
     determined by the lexer name.
     """
+
     formatter = NakedHtmlFormatter()
     lexer = None
     lexer_fallback = PythonLexer()
@@ -139,6 +160,7 @@ class SolidityHighlighter(PygmentsHighlighter):
         # SolidityLexer does not necessarily need to be installed
         # since its imported here and not used later.
         from pygments_lexer_solidity import SolidityLexer
+
         self.lexer = SolidityLexer()
 
 
@@ -167,12 +189,13 @@ def get_highlighter_class(lexer_name):
 # Generate a list of Form choices of all lexer.
 LEXER_CHOICES = (
     (_('Text'), [i[:2] for i in config.TEXT_FORMATTER]),
-    (_('Code'), [i[:2] for i in config.CODE_FORMATTER])
+    (_('Code'), [i[:2] for i in config.CODE_FORMATTER]),
 )
 
 # List of all Lexer Keys
-LEXER_KEYS = [i[0] for i in config.TEXT_FORMATTER] + \
-             [i[0] for i in config.CODE_FORMATTER]
+LEXER_KEYS = [i[0] for i in config.TEXT_FORMATTER] + [
+    i[0] for i in config.CODE_FORMATTER
+]
 
 # The default lexer which we fallback in case of
 # an error or if not supplied in an API call.

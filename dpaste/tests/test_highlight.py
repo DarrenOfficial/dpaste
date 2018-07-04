@@ -4,12 +4,14 @@ from textwrap import dedent
 
 from django.test import TestCase
 
-from dpaste.highlight import PlainCodeHighlighter, PygmentsHighlighter, \
-    RestructuredTextHighlighter
+from dpaste.highlight import (
+    PlainCodeHighlighter,
+    PygmentsHighlighter,
+    RestructuredTextHighlighter,
+)
 
 
 class HighlightAPITestCase(TestCase):
-
     def test_plain_code(self):
         """
         PLAIN_CODE is not run through Pygments, test it separately.
@@ -32,15 +34,13 @@ class HighlightAPITestCase(TestCase):
         """
         Whitespace on the first line is retained, also on subsequent lines.
         """
-        input = (' vär=1\n'
-                 '  vär=2\n'
-                 '   vär=3\n'
-                 '    vär=4')
+        input = ' vär=1\n' '  vär=2\n' '   vär=3\n' '    vär=4'
         expected = (
             '<span class="plain"> vär=1</span>\n'
             '<span class="plain">  vär=2</span>\n'
             '<span class="plain">   vär=3</span>\n'
-            '<span class="plain">    vär=4</span>')
+            '<span class="plain">    vär=4</span>'
+        )
         value = PlainCodeHighlighter().highlight(input)
         self.assertEqual(value, expected)
 
@@ -67,15 +67,13 @@ class HighlightAPITestCase(TestCase):
         """
         Whitespace on the first line is retained, also on subsequent lines.
         """
-        input = (' var\n'
-                 '  var\n'
-                 '   var\n'
-                 '    var')
+        input = ' var\n' '  var\n' '   var\n' '    var'
         expected = (
             ' <span class="n">var</span>\n'
             '  <span class="n">var</span>\n'
             '   <span class="n">var</span>\n'
-            '    <span class="n">var</span>\n')
+            '    <span class="n">var</span>\n'
+        )
         value = PygmentsHighlighter().highlight(input, 'python')
         self.assertEqual(value, expected)
 
@@ -84,12 +82,14 @@ class HighlightAPITestCase(TestCase):
         rst Syntax thats not valid must not raise an exception (SystemMessage)
         """
         # (SEVERE/4) Missing matching underline for section title overline.
-        input = dedent("""
+        input = dedent(
+            """
         =========================
         Generate 15 random numbers
         70 180 3 179 192 117 75 72 90 190 49 159 63 14 55
         =========================
-        """)
+        """
+        )
         try:
             RestructuredTextHighlighter().highlight(input)
         except Exception as e:

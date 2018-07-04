@@ -96,10 +96,11 @@ class dpasteAppConfig(AppConfig):
         from dpaste.highlight import (
             PlainTextHighlighter,
             MarkdownHighlighter,
-            RestructuredTextHighlighter
+            RestructuredTextHighlighter,
         )
+
         return [
-            (self.PLAIN_TEXT_SYMBOL, 'Plain Text',  PlainTextHighlighter),
+            (self.PLAIN_TEXT_SYMBOL, 'Plain Text', PlainTextHighlighter),
             ('_markdown', 'Markdown', MarkdownHighlighter),
             ('_rst', 'reStructuredText', RestructuredTextHighlighter),
         ]
@@ -116,10 +117,8 @@ class dpasteAppConfig(AppConfig):
 
         If the Highlight Class is not given, PygmentsHighlighter is used.
         """
-        from dpaste.highlight import (
-            PlainCodeHighlighter,
-            SolidityHighlighter
-        )
+        from dpaste.highlight import PlainCodeHighlighter, SolidityHighlighter
+
         return [
             (self.PLAIN_CODE_SYMBOL, 'Plain Code', PlainCodeHighlighter),
             ('abap', 'ABAP'),
@@ -204,6 +203,7 @@ class dpasteAppConfig(AppConfig):
         """
         if apps.is_installed('django.contrib.sites'):
             from django.contrib.sites.shortcuts import get_current_site
+
             site = get_current_site(request)
             if site:
                 return 'https://{0}'.format(site.domain)

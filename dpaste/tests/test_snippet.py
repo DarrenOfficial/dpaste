@@ -15,7 +15,6 @@ config = apps.get_app_config('dpaste')
 
 
 class SnippetTestCase(TestCase):
-
     def setUp(self):
         self.client = Client()
         self.new_url = reverse('snippet_new')
@@ -132,7 +131,6 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(Snippet.objects.count(), 0)
 
-
     def test_snippet_notfound(self):
         url = reverse('snippet_details', kwargs={'snippet_id': 'abcd'})
         response = self.client.get(url, follow=True)
@@ -203,8 +201,12 @@ class SnippetTestCase(TestCase):
     def test_raw(self):
         data = self.valid_form_data()
         self.client.post(self.new_url, data, follow=True)
-        response = self.client.get(reverse('snippet_details_raw', kwargs={
-            'snippet_id': Snippet.objects.all()[0].secret_id}))
+        response = self.client.get(
+            reverse(
+                'snippet_details_raw',
+                kwargs={'snippet_id': Snippet.objects.all()[0].secret_id},
+            )
+        )
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['content'])
@@ -217,22 +219,23 @@ class SnippetTestCase(TestCase):
 
     def test_xss_text_lexer(self):
         # Simple 'text' lexer
-        data = self.valid_form_data(content=self.XSS_ORIGINAL,
-                                    lexer=config.PLAIN_TEXT_SYMBOL)
+        data = self.valid_form_data(
+            content=self.XSS_ORIGINAL, lexer=config.PLAIN_TEXT_SYMBOL
+        )
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
 
     def test_xss_code_lexer(self):
         # Simple 'code' lexer
-        data = self.valid_form_data(content=self.XSS_ORIGINAL,
-                                    lexer=config.PLAIN_CODE_SYMBOL)
+        data = self.valid_form_data(
+            content=self.XSS_ORIGINAL, lexer=config.PLAIN_CODE_SYMBOL
+        )
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
 
     def test_xss_pygments_lexer(self):
         # Pygments based lexer
-        data = self.valid_form_data(content=self.XSS_ORIGINAL,
-            lexer='python')
+        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer='python')
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
 
@@ -253,8 +256,9 @@ class SnippetTestCase(TestCase):
 
     def test_snippet_history_delete_all(self):
         # Empty list, delete all raises no error
-        response = self.client.post(reverse('snippet_history'),
-                                    {'delete': 1}, follow=True)
+        response = self.client.post(
+            reverse('snippet_history'), {'delete': 1}, follow=True
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
@@ -266,8 +270,9 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 2)
 
         # Delete all of them
-        response = self.client.post(reverse('snippet_history'),
-                                    {'delete': 1}, follow=True)
+        response = self.client.post(
+            reverse('snippet_history'), {'delete': 1}, follow=True
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
@@ -315,7 +320,6 @@ class SnippetTestCase(TestCase):
         PygmentsHighlighter().highlight('code', 'python')
         PygmentsHighlighter().highlight('code', 'doesnotexist')
 
-
     def test_random_slug_generation(self):
         """
         Set the max length of a slug to 1, so we wont have more than 60
@@ -325,8 +329,9 @@ class SnippetTestCase(TestCase):
         """
         for i in range(0, 100):
             Snippet.objects.create(content='foobar')
-        slug_list = Snippet.objects.values_list(
-            'secret_id', flat=True).order_by('published')
+        slug_list = Snippet.objects.values_list('secret_id', flat=True).order_by(
+            'published'
+        )
         self.assertEqual(len(set(slug_list)), 100)
 
     def test_leading_white_is_retained_in_db(self):
