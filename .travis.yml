@@ -1,25 +1,18 @@
 language: python
 
-python:
-  - 3.4
-  - 3.5
-  - 3.6
+# https://github.com/travis-ci/travis-ci/issues/9815#issuecomment-411073985
+matrix:
+  include:
+    - python: 3.4
+    - python: 3.5
+    - python: 3.6
+    - python: 3.7
+      dist: xenial
+      sudo: true
 
-env:
-  - DJANGO: django>=1.11,<2.0
-  - DJANGO: django>=2.0
+install: pip install tox-travis coverage codacy-coverage
 
-before_install:
-  - pip install coverage codacy-coverage
-  - coverage erase
-
-install:
-  - npm install
-  - pip install $DJANGO
-  - pip install -e .[standalone]
-
-script:
-  - coverage run --append runtests.py
+script: tox
 
 after_success:
   - coverage xml
