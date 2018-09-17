@@ -36,6 +36,7 @@ setup(
     include_package_data=True,
     install_requires=[
         # Essential packages
+        'six',
         'django>=1.11',
         'pygments>=1.6',
         'django-staticinline>=1.0',
