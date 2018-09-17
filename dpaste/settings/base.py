@@ -109,9 +109,9 @@ TEMPLATES = [
 ]
 
 INSTALLED_APPS = [
-    'staticinline',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
+    'staticinline.apps.StaticInlineAppConfig',
     'dpaste.apps.dpasteAppConfig',
 ]
 
