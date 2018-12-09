@@ -22,7 +22,7 @@ def generate_secret_id(length):
         )
 
     secret_id = ''.join(
-        [R.choice(config.SLUG_CHOICES) for i in range(length or config.SLUG_LENGTH)]
+        [R.choice(config.SLUG_CHOICES) for _ in range(length or config.SLUG_LENGTH)]
     )
 
     # Check if this slug already exists, if not, return this new slug
