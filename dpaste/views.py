@@ -257,7 +257,7 @@ class APIView(View):
                 lexer = config.PLAIN_CODE_SYMBOL
 
         if expires:
-            expire_options = [str(i) for i in dict(config.EXPIRE_CHOICES).keys()]
+            expire_options = [str(i) for i in dict(config.EXPIRE_CHOICES)]
             if expires not in expire_options:
                 return HttpResponseBadRequest(
                     'Invalid expire choice "{}" given. Valid values are: {}'.format(
