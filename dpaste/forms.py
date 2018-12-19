@@ -20,24 +20,37 @@ def get_expire_values(expires):
     else:
         expire_type = Snippet.EXPIRE_TIME
         expires = expires and expires or config.EXPIRE_DEFAULT
-        expires = datetime.datetime.now() + datetime.timedelta(seconds=int(expires))
+        expires = datetime.datetime.now() + datetime.timedelta(
+            seconds=int(expires)
+        )
     return expires, expire_type
 
 
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_('Content'),
-        widget=forms.Textarea(attrs={'placeholder': _('Awesome code goes here...')}),
+        widget=forms.Textarea(
+            attrs={'placeholder': _('Awesome code goes here...')}
+        ),
         max_length=config.MAX_CONTENT_LENGTH,
         strip=False,
     )
 
     lexer = forms.ChoiceField(
-        label=_('Lexer'), initial=LEXER_DEFAULT, choices=LEXER_CHOICES
+        label=_('Lexer'),
+        initial=LEXER_DEFAULT,
+        choices=LEXER_CHOICES
     )
 
     expires = forms.ChoiceField(
-        label=_('Expires'), choices=config.EXPIRE_CHOICES, initial=config.EXPIRE_DEFAULT
+        label=_('Expires'),
+        choices=config.EXPIRE_CHOICES,
+        initial=config.EXPIRE_DEFAULT,
+    )
+
+    rtl = forms.BooleanField(
+        label=_('Right to Left'),
+        required=False
     )
 
     # Honeypot field
@@ -49,7 +62,7 @@ class SnippetForm(forms.ModelForm):
 
     class Meta:
         model = Snippet
-        fields = ('content', 'lexer')
+        fields = ('content', 'lexer', 'rtl')
 
     def __init__(self, request, *args, **kwargs):
         super(SnippetForm, self).__init__(*args, **kwargs)

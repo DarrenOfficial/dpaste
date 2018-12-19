@@ -8,7 +8,14 @@
 .snippet-form {
   background-color: $bgColor;
 
-  label { display: none; }
+  label {
+    display: none;
+    font-size: 13px;
+  }
+
+  .options-rtl label {
+    display: inline;
+  }
 
   select {
     -moz-appearance: none;

@@ -22,7 +22,10 @@ def generate_secret_id(length):
         )
 
     secret_id = ''.join(
-        [R.choice(config.SLUG_CHOICES) for i in range(length or config.SLUG_LENGTH)]
+        [
+            R.choice(config.SLUG_CHOICES)
+            for i in range(length or config.SLUG_LENGTH)
+        ]
     )
 
     # Check if this slug already exists, if not, return this new slug
@@ -51,13 +54,16 @@ class Snippet(models.Model):
         _('Secret ID'), max_length=255, blank=True, null=True, unique=True
     )
     content = models.TextField(_('Content'))
-    lexer = models.CharField(_('Lexer'), max_length=30, default=highlight.LEXER_DEFAULT)
+    lexer = models.CharField(
+        _('Lexer'), max_length=30, default=highlight.LEXER_DEFAULT
+    )
     published = models.DateTimeField(_('Published'), auto_now_add=True)
     expire_type = models.PositiveSmallIntegerField(
         _('Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0]
     )
     expires = models.DateTimeField(_('Expires'), blank=True, null=True)
     view_count = models.PositiveIntegerField(_('View count'), default=0)
+    rtl = models.BooleanField(_('Right-to-left'), default=False)
     parent = models.ForeignKey(
         'self',
         null=True,
@@ -80,11 +86,17 @@ class Snippet(models.Model):
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('snippet_details', kwargs={'snippet_id': self.secret_id})
+        return reverse(
+            'snippet_details', kwargs={'snippet_id': self.secret_id}
+        )
 
     def highlight(self):
         HighlighterClass = highlight.get_highlighter_class(self.lexer)
-        return HighlighterClass().render(self.content, self.lexer)
+        return HighlighterClass().render(
+            code_string=self.content,
+            lexer_name=self.lexer,
+            direction='rtl' if self.rtl else 'ltr',
+        )
 
     @property
     def lexer_name(self):

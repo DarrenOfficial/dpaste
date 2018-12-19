@@ -39,7 +39,6 @@ class SnippetView(FormView):
     """
     Create a new snippet.
     """
-
     form_class = SnippetForm
     template_name = 'dpaste/new.html'
 
@@ -100,7 +99,11 @@ class SnippetDetailView(SnippetView, DetailView):
 
     def get_initial(self):
         snippet = self.get_object()
-        return {'content': snippet.content, 'lexer': snippet.lexer}
+        return {
+            'content': snippet.content,
+            'lexer': snippet.lexer,
+            'rtl': snippet.rtl,
+        }
 
     def form_valid(self, form):
         snippet = form.save(parent=self.get_object())

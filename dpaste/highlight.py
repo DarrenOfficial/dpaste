@@ -34,13 +34,14 @@ class Highlighter(object):
                 return l[1]
         return fallback
 
-    def render(self, code_string, lexer_name, **kwargs):
+    def render(self, code_string, lexer_name, direction=None, **kwargs):
         highlighted_string = self.highlight(code_string, lexer_name=lexer_name)
         context = {
             'highlighted': highlighted_string,
             'highlighted_splitted': highlighted_string.splitlines(),
             'lexer_name': lexer_name,
             'lexer_display_name': self.get_lexer_display_name(lexer_name),
+            'direction': direction,
         }
         context.update(kwargs)
         return render_to_string(self.template_name, context)
@@ -76,7 +77,9 @@ class MarkdownHighlighter(PlainTextHighlighter):
 
         return mark_safe(
             misaka.html(
-                code_string, extensions=self.extensions, render_flags=self.render_flags
+                code_string,
+                extensions=self.extensions,
+                render_flags=self.render_flags
             )
         )
 

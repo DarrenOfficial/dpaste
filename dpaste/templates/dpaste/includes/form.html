@@ -18,6 +18,14 @@
       {{ form.expires }}
     </p>
 
+    <p class="options-rtl">
+      {{ form.rtl }}
+      <label for="{{ form.rtl.auto_id }}">
+        {% trans "Right-to-Left" %}
+        <small>[beta]</small>
+      </label>
+    </p>
+
     <p class="action">
       <button class="btn" type="submit">
         {% trans "Paste Snippet" %}

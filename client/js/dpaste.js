@@ -47,6 +47,26 @@ if (wordwrapCheckbox && snippetDiv) {
 }
 
 // -----------------------------------------------------------------------------
+// Right-To-Left
+// -----------------------------------------------------------------------------
+
+const rtlCheckbox = document.getElementById('id_rtl');
+const snippetArea = document.getElementById('id_content');
+
+function toggleRTL() {
+  if (rtlCheckbox.checked) {
+    snippetArea.dir = 'rtl';
+  } else {
+    snippetArea.dir = '';
+  }
+}
+
+if (rtlCheckbox && snippetArea) {
+  toggleRTL();
+  rtlCheckbox.onchange = toggleRTL;
+}
+
+// -----------------------------------------------------------------------------
 // Line Highlighting
 // -----------------------------------------------------------------------------
 const curLine = document.location.hash;

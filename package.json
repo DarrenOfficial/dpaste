@@ -7,11 +7,9 @@
     "postinstall": "npm run build",
     "start": "npm run build && pipenv run ./manage.py runserver",
     "docs": "pipenv run sphinx-build -c docs docs docs/_build/html",
-
     "build-css": "node-sass --output-style compressed -o build client/scss/dpaste.scss ",
     "build-js": "uglifyjs --compress=\"drop_console=true,ecma=6\" --mangle=\"toplevel\" --output=build/dpaste.js client/js/dpaste.js",
     "build": "npm run build-css && npm run build-js",
-
     "watch-css": "npm run build && node-sass --source-map true -o build/ --watch client/scss/dpaste.scss",
     "watch-docs": "pipenv run sphinx-autobuild -c docs docs docs/_build/html"
   },
