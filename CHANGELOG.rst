@@ -1,6 +1,13 @@
 Changelog
 =========
 
+(master)
+--------
+
+- Django 2.1 support and tests.
+- Right-to-left support for text snippets.
+- dart-sass is now used for SASS compilation.
+
 3.0 (2018-06-22)
 ----------------
 
@@ -28,9 +35,9 @@ Huge release. Full cleanup and update of the entire codebase. Details:
 2.14 (no public release)
 ------------------------
 
-* Django 1.11 compatibility. But not Django 2.0 yet. 
-* Removed "Suspicious" middleware which was never been used, documented, 
-  and also not functional for a while. 
+* Django 1.11 compatibility. But not Django 2.0 yet.
+* Removed "Suspicious" middleware which was never been used, documented,
+  and also not functional for a while.
 
 2.13 (2017-01-20)
 -----------------
