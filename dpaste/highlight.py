@@ -117,8 +117,7 @@ class NakedHtmlFormatter(HtmlFormatter):
         return self._wrap_code(source)
 
     def _wrap_code(self, source):
-        for i, t in source:
-            yield i, t
+        yield from source
 
 
 class PlainCodeHighlighter(Highlighter):

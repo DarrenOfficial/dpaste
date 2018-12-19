@@ -79,7 +79,7 @@ class SnippetForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content', '')
-        if content.strip() == '':
+        if not content.strip():
             raise forms.ValidationError(_('This field is required.'))
         return content
 
