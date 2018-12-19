@@ -14,7 +14,7 @@
     "watch-docs": "pipenv run sphinx-autobuild -c docs docs docs/_build/html"
   },
   "dependencies": {
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.11.0",
     "uglify-es": "^3.3.10"
   }
 }
