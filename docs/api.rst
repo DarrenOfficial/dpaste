@@ -113,6 +113,8 @@ Marmalade
     an Emacs plugin: http://marmalade-repo.org/packages/dpaste_de
 atom-dpaste
     for the Atom editor: https://atom.io/packages/atom-dpaste
+dpaste-magic:
+    an iPython extension: https://pypi.org/project/dpaste-magic/
 
 You can also paste your file content to the API via curl, directly from the
 command line:
