@@ -8,6 +8,10 @@ Project Installation
     into an existing Django project. If you want to run the application
     standalone, see :ref:`standalone_installation`.
 
+.. note:: Misaka, the Markdown renderer used in dpaste may need "dev" packages
+    for compilation on Debian based Linux distributions. Install it with
+    ``sudo apt install python3.5-dev``.
+
 Install the latest dpaste release in your environment. This will install all
 necessary dependencies of dpaste as well:
 
@@ -41,3 +45,5 @@ Finally, migrate the database schema:
 .. code-block:: bash
 
     $ manage.py migrate dpaste
+
+
