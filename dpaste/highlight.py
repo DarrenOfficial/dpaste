@@ -5,6 +5,7 @@ from django.template.defaultfilters import escape, linebreaksbr
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -79,7 +80,7 @@ class MarkdownHighlighter(PlainTextHighlighter):
             misaka.html(
                 code_string,
                 extensions=self.extensions,
-                render_flags=self.render_flags
+                render_flags=self.render_flags,
             )
         )
 

@@ -5,6 +5,7 @@ from django.apps import apps
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+
 from six import python_2_unicode_compatible
 
 from dpaste import highlight
@@ -86,9 +87,7 @@ class Snippet(models.Model):
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse(
-            'snippet_details', kwargs={'snippet_id': self.secret_id}
-        )
+        return reverse('snippet_details', kwargs={'snippet_id': self.secret_id})
 
     def highlight(self):
         HighlighterClass = highlight.get_highlighter_class(self.lexer)

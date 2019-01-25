@@ -1,11 +1,12 @@
 # Import global settings to make it easier to extend settings.
-from django.conf.global_settings import *
-
 # ==============================================================================
 # Calculation of directories relative to the module location
 # ==============================================================================
 import os
 import sys
+
+from django.conf.global_settings import *
+
 import dpaste
 
 PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
@@ -59,7 +60,9 @@ LANGUAGES = (('en', 'English'),)
 # Project URLS and media settings
 # ==============================================================================
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = (
+    'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+)
 
 STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'build'),)
 
@@ -142,7 +145,9 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {'require_debug_false': {'()': 'django.utils.log.RequireDebugFalse'}},
+    'filters': {
+        'require_debug_false': {'()': 'django.utils.log.RequireDebugFalse'}
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',

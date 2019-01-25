@@ -4,11 +4,8 @@ from textwrap import dedent
 
 from django.test import TestCase
 
-from dpaste.highlight import (
-    PlainCodeHighlighter,
-    PygmentsHighlighter,
-    RestructuredTextHighlighter,
-)
+from dpaste.highlight import (PlainCodeHighlighter, PygmentsHighlighter,
+                              RestructuredTextHighlighter)
 
 
 class HighlightAPITestCase(TestCase):

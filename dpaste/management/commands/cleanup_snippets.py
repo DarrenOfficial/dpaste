@@ -9,7 +9,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--dry-run', action='store_true', dest='dry_run', help='Don\'t do anything.'
+            '--dry-run',
+            action='store_true',
+            dest='dry_run',
+            help='Don\'t do anything.',
         ),
 
     def handle(self, *args, **options):
@@ -21,7 +24,9 @@ class Command(BaseCommand):
         if len(deleteable_snippets) == 0:
             self.stdout.write(u"No snippets to delete.")
             return None
-        self.stdout.write(u"Will delete %s snippet(s):\n" % deleteable_snippets.count())
+        self.stdout.write(
+            u"Will delete %s snippet(s):\n" % deleteable_snippets.count()
+        )
         for d in deleteable_snippets:
             self.stdout.write(u"- %s (%s)\n" % (d.secret_id, d.expires))
         if options.get('dry_run'):

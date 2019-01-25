@@ -37,9 +37,7 @@ class SnippetForm(forms.ModelForm):
     )
 
     lexer = forms.ChoiceField(
-        label=_('Lexer'),
-        initial=LEXER_DEFAULT,
-        choices=LEXER_CHOICES
+        label=_('Lexer'), initial=LEXER_DEFAULT, choices=LEXER_CHOICES
     )
 
     expires = forms.ChoiceField(
@@ -48,10 +46,7 @@ class SnippetForm(forms.ModelForm):
         initial=config.EXPIRE_DEFAULT,
     )
 
-    rtl = forms.BooleanField(
-        label=_('Right to Left'),
-        required=False
-    )
+    rtl = forms.BooleanField(label=_('Right to Left'), required=False)
 
     # Honeypot field
     title = forms.CharField(

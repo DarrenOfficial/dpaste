@@ -3,5 +3,22 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[packages]
+dpaste = {editable = true,path = "."}
+
 [dev-packages]
-"e1839a8" = {path = ".", extras = ["local-development"], editable = true}
+ipdb = "*"
+isort = "*"
+black = "*"
+django-sslserver = "*"
+sphinx = "*"
+sphinx-autobuild = "*"
+sphinx-rtd-theme = "*"
+sphinxcontrib-httpdomain = "*"
+
+[scripts]
+test = "./runtests.py"
+cleanup = "sh -c \"black --skip-string-normalization --line-length=80 --exclude='/(migrations)/' $APPNAME && isort -rc $APPNAME\""
+
+[pipenv]
+allow_prereleases = true

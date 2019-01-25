@@ -3,22 +3,17 @@ import difflib
 import json
 
 from django.apps import apps
-from django.http import (
-    Http404,
-    HttpResponse,
-    HttpResponseBadRequest,
-    HttpResponseRedirect,
-)
+from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
+                         HttpResponseRedirect)
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext
-from django.views.defaults import (
-    page_not_found as django_page_not_found,
-    server_error as django_server_error,
-)
+from django.views.defaults import page_not_found as django_page_not_found
+from django.views.defaults import server_error as django_server_error
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
+
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
@@ -39,6 +34,7 @@ class SnippetView(FormView):
     """
     Create a new snippet.
     """
+
     form_class = SnippetForm
     template_name = 'dpaste/new.html'
 
@@ -71,7 +67,9 @@ class SnippetDetailView(SnippetView, DetailView):
         always expire.
         """
         if 'delete' in self.request.POST:
-            snippet = get_object_or_404(Snippet, secret_id=self.kwargs['snippet_id'])
+            snippet = get_object_or_404(
+                Snippet, secret_id=self.kwargs['snippet_id']
+            )
             snippet.delete()
 
             # Append `#` so #delete goes away in Firefox
@@ -218,7 +216,9 @@ class APIView(View):
         base_url = config.get_base_url(request=self.request)
         return json.dumps(
             {
-                'url': '{url}{path}'.format(url=base_url, path=s.get_absolute_url()),
+                'url': '{url}{path}'.format(
+                    url=base_url, path=s.get_absolute_url()
+                ),
                 'content': s.content,
                 'lexer': s.lexer,
             }
@@ -269,11 +269,16 @@ class APIView(View):
                 )
             expires, expire_type = get_expire_values(expires)
         else:
-            expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
+            expires = datetime.datetime.now() + datetime.timedelta(
+                seconds=60 * 60 * 24
+            )
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
-            content=content, lexer=lexer, expires=expires, expire_type=expire_type
+            content=content,
+            lexer=lexer,
+            expires=expires,
+            expire_type=expire_type,
         )
 
         # Custom formatter for the API response
@@ -292,8 +297,12 @@ class APIView(View):
 
 
 def page_not_found(request, exception=None, template_name='dpaste/404.html'):
-    return django_page_not_found(request, exception, template_name=template_name)
+    return django_page_not_found(
+        request, exception, template_name=template_name
+    )
 
 
 def server_error(request, template_name='dpaste/500.html'):
-    return django_server_error(request, template_name=template_name)  # pragma: no cover
+    return django_server_error(
+        request, template_name=template_name
+    )  # pragma: no cover

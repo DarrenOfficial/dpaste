@@ -142,7 +142,9 @@ class SnippetTestCase(TestCase):
     def test_reply(self):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
-        response = self.client.post(response.request['PATH_INFO'], data, follow=True)
+        response = self.client.post(
+            response.request['PATH_INFO'], data, follow=True
+        )
         self.assertContains(response, data['content'])
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 2)
@@ -151,7 +153,9 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
         del data['content']
-        response = self.client.post(response.request['PATH_INFO'], data, follow=True)
+        response = self.client.post(
+            response.request['PATH_INFO'], data, follow=True
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
@@ -302,7 +306,9 @@ class SnippetTestCase(TestCase):
         management.call_command('cleanup_snippets')
         self.assertEqual(Snippet.objects.count(), 1)
 
-    def test_delete_management_snippet_that_never_expires_will_not_get_deleted(self):
+    def test_delete_management_snippet_that_never_expires_will_not_get_deleted(
+        self
+    ):
         """
         Snippets without an expiration date wont get deleted automatically.
         """
@@ -329,9 +335,9 @@ class SnippetTestCase(TestCase):
         """
         for i in range(0, 100):
             Snippet.objects.create(content='foobar')
-        slug_list = Snippet.objects.values_list('secret_id', flat=True).order_by(
-            'published'
-        )
+        slug_list = Snippet.objects.values_list(
+            'secret_id', flat=True
+        ).order_by('published')
         self.assertEqual(len(set(slug_list)), 100)
 
     def test_leading_white_is_retained_in_db(self):
