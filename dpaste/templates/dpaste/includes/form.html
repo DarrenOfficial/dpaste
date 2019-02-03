@@ -4,7 +4,6 @@
   {% csrf_token %}
   {{ form.non_field_errors }}
 
-
   <div class="options">
     <p style="display: none;">{{ form.title }}</p> {# Honeypot field #}
 
@@ -20,10 +19,7 @@
 
     <p class="options-rtl">
       {{ form.rtl }}
-      <label for="{{ form.rtl.auto_id }}">
-        {% trans "Right-to-Left" %}
-        <small>[beta]</small>
-      </label>
+      <label for="{{ form.rtl.auto_id }}">{% trans "Right-to-Left" %}</label>
     </p>
 
     <p class="action">
