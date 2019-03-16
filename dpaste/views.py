@@ -13,7 +13,6 @@ from django.views.defaults import server_error as django_server_error
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
-
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
