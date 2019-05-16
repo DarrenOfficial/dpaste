@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.1 (master)
-------------
+3.1 (2019-05-16)
+----------------
 
 - Django 2.1 support and tests.
 - Django 2.2 support and tests.
