@@ -33,7 +33,7 @@
     <li>
       <a href="#delete">{% trans "Delete Now" %}</a>
     </li>
-    {% if snippet.expire_type != 3 %}
+    {% if raw_mode and snippet.expire_type != 3 %}
       <li><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "View Raw" %}</a></li>
     {% endif %}
     {% if snippet.lexer != 'text' %}

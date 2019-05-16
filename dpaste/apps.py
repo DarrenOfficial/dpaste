@@ -74,6 +74,9 @@ class dpasteAppConfig(AppConfig):
     # is from another user.
     ONETIME_LIMIT = 2
 
+    # Disable "view Raw" mode.
+    RAW_MODE_ENABLED = True
+
     # Lexers which have wordwrap enabled by default
     LEXER_WORDWRAP = ('rst',)
 

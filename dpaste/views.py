@@ -3,8 +3,13 @@ import difflib
 import json
 
 from django.apps import apps
-from django.http import (Http404, HttpResponse, HttpResponseBadRequest,
-                         HttpResponseRedirect)
+from django.http import (
+    Http404,
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseRedirect,
+    HttpResponseForbidden,
+)
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext
@@ -136,6 +141,7 @@ class SnippetDetailView(SnippetView, DetailView):
             {
                 'wordwrap': self.object.lexer in highlight.LEXER_WORDWRAP,
                 'diff': self.get_snippet_diff(),
+                'raw_mode': config.RAW_MODE_ENABLED,
             }
         )
         return ctx
@@ -145,6 +151,13 @@ class SnippetRawView(SnippetDetailView):
     """
     Display the raw content of a snippet
     """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not config.RAW_MODE_ENABLED:
+            return HttpResponseForbidden(
+                'This dpaste installation has Raw view mode disabled.'
+            )
+        return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
 
     def render_to_response(self, context, **response_kwargs):
         snippet = self.get_object()

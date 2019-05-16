@@ -9,6 +9,7 @@ Changelog
 - Right-to-left support for text snippets.
 - dart-sass is now used for SASS compilation.
 - Updated lexer list.
+- "View Raw" feature can be disabled in app config to hinder abuse.
 
 .. _black: https://github.com/ambv/black
 
