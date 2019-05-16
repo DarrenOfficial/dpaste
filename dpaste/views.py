@@ -155,7 +155,9 @@ class SnippetRawView(SnippetDetailView):
     def dispatch(self, request, *args, **kwargs):
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
-                'This dpaste installation has Raw view mode disabled.'
+                ugettext(
+                    'This dpaste installation has Raw view mode disabled.'
+                )
             )
         return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
 
