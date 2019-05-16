@@ -5,6 +5,7 @@ Changelog
 ------------
 
 - Django 2.1 support and tests.
+- Django 2.2 support and tests.
 - General code cleanup by running the entire codebase through black_.
 - Right-to-left support for text snippets.
 - dart-sass is now used for SASS compilation.
