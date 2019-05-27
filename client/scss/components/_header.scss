@@ -133,3 +133,10 @@ ul#snippetOptions {
   font-size: 14px;
   font-weight: $baseFontDemiBold;
 }
+
+// Textarea that holds the unaltered snippet content to be copied to clipboard
+#copySnippetSource {
+  width: 0;
+  position: absolute;
+  left: -9999px;
+}

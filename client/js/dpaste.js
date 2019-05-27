@@ -102,12 +102,43 @@ lines.forEach(function(el) {
 // Copy URL to Clipboard
 // -----------------------------------------------------------------------------
 const clipboardLink = document.getElementById('copyToClipboard');
-const copyToClipboardField = document.getElementById('copyToClipboardField');
+const clipboardField = document.getElementById('copyToClipboardField');
 
-if (clipboardLink && copyToClipboardField) {
+if (clipboardLink && clipboardField) {
   clipboardLink.onclick = function(e) {
     e.preventDefault();
-    copyToClipboardField.select();
+    clipboardField.select();
     document.execCommand('Copy');
+  };
+}
+
+// -----------------------------------------------------------------------------
+// Copy Snippet content to Clipboard
+// -----------------------------------------------------------------------------
+const snippetClipboardLink = document.getElementById('copySnippetToClipboard');
+const snippetClipboardField = document.getElementById('copySnippetSource');
+const snippetClipboardConfirm = document.getElementById('copy');
+
+if (snippetClipboardLink && snippetClipboardField) {
+  snippetClipboardLink.onclick = function(e) {
+    e.preventDefault();
+    snippetClipboardField.select();
+    document.execCommand('Copy');
+    snippetClipboardConfirm.style.maxHeight = '80px';
+    window.scrollTo(0, 0);
+  };
+}
+
+const editSnippetLink = document.getElementById('editSnippet');
+const editSnippetForm = document.getElementById('edit');
+
+if (editSnippetLink && editSnippetForm) {
+  editSnippetLink.onclick = function(e) {
+    e.preventDefault();
+    editSnippetForm.style.display = 'block';
+    window.scrollTo(
+        editSnippetForm.getBoundingClientRect().x,
+        editSnippetForm.getBoundingClientRect().y
+    );
   };
 }

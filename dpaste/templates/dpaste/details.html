@@ -36,6 +36,9 @@
     {% if raw_mode and snippet.expire_type != 3 %}
       <li><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "View Raw" %}</a></li>
     {% endif %}
+    <textarea id="copySnippetSource">{{ snippet.content }}</textarea>
+    <li><a href="#copy" id="copySnippetToClipboard">{% trans "Copy Snippet" %}</a></li>
+    <li><a href="#edit" id="editSnippet">{% trans "Edit Snippet" %}</a></li>
     {% if snippet.lexer != 'text' %}
       <li>
         <label for="wordwrap">
@@ -44,6 +47,12 @@
       </li>
     {% endif %}
   </ul>
+
+  <div id="copy" class="confirm-modal">
+    <form method="POST" action="">
+      {% trans "Snippet content copied to clipboard." %}
+    </form>
+  </div>
 
   <div id="delete" class="confirm-modal">
     <form method="POST" action="">
@@ -77,9 +86,11 @@
 
   {{ snippet.highlight }}
 
-  <header class="sub">
-    <h2>{% trans "Edit this Snippet" %}</h2>
-  </header>
+  <div id="edit">
+    <header class="sub">
+      <h2>{% trans "Edit this Snippet" %}</h2>
+    </header>
 
-  {% include "dpaste/includes/form.html" %}
+    {% include "dpaste/includes/form.html" %}
+  </div>
 {% endblock %}

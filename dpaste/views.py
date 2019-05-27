@@ -152,6 +152,8 @@ class SnippetRawView(SnippetDetailView):
     Display the raw content of a snippet
     """
 
+    template_name = 'dpaste/raw.html'
+
     def dispatch(self, request, *args, **kwargs):
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
@@ -161,12 +163,19 @@ class SnippetRawView(SnippetDetailView):
             )
         return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
 
-    def render_to_response(self, context, **response_kwargs):
+    def render_plain_text(self, context, **response_kwargs):
         snippet = self.get_object()
         response = HttpResponse(snippet.content)
         response['Content-Type'] = 'text/plain;charset=UTF-8'
         response['X-Content-Type-Options'] = 'nosniff'
         return response
+
+    def render_to_response(self, context, **response_kwargs):
+        if config.RAW_MODE_PLAIN_TEXT:
+            return self.render_plain_text(config, **response_kwargs)
+        return super(SnippetRawView, self).render_to_response(
+            context, **response_kwargs
+        )
 
 
 class SnippetHistory(TemplateView):

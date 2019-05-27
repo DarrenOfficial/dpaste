@@ -1,6 +1,14 @@
 Changelog
 =========
 
+(development)
+-------------
+
+- "Edit Snippet" panel is now hidden by default to remove visual noise.
+- Added a dedicated "Copy Snippet" button to copy the content to the clipboard.
+- Added "View Raw" option to optionally render the 'raw' snippet content with a
+  template rather served as plain text. This was added to hinder abuse.
+
 3.1 (2019-05-16)
 ----------------
 

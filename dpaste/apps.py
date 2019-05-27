@@ -77,6 +77,10 @@ class dpasteAppConfig(AppConfig):
     # Disable "view Raw" mode.
     RAW_MODE_ENABLED = True
 
+    # If enabled, the "raw View" mode will display the snippet content as
+    # plain text rather rendered in a template.
+    RAW_MODE_PLAIN_TEXT = True
+
     # Lexers which have wordwrap enabled by default
     LEXER_WORDWRAP = ('rst',)
 

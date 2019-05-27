@@ -5,6 +5,11 @@
   line-height: 17px;
 }
 
+// Edit panel in details view, not shown by default.
+#edit {
+  display: none;
+}
+
 .snippet-form {
   background-color: $bgColor;
 
