@@ -1,7 +1,7 @@
 from dpaste.settings.base import *
 import os
 
-DEBUG = True
+DEBUG = False
 
 DATABASES = {
     'default': {
