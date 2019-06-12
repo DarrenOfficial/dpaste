@@ -8,7 +8,7 @@ class dpasteAppConfig(AppConfig):
     verbose_name = "dpaste"
 
     # The application title used throughout the user interface.
-    APPLICATION_NAME = "dpaste"
+    APPLICATION_NAME = "Mozilla Community Pastebin"
 
     # This content is loaded in the <head> section of each template.
     # You can use it to add any HTML tags, specifically custom CSS styles.
