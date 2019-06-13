@@ -354,7 +354,7 @@ class dpasteAppConfig(AppConfig):
             # ('js+php', 'JavaScript+PHP'),
             # ('js+smarty', 'JavaScript+Smarty'),
             # ('jsgf', 'JSGF'),
-            # ('json', 'JSON'),
+            ('json', 'JSON'),
             # ('json-object', 'JSONBareObject'),
             # ('jsonld', 'JSON-LD'),
             # ('jsp', 'Java Server Page'),
