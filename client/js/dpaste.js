@@ -3,8 +3,8 @@
 // -----------------------------------------------------------------------------
 // Add data-platform to the body tag to show platform related shortcuts
 // -----------------------------------------------------------------------------
-const isWindows = navigator.appVersion.indexOf('Win') !== -1;
-document.body.dataset.platform = isWindows ? 'win' : 'mac';
+const isMac = navigator.platform.indexOf('Mac') !== -1;
+document.body.dataset.platform = isMac ? 'mac' : 'win';
 
 // -----------------------------------------------------------------------------
 // Autofocus the content field on the homepage
@@ -18,7 +18,7 @@ if (af !== null) {
 // Cmd+Enter or Ctrl+Enter submits the form
 // -----------------------------------------------------------------------------
 document.body.onkeydown = function(e) {
-  const metaKey = isWindows ? e.ctrlKey : e.metaKey;
+  const metaKey = isMac ? e.metaKey : e.ctrlKey;
   const form = document.querySelector('.snippet-form');
 
   if (form && e.keyCode === 13 && metaKey) {
