@@ -5,6 +5,7 @@ Changelog
 -------------
 
 - "Edit Snippet" panel is now hidden by default to remove visual noise.
+- Linux/Unix browsers now use Ctrl+Enter as a shortcut to submit the form.
 - Added a dedicated "Copy Snippet" button to copy the content to the clipboard.
 - Added "View Raw" option to optionally render the 'raw' snippet content with a
   template rather served as plain text. This was added to hinder abuse.
