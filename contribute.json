@@ -1,0 +1,30 @@
+{
+  "name": "Pastebin",
+    "description": "The app powering paste.mozilla.org",
+    "repository": {
+      "url": "https://github.com/mozilla-it/dpaste-1",
+      "license": "MPL2",
+      "tests": ""
+    },
+    "participate": {
+      "home": "https://github.com/mozilla-it/dpaste-1",
+      "docs": "https://github.com/mozilla-it/dpaste-1",
+      "irc": "slack#it-sre",
+      "irc-contacts": [
+        "charlow"
+      ]
+    },
+    "bugs": {
+      "list": "",
+      "report": "",
+      "mentored": ""
+    },
+    "urls": {
+      "prod": "https://paste.mozilla.org"
+    },
+    "keywords": [
+      "dpaste",
+      "pastebin",
+      "django"
+    ]
+}
