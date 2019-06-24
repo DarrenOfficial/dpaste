@@ -136,6 +136,7 @@ class dpasteAppConfig(AppConfig):
          ...
         """
         from dpaste.highlight import PlainCodeHighlighter
+        from jsx.lexer import JsxLexer
 
         return [
             (self.PLAIN_CODE_SYMBOL, 'Plain Code', PlainCodeHighlighter),
@@ -355,6 +356,7 @@ class dpasteAppConfig(AppConfig):
             # ('js+smarty', 'JavaScript+Smarty'),
             # ('jsgf', 'JSGF'),
             ('json', 'JSON'),
+            ('jsx', 'JSX/React'),
             # ('json-object', 'JSONBareObject'),
             # ('jsonld', 'JSON-LD'),
             # ('jsp', 'Java Server Page'),
