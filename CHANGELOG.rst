@@ -1,8 +1,8 @@
 Changelog
 =========
 
-(development)
--------------
+3.2 (2019-06-24)
+----------------
 
 - "Edit Snippet" panel is now hidden by default to remove visual noise.
 - Linux/Unix browsers now use Ctrl+Enter as a shortcut to submit the form.
@@ -10,6 +10,7 @@ Changelog
 - Added "View Raw" option to optionally render the 'raw' snippet content with a
   template rather served as plain text. This was added to hinder abuse.
 - Added "Json" to the list of lexers.
+- Added 'JSX/React" to the list of lexers.
 
 3.1 (2019-05-16)
 ----------------
