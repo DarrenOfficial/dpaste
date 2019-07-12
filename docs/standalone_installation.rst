@@ -23,6 +23,12 @@ Python dependencies.
 
     $ cd dpaste/
     $ pipenv install --dev      # Installs the project and Python dependencies
+
+
+The static files are not shipped with the project repository and need to be
+compiled manually. This is necessary since compiled CSS/JS files lead to too
+many merge conflicts during development.
+
     $ npm install               # Installs the node dependencies and compiles
                                 # the static files (JS/CSS).
 

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.3 (2019-07-12)
+----------------
+
+- The compiled static files (CSS, JS) are now shipped with the Pypi package since
+  its not possible to compile them after installation with pip.
+
 3.2 (2019-06-24)
 ----------------
 
