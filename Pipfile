@@ -18,7 +18,7 @@ sphinxcontrib-httpdomain = "*"
 
 [scripts]
 test = "./runtests.py"
-cleanup = "sh -c \"black --skip-string-normalization --line-length=80 --exclude='/(migrations)/' dpaste && isort -rc dpaste\""
+cleanup = "sh -c \"isort -rc dpaste && black --skip-string-normalization --line-length=80 --exclude='/(migrations)/' dpaste\""
 
 [pipenv]
 allow_prereleases = true

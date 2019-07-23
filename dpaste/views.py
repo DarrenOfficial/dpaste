@@ -7,8 +7,8 @@ from django.http import (
     Http404,
     HttpResponse,
     HttpResponseBadRequest,
-    HttpResponseRedirect,
     HttpResponseForbidden,
+    HttpResponseRedirect,
 )
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -157,9 +157,7 @@ class SnippetRawView(SnippetDetailView):
     def dispatch(self, request, *args, **kwargs):
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
-                ugettext(
-                    'This dpaste installation has Raw view mode disabled.'
-                )
+                ugettext('This dpaste installation has Raw view mode disabled.')
             )
         return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
 
