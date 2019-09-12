@@ -7,4 +7,3 @@ recursive-include dpaste/templates *
 recursive-include dpaste/static *
 recursive-include docs *
 recursive-exclude docs/_build *
-exclude dpaste/settings/local.py
