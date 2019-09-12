@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.3.1 (2019-08-04):
+-------------------
+
+- Exclude the local settings file from the pypi release.
+
 3.3 (2019-07-12)
 ----------------
 
