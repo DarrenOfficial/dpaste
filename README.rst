@@ -14,6 +14,10 @@ dpaste
 .. image:: https://api.codacy.com/project/badge/Grade/185cfbe9b4b447e59a40f816c4a5ebf4
    :target: https://www.codacy.com/app/bartTC/dpaste
 
+----
+
+📖 Full documentation on https://dpaste.readthedocs.io/
+
 dpaste is a pastebin_ application written in Python using the Django
 framework. You can find a live installation on `dpaste.de`_.
 
@@ -28,10 +32,6 @@ Django application.
 The code is open source and available on Github: https://github.com/bartTC/dpaste.
 If you found bugs, have problems or ideas with the project or the website installation,
 please create an *Issue* there.
-
-dpaste requires at a minimum **Python 3.4** and **Django 1.11**.
-
-Further documentation can be found here: https://docs.elephant.house/dpaste/
 
 .. _dpaste.de: https://dpaste.de/
 .. _pastebin: https://en.wikipedia.org/wiki/Pastebin
