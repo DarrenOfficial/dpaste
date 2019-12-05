@@ -10,6 +10,7 @@ article {
   font-size: 16px;
   font-weight: $baseFontRegular;
   line-height: 24px;
+  word-break: break-word;
 
   color: $textColor;
   max-width: 600px;
