@@ -86,7 +86,7 @@ try:
         'logo_only': True,
         'display_version': False,
     }
-    html_logo = "_static/logo.svg"
+    html_logo = "docs/_static/logo.svg"
 
 except ImportError:
     html_theme = 'alabaster'
