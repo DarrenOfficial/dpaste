@@ -44,7 +44,7 @@ Run the testsuite to make sure everything was built correctly:
 
 .. code-block:: bash
 
-    $ pipenv run ./runtests.py
+    $ pipenv run test
 
 Finally, to run the project on your local machine:
 

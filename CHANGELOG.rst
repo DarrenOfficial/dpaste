@@ -1,6 +1,14 @@
 Changelog
 =========
 
+3.4 (master)
+------------
+
+- Dropped support for Python 3.4.
+- Django 3.0 support and tests.
+- Python 3.8 support and tests.
+- Testsuite now uses pytest.
+
 3.3.1 (2019-08-04):
 -------------------
 
