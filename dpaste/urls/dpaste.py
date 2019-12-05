@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.conf import settings
 from django.conf.urls import url
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import TemplateView
 
 from .. import views
@@ -31,7 +32,11 @@ urlpatterns = [
     ),
     url(
         r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/slim/?$' % L,
-        views.SnippetDetailView.as_view(template_name='dpaste/details_slim.html'),
+        xframe_options_exempt(
+            views.SnippetDetailView.as_view(
+                template_name='dpaste/details_slim.html'
+            )
+        ),
         name='snippet_details_slim',
     ),
 ]
