@@ -8,11 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   {% block meta %}<meta name="robots" content="noindex, nofollow"/>{% endblock %}
   <style type="text/css">{% staticinline "dpaste.css" %}</style>
+  {{ dpaste_extra_head_html }}
 </head>
 <body {% block body_type %}{%endblock %}>
 
 <header>
-  <h1>{% block headline %}<a class="home" href="{% url "snippet_new" %}">dpaste</a>{% endblock %}</h1>
+  <h1>{% block headline %}<a class="home" href="{% url "snippet_new" %}">{{ dpaste_application_name }}</a>{% endblock %}</h1>
   <nav>
     <a class="nav-link" href="{% url "dpaste_about" %}">{% trans "About" %}</a>
     <a class="nav-link" href="{% url "snippet_history" %}">{% trans "History" %}</a>

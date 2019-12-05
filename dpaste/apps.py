@@ -1,10 +1,30 @@
 from django.apps import AppConfig, apps
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 
 class dpasteAppConfig(AppConfig):
     name = 'dpaste'
     verbose_name = 'dpaste'
+
+    # The application title used throughout the user interface.
+    APPLICATION_NAME = 'dpaste'
+
+    # This content is loaded in the <head> section of each template.
+    # You can use it to add any HTML tags, specifically custom CSS styles.
+    # This may can give you an easier way to adjust the UI to your needs
+    # than having to add a template folder, plus custom template, plus
+    # css static file etc.
+    #
+    # Example:
+    #
+    #   EXTRA_HEAD_HTML = """
+    #     <style type="text/css">
+    #       header{ background-color: red; }
+    #       .btn { background-color: blue; border: 3px solid yellow; }
+    #     </style>
+    #   """
+    EXTRA_HEAD_HTML = ''
 
     # Integer. Length of the random slug for each new snippet. In the rare
     # case an existing slug is generated again, the length will increase by
@@ -599,3 +619,14 @@ class dpasteAppConfig(AppConfig):
             if site:
                 return 'https://{0}'.format(site.domain)
         return 'https://dpaste.de'
+
+    @property
+    def extra_template_context(self):
+        """
+        Returns a dictionary with context variables which are passed to
+        all Template Views.
+        """
+        return {
+            'dpaste_application_name': self.APPLICATION_NAME,
+            'dpaste_extra_head_html': mark_safe(self.EXTRA_HEAD_HTML),
+        }

@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.conf import settings
 from django.conf.urls import url
 from django.views.generic import TemplateView
@@ -5,12 +6,16 @@ from django.views.generic import TemplateView
 from .. import views
 
 L = getattr(settings, 'DPASTE_SLUG_LENGTH', 4)
+config = apps.get_app_config('dpaste')
 
 urlpatterns = [
     url(r'^$', views.SnippetView.as_view(), name='snippet_new'),
     url(
         r'^about/$',
-        TemplateView.as_view(template_name='dpaste/about.html'),
+        TemplateView.as_view(
+            template_name='dpaste/about.html',
+            extra_context=config.extra_template_context,
+        ),
         name='dpaste_about',
     ),
     url(r'^history/$', views.SnippetHistory.as_view(), name='snippet_history'),

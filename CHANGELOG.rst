@@ -8,6 +8,11 @@ Changelog
 - Django 3.0 support and tests.
 - Python 3.8 support and tests.
 - Testsuite now uses pytest.
+- New AppConfig setting "APPLICATION_NAME" that can be used to replace the term
+  "dpaste" throughout the UI.
+- New AppConfig setting "EXTRA_HEAD_HTML" that can be used to add custom HTML
+  to each template, specifically used for custom CSS styles, to easily override
+  the stock UI of dpaste.
 
 3.3.1 (2019-08-04):
 -------------------

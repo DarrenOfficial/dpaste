@@ -2,14 +2,16 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "About" %}{% endblock %}
+{% block title %}{% blocktrans with name=dpaste_application_name %}About {{ name }}{% endblocktrans %}{% endblock %}
 
 {% block body_type %}text-page{%endblock %}
 
 {% block page %}
   <article>
 
-    <h2 class="first-item">{% trans "About dpaste" %}</h2>
+    <h2 class="first-item">
+      {% blocktrans with name=dpaste_application_name %}About {{ name }}{% endblocktrans %}
+    </h2>
 
     <p>
       This site is powered by dpaste, an <strong>open source</strong>

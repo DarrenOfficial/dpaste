@@ -7,7 +7,7 @@ header {
   align-items: center;
 
   color: $headerTextColor;
-  background: linear-gradient(to right, $headerBgColor1, $headerBgColor2);
+  background-color: $headerBgColor;
 
   // Subheadline e.g. Reply Bar
   &.sub {

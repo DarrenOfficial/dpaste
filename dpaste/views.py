@@ -51,6 +51,11 @@ class SnippetView(FormView):
         snippet = form.save()
         return HttpResponseRedirect(snippet.get_absolute_url())
 
+    def get_context_data(self, **kwargs):
+        ctx = super(SnippetView, self).get_context_data(**kwargs)
+        ctx.update(config.extra_template_context)
+        return ctx
+
 
 class SnippetDetailView(SnippetView, DetailView):
     """
@@ -144,6 +149,7 @@ class SnippetDetailView(SnippetView, DetailView):
                 'raw_mode': config.RAW_MODE_ENABLED,
             }
         )
+        ctx.update(config.extra_template_context)
         return ctx
 
 
@@ -175,6 +181,11 @@ class SnippetRawView(SnippetDetailView):
             context, **response_kwargs
         )
 
+    def get_context_data(self, **kwargs):
+        ctx = super(SnippetView, self).get_context_data(**kwargs)
+        ctx.update(config.extra_template_context)
+        return ctx
+
 
 class SnippetHistory(TemplateView):
     """
@@ -202,6 +213,7 @@ class SnippetHistory(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(SnippetHistory, self).get_context_data(**kwargs)
         ctx.update({'snippet_list': self.get_user_snippets()})
+        ctx.update(config.extra_template_context)
         return ctx
 
 

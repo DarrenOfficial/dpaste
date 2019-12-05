@@ -2,6 +2,7 @@
 Settings for the test suite
 """
 import django
+
 from .base import *
 
 SECRET_KEY = 'test-key'

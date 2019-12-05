@@ -292,10 +292,10 @@
         },
         "jsx-lexer": {
             "hashes": [
-                "sha256:80a107c08e5eb18188fc43b222859702bc83d5ed534bf63e1df6f2f77cc66e19",
-                "sha256:b1245cc02870376822fe8cc8e910810337ab6211425cf0089de504bf9da2afc6"
+                "sha256:1cb35102b78525aa3f587dc327f3208c0e1c76d5cdea64d4f9c3ced05d10c017",
+                "sha256:b879c7fafe974440a1dd9f9544dfb8629fa22078ada7f769c8fbb06149eac5d1"
             ],
-            "version": "==0.0.7"
+            "version": "==0.0.8"
         },
         "livereload": {
             "hashes": [
@@ -458,6 +458,13 @@
                 "sha256:cdbdef4f870408ebdbfeb44e63e07eb18bb4619fae852f6e760645fa36172626"
             ],
             "version": "==2.8.1"
+        },
+        "pytest-django": {
+            "hashes": [
+                "sha256:17592f06d51c2ef4b7a0fb24aa32c8b6998506a03c8439606cb96db160106659",
+                "sha256:ef3d15b35ed7e46293475e6f282e71a53bcd8c6f87bdc5d5e7ad0f4d49352127"
+            ],
+            "version": "==3.7.0"
         },
         "pytz": {
             "hashes": [

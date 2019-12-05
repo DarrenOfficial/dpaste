@@ -307,7 +307,7 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 1)
 
     def test_delete_management_snippet_that_never_expires_will_not_get_deleted(
-        self
+        self,
     ):
         """
         Snippets without an expiration date wont get deleted automatically.
