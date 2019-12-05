@@ -33,5 +33,7 @@ The code is open source and available on Github: https://github.com/bartTC/dpast
 If you found bugs, have problems or ideas with the project or the website installation,
 please create an *Issue* there.
 
+⚠️ dpaste requires at a minimum Python 3.6 and Django 2.2.
+
 .. _dpaste.de: https://dpaste.de/
 .. _pastebin: https://en.wikipedia.org/wiki/Pastebin

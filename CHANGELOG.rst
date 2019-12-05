@@ -5,12 +5,16 @@ Changelog
 ------------
 
 - Dropped support for Python 3.4.
-- Django 3.0 support and tests.
-- Python 3.8 support and tests.
+- Dropped support for Python 3.5.
+- Dropped support for Django 1.11. ⚠️
+- Dropped support for Django 2.0.  ⚠️
+- Dropped support for Django 2.1.  ⚠️
+- Added support for Python 3.8.
+- Added support for Django 3.0.
 - Testsuite now uses pytest.
-- New AppConfig setting "APPLICATION_NAME" that can be used to replace the term
+- New AppConfig setting ``APPLICATION_NAME`` that can be used to replace the term
   "dpaste" throughout the UI.
-- New AppConfig setting "EXTRA_HEAD_HTML" that can be used to add custom HTML
+- New AppConfig setting ``EXTRA_HEAD_HTML`` that can be used to add custom HTML
   to each template, specifically used for custom CSS styles, to easily override
   the stock UI of dpaste.
 
