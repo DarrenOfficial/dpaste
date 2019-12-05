@@ -29,4 +29,9 @@ urlpatterns = [
         views.SnippetRawView.as_view(),
         name='snippet_details_raw',
     ),
+    url(
+        r'^(?P<snippet_id>[a-zA-Z0-9]{%d,})/slim/?$' % L,
+        views.SnippetDetailView.as_view(template_name='dpaste/details_slim.html'),
+        name='snippet_details_slim',
+    ),
 ]

@@ -34,8 +34,9 @@
       <a href="#delete">{% trans "Delete Now" %}</a>
     </li>
     {% if raw_mode and snippet.expire_type != 3 %}
-      <li><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "View Raw" %}</a></li>
+      <li><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "Raw" %}</a></li>
     {% endif %}
+    <li><a href="{% url "snippet_details_slim" snippet.secret_id %}">{% trans "Slim" %}</a></li>
     <textarea id="copySnippetSource">{{ snippet.content }}</textarea>
     <li><a href="#copy" id="copySnippetToClipboard">{% trans "Copy Snippet" %}</a></li>
     <li><a href="#edit" id="editSnippet">{% trans "Edit Snippet" %}</a></li>

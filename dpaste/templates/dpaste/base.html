@@ -12,6 +12,7 @@
 </head>
 <body {% block body_type %}{%endblock %}>
 
+{% block header %}
 <header>
   <h1>{% block headline %}<a class="home" href="{% url "snippet_new" %}">{{ dpaste_application_name }}</a>{% endblock %}</h1>
   <nav>
@@ -20,6 +21,7 @@
     {%block nav_new %}<a class="btn" href="{% url "snippet_new" %}">{% trans "New snippet" %}</a>{% endblock %}
   </nav>
 </header>
+{% endblock %}
 
 {% block options %}{% endblock %}
 
