@@ -10,11 +10,11 @@ def main():
         import dpaste.settings.local
 
         settings = "dpaste.settings.local"
-        sys.stdout.write("\n🧁  Using local.py settings file.\n\n")
+        sys.stdout.write("\n🧁  Using local.py settings file.\n")
     except ImportError:
         settings = "dpaste.settings.base"
         sys.stdout.write(
-            "\n⚠️  local.py settings not found. Using default settings file.\n\n"
+            "\n⚠️  local.py settings not found. Using default settings file.\n"
         )
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings)

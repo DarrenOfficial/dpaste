@@ -89,7 +89,7 @@ INSTALLED_APPS = [
     "dpaste.apps.dpasteAppConfig",
 ]
 
-sys.stdout.write(f"🐘  Database URL is: {env('DATABASE_URL')}")
+sys.stdout.write(f"\n🐘  Database URL is: {env('DATABASE_URL')}\n")
 DATABASES = {
     "default": dj_database_url.config(default="sqlite:///dpaste.sqlite")
 }
@@ -103,7 +103,7 @@ DATABASES = {
 try:
     import django_webserver
     INSTALLED_APPS.append('django_webserver')
-    sys.stdout.write(f'🚀  Production webserver installed. Will run on port {env("PORT")}\n\n')
+    sys.stdout.write(f'\n🚀  Production webserver installed. Will run on port {env("PORT")}\n')
 except ImportError:
     pass
 
