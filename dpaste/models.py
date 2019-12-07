@@ -5,7 +5,6 @@ from django.apps import apps
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from six import python_2_unicode_compatible
 
 from dpaste import highlight
 
@@ -39,7 +38,6 @@ def generate_secret_id(length):
     return generate_secret_id(length=length + 1)
 
 
-@python_2_unicode_compatible
 class Snippet(models.Model):
     EXPIRE_TIME = 1
     EXPIRE_KEEP = 2

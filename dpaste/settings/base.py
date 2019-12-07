@@ -1,53 +1,33 @@
+# ==============================================================================
 # Import global settings to make it easier to extend settings.
 # ==============================================================================
-# Calculation of directories relative to the module location
-# ==============================================================================
 import os
-import sys
-
-from django.conf.global_settings import *
-
 import dpaste
+import dj_database_url
 
-PROJECT_DIR, PROJECT_MODULE_NAME = os.path.split(
+env = os.environ.get
+
+BASE_DIR, PROJECT_MODULE_NAME = os.path.split(
     os.path.dirname(os.path.realpath(dpaste.__file__))
 )
 
-PYTHON_BIN = os.path.dirname(sys.executable)
-if os.path.exists(os.path.join(PYTHON_BIN, "activate_this.py")):
-    # Assume that the presence of 'activate_this.py' in the python bin/
-    # directory means that we're running in a virtual environment. Set the
-    # variable root to $VIRTUALENV/var.
-    VAR_ROOT = os.path.join(os.path.dirname(PYTHON_BIN), "var")
-    if not os.path.exists(VAR_ROOT):
-        os.mkdir(VAR_ROOT)
-else:
-    # Set the variable root to the local configuration location (which is
-    # ignored by the repository).
-    VAR_ROOT = os.path.join(PROJECT_DIR, PROJECT_MODULE_NAME, "conf", "local")
-
 # ==============================================================================
-# Generic Django project settings
+# Settings
 # ==============================================================================
 
-DEBUG = False
+DEBUG = env("DEBUG", False)
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-TIME_ZONE = "UTC"
 SITE_ID = 1
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ""
+SECRET_KEY = env("SECRET_KEY", "")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", "*").split(",")
 
-# ==============================================================================
-# I18N
-# ==============================================================================
-
+TIME_ZONE = "UTC"
 USE_I18N = True
-USE_L10N = False
+USE_L10N = True
+USE_TZ = True
 
 LANGUAGE_CODE = "en"
 LANGUAGES = (("en", "English"),)
@@ -55,10 +35,6 @@ LANGUAGES = (("en", "English"),)
 # LOCALE_PATHS = (
 #     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
 # )
-
-# ==============================================================================
-# Project URLS and media settings
-# ==============================================================================
 
 STATICFILES_STORAGE = (
     "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
@@ -69,20 +45,14 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
 
-STATIC_ROOT = os.path.join(VAR_ROOT, "static")
+STATIC_ROOT = env("STATIC_ROOT", ".static")
+MEDIA_ROOT = env("MEDIA_ROOT", ".media")
 
 STATIC_URL = "/static/"
-ADMIN_MEDIA_PREFIX = "/static/admin/"
 
 ROOT_URLCONF = "dpaste.urls"
 
-LOGIN_URL = "/accounts/login/"
-LOGOUT_URL = "/accounts/logout/"
-LOGIN_REDIRECT_URL = "/"
-
-# ==============================================================================
-# Templates
-# ==============================================================================
+WSGI_APPLICATION = "dpaste.wsgi.application"
 
 MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -116,14 +86,8 @@ INSTALLED_APPS = [
     "dpaste.apps.dpasteAppConfig",
 ]
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'dev.db',
-#         'USER': '',
-#         'PASSWORD': '',
-#     }
-# }
+DATABASE_URL = env("DATABASE_URL", "sqlite:///dpaste.sqlite")
+DATABASES = {"default": dj_database_url.config(DATABASE_URL)}
 
 # ==============================================================================
 # App specific settings
