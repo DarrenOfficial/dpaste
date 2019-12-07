@@ -16,17 +16,18 @@ Changelog
   ``cleanup_snipppet`` managemenent command. It's still encouraged to have the
   management command setup, just run it daily, so snippets which expired but
   never got fetched by a client are deleted properly.
+- Onetime snippets which were never viewed a second time are now deleted if
+  they reach the default expire date.
 - New AppConfig setting ``APPLICATION_NAME`` that can be used to replace the
   term "dpaste" throughout the UI.
-- New AppConfig setting ``EXTRA_HEAD_HTML`` that can be used to add custom HTML
-  to each template, specifically used for custom CSS styles, to easily override
-  the stock UI of dpaste.
+- New AppConfig setting ``EXTRA_HEAD_HTML`` and similars that can be used to
+  add custom HTML to each template, to easily override the stock UI of dpaste.
 - New "Slim" view that displays the highlighted snippet without header,
-  options etc.
+  options etc, and can be iframed.
 - Forced line-break for superlongwordsthatwouldexceedthecanvas.
-- Testsuite now uses pytest.
 - Local development is no longer centered around ``pipenv`` and is rather using
   docker-compose or the classic virtualenv based setups.
+- Testsuite now uses pytest.
 
 3.3.1 (2019-08-04):
 -------------------
