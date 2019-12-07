@@ -618,7 +618,7 @@ class dpasteAppConfig(AppConfig):
             site = get_current_site(request)
             if site:
                 return f"https://{site.domain}"
-        return "https://dpaste.de"
+        return "https://dpaste-base-url.example.org"
 
     @property
     def extra_template_context(self):
