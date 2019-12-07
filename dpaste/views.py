@@ -12,6 +12,7 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext
 from django.views.defaults import page_not_found as django_page_not_found
 from django.views.defaults import server_error as django_server_error
@@ -92,6 +93,9 @@ class SnippetDetailView(SnippetView, DetailView):
 
         # One-Time snippet get deleted if the view count matches our limit
         if (
+            snippet.expire_type == Snippet.EXPIRE_TIME
+            and snippet.expires < timezone.now()
+        ) or (
             snippet.expire_type == Snippet.EXPIRE_ONETIME
             and snippet.view_count >= config.ONETIME_LIMIT
         ):
@@ -163,7 +167,9 @@ class SnippetRawView(SnippetDetailView):
     def dispatch(self, request, *args, **kwargs):
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
-                ugettext('This dpaste installation has Raw view mode disabled.')
+                ugettext(
+                    'This dpaste installation has Raw view mode disabled.'
+                )
             )
         return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
 

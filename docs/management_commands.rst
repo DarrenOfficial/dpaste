@@ -9,8 +9,14 @@ Management Commands
 Purge expired snippets
 ======================
 
-dpaste ships with a management command ``cleanup_snippets`` that removes
-expired snippets. To run it locally do:
+Snippets are removed as soon as they exceed their expiration
+date and get fetched by a client, however if they never get fetched this isn't
+triggered. dpaste ships with a management command ``cleanup_snippets`` that
+removes these expired snippets.
+
+It's sufficient to run it daily.
+
+To run it locally do:
 
 .. code-block:: bash
 
@@ -25,12 +31,11 @@ Options
 Setup a Crontab
 ---------------
 
-It's important that you setup a crontab or similar to remove expired snippets
-as soon as they reach their expiration date. A crontab line might look like:
+A crontab line might look like:
 
 .. code-block:: bash
 
-    */5 * * * * /srv/dpaste.de/pipenv run manage.py cleanup_snippets > /dev/null
+    1 20 * * * /srv/dpaste.de/pipenv run manage.py cleanup_snippets > /dev/null
 
 
 .. note:: If you use the *database* session backend, you may also need to setup

@@ -11,6 +11,11 @@ Changelog
 - Dropped support for Django 2.1. ⚠️
 - Added support for Python 3.8.
 - Added support for Django 3.0.
+- Snippets which are expired are now deleted as soon as they are requested
+  by a client. It's not necessary to purge them minutely with the
+  ``cleanup_snipppet`` managemenent command. It's still encouraged to have the
+  management command setup, so snippets which expired but never got fetched
+  by a client are deleted properly.
 - New AppConfig setting ``APPLICATION_NAME`` that can be used to replace the term
   "dpaste" throughout the UI.
 - New AppConfig setting ``EXTRA_HEAD_HTML`` that can be used to add custom HTML

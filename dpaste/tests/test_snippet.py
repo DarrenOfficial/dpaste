@@ -199,6 +199,23 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 
+    def test_snippet_is_removed_when_expired_and_as_soon_as_fetched(self):
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+
+        # Set the expire time of the snippet to the past.
+        s = Snippet.objects.all()[0]
+        s.expires = s.expires - timedelta(days=30)
+        s.save()
+
+        # Next time its fetched its automatically deleted.
+        snippet_id = Snippet.objects.all()[0].secret_id
+        url = reverse('snippet_details', kwargs={'snippet_id': snippet_id})
+        response = self.client.get(url, follow=True)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Snippet.objects.count(), 0)
+
     # -------------------------------------------------------------------------
     # Snippet Functions
     # -------------------------------------------------------------------------
