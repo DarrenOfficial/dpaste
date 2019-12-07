@@ -36,6 +36,14 @@ services:
       - "8000:8000"
     command: ./manage.py runserver 0:8000
 
+  migration:
+    image: app
+    command: ./manage.py migrate --noinput
+    volumes:
+      - .:/app:delegated
+      - data_db:/db
+
+
 volumes:
   data_db:
   data_collectstatic:
