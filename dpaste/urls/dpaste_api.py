@@ -5,8 +5,8 @@ from ..views import APIView
 
 urlpatterns = [
     url(
-        r'^api/$',
+        r"^api/$",
         csrf_exempt(APIView.as_view()),
-        name='dpaste_api_create_snippet',
+        name="dpaste_api_create_snippet",
     )
 ]

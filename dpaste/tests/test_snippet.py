@@ -11,26 +11,26 @@ from django.urls import reverse
 from ..highlight import PygmentsHighlighter
 from ..models import Snippet
 
-config = apps.get_app_config('dpaste')
+config = apps.get_app_config("dpaste")
 
 
 class SnippetTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.new_url = reverse('snippet_new')
+        self.new_url = reverse("snippet_new")
 
     def valid_form_data(self, **kwargs):
         data = {
-            'content': u"Hello Wörld.\n\tGood Bye",
-            'lexer': config.LEXER_DEFAULT,
-            'expires': config.EXPIRE_DEFAULT,
+            "content": u"Hello Wörld.\n\tGood Bye",
+            "lexer": config.LEXER_DEFAULT,
+            "expires": config.EXPIRE_DEFAULT,
         }
         if kwargs:
             data.update(kwargs)
         return data
 
     def test_about(self):
-        response = self.client.get(reverse('dpaste_about'))
+        response = self.client.get(reverse("dpaste_about"))
         self.assertEqual(response.status_code, 200)
 
     # -------------------------------------------------------------------------
@@ -47,17 +47,17 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data()
 
         # No content
-        data['content'] = ''
+        data["content"] = ""
         self.client.post(self.new_url, data)
         self.assertEqual(Snippet.objects.count(), 0)
 
         # Just some spaces
-        data['content'] = '   '
+        data["content"] = "   "
         self.client.post(self.new_url, data)
         self.assertEqual(Snippet.objects.count(), 0)
 
         # Linebreaks or tabs only are not valid either
-        data['content'] = '\n\t '
+        data["content"] = "\n\t "
         self.client.post(self.new_url, data)
         self.assertEqual(Snippet.objects.count(), 0)
 
@@ -70,7 +70,7 @@ class SnippetTestCase(TestCase):
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
-        self.assertContains(response, data['content'])
+        self.assertContains(response, data["content"])
 
         # The unicode method contains the snippet id so we can easily print
         # the id using {{ snippet }}
@@ -80,7 +80,7 @@ class SnippetTestCase(TestCase):
     def test_new_snippet_custom_lexer(self):
         # You can pass a lexer key in GET.l
         data = self.valid_form_data()
-        url = '%s?l=haskell' % self.new_url
+        url = "%s?l=haskell" % self.new_url
         response = self.client.post(url, data, follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -89,7 +89,7 @@ class SnippetTestCase(TestCase):
         # If you pass an invalid key it wont fail and just fallback
         # to the default lexer.
         data = self.valid_form_data()
-        url = '%s?l=invalid-lexer' % self.new_url
+        url = "%s?l=invalid-lexer" % self.new_url
         response = self.client.post(url, data, follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -101,7 +101,7 @@ class SnippetTestCase(TestCase):
         the snippet is considered as spam. We let the user know its spam.
         """
         data = self.valid_form_data()
-        data['title'] = 'Any content'
+        data["title"] = "Any content"
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -112,27 +112,27 @@ class SnippetTestCase(TestCase):
         """
         # POST data
         data = self.valid_form_data()
-        data['expires'] = 'onetime'
+        data["expires"] = "onetime"
 
         # First view, the author gets redirected after posting
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
-        self.assertContains(response, data['content'])
+        self.assertContains(response, data["content"])
 
         # Second View, another user looks at the snippet
-        response = self.client.get(response.request['PATH_INFO'], follow=True)
+        response = self.client.get(response.request["PATH_INFO"], follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
-        self.assertContains(response, data['content'])
+        self.assertContains(response, data["content"])
 
         # Third/Further View, another user looks at the snippet but it was deleted
-        response = self.client.get(response.request['PATH_INFO'], follow=True)
+        response = self.client.get(response.request["PATH_INFO"], follow=True)
         self.assertEqual(response.status_code, 404)
         self.assertEqual(Snippet.objects.count(), 0)
 
     def test_snippet_notfound(self):
-        url = reverse('snippet_details', kwargs={'snippet_id': 'abcd'})
+        url = reverse("snippet_details", kwargs={"snippet_id": "abcd"})
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 404)
 
@@ -143,18 +143,18 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
         response = self.client.post(
-            response.request['PATH_INFO'], data, follow=True
+            response.request["PATH_INFO"], data, follow=True
         )
-        self.assertContains(response, data['content'])
+        self.assertContains(response, data["content"])
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 2)
 
     def test_reply_invalid(self):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
-        del data['content']
+        del data["content"]
         response = self.client.post(
-            response.request['PATH_INFO'], data, follow=True
+            response.request["PATH_INFO"], data, follow=True
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
@@ -170,8 +170,8 @@ class SnippetTestCase(TestCase):
         self.client.post(self.new_url, data, follow=True)
 
         snippet_id = Snippet.objects.all()[0].secret_id
-        url = reverse('snippet_details', kwargs={'snippet_id': snippet_id})
-        response = self.client.post(url, {'delete': 1}, follow=True)
+        url = reverse("snippet_details", kwargs={"snippet_id": snippet_id})
+        response = self.client.post(url, {"delete": 1}, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -180,8 +180,8 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data()
         self.client.post(self.new_url, data, follow=True)
 
-        url = reverse('snippet_details', kwargs={'snippet_id': 'doesnotexist'})
-        response = self.client.post(url, {'delete': 1}, follow=True)
+        url = reverse("snippet_details", kwargs={"snippet_id": "doesnotexist"})
+        response = self.client.post(url, {"delete": 1}, follow=True)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(Snippet.objects.count(), 1)
@@ -192,7 +192,7 @@ class SnippetTestCase(TestCase):
 
         # Do not pass delete=1
         snippet_id = Snippet.objects.all()[0].secret_id
-        url = reverse('snippet_details', kwargs={'snippet_id': snippet_id})
+        url = reverse("snippet_details", kwargs={"snippet_id": snippet_id})
         response = self.client.post(url, {}, follow=True)
 
         # Returns regular snippet details page
@@ -210,7 +210,7 @@ class SnippetTestCase(TestCase):
 
         # Next time its fetched its automatically deleted.
         snippet_id = Snippet.objects.all()[0].secret_id
-        url = reverse('snippet_details', kwargs={'snippet_id': snippet_id})
+        url = reverse("snippet_details", kwargs={"snippet_id": snippet_id})
         response = self.client.get(url, follow=True)
 
         self.assertEqual(response.status_code, 404)
@@ -224,19 +224,19 @@ class SnippetTestCase(TestCase):
         self.client.post(self.new_url, data, follow=True)
         response = self.client.get(
             reverse(
-                'snippet_details_raw',
-                kwargs={'snippet_id': Snippet.objects.all()[0].secret_id},
+                "snippet_details_raw",
+                kwargs={"snippet_id": Snippet.objects.all()[0].secret_id},
             )
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, data['content'])
+        self.assertContains(response, data["content"])
 
     # -------------------------------------------------------------------------
     # XSS and correct escaping
     # -------------------------------------------------------------------------
-    XSS_ORIGINAL = '<script>hello</script>'
-    XSS_ESCAPED = '&lt;script&gt;hello&lt;/script&gt;'
+    XSS_ORIGINAL = "<script>hello</script>"
+    XSS_ESCAPED = "&lt;script&gt;hello&lt;/script&gt;"
 
     def test_xss_text_lexer(self):
         # Simple 'text' lexer
@@ -256,7 +256,7 @@ class SnippetTestCase(TestCase):
 
     def test_xss_pygments_lexer(self):
         # Pygments based lexer
-        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer='python')
+        data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer="python")
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
 
@@ -264,13 +264,13 @@ class SnippetTestCase(TestCase):
     # History
     # -------------------------------------------------------------------------
     def test_snippet_history(self):
-        response = self.client.get(reverse('snippet_history'))
+        response = self.client.get(reverse("snippet_history"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
 
         data = self.valid_form_data()
         self.client.post(self.new_url, data, follow=True)
-        response = self.client.get(reverse('snippet_history'))
+        response = self.client.get(reverse("snippet_history"))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
@@ -278,7 +278,7 @@ class SnippetTestCase(TestCase):
     def test_snippet_history_delete_all(self):
         # Empty list, delete all raises no error
         response = self.client.post(
-            reverse('snippet_history'), {'delete': 1}, follow=True
+            reverse("snippet_history"), {"delete": 1}, follow=True
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -292,7 +292,7 @@ class SnippetTestCase(TestCase):
 
         # Delete all of them
         response = self.client.post(
-            reverse('snippet_history'), {'delete': 1}, follow=True
+            reverse("snippet_history"), {"delete": 1}, follow=True
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -316,11 +316,11 @@ class SnippetTestCase(TestCase):
 
         # You can call the management command with --dry-run which will
         # list snippets to delete, but wont actually do.
-        management.call_command('cleanup_snippets', dry_run=True)
+        management.call_command("cleanup_snippets", dry_run=True)
         self.assertEqual(Snippet.objects.count(), 2)
 
         # Calling the management command will delete this one
-        management.call_command('cleanup_snippets')
+        management.call_command("cleanup_snippets")
         self.assertEqual(Snippet.objects.count(), 1)
 
     def test_delete_management_snippet_that_never_expires_will_not_get_deleted(
@@ -330,18 +330,18 @@ class SnippetTestCase(TestCase):
         Snippets without an expiration date wont get deleted automatically.
         """
         data = self.valid_form_data()
-        data['expires'] = 'never'
+        data["expires"] = "never"
         self.client.post(self.new_url, data, follow=True)
 
         self.assertEqual(Snippet.objects.count(), 1)
-        management.call_command('cleanup_snippets')
+        management.call_command("cleanup_snippets")
         self.assertEqual(Snippet.objects.count(), 1)
 
     def test_highlighting(self):
         # You can pass any lexer to the pygmentize function and it will
         # never fail loudly.
-        PygmentsHighlighter().highlight('code', 'python')
-        PygmentsHighlighter().highlight('code', 'doesnotexist')
+        PygmentsHighlighter().highlight("code", "python")
+        PygmentsHighlighter().highlight("code", "doesnotexist")
 
     def test_random_slug_generation(self):
         """
@@ -351,17 +351,17 @@ class SnippetTestCase(TestCase):
         slugs are extended now.
         """
         for i in range(0, 100):
-            Snippet.objects.create(content='foobar')
+            Snippet.objects.create(content="foobar")
         slug_list = Snippet.objects.values_list(
-            'secret_id', flat=True
-        ).order_by('published')
+            "secret_id", flat=True
+        ).order_by("published")
         self.assertEqual(len(set(slug_list)), 100)
 
     def test_leading_white_is_retained_in_db(self):
         """
         Leading Whitespace is retained in the db.
         """
-        content = ' one\n  two\n   three\n    four'
+        content = " one\n  two\n   three\n    four"
         data = self.valid_form_data(content=content)
         self.client.post(self.new_url, data, follow=True)
         self.assertEqual(Snippet.objects.all()[0].content, content)

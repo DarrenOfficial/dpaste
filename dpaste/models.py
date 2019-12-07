@@ -4,12 +4,12 @@ from random import SystemRandom
 from django.apps import apps
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from six import python_2_unicode_compatible
 
 from dpaste import highlight
 
-config = apps.get_app_config('dpaste')
+config = apps.get_app_config("dpaste")
 logger = getLogger(__file__)
 R = SystemRandom()
 
@@ -17,11 +17,11 @@ R = SystemRandom()
 def generate_secret_id(length):
     if length > config.SLUG_LENGTH:
         logger.warning(
-            'Slug creation triggered a duplicate, '
-            'consider increasing the SLUG_LENGTH.'
+            "Slug creation triggered a duplicate, "
+            "consider increasing the SLUG_LENGTH."
         )
 
-    secret_id = ''.join(
+    secret_id = "".join(
         [
             R.choice(config.SLUG_CHOICES)
             for i in range(length or config.SLUG_LENGTH)
@@ -45,37 +45,37 @@ class Snippet(models.Model):
     EXPIRE_KEEP = 2
     EXPIRE_ONETIME = 3
     EXPIRE_CHOICES = (
-        (EXPIRE_TIME, _('Expire by timestamp')),
-        (EXPIRE_KEEP, _('Keep Forever')),
-        (EXPIRE_ONETIME, _('One-Time snippet')),
+        (EXPIRE_TIME, _("Expire by timestamp")),
+        (EXPIRE_KEEP, _("Keep Forever")),
+        (EXPIRE_ONETIME, _("One-Time snippet")),
     )
 
     secret_id = models.CharField(
-        _('Secret ID'), max_length=255, blank=True, null=True, unique=True
+        _("Secret ID"), max_length=255, blank=True, null=True, unique=True
     )
-    content = models.TextField(_('Content'))
+    content = models.TextField(_("Content"))
     lexer = models.CharField(
-        _('Lexer'), max_length=30, default=highlight.LEXER_DEFAULT
+        _("Lexer"), max_length=30, default=highlight.LEXER_DEFAULT
     )
-    published = models.DateTimeField(_('Published'), auto_now_add=True)
+    published = models.DateTimeField(_("Published"), auto_now_add=True)
     expire_type = models.PositiveSmallIntegerField(
-        _('Expire Type'), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0]
+        _("Expire Type"), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0]
     )
-    expires = models.DateTimeField(_('Expires'), blank=True, null=True)
-    view_count = models.PositiveIntegerField(_('View count'), default=0)
-    rtl = models.BooleanField(_('Right-to-left'), default=False)
+    expires = models.DateTimeField(_("Expires"), blank=True, null=True)
+    view_count = models.PositiveIntegerField(_("View count"), default=0)
+    rtl = models.BooleanField(_("Right-to-left"), default=False)
     parent = models.ForeignKey(
-        'self',
+        "self",
         null=True,
         blank=True,
-        verbose_name=_('Parent Snippet'),
-        related_name='children',
+        verbose_name=_("Parent Snippet"),
+        related_name="children",
         on_delete=models.CASCADE,
     )
 
     class Meta:
-        ordering = ('-published',)
-        db_table = 'dpaste_snippet'
+        ordering = ("-published",)
+        db_table = "dpaste_snippet"
 
     def __str__(self):
         return self.secret_id
@@ -86,14 +86,14 @@ class Snippet(models.Model):
         super(Snippet, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('snippet_details', kwargs={'snippet_id': self.secret_id})
+        return reverse("snippet_details", kwargs={"snippet_id": self.secret_id})
 
     def highlight(self):
         HighlighterClass = highlight.get_highlighter_class(self.lexer)
         return HighlighterClass().render(
             code_string=self.content,
             lexer_name=self.lexer,
-            direction='rtl' if self.rtl else 'ltr',
+            direction="rtl" if self.rtl else "ltr",
         )
 
     @property

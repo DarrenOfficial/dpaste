@@ -10,5 +10,5 @@ docutils = "==0.15"
 [scripts]
 runserver = "sh -c \"./manage.py migrate && ./manage.py runserver 0:8000\""
 test = "pytest dpaste"
-cleanup = "sh -c \"isort -rc dpaste && black --skip-string-normalization --line-length=80 --exclude='/(migrations)/' dpaste\""
+cleanup = "sh -c \"isort -rc dpaste && black --line-length=80 --exclude='/(migrations)/' dpaste\""
 docs = "sphinx-build docs docs/_build/html"

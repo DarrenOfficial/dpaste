@@ -4,7 +4,7 @@ from django.apps import apps
 from django.template.defaultfilters import escape, linebreaksbr
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -12,7 +12,7 @@ from pygments.lexers.python import PythonLexer
 from pygments.util import ClassNotFound
 
 logger = getLogger(__file__)
-config = apps.get_app_config('dpaste')
+config = apps.get_app_config("dpaste")
 
 
 # -----------------------------------------------------------------------------
@@ -21,14 +21,14 @@ config = apps.get_app_config('dpaste')
 
 
 class Highlighter(object):
-    template_name = 'dpaste/highlight/code.html'
+    template_name = "dpaste/highlight/code.html"
 
     def highlight(self, code_string, lexer_name=None):
         """Subclasses need to override this."""
         return code_string
 
     @staticmethod
-    def get_lexer_display_name(lexer_name, fallback=_('(Deprecated Lexer)')):
+    def get_lexer_display_name(lexer_name, fallback=_("(Deprecated Lexer)")):
         for l in config.TEXT_FORMATTER + config.CODE_FORMATTER:
             if l[0] == lexer_name:
                 return l[1]
@@ -37,11 +37,11 @@ class Highlighter(object):
     def render(self, code_string, lexer_name, direction=None, **kwargs):
         highlighted_string = self.highlight(code_string, lexer_name=lexer_name)
         context = {
-            'highlighted': highlighted_string,
-            'highlighted_splitted': highlighted_string.splitlines(),
-            'lexer_name': lexer_name,
-            'lexer_display_name': self.get_lexer_display_name(lexer_name),
-            'direction': direction,
+            "highlighted": highlighted_string,
+            "highlighted_splitted": highlighted_string.splitlines(),
+            "lexer_name": lexer_name,
+            "lexer_display_name": self.get_lexer_display_name(lexer_name),
+            "direction": direction,
         }
         context.update(kwargs)
         return render_to_string(self.template_name, context)
@@ -50,7 +50,7 @@ class Highlighter(object):
 class PlainTextHighlighter(Highlighter):
     """Plain Text. Just replace linebreaks."""
 
-    template_name = 'dpaste/highlight/text.html'
+    template_name = "dpaste/highlight/text.html"
 
     def highlight(self, code_string, **kwargs):
         return linebreaksbr(code_string)
@@ -60,17 +60,17 @@ class MarkdownHighlighter(PlainTextHighlighter):
     """Markdown"""
 
     extensions = (
-        'tables',
-        'fenced-code',
-        'footnotes',
-        'autolink,',
-        'strikethrough',
-        'underline',
-        'quote',
-        'superscript',
-        'math',
+        "tables",
+        "fenced-code",
+        "footnotes",
+        "autolink,",
+        "strikethrough",
+        "underline",
+        "quote",
+        "superscript",
+        "math",
     )
-    render_flags = ('skip-html',)
+    render_flags = ("skip-html",)
 
     def highlight(self, code_string, **kwargs):
         import misaka
@@ -87,22 +87,22 @@ class MarkdownHighlighter(PlainTextHighlighter):
 class RestructuredTextHighlighter(PlainTextHighlighter):
     """Restructured Text"""
 
-    rst_part_name = 'html_body'
+    rst_part_name = "html_body"
     publish_args = {
-        'writer_name': 'html5_polyglot',
-        'settings_overrides': {
-            'raw_enabled': False,
-            'file_insertion_enabled': False,
-            'halt_level': 5,
-            'report_level': 2,
-            'warning_stream': '/dev/null',
+        "writer_name": "html5_polyglot",
+        "settings_overrides": {
+            "raw_enabled": False,
+            "file_insertion_enabled": False,
+            "halt_level": 5,
+            "report_level": 2,
+            "warning_stream": "/dev/null",
         },
     }
 
     def highlight(self, code_string, **kwargs):
         from docutils.core import publish_parts
 
-        self.publish_args['source'] = code_string
+        self.publish_args["source"] = code_string
         parts = publish_parts(**self.publish_args)
         return mark_safe(parts[self.rst_part_name])
 
@@ -126,9 +126,9 @@ class PlainCodeHighlighter(Highlighter):
     """
 
     def highlight(self, code_string, **kwargs):
-        return '\n'.join(
+        return "\n".join(
             [
-                '<span class="plain">{}</span>'.format(escape(l) or '&#8203;')
+                '<span class="plain">{}</span>'.format(escape(l) or "&#8203;")
                 for l in code_string.splitlines()
             ]
         )
@@ -149,7 +149,7 @@ class PygmentsHighlighter(Highlighter):
             try:
                 self.lexer = get_lexer_by_name(lexer_name)
             except ClassNotFound:
-                logger.warning('Lexer for given name %s not found', lexer_name)
+                logger.warning("Lexer for given name %s not found", lexer_name)
                 self.lexer = self.lexer_fallback
 
         return highlight(code_string, self.lexer, self.formatter)
@@ -190,8 +190,8 @@ def get_highlighter_class(lexer_name):
 
 # Generate a list of Form choices of all lexer.
 LEXER_CHOICES = (
-    (_('Text'), [i[:2] for i in config.TEXT_FORMATTER]),
-    (_('Code'), [i[:2] for i in config.CODE_FORMATTER]),
+    (_("Text"), [i[:2] for i in config.TEXT_FORMATTER]),
+    (_("Code"), [i[:2] for i in config.CODE_FORMATTER]),
 )
 
 # List of all Lexer Keys

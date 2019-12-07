@@ -1,14 +1,14 @@
 from django.apps import AppConfig, apps
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class dpasteAppConfig(AppConfig):
-    name = 'dpaste'
-    verbose_name = 'dpaste'
+    name = "dpaste"
+    verbose_name = "dpaste"
 
     # The application title used throughout the user interface.
-    APPLICATION_NAME = 'dpaste'
+    APPLICATION_NAME = "dpaste"
 
     # This content is loaded in the <head> section of each template.
     # You can use it to add any HTML tags, specifically custom CSS styles.
@@ -24,7 +24,7 @@ class dpasteAppConfig(AppConfig):
     #       .btn { background-color: blue; border: 3px solid yellow; }
     #     </style>
     #   """
-    EXTRA_HEAD_HTML = ''
+    EXTRA_HEAD_HTML = ""
 
     # Integer. Length of the random slug for each new snippet. In the rare
     # case an existing slug is generated again, the length will increase by
@@ -35,12 +35,12 @@ class dpasteAppConfig(AppConfig):
     # This is intentionally missing l and I as they look too similar with
     # sans-serif fonts.
     SLUG_CHOICES = (
-        'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890'
+        "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890"
     )
 
     # String. The lexer key that is pre-selected in the dropdown. Note that
     # this is only used if the user has not saved a snippet before, otherwise
-    LEXER_DEFAULT = 'python'
+    LEXER_DEFAULT = "python"
 
     # Integer. Maximum number of bytes per snippet.
     MAX_CONTENT_LENGTH = 250 * 1024 * 1024
@@ -48,7 +48,7 @@ class dpasteAppConfig(AppConfig):
     # A tuple of seconds and a descriptive string used in the lexer
     # expiration dropdown. Example::
     #
-    #     from django.utils.translation import ugettext_lazy as _
+    #     from django.utils.translation import gettext_lazy as _
     #     DPASTE_EXPIRE_CHOICES = (
     #         (3600, _('In one hour')),
     #         (3600 * 24 * 7, _('In one week')),
@@ -60,17 +60,17 @@ class dpasteAppConfig(AppConfig):
     # you set the choice key to ``never``. The management command will ignore
     # these snippets::
     #
-    #     from django.utils.translation import ugettext_lazy as _
+    #     from django.utils.translation import gettext_lazy as _
     #     DPASTE_EXPIRE_CHOICES = (
     #         (3600, _('In one hour')),
     #         ('never', _('Never')),
     #     )
     EXPIRE_CHOICES = (
-        ('onetime', _('One-Time snippet')),
-        (3600, _('In one hour')),
-        (3600 * 24 * 7, _('In one week')),
-        (3600 * 24 * 30, _('In one month')),
-        ('never', _('Never')),
+        ("onetime", _("One-Time snippet")),
+        (3600, _("In one hour")),
+        (3600 * 24 * 7, _("In one week")),
+        (3600 * 24 * 30, _("In one month")),
+        ("never", _("Never")),
     )
 
     # Default value for ``EXPIRE_CHOICES``
@@ -81,7 +81,7 @@ class dpasteAppConfig(AppConfig):
     # enable one-time snippets you have to add a choice ``onetime`` to the
     # expire choices::
     #
-    #     from django.utils.translation import ugettext_lazy as _
+    #     from django.utils.translation import gettext_lazy as _
     #     DPASTE_EXPIRE_CHOICES = (
     #         ('onetime', _('One-Time snippet')),
     #         (3600, _('In one hour')),
@@ -102,11 +102,11 @@ class dpasteAppConfig(AppConfig):
     RAW_MODE_PLAIN_TEXT = True
 
     # Lexers which have wordwrap enabled by default
-    LEXER_WORDWRAP = ('rst',)
+    LEXER_WORDWRAP = ("rst",)
 
     # Key names of the default text and code lexer.
-    PLAIN_TEXT_SYMBOL = '_text'
-    PLAIN_CODE_SYMBOL = '_code'
+    PLAIN_TEXT_SYMBOL = "_text"
+    PLAIN_CODE_SYMBOL = "_code"
 
     @property
     def TEXT_FORMATTER(self):
@@ -129,9 +129,9 @@ class dpasteAppConfig(AppConfig):
         )
 
         return [
-            (self.PLAIN_TEXT_SYMBOL, 'Plain Text', PlainTextHighlighter),
-            ('_markdown', 'Markdown', MarkdownHighlighter),
-            ('_rst', 'reStructuredText', RestructuredTextHighlighter),
+            (self.PLAIN_TEXT_SYMBOL, "Plain Text", PlainTextHighlighter),
+            ("_markdown", "Markdown", MarkdownHighlighter),
+            ("_rst", "reStructuredText", RestructuredTextHighlighter),
         ]
 
     @property
@@ -159,7 +159,7 @@ class dpasteAppConfig(AppConfig):
         from jsx.lexer import JsxLexer
 
         return [
-            (self.PLAIN_CODE_SYMBOL, 'Plain Code', PlainCodeHighlighter),
+            (self.PLAIN_CODE_SYMBOL, "Plain Code", PlainCodeHighlighter),
             # ('abap', 'ABAP'),
             # ('abnf', 'ABNF'),
             # ('ada', 'Ada'),
@@ -180,8 +180,8 @@ class dpasteAppConfig(AppConfig):
             # ('antlr-ruby', 'ANTLR With Ruby Target'),
             # ('apacheconf', 'ApacheConf'),
             # ('apl', 'APL'),
-            ('applescript', 'AppleScript'),
-            ('arduino', 'Arduino'),
+            ("applescript", "AppleScript"),
+            ("arduino", "Arduino"),
             # ('as', 'ActionScript'),
             # ('as3', 'ActionScript 3'),
             # ('aspectj', 'AspectJ'),
@@ -192,8 +192,8 @@ class dpasteAppConfig(AppConfig):
             # ('autoit', 'AutoIt'),
             # ('awk', 'Awk'),
             # ('basemake', 'Base Makefile'),
-            ('bash', 'Bash'),
-            ('bat', 'Batchfile'),
+            ("bash", "Bash"),
+            ("bat", "Batchfile"),
             # ('bbcode', 'BBCode'),
             # ('bc', 'BC'),
             # ('befunge', 'Befunge'),
@@ -207,7 +207,7 @@ class dpasteAppConfig(AppConfig):
             # ('bro', 'Bro'),
             # ('bst', 'BST'),
             # ('bugs', 'BUGS'),
-            ('c', 'C'),
+            ("c", "C"),
             # ('c-objdump', 'c-objdump'),
             # ('ca65', 'ca65 assembler'),
             # ('cadl', 'cADL'),
@@ -226,15 +226,15 @@ class dpasteAppConfig(AppConfig):
             # ('cirru', 'Cirru'),
             # ('clay', 'Clay'),
             # ('clean', 'Clean'),
-            ('clojure', 'Clojure'),
+            ("clojure", "Clojure"),
             # ('clojurescript', 'ClojureScript'),
-            ('cmake', 'CMake'),
+            ("cmake", "CMake"),
             # ('cobol', 'COBOL'),
             # ('cobolfree', 'COBOLFree'),
-            ('coffee-script', 'CoffeeScript'),
-            ('common-lisp', 'Common Lisp'),
+            ("coffee-script", "CoffeeScript"),
+            ("common-lisp", "Common Lisp"),
             # ('componentpascal', 'Component Pascal'),
-            ('console', 'Console/Bash Session'),
+            ("console", "Console/Bash Session"),
             # ('control', 'Debian Control file'),
             # ('coq', 'Coq'),
             # ('cpp', 'C++'),
@@ -244,11 +244,11 @@ class dpasteAppConfig(AppConfig):
             # ('crmsh', 'Crmsh'),
             # ('croc', 'Croc'),
             # ('cryptol', 'Cryptol'),
-            ('csharp', 'C#'),
+            ("csharp", "C#"),
             # ('csound', 'Csound Orchestra'),
             # ('csound-document', 'Csound Document'),
             # ('csound-score', 'Csound Score'),
-            ('css', 'CSS'),
+            ("css", "CSS"),
             # ('css+django', 'CSS+Django/Jinja'),
             # ('css+erb', 'CSS+Ruby'),
             # ('css+genshitext', 'CSS+Genshi Text'),
@@ -259,17 +259,17 @@ class dpasteAppConfig(AppConfig):
             # ('css+php', 'CSS+PHP'),
             # ('css+smarty', 'CSS+Smarty'),
             # ('cucumber', 'Gherkin'),
-            ('cuda', 'CUDA'),
+            ("cuda", "CUDA"),
             # ('cypher', 'Cypher'),
             # ('cython', 'Cython'),
             # ('d', 'D'),
             # ('d-objdump', 'd-objdump'),
-            ('dart', 'Dart'),
-            ('delphi', 'Delphi'),
+            ("dart", "Dart"),
+            ("delphi", "Delphi"),
             # ('dg', 'dg'),
-            ('diff', 'Diff'),
-            ('django', 'Django/Jinja'),
-            ('docker', 'Docker'),
+            ("diff", "Diff"),
+            ("django", "Django/Jinja"),
+            ("docker", "Docker"),
             # ('doscon', 'MSDOS Session'),
             # ('dpatch', 'Darcs Patch'),
             # ('dtd', 'DTD'),
@@ -283,12 +283,12 @@ class dpasteAppConfig(AppConfig):
             # ('ec', 'eC'),
             # ('ecl', 'ECL'),
             # ('eiffel', 'Eiffel'),
-            ('elixir', 'Elixir'),
+            ("elixir", "Elixir"),
             # ('elm', 'Elm'),
             # ('emacs', 'EmacsLisp'),
             # ('erb', 'ERB'),
             # ('erl', 'Erlang erl session'),
-            ('erlang', 'Erlang'),
+            ("erlang", "Erlang"),
             # ('evoque', 'Evoque'),
             # ('extempore', 'xtlang'),
             # ('ezhil', 'Ezhil'),
@@ -310,7 +310,7 @@ class dpasteAppConfig(AppConfig):
             # ('genshitext', 'Genshi Text'),
             # ('glsl', 'GLSL'),
             # ('gnuplot', 'Gnuplot'),
-            ('go', 'Go'),
+            ("go", "Go"),
             # ('golo', 'Golo'),
             # ('gooddata-cl', 'GoodData-CL'),
             # ('gosu', 'Gosu'),
@@ -318,15 +318,15 @@ class dpasteAppConfig(AppConfig):
             # ('groovy', 'Groovy'),
             # ('gst', 'Gosu Template'),
             # ('haml', 'Haml'),
-            ('handlebars', 'Handlebars'),
-            ('haskell', 'Haskell'),
+            ("handlebars", "Handlebars"),
+            ("haskell", "Haskell"),
             # ('haxeml', 'Hxml'),
             # ('hexdump', 'Hexdump'),
             # ('hlsl', 'HLSL'),
             # ('hsail', 'HSAIL'),
-            ('html', 'HTML'),
+            ("html", "HTML"),
             # ('html+cheetah', 'HTML+Cheetah'),
-            ('html+django', 'HTML + Django/Jinja'),
+            ("html+django", "HTML + Django/Jinja"),
             # ('html+evoque', 'HTML+Evoque'),
             # ('html+genshi', 'HTML+Genshi'),
             # ('html+handlebars', 'HTML+Handlebars'),
@@ -349,22 +349,22 @@ class dpasteAppConfig(AppConfig):
             # ('igor', 'Igor'),
             # ('inform6', 'Inform 6'),
             # ('inform7', 'Inform 7'),
-            ('ini', 'INI'),
+            ("ini", "INI"),
             # ('io', 'Io'),
             # ('ioke', 'Ioke'),
             # ('ipython2', 'IPython'),
             # ('ipython3', 'IPython3'),
-            ('ipythonconsole', 'IPython console session'),
-            ('irc', 'IRC logs'),
+            ("ipythonconsole", "IPython console session"),
+            ("irc", "IRC logs"),
             # ('isabelle', 'Isabelle'),
             # ('j', 'J'),
             # ('jags', 'JAGS'),
             # ('jasmin', 'Jasmin'),
-            ('java', 'Java'),
+            ("java", "Java"),
             # ('javascript+mozpreproc', 'Javascript+mozpreproc'),
             # ('jcl', 'JCL'),
             # ('jlcon', 'Julia console'),
-            ('js', 'JavaScript'),
+            ("js", "JavaScript"),
             # ('js+cheetah', 'JavaScript+Cheetah'),
             # ('js+django', 'JavaScript+Django/Jinja'),
             # ('js+erb', 'JavaScript+Ruby'),
@@ -375,8 +375,8 @@ class dpasteAppConfig(AppConfig):
             # ('js+php', 'JavaScript+PHP'),
             # ('js+smarty', 'JavaScript+Smarty'),
             # ('jsgf', 'JSGF'),
-            ('json', 'JSON'),
-            ('jsx', 'JSX/React'),
+            ("json", "JSON"),
+            ("jsx", "JSX/React"),
             # ('json-object', 'JSONBareObject'),
             # ('jsonld', 'JSON-LD'),
             # ('jsp', 'Java Server Page'),
@@ -385,12 +385,12 @@ class dpasteAppConfig(AppConfig):
             # ('kal', 'Kal'),
             # ('kconfig', 'Kconfig'),
             # ('koka', 'Koka'),
-            ('kotlin', 'Kotlin'),
+            ("kotlin", "Kotlin"),
             # ('lagda', 'Literate Agda'),
             # ('lasso', 'Lasso'),
             # ('lcry', 'Literate Cryptol'),
             # ('lean', 'Lean'),
-            ('less', 'LessCSS'),
+            ("less", "LessCSS"),
             # ('lhs', 'Literate Haskell'),
             # ('lidr', 'Literate Idris'),
             # ('lighty', 'Lighttpd configuration file'),
@@ -401,14 +401,14 @@ class dpasteAppConfig(AppConfig):
             # ('logos', 'Logos'),
             # ('logtalk', 'Logtalk'),
             # ('lsl', 'LSL'),
-            ('lua', 'Lua'),
-            ('make', 'Makefile'),
+            ("lua", "Lua"),
+            ("make", "Makefile"),
             # ('mako', 'Mako'),
             # ('maql', 'MAQL'),
             # ('mask', 'Mask'),
             # ('mason', 'Mason'),
             # ('mathematica', 'Mathematica'),
-            ('matlab', 'Matlab'),
+            ("matlab", "Matlab"),
             # ('matlabsession', 'Matlab session'),
             # ('md', 'markdown'),
             # ('minid', 'MiniD'),
@@ -433,16 +433,16 @@ class dpasteAppConfig(AppConfig):
             # ('newlisp', 'NewLisp'),
             # ('newspeak', 'Newspeak'),
             # ('ng2', 'Angular2'),
-            ('nginx', 'Nginx configuration file'),
+            ("nginx", "Nginx configuration file"),
             # ('nim', 'Nimrod'),
             # ('nit', 'Nit'),
             # ('nixos', 'Nix'),
             # ('nsis', 'NSIS'),
-            ('numpy', 'NumPy'),
+            ("numpy", "NumPy"),
             # ('nusmv', 'NuSMV'),
             # ('objdump', 'objdump'),
             # ('objdump-nasm', 'objdump-nasm'),
-            ('objective-c', 'Objective-C'),
+            ("objective-c", "Objective-C"),
             # ('objective-c++', 'Objective-C++'),
             # ('objective-j', 'Objective-J'),
             # ('ocaml', 'OCaml'),
@@ -455,14 +455,14 @@ class dpasteAppConfig(AppConfig):
             # ('pan', 'Pan'),
             # ('parasail', 'ParaSail'),
             # ('pawn', 'Pawn'),
-            ('perl', 'Perl'),
+            ("perl", "Perl"),
             # ('perl6', 'Perl6'),
-            ('php', 'PHP'),
+            ("php", "PHP"),
             # ('pig', 'Pig'),
             # ('pike', 'Pike'),
             # ('pkgconfig', 'PkgConfig'),
             # ('plpgsql', 'PL/pgSQL'),
-            ('postgresql', 'PostgreSQL SQL dialect'),
+            ("postgresql", "PostgreSQL SQL dialect"),
             # ('postscript', 'PostScript'),
             # ('pot', 'Gettext Catalog'),
             # ('pov', 'POVRay'),
@@ -479,7 +479,7 @@ class dpasteAppConfig(AppConfig):
             # ('pycon', 'Python console session'),
             # ('pypylog', 'PyPy Log'),
             # ('pytb', 'Python Traceback'),
-            ('python', 'Python'),
+            ("python", "Python"),
             # ('python3', 'Python 3'),
             # ('qbasic', 'QBasic'),
             # ('qml', 'QML'),
@@ -494,7 +494,7 @@ class dpasteAppConfig(AppConfig):
             # ('ragel-objc', 'Ragel in Objective C Host'),
             # ('ragel-ruby', 'Ragel in Ruby Host'),
             # ('raw', 'Raw token data'),
-            ('rb', 'Ruby'),
+            ("rb", "Ruby"),
             # ('rbcon', 'Ruby irb session'),
             # ('rconsole', 'RConsole'),
             # ('rd', 'Rd'),
@@ -511,17 +511,17 @@ class dpasteAppConfig(AppConfig):
             # ('robotframework', 'RobotFramework'),
             # ('rql', 'RQL'),
             # ('rsl', 'RSL'),
-            ('rst', 'reStructuredText'),
+            ("rst", "reStructuredText"),
             # ('rts', 'TrafficScript'),
-            ('rust', 'Rust'),
+            ("rust", "Rust"),
             # ('sas', 'SAS'),
-            ('sass', 'Sass'),
+            ("sass", "Sass"),
             # ('sc', 'SuperCollider'),
             # ('scala', 'Scala'),
             # ('scaml', 'Scaml'),
             # ('scheme', 'Scheme'),
             # ('scilab', 'Scilab'),
-            ('scss', 'SCSS'),
+            ("scss", "SCSS"),
             # ('shen', 'Shen'),
             # ('silver', 'Silver'),
             # ('slim', 'Slim'),
@@ -531,19 +531,19 @@ class dpasteAppConfig(AppConfig):
             # ('sml', 'Standard ML'),
             # ('snobol', 'Snobol'),
             # ('snowball', 'Snowball'),
-            ('sol', 'Solidity'),
+            ("sol", "Solidity"),
             # ('sourceslist', 'Debian Sourcelist'),
             # ('sp', 'SourcePawn'),
             # ('sparql', 'SPARQL'),
             # ('spec', 'RPMSpec'),
             # ('splus', 'S'),
-            ('sql', 'SQL'),
+            ("sql", "SQL"),
             # ('sqlite3', 'sqlite3con'),
             # ('squidconf', 'SquidConf'),
             # ('ssp', 'Scalate Server Page'),
             # ('stan', 'Stan'),
             # ('stata', 'Stata'),
-            ('swift', 'Swift'),
+            ("swift", "Swift"),
             # ('swig', 'SWIG'),
             # ('systemverilog', 'systemverilog'),
             # ('tads3', 'TADS 3'),
@@ -556,7 +556,7 @@ class dpasteAppConfig(AppConfig):
             # ('termcap', 'Termcap'),
             # ('terminfo', 'Terminfo'),
             # ('terraform', 'Terraform'),
-            ('tex', 'TeX'),
+            ("tex", "TeX"),
             # ('text', 'Text only'),
             # ('thrift', 'Thrift'),
             # ('todotxt', 'Todotxt'),
@@ -566,7 +566,7 @@ class dpasteAppConfig(AppConfig):
             # ('tsql', 'Transact-SQL'),
             # ('turtle', 'Turtle'),
             # ('twig', 'Twig'),
-            ('typoscript', 'TypoScript'),
+            ("typoscript", "TypoScript"),
             # ('typoscriptcssdata', 'TypoScriptCssData'),
             # ('typoscripthtmldata', 'TypoScriptHtmlData'),
             # ('urbiscript', 'UrbiScript'),
@@ -579,11 +579,11 @@ class dpasteAppConfig(AppConfig):
             # ('verilog', 'verilog'),
             # ('vgl', 'VGL'),
             # ('vhdl', 'vhdl'),
-            ('vim', 'VimL'),
+            ("vim", "VimL"),
             # ('wdiff', 'WDiff'),
             # ('whiley', 'Whiley'),
             # ('x10', 'X10'),
-            ('xml', 'XML'),
+            ("xml", "XML"),
             # ('xml+cheetah', 'XML+Cheetah'),
             # ('xml+django', 'XML+Django/Jinja'),
             # ('xml+erb', 'XML+Ruby'),
@@ -596,10 +596,10 @@ class dpasteAppConfig(AppConfig):
             # ('xml+velocity', 'XML+Velocity'),
             # ('xorg.conf', 'Xorg'),
             # ('xquery', 'XQuery'),
-            ('xslt', 'XSLT'),
+            ("xslt", "XSLT"),
             # ('xtend', 'Xtend'),
             # ('xul+mozpreproc', 'XUL+mozpreproc'),
-            ('yaml', 'YAML'),
+            ("yaml", "YAML"),
             # ('yaml+jinja', 'YAML+Jinja'),
             # ('zephir', 'Zephir')
         ]
@@ -612,13 +612,13 @@ class dpasteAppConfig(AppConfig):
         framework is installed, it uses the current Site domain. Otherwise
         it falls back to 'https://dpaste.de'
         """
-        if apps.is_installed('django.contrib.sites'):
+        if apps.is_installed("django.contrib.sites"):
             from django.contrib.sites.shortcuts import get_current_site
 
             site = get_current_site(request)
             if site:
-                return 'https://{0}'.format(site.domain)
-        return 'https://dpaste.de'
+                return f"https://{site.domain}"
+        return "https://dpaste.de"
 
     @property
     def extra_template_context(self):
@@ -627,6 +627,6 @@ class dpasteAppConfig(AppConfig):
         all Template Views.
         """
         return {
-            'dpaste_application_name': self.APPLICATION_NAME,
-            'dpaste_extra_head_html': mark_safe(self.EXTRA_HEAD_HTML),
+            "dpaste_application_name": self.APPLICATION_NAME,
+            "dpaste_extra_head_html": mark_safe(self.EXTRA_HEAD_HTML),
         }

@@ -27,7 +27,7 @@ from dpaste.forms import SnippetForm, get_expire_values
 from dpaste.highlight import PygmentsHighlighter
 from dpaste.models import Snippet
 
-config = apps.get_app_config('dpaste')
+config = apps.get_app_config("dpaste")
 
 
 # -----------------------------------------------------------------------------
@@ -41,11 +41,11 @@ class SnippetView(FormView):
     """
 
     form_class = SnippetForm
-    template_name = 'dpaste/new.html'
+    template_name = "dpaste/new.html"
 
     def get_form_kwargs(self):
         kwargs = super(SnippetView, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def form_valid(self, form):
@@ -65,9 +65,9 @@ class SnippetDetailView(SnippetView, DetailView):
     """
 
     queryset = Snippet.objects.all()
-    template_name = 'dpaste/details.html'
-    slug_url_kwarg = 'snippet_id'
-    slug_field = 'secret_id'
+    template_name = "dpaste/details.html"
+    slug_url_kwarg = "snippet_id"
+    slug_field = "secret_id"
 
     def post(self, request, *args, **kwargs):
         """
@@ -76,14 +76,14 @@ class SnippetDetailView(SnippetView, DetailView):
         reasons and the chance to abuse this is not given anyway, since snippets
         always expire.
         """
-        if 'delete' in self.request.POST:
+        if "delete" in self.request.POST:
             snippet = get_object_or_404(
-                Snippet, secret_id=self.kwargs['snippet_id']
+                Snippet, secret_id=self.kwargs["snippet_id"]
             )
             snippet.delete()
 
             # Append `#` so #delete goes away in Firefox
-            url = '{0}#'.format(reverse('snippet_new'))
+            url = "{0}#".format(reverse("snippet_new"))
             return HttpResponseRedirect(url)
 
         return super(SnippetDetailView, self).post(request, *args, **kwargs)
@@ -104,16 +104,16 @@ class SnippetDetailView(SnippetView, DetailView):
 
         # Increase the view count of the snippet
         snippet.view_count += 1
-        snippet.save(update_fields=['view_count'])
+        snippet.save(update_fields=["view_count"])
 
         return super(SnippetDetailView, self).get(request, *args, **kwargs)
 
     def get_initial(self):
         snippet = self.get_object()
         return {
-            'content': snippet.content,
-            'lexer': snippet.lexer,
-            'rtl': snippet.rtl,
+            "content": snippet.content,
+            "lexer": snippet.lexer,
+            "rtl": snippet.rtl,
         }
 
     def form_valid(self, form):
@@ -132,12 +132,12 @@ class SnippetDetailView(SnippetView, DetailView):
         d = difflib.unified_diff(
             snippet.parent.content.splitlines(),
             snippet.content.splitlines(),
-            ugettext('Previous Snippet'),
-            ugettext('Current Snippet'),
+            ugettext("Previous Snippet"),
+            ugettext("Current Snippet"),
             n=1,
         )
-        diff_code = '\n'.join(d).strip()
-        highlighted = PygmentsHighlighter().render(diff_code, 'diff')
+        diff_code = "\n".join(d).strip()
+        highlighted = PygmentsHighlighter().render(diff_code, "diff")
 
         # Remove blank lines
         return highlighted
@@ -148,9 +148,9 @@ class SnippetDetailView(SnippetView, DetailView):
         ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
         ctx.update(
             {
-                'wordwrap': self.object.lexer in highlight.LEXER_WORDWRAP,
-                'diff': self.get_snippet_diff(),
-                'raw_mode': config.RAW_MODE_ENABLED,
+                "wordwrap": self.object.lexer in highlight.LEXER_WORDWRAP,
+                "diff": self.get_snippet_diff(),
+                "raw_mode": config.RAW_MODE_ENABLED,
             }
         )
         ctx.update(config.extra_template_context)
@@ -162,22 +162,20 @@ class SnippetRawView(SnippetDetailView):
     Display the raw content of a snippet
     """
 
-    template_name = 'dpaste/raw.html'
+    template_name = "dpaste/raw.html"
 
     def dispatch(self, request, *args, **kwargs):
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
-                ugettext(
-                    'This dpaste installation has Raw view mode disabled.'
-                )
+                ugettext("This dpaste installation has Raw view mode disabled.")
             )
         return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
 
     def render_plain_text(self, context, **response_kwargs):
         snippet = self.get_object()
         response = HttpResponse(snippet.content)
-        response['Content-Type'] = 'text/plain;charset=UTF-8'
-        response['X-Content-Type-Options'] = 'nosniff'
+        response["Content-Type"] = "text/plain;charset=UTF-8"
+        response["X-Content-Type-Options"] = "nosniff"
         return response
 
     def render_to_response(self, context, **response_kwargs):
@@ -199,26 +197,26 @@ class SnippetHistory(TemplateView):
     session).
     """
 
-    template_name = 'dpaste/history.html'
+    template_name = "dpaste/history.html"
 
     def get_user_snippets(self):
-        snippet_id_list = self.request.session.get('snippet_list', [])
+        snippet_id_list = self.request.session.get("snippet_list", [])
         return Snippet.objects.filter(pk__in=snippet_id_list)
 
     def post(self, request, *args, **kwargs):
         """
         Delete all user snippets at once.
         """
-        if 'delete' in self.request.POST:
+        if "delete" in self.request.POST:
             self.get_user_snippets().delete()
 
         # Append `#` so #delete goes away in Firefox
-        url = '{0}#'.format(reverse('snippet_history'))
+        url = "{0}#".format(reverse("snippet_history"))
         return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):
         ctx = super(SnippetHistory, self).get_context_data(**kwargs)
-        ctx.update({'snippet_list': self.get_user_snippets()})
+        ctx.update({"snippet_list": self.get_user_snippets()})
         ctx.update(config.extra_template_context)
         return ctx
 
@@ -238,7 +236,7 @@ class APIView(View):
         The default response is the snippet URL wrapped in quotes.
         """
         base_url = config.get_base_url(request=self.request)
-        return '"{url}{path}"'.format(url=base_url, path=s.get_absolute_url())
+        return f'"{base_url}{s.get_absolute_url()}"'
 
     def _format_url(self, s):
         """
@@ -246,7 +244,7 @@ class APIView(View):
         no quotes, but a linebreak at the end.
         """
         base_url = config.get_base_url(request=self.request)
-        return '{url}{path}\n'.format(url=base_url, path=s.get_absolute_url())
+        return f"{base_url}{s.get_absolute_url()}\n"
 
     def _format_json(self, s):
         """
@@ -255,37 +253,35 @@ class APIView(View):
         base_url = config.get_base_url(request=self.request)
         return json.dumps(
             {
-                'url': '{url}{path}'.format(
-                    url=base_url, path=s.get_absolute_url()
-                ),
-                'content': s.content,
-                'lexer': s.lexer,
+                "url": f"{base_url}{s.get_absolute_url()}",
+                "content": s.content,
+                "lexer": s.lexer,
             }
         )
 
     def post(self, request, *args, **kwargs):
-        content = request.POST.get('content', '')
-        lexer = request.POST.get('lexer', highlight.LEXER_DEFAULT).strip()
-        filename = request.POST.get('filename', '').strip()
-        expires = request.POST.get('expires', '').strip()
-        response_format = request.POST.get('format', 'default').strip()
+        content = request.POST.get("content", "")
+        lexer = request.POST.get("lexer", highlight.LEXER_DEFAULT).strip()
+        filename = request.POST.get("filename", "").strip()
+        expires = request.POST.get("expires", "").strip()
+        response_format = request.POST.get("format", "default").strip()
 
         if not content.strip():
-            return HttpResponseBadRequest('No content given')
+            return HttpResponseBadRequest("No content given")
 
         # We need at least a lexer or a filename
         if not lexer and not filename:
             return HttpResponseBadRequest(
-                'No lexer or filename given. Unable to '
-                'determine a highlight. Valid lexers are: %s'
-                % ', '.join(highlight.LEXER_KEYS)
+                "No lexer or filename given. Unable to "
+                "determine a highlight. Valid lexers are: %s"
+                % ", ".join(highlight.LEXER_KEYS)
             )
 
         # A lexer is given, check if its valid at all
         if lexer and lexer not in highlight.LEXER_KEYS:
             return HttpResponseBadRequest(
                 'Invalid lexer "%s" given. Valid lexers are: %s'
-                % (lexer, ', '.join(highlight.LEXER_KEYS))
+                % (lexer, ", ".join(highlight.LEXER_KEYS))
             )
 
         # No lexer is given, but we have a filename, try to get the lexer
@@ -303,7 +299,7 @@ class APIView(View):
             if expires not in expire_options:
                 return HttpResponseBadRequest(
                     'Invalid expire choice "{}" given. Valid values are: {}'.format(
-                        expires, ', '.join(expire_options)
+                        expires, ", ".join(expire_options)
                     )
                 )
             expires, expire_type = get_expire_values(expires)
@@ -321,7 +317,7 @@ class APIView(View):
         )
 
         # Custom formatter for the API response
-        formatter = getattr(self, '_format_{0}'.format(response_format), None)
+        formatter = getattr(self, f"_format_{response_format}", None)
         if callable(formatter):
             return HttpResponse(formatter(snippet))
 
@@ -335,13 +331,13 @@ class APIView(View):
 # -----------------------------------------------------------------------------
 
 
-def page_not_found(request, exception=None, template_name='dpaste/404.html'):
+def page_not_found(request, exception=None, template_name="dpaste/404.html"):
     return django_page_not_found(
         request, exception, template_name=template_name
     )
 
 
-def server_error(request, template_name='dpaste/500.html'):
+def server_error(request, template_name="dpaste/500.html"):
     return django_server_error(
         request, template_name=template_name
     )  # pragma: no cover
