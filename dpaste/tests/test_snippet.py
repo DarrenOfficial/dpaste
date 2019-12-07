@@ -136,6 +136,32 @@ class SnippetTestCase(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 404)
 
+    def test_random_slug_generation(self):
+        """
+        The default slug length is 4 so with 10000 random slug generation we
+        will run into duplicates, but those slugs are extended now.
+        """
+        config.SLUG_LENGTH = 1
+
+        for i in range(0, 100):
+            Snippet.objects.create(content="foobar")
+        slug_list = Snippet.objects.values_list(
+            "secret_id", flat=True
+        ).order_by("published")
+
+        # All 1001 Snippets have been created
+        self.assertEqual(len(set(slug_list)), 100)
+
+        # There will be a couple of snippets with at least 2 characters
+        # in slug length
+        extended_snippet = Snippet.objects.extra(
+            select={"length": "Length(secret_id)"}
+        ).order_by("-length").first()
+        self.assertTrue(len(extended_snippet.secret_id) > 1)
+
+        # Set back to default
+        config.SLUG_LENGTH = 4
+
     # -------------------------------------------------------------------------
     # Reply
     # -------------------------------------------------------------------------
@@ -232,6 +258,19 @@ class SnippetTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data["content"])
 
+    def test_slim(self):
+        data = self.valid_form_data()
+        self.client.post(self.new_url, data, follow=True)
+        response = self.client.get(
+            reverse(
+                "snippet_details_slim",
+                kwargs={"snippet_id": Snippet.objects.all()[0].secret_id},
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Hello")
+
     # -------------------------------------------------------------------------
     # XSS and correct escaping
     # -------------------------------------------------------------------------
@@ -259,6 +298,21 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data(content=self.XSS_ORIGINAL, lexer="python")
         response = self.client.post(self.new_url, data, follow=True)
         self.assertContains(response, self.XSS_ESCAPED)
+
+    def test_leading_white_is_retained_in_db(self):
+        """
+        Leading Whitespace is retained in the db.
+        """
+        content = " one\n  two\n   three\n    four"
+        data = self.valid_form_data(content=content)
+        self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.all()[0].content, content)
+
+    def test_highlighting(self):
+        # You can pass any lexer to the pygmentize function and it will
+        # never fail loudly.
+        PygmentsHighlighter().highlight("code", "python")
+        PygmentsHighlighter().highlight("code", "doesnotexist")
 
     # -------------------------------------------------------------------------
     # History
@@ -323,9 +377,7 @@ class SnippetTestCase(TestCase):
         management.call_command("cleanup_snippets")
         self.assertEqual(Snippet.objects.count(), 1)
 
-    def test_delete_management_snippet_that_never_expires_will_not_get_deleted(
-        self,
-    ):
+    def test_delete_management_snippet_never_expires_not_get_deleted(self,):
         """
         Snippets without an expiration date wont get deleted automatically.
         """
@@ -336,32 +388,3 @@ class SnippetTestCase(TestCase):
         self.assertEqual(Snippet.objects.count(), 1)
         management.call_command("cleanup_snippets")
         self.assertEqual(Snippet.objects.count(), 1)
-
-    def test_highlighting(self):
-        # You can pass any lexer to the pygmentize function and it will
-        # never fail loudly.
-        PygmentsHighlighter().highlight("code", "python")
-        PygmentsHighlighter().highlight("code", "doesnotexist")
-
-    def test_random_slug_generation(self):
-        """
-        Set the max length of a slug to 1, so we wont have more than 60
-        different slugs (with the default slug choice string). With 100
-        random slug generation we will run into duplicates, but those
-        slugs are extended now.
-        """
-        for i in range(0, 100):
-            Snippet.objects.create(content="foobar")
-        slug_list = Snippet.objects.values_list(
-            "secret_id", flat=True
-        ).order_by("published")
-        self.assertEqual(len(set(slug_list)), 100)
-
-    def test_leading_white_is_retained_in_db(self):
-        """
-        Leading Whitespace is retained in the db.
-        """
-        content = " one\n  two\n   three\n    four"
-        data = self.valid_form_data(content=content)
-        self.client.post(self.new_url, data, follow=True)
-        self.assertEqual(Snippet.objects.all()[0].content, content)
