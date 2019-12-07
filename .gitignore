@@ -4,5 +4,5 @@ docs/_build
 dpaste/settings/local.py
 dpaste/static/
 dpaste.egg-info
-dpaste.db
+dpaste.sqlite
 node_modules
