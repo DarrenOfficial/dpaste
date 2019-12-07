@@ -26,6 +26,15 @@ class dpasteAppConfig(AppConfig):
     #   """
     EXTRA_HEAD_HTML = ""
 
+    # HTML content injected in the About page
+    EXTRA_POST_ABOUT = ""
+
+    # HTML content injeted after the "New snippet" form
+    EXTRA_POST_NEW =""
+
+    # HTML content injected at the end of every form
+    EXTRA_POST_FORM = ""
+
     # Integer. Length of the random slug for each new snippet. In the rare
     # case an existing slug is generated again, the length will increase by
     # one more character.
@@ -629,4 +638,7 @@ class dpasteAppConfig(AppConfig):
         return {
             "dpaste_application_name": self.APPLICATION_NAME,
             "dpaste_extra_head_html": mark_safe(self.EXTRA_HEAD_HTML),
+            "dpaste_extra_post_about": mark_safe(self.EXTRA_POST_ABOUT),
+            "dpaste_extra_post_new": mark_safe(self.EXTRA_POST_NEW),
+            "dpaste_extra_post_form": mark_safe(self.EXTRA_POST_FORM),
         }

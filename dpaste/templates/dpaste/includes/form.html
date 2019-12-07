@@ -31,10 +31,12 @@
       </button>
     </p>
   </div>
-  
+
   <p class="content superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
       <label for="{{ form.content.auto_id }}">{% trans "Content" %}</label>
     {{ form.content }}
   </p>
+
+  {{ dpaste_extra_post_form }}
 </form>
 

@@ -102,8 +102,11 @@ DATABASES = {
 # add that webserver right away.
 try:
     import django_webserver
-    INSTALLED_APPS.append('django_webserver')
-    sys.stdout.write(f'\n🚀  Production webserver installed. Will run on port {env("PORT")}\n')
+
+    INSTALLED_APPS.append("django_webserver")
+    sys.stdout.write(
+        f'\n🚀  Production webserver installed. Will run on port {env("PORT")}\n'
+    )
 except ImportError:
     pass
 
