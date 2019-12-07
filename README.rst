@@ -64,4 +64,4 @@ specifically ``DATABASE_URL``:
 
 .. _dpaste.de: https://dpaste.de/
 .. _pastebin: https://en.wikipedia.org/wiki/Pastebin
-.. _Docker Hub: https://hub.docker.com/repository/docker/barttc/dpaste
+.. _Docker Hub: https://hub.docker.com/r/barttc/dpaste
