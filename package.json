@@ -3,17 +3,6 @@
   "version": "3.0.0",
   "repository": "https://github.com/bartTC/dpaste",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "npm run build",
-    "start": "npm run build && pipenv run ./manage.py runserver",
-    "docs": "pipenv run sphinx-build -c docs docs docs/_build/html",
-    "build-css": "sass --no-source-map --style=compressed client/scss/dpaste.scss:dpaste/static/dpaste.css ",
-    "build-js": "uglifyjs --compress=\"drop_console=true,ecma=6\" --mangle=\"toplevel\" --output=dpaste/static/dpaste.js client/js/dpaste.js",
-    "build": "npm run build-css && npm run build-js",
-    "watch-css": "npm run build && sass --watch --style=compressed client/scss/dpaste.scss:build/dpaste.css",
-    "watch-docs": "pipenv run sphinx-autobuild -c docs docs docs/_build/html",
-    "release": "npm run build && python setup.py sdist && python setup.py bdist_wheel --universal && printf \"\\n  Now run: twine upload dist/* --sign\\n\""
-  },
   "dependencies": {
     "sass": "^1.15.2",
     "uglify-es": "^3.3.10"

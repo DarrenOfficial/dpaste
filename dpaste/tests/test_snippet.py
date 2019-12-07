@@ -154,9 +154,11 @@ class SnippetTestCase(TestCase):
 
         # There will be a couple of snippets with at least 2 characters
         # in slug length
-        extended_snippet = Snippet.objects.extra(
-            select={"length": "Length(secret_id)"}
-        ).order_by("-length").first()
+        extended_snippet = (
+            Snippet.objects.extra(select={"length": "Length(secret_id)"})
+            .order_by("-length")
+            .first()
+        )
         self.assertTrue(len(extended_snippet.secret_id) > 1)
 
         # Set back to default

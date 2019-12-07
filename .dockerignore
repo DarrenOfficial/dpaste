@@ -1,0 +1,3 @@
+.venv
+.pytest-cache
+dpaste.db

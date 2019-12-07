@@ -2,8 +2,11 @@
 # Import global settings to make it easier to extend settings.
 # ==============================================================================
 import os
-import dpaste
+import sys
+
 import dj_database_url
+
+import dpaste
 
 env = os.environ.get
 
@@ -15,12 +18,12 @@ BASE_DIR, PROJECT_MODULE_NAME = os.path.split(
 # Settings
 # ==============================================================================
 
-DEBUG = env("DEBUG", False)
+DEBUG = env("DEBUG") == "True"
 
 SITE_ID = 1
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = env("SECRET_KEY", "")
+SECRET_KEY = env("SECRET_KEY", "secret-key")
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", "*").split(",")
 
@@ -86,12 +89,22 @@ INSTALLED_APPS = [
     "dpaste.apps.dpasteAppConfig",
 ]
 
-DATABASE_URL = env("DATABASE_URL", "sqlite:///dpaste.sqlite")
-DATABASES = {"default": dj_database_url.config(DATABASE_URL)}
+DATABASES = {
+    "default": dj_database_url.config(default="sqlite:///dpaste.sqlite")
+}
 
 # ==============================================================================
 # App specific settings
 # ==============================================================================
+
+# If this project installation was built with production settings,
+# add that webserver right away.
+try:
+    import django_webserver
+    INSTALLED_APPS.append('django_webserver')
+    sys.stdout.write(f'🚀  Production webserver installed. Will run on port {env("PORT")}')
+except ImportError:
+    pass
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True

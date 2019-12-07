@@ -9,80 +9,62 @@ Standalone Installation (or local development)
     to integrate the application into your existing Django project, see
     :ref:`project_installation`.
 
-The project uses `pipenv`_ to maintain and install dependencies. Install it
-once globally with pip:
+The project uses Docker for local development. Start it with:
 
 .. code:: bash
 
-    $ pip install pipenv
+    $ make up
 
-Then checkout the Git project code from Github and install the Node and
-Python dependencies.
+Or if you're more familiar with docker-compose
 
-.. code-block:: bash
+.. code:: bash
 
-    $ cd dpaste/
-    $ pipenv install --dev      # Installs the project and Python dependencies
+    $ docker-compose run --rm app ./manage.py migrate
+    $ docker-compose up
 
+This will open the Django runserver on http://127.0.0.1:8000. Changes to the
+code are automatically reflected in the Docker container and the runserver
+will reload automatically.
 
-The static files are not shipped with the project repository and need to be
-compiled manually. This is necessary since compiled CSS/JS files lead to too
-many merge conflicts during development.
+Local development using virtualenv
+==================================
 
-.. code-block:: bash
+If you prefer the classic local installation using Virtualenv then you can
+do so. There's nothing magic involved:
 
-    $ npm install               # Installs the node dependencies and compiles
-                                # the static files (JS/CSS).
+.. code:: bash
 
-Copy the sample settings file and edit it, to meet your needs:
-
-.. code-block:: bash
-
-    $ cp dpaste/settings/local.py.example dpaste/settings/local.py
-
-Run the testsuite to make sure everything was built correctly:
-
-.. code-block:: bash
-
-    $ pipenv run test
-
-Finally, to run the project on your local machine:
-
-.. code-block:: bash
-
-    $ pipenv run ./manage.py migrate
-    $ pipenv run ./manage.py runserver
-
-If this is a public, standalone installation, make sure you purge
-the expired snippets regularly. See :ref:`purge_expired_snippets`.
+    $ python3 -m venv .venv
+    $ source .venv/bin/activate
+    $ pip install -e .[dev]
 
 CSS and Javascript development
 ==============================
 
-Both CSS and Javascript files need to be compiled and compressed. The resulting
-files are not commited with the project code.
+Both [S]CSS and Javascript files need to be compiled and compressed.
 
-There are some helper scripts you can invoke with ``npm``
+Install the necessary node dependencies first:
 
-``npm start``
-    Compile the static files and run the Django runserver.
-``npm run build``
-    Compile static files.
-``npm run build-js``
+.. code:: bash
+
+    $ npm install
+
+There are some helper scripts you can invoke with ``make``
+
+``npm js``
     Compile only JS files.
-``npm run build-css``
+``npm css``
     Compile only CSS files.
-``npm run watch-css``
+``make css-watch``
     Same as ``build-css`` but it automatically watches for changes in the
     CSS files and re-compiles it.
-``npm run docs``
+``make docs``
     Compile this documentation. The result will be in ``docs/_build/html``.
-``npm run watch-docs``
+``make docs-watch``
     Same as ``docs`` but it automatically watches for changes in the
     documentation files and re-compiles the docs.
 
-
-.. note:: See ``npm run --list`` for the full and most recent list of
+.. note:: See ``make help`` for the full and most recent list of
     helper scripts.
 
 Testing with Tox
@@ -130,4 +112,3 @@ Then simply call it from the project directory.
 
 .. _Travis: https://travis-ci.org/bartTC/dpaste
 .. _tox: http://tox.readthedocs.org/en/latest/
-.. _pipenv: https://docs.pipenv.org/

@@ -1,15 +1,8 @@
+import sys
+
 from dpaste.settings.base import *
 
 DEBUG = True
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'dpaste.db',
-    }
-}
-
-SECRET_KEY = 'changeme'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

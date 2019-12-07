@@ -25,6 +25,8 @@ Changelog
   options etc.
 - Forced line-break for superlongwordsthatwouldexceedthecanvas.
 - Testsuite now uses pytest.
+- Local development is no longer centered around ``pipenv`` and is rather using
+  docker-compose or the classic virtualenv based setups.
 
 3.3.1 (2019-08-04):
 -------------------

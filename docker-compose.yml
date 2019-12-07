@@ -1,0 +1,41 @@
+version: "3.4"
+
+services:
+  staticfiles:
+    build:
+      context: .
+      target: staticfiles
+      args:
+        BUILD_EXTRAS: dev
+    image: staticfiles
+    volumes:
+      - ./package.json:/app/package.json
+      - ./package-log.json:/app/package-log.json
+      - ./client:/app/client:delegated
+      - ./dpaste/static:/app/dpaste/static
+
+  app:
+    stdin_open: true
+    tty: true
+    restart: always
+    build:
+      context: .
+      target: build
+      args:
+        BUILD_EXTRAS: dev
+    image: app
+    environment:
+      STATIC_ROOT: /collectstatic
+      DATABASE_URL: sqlite:////db/dpaste.sqlite
+      PORT: 8000
+    volumes:
+      - .:/app:delegated
+      - data_collectstatic:/collectstatic
+      - data_db:/db
+    ports:
+      - "8000:8000"
+    command: ./manage.py runserver 0:8000
+
+volumes:
+  data_db:
+  data_collectstatic:
