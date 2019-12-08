@@ -1,15 +1,16 @@
 {% extends "dpaste/base.html" %}
 
-{% block title %}404 Snippet not found{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "404 Snippet not found" %}{% endblock %}
 
 {% block body_type %}text-page{%endblock %}
 
 {% block page %}
 <article>
-  <h2 class="first-item">404 Snippet not found</h2>
+  <h2 class="first-item">{% trans "404 Snippet not found" %}</h2>
   <p>
-    This snippet no longer exists. Snippets are automatically
-    deleted when they reach their expiration date.
+    {% trans "This snippet no longer exists. Snippets are automatically deleted when they reach their expiration date." %}
   </p>
 </article>
 {% endblock %}

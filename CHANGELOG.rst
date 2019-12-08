@@ -16,6 +16,7 @@ Changelog
   ``cleanup_snipppet`` managemenent command. It's still encouraged to have the
   management command setup, just run it daily, so snippets which expired but
   never got fetched by a client are deleted properly.
+- All pages have sane Expire or Max-Age header.
 - Onetime snippets which were never viewed a second time are now deleted if
   they reach the default expire date.
 - New AppConfig setting ``APPLICATION_NAME`` that can be used to replace the
@@ -27,6 +28,7 @@ Changelog
 - Forced line-break for superlongwordsthatwouldexceedthecanvas.
 - Local development is no longer centered around ``pipenv`` and is rather using
   docker-compose or the classic virtualenv based setups.
+- Error pages are now correctly translated.
 - Testsuite now uses pytest.
 
 3.3.1 (2019-08-04):

@@ -1,12 +1,14 @@
 {% extends "dpaste/base.html" %}
 
-{% block title %}500 Internal Server Error{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "500 Internal Server Error" %}{% endblock %}
 
 {% block body_type %}text-page{%endblock %}
 
 {% block page %}
 <article>
-  <h2 class="first-item">500 Internal Server Error</h2>
-  <p>There was an issue with your request.</p>
+  <h2 class="first-item">{% trans "500 Internal Server Error" %}</h2>
+  <p>{% trans "There was an issue with your request." %}</p>
 </article>
 {% endblock %}
