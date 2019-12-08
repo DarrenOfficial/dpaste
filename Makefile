@@ -27,7 +27,7 @@ docs: ## Compile the documentation
 
 .PHONY: watch-docs
 docs-watch: ## Compile the documentation and watch for changes
-	docker-compose run --rm app sphinx-autobuild docs docs/_build/html
+	docker-compose run -p 8000:8000 --rm app sphinx-autobuild -H 0 -p 8000 docs docs/_build/html
 
 .PHONY: css
 css: ## Compile SCSS files
