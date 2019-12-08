@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.4 (master)
-------------
+3.4 (2019-12-08)
+----------------
 
 - Dropped support for Python 3.4.
 - Dropped support for Python 3.5.
@@ -26,10 +26,10 @@ Changelog
 - New "Slim" view that displays the highlighted snippet without header,
   options etc, and can be iframed.
 - Forced line-break for superlongwordsthatwouldexceedthecanvas.
-- Local development is no longer centered around ``pipenv`` and is rather using
+- Local development is no longer centered around ``pipenv``, instead it's using
   docker-compose or the classic virtualenv based setups.
 - Error pages are now correctly translated.
-- Testsuite now uses pytest.
+- Testsuite and Tox uses pytest instead of a homebrewed testrunner.
 
 3.3.1 (2019-08-04):
 -------------------
