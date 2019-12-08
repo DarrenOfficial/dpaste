@@ -3,6 +3,7 @@ include LICENSE
 include CHANGELOG.rst
 include runtests.py
 include tox.ini
+exclude dpaste/settings/local.py
 recursive-include dpaste/templates *
 recursive-include dpaste/static *
 recursive-include docs *
