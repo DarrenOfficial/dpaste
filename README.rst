@@ -35,33 +35,5 @@ please create an *Issue* there.
 
 ⚠️ dpaste requires at a minimum Python 3.6 and Django 2.2.
 
-Run dpaste using Docker:
-========================
-
-Docker images are in `Docker Hub`_.
-
-You can try the latest of dpaste using Docker. This will store the snippet
-database in a SQLite file in a Docker volume:
-
-.. code:: bash
-
-    $ docker run --rm -p 8000:8000 barttc/dpaste:latest
-
-If you want to run it in production-like environments, it's encouraged to
-use an external database. See the example below for all available options,
-specifically ``DATABASE_URL``:
-
-.. code:: bash
-
-    $ docker run --rm --name db1 --detach postgres:latest
-    $ docker run --rm -p 12345:12345 \
-          --link db1 \
-          -e DATABASE_URL=postgres://postgres@db1:5432/postgres \
-          -e DEBUG=True \
-          -e SECRET_KEY=very-secret-key \
-          -e PORT=12345 \
-          barttc/dpaste:latest
-
 .. _dpaste.de: https://dpaste.de/
 .. _pastebin: https://en.wikipedia.org/wiki/Pastebin
-.. _Docker Hub: https://hub.docker.com/r/barttc/dpaste
