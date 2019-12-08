@@ -76,10 +76,10 @@ class dpasteAppConfig(AppConfig):
     #     )
     EXPIRE_CHOICES = (
         ("onetime", _("One-Time snippet")),
-        (3600, _("In one hour")),
-        (3600 * 24 * 7, _("In one week")),
-        (3600 * 24 * 30, _("In one month")),
-        ("never", _("Never")),
+        (3600, _("Expire in one hour")),
+        (3600 * 24 * 7, _("Expire in one week")),
+        (3600 * 24 * 30, _("Expire in one month")),
+        ("never", _("Never Expire")),
     )
 
     # Default value for ``EXPIRE_CHOICES``

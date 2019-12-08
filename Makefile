@@ -35,7 +35,7 @@ css: ## Compile SCSS files
 
 .PHONY: css-watch
 css-watch: ## Compile JS files
-	npx sass --watch client/scss/dpaste.scss:build/dpaste.css
+	npx sass --watch client/scss/dpaste.scss:dpaste/static/dpaste.css
 
 .PHONY: js
 js: ## Compile JS files
