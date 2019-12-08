@@ -1,8 +1,8 @@
 .. _settings:
 
-==========================
-Settings and Configuration
-==========================
+========
+Settings
+========
 
 When dpaste is installed as a standalone service or integrated into an existing
 project there are various settings you can override to adjust dpaste's

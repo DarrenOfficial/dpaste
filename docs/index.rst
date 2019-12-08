@@ -8,15 +8,11 @@ Documentation
 .. toctree::
    :maxdepth: 1
 
-   standalone_installation
-   project_installation
+   installation
+   testing
    management_commands
    settings
    api
-
-.. toctree::
-   :maxdepth: 2
-
    changelog
 
 .. _dpaste.de: https://dpaste.de/

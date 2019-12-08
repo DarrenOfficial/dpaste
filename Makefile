@@ -17,7 +17,7 @@ test: ## Run Django tests
 .PHONY: code-cleanup
 code-cleanup: ## Black and isort the Python codebase
 	autoflake --remove-all-unused-imports --ignore-init-module-imports --remove-unused-variables \
-          --exclude "**/migrations/*,dpaste/settings/local.py" -r dpaste
+          --in-place --exclude "**/migrations/*,dpaste/settings/local.py" -r dpaste
 	isort -rc dpaste
 	black --line-length=80 --exclude='/(migrations)/' dpaste
 
@@ -27,7 +27,7 @@ docs: ## Compile the documentation
 
 .PHONY: watch-docs
 docs-watch: ## Compile the documentation and watch for changes
-	docker-compose run --rm app sphinx-autobuild docs docs/_build/html
+	docker-compose run -p 8000:8000 --rm app sphinx-autobuild -H 0 -p 8000 docs docs/_build/html
 
 .PHONY: css
 css: ## Compile SCSS files

@@ -1,7 +1,6 @@
 include README.rst
 include LICENSE
 include CHANGELOG.rst
-include runtests.py
 exclude dpaste/settings/local.py
 recursive-include dpaste/templates *
 recursive-include dpaste/static *

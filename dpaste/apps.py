@@ -165,7 +165,6 @@ class dpasteAppConfig(AppConfig):
          ...
         """
         from dpaste.highlight import PlainCodeHighlighter
-        from jsx.lexer import JsxLexer
 
         return [
             (self.PLAIN_CODE_SYMBOL, "Plain Code", PlainCodeHighlighter),

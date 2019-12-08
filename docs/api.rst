@@ -1,5 +1,8 @@
-============
-API Endpoint
+===
+API
+===
+
+API endpoint
 ============
 
 dpaste provides a simple API endpoint to create new snippets. All you need to
@@ -99,13 +102,13 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
    :statuscode 400: One of the above form options was invalid,
     the response will contain a meaningful error message.
 
-.. hint:: If yuo have a standalone installation and your API returns
-    ``https://dpaste.de/`` as the domain, you need to adjust the setting
-    ``BASE_URL`` property. See :ref:`settings`.
+.. hint:: If you have a standalone installation and your API returns
+    ``https://dpaste-base-url.example.org`` as the domain, you need to adjust
+    the setting ``get_base_url`` property. See :ref:`settings`.
 
 
-Third party API integration into editors
-========================================
+Third party API integration
+===========================
 
 subdpaste
     a Sublime Editor plugin: https://github.com/bartTC/SubDpaste
