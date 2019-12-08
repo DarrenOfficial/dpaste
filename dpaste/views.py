@@ -50,7 +50,7 @@ class SnippetView(FormView):
         return response
 
     def get_form_kwargs(self):
-        kwargs = super(SnippetView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
@@ -59,12 +59,12 @@ class SnippetView(FormView):
         return HttpResponseRedirect(snippet.get_absolute_url())
 
     def get_context_data(self, **kwargs):
-        ctx = super(SnippetView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx.update(config.extra_template_context)
         return ctx
 
 
-class SnippetDetailView(DetailView):
+class SnippetDetailView(DetailView, FormView):
     """
     Details list view of a snippet. Handles the actual view, reply and
     tree/diff view.
@@ -93,7 +93,7 @@ class SnippetDetailView(DetailView):
             url = "{0}#".format(reverse("snippet_new"))
             return HttpResponseRedirect(url)
 
-        return super(SnippetDetailView, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         snippet = self.get_object()
@@ -113,7 +113,7 @@ class SnippetDetailView(DetailView):
         snippet.view_count += 1
         snippet.save(update_fields=["view_count"])
 
-        response = super(SnippetDetailView, self).get(request, *args, **kwargs)
+        response = super().get(request, *args, **kwargs)
 
         # Set the Max-Age header up until the snippet would expire
         if config.CACHE_HEADER:
@@ -168,7 +168,7 @@ class SnippetDetailView(DetailView):
     def get_context_data(self, **kwargs):
         self.object = self.get_object()
 
-        ctx = super(SnippetDetailView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx.update(
             {
                 "wordwrap": self.object.lexer in highlight.LEXER_WORDWRAP,
@@ -192,7 +192,7 @@ class SnippetRawView(SnippetDetailView):
             return HttpResponseForbidden(
                 ugettext("This dpaste installation has Raw view mode disabled.")
             )
-        return super(SnippetRawView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def render_plain_text(self, context, **response_kwargs):
         snippet = self.get_object()
@@ -204,12 +204,12 @@ class SnippetRawView(SnippetDetailView):
     def render_to_response(self, context, **response_kwargs):
         if config.RAW_MODE_PLAIN_TEXT:
             return self.render_plain_text(config, **response_kwargs)
-        return super(SnippetRawView, self).render_to_response(
+        return super().render_to_response(
             context, **response_kwargs
         )
 
     def get_context_data(self, **kwargs):
-        ctx = super(SnippetView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx.update(config.extra_template_context)
         return ctx
 
@@ -243,7 +243,7 @@ class SnippetHistory(TemplateView):
         return HttpResponseRedirect(url)
 
     def get_context_data(self, **kwargs):
-        ctx = super(SnippetHistory, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx.update({"snippet_list": self.get_user_snippets()})
         ctx.update(config.extra_template_context)
         return ctx

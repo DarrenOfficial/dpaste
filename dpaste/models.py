@@ -81,7 +81,7 @@ class Snippet(models.Model):
     def save(self, *args, **kwargs):
         if not self.secret_id:
             self.secret_id = generate_secret_id(length=config.SLUG_LENGTH)
-        super(Snippet, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("snippet_details", kwargs={"snippet_id": self.secret_id})

@@ -60,7 +60,7 @@ class SnippetForm(forms.ModelForm):
         fields = ("content", "lexer", "rtl")
 
     def __init__(self, request, *args, **kwargs):
-        super(SnippetForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.request = request
 
         # Set the recently used lexer if we have any
@@ -106,7 +106,7 @@ class SnippetForm(forms.ModelForm):
         self.instance.expire_type = self.cleaned_data["expire_type"]
 
         # Save snippet in the db
-        super(SnippetForm, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
         # Add the snippet to the user session list
         self.request.session.setdefault("snippet_list", [])
