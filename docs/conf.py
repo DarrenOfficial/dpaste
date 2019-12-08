@@ -82,11 +82,6 @@ try:
     import sphinx_rtd_theme
     html_theme = "sphinx_rtd_theme"
     html_theme_path = ["_themes", ]
-    html_theme_options = {
-        'logo_only': True,
-        'display_version': False,
-    }
-    html_logo = "docs/_static/logo.svg"
 
 except ImportError:
     html_theme = 'alabaster'
