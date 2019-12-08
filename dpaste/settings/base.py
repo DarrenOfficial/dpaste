@@ -101,7 +101,7 @@ DATABASES = {
 # If this project installation was built with production settings,
 # add that webserver right away.
 try:
-    import django_webserver
+    import django_webserver  # noqa
 
     INSTALLED_APPS.append("django_webserver")
     sys.stdout.write(

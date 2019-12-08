@@ -204,9 +204,7 @@ class SnippetRawView(SnippetDetailView):
     def render_to_response(self, context, **response_kwargs):
         if config.RAW_MODE_PLAIN_TEXT:
             return self.render_plain_text(config, **response_kwargs)
-        return super().render_to_response(
-            context, **response_kwargs
-        )
+        return super().render_to_response(context, **response_kwargs)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
