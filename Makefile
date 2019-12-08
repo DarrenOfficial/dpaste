@@ -50,6 +50,13 @@ docs: ## Compile the documentation
 docs-watch: ## Compile the documentation and watch for changes
 	sphinx-autobuild docs docs/_build/html
 
+.PHONY: release-docker
+release-docker:
+	set -ex
+	docker-compose run --rm app pytest dpaste/
+	docker build --build-arg BUILD_EXTRAS=production -t barttc/dpaste:latest .
+	@echo -e "\n\n💫 All fine. Now do: docker push barttc/dpaste:latest"
+
 .PHONY: help
 help:
 	@echo -e "Available make commands:"
