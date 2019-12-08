@@ -1,7 +1,6 @@
 import datetime
 import difflib
 import json
-import time
 
 from django.apps import apps
 from django.http import (
