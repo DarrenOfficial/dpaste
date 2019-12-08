@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.conf import settings
 from django.conf.urls import url
+from django.views.decorators.cache import cache_control
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import TemplateView
 
@@ -13,9 +14,11 @@ urlpatterns = [
     url(r"^$", views.SnippetView.as_view(), name="snippet_new"),
     url(
         r"^about/$",
-        TemplateView.as_view(
-            template_name="dpaste/about.html",
-            extra_context=config.extra_template_context,
+        cache_control(max_age=config.CACHE_TIMEOUT)(
+            TemplateView.as_view(
+                template_name="dpaste/about.html",
+                extra_context=config.extra_template_context,
+            )
         ),
         name="dpaste_about",
     ),

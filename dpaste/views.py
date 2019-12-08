@@ -1,6 +1,7 @@
 import datetime
 import difflib
 import json
+import time
 
 from django.apps import apps
 from django.http import (
@@ -10,12 +11,12 @@ from django.http import (
     HttpResponseForbidden,
     HttpResponseRedirect,
 )
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.cache import add_never_cache_headers, patch_cache_control
+from django.utils.http import http_date
 from django.utils.translation import ugettext
-from django.views.defaults import page_not_found as django_page_not_found
-from django.views.defaults import server_error as django_server_error
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
@@ -43,6 +44,12 @@ class SnippetView(FormView):
     form_class = SnippetForm
     template_name = "dpaste/new.html"
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if config.CACHE_HEADER:
+            patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
+        return response
+
     def get_form_kwargs(self):
         kwargs = super(SnippetView, self).get_form_kwargs()
         kwargs.update({"request": self.request})
@@ -58,12 +65,13 @@ class SnippetView(FormView):
         return ctx
 
 
-class SnippetDetailView(SnippetView, DetailView):
+class SnippetDetailView(DetailView):
     """
     Details list view of a snippet. Handles the actual view, reply and
     tree/diff view.
     """
 
+    form_class = SnippetForm
     queryset = Snippet.objects.all()
     template_name = "dpaste/details.html"
     slug_url_kwarg = "snippet_id"
@@ -106,7 +114,18 @@ class SnippetDetailView(SnippetView, DetailView):
         snippet.view_count += 1
         snippet.save(update_fields=["view_count"])
 
-        return super(SnippetDetailView, self).get(request, *args, **kwargs)
+        response = super(SnippetDetailView, self).get(request, *args, **kwargs)
+
+        # Set the Max-Age header up until the snippet would expire
+        if config.CACHE_HEADER:
+            if snippet.expire_type == Snippet.EXPIRE_KEEP:
+                patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
+            if snippet.expire_type == Snippet.EXPIRE_ONETIME:
+                add_never_cache_headers(response)
+            if snippet.expire_type == Snippet.EXPIRE_TIME and snippet.expires:
+                response["Expires"] = http_date(snippet.expires.timestamp())
+
+        return response
 
     def get_initial(self):
         snippet = self.get_object()
@@ -115,6 +134,11 @@ class SnippetDetailView(SnippetView, DetailView):
             "lexer": snippet.lexer,
             "rtl": snippet.rtl,
         }
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"request": self.request})
+        return kwargs
 
     def form_valid(self, form):
         snippet = form.save(parent=self.get_object())
@@ -202,6 +226,11 @@ class SnippetHistory(TemplateView):
     def get_user_snippets(self):
         snippet_id_list = self.request.session.get("snippet_list", [])
         return Snippet.objects.filter(pk__in=snippet_id_list)
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        add_never_cache_headers(response)
+        return response
 
     def post(self, request, *args, **kwargs):
         """
@@ -332,12 +361,17 @@ class APIView(View):
 
 
 def page_not_found(request, exception=None, template_name="dpaste/404.html"):
-    return django_page_not_found(
-        request, exception, template_name=template_name
-    )
+    context = {}
+    context.update(config.extra_template_context)
+    response = render(request, template_name, context, status=404)
+    if config.CACHE_HEADER:
+        patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
+    return response
 
 
 def server_error(request, template_name="dpaste/500.html"):
-    return django_server_error(
-        request, template_name=template_name
-    )  # pragma: no cover
+    context = {}
+    context.update(config.extra_template_context)
+    response = render(request, template_name, context, status=500)
+    add_never_cache_headers(response)
+    return response

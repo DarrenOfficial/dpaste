@@ -2,6 +2,7 @@
 Settings for the testsuite runs.
 """
 import django
+
 from .base import *  # noqa
 
 SECRET_KEY = "test-key"
