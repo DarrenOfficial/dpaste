@@ -15,7 +15,7 @@
   background-color: $bgColor;
 
   // Desktop Grid
-  @media only screen and (min-width: 800px) {
+  @media only screen and (min-width: 700px) {
     padding: 15px $boxPadding;
     display: grid;
     grid-template: "a b c d" "e e e e";
@@ -35,7 +35,7 @@
   }
 
   // Mobile Grid
-  @media only screen and (max-width: 799px) {
+  @media only screen and (max-width: 699px) {
     padding: 10px;
     display: grid;
     justify-content: space-between;
