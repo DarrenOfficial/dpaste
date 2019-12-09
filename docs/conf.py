@@ -79,10 +79,10 @@ pygments_style = 'sphinx'
 #
 
 try:
-    import sphinx_rtd_theme
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = ["_themes", ]
-
+    # import sphinx_rtd_theme
+    # html_theme = "sphinx_rtd_theme"
+    # html_theme_path = ["_themes", ]
+    html_theme = "press"
 except ImportError:
     html_theme = 'alabaster'
 
