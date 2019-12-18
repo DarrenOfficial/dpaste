@@ -44,6 +44,7 @@ js: ## Compile JS files
 .PHONY: release-docker
 release-docker:
 	set -ex
+	rm -f .coverage
 	pip-compile --dry-run setup.py
 	docker-compose build
 	docker-compose run --rm app pytest dpaste/
@@ -53,6 +54,7 @@ release-docker:
 .PHONY: release-pypi
 release-pypi:
 	set -ex
+	rm -f .coverage
 	pip-compile --dry-run setup.py
 	docker-compose build
 	docker-compose run --rm app pytest dpaste/
