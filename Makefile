@@ -46,9 +46,8 @@ release-docker:
 	set -ex
 	rm -f .coverage
 	pip-compile --dry-run setup.py
-	docker-compose build
-	docker-compose run --rm app pytest dpaste/
 	docker build --build-arg BUILD_EXTRAS=production -t barttc/dpaste:latest .
+	docker run --rm dpaste:latest pytest dpaste/
 	@echo -e "\n\n💫 All fine. Now do: docker push barttc/dpaste:latest"
 
 .PHONY: release-pypi
