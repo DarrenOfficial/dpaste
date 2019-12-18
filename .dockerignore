@@ -1,3 +1,9 @@
 .venv
 .pytest-cache
+.vscode
+.coverage
 dpaste.db
+build
+dist
+dpaste.egg-info
+node_modules
