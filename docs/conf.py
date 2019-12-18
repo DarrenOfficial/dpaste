@@ -19,8 +19,10 @@
 
 # -- Project information -----------------------------------------------------
 
+from datetime import datetime
+
 project = 'dpaste'
-copyright = '2018, Martin Mahner'
+copyright = f'2013—{datetime.now().year}, Martin Mahner'
 author = 'Martin Mahner'
 
 # The short X.Y version
@@ -69,7 +71,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "tango"
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -79,9 +81,17 @@ pygments_style = 'sphinx'
 #
 
 try:
-    import sphinx_rtd_theme
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = ["_themes", ]
+    html_theme = "press"
+    html_css_files = ["custom.css"]
+    html_sidebars = {'**': ['util/sidetoc.html', 'util/searchbox.html']}
+    html_theme_options = {
+      "external_links": [
+          ("🐞 File an issue", "https://github.com/bartTC/dpaste/issues"),
+          ("Github", "https://github.com/bartTC/dpaste"),
+          ("Docker Hub", "https://hub.docker.com/r/barttc/dpaste"),
+          ("dpaste.org", "https://dpaste.org")
+      ]
+    }
 
 except ImportError:
     html_theme = 'alabaster'

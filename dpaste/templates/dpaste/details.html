@@ -7,19 +7,20 @@
 {% block body_type %}{%endblock %}
 
 {% block headline %}
-  <a href="{{ request.build_absolute_uri }}">{{ request.build_absolute_uri }}</a>
-
-  <a href="#" id="copyToClipboard" title="{% trans "Copy URL to clipboard" %}">
-    <svg fill="#FFF" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <path d="M40.965 6c5.137 0 9.273 3.988 9.8 9h1.188c3.14 0 5.809 2.125 6.68 5h2.309c4.39 0 7.988 3.766 7.988 8.188V55h15.98-.004a1.99 1.99 0 0 1 1.574.652c.356.39.543.91.516 1.441A1.995 1.995 0 0 1 84.906 59h-15.98v26.812c0 4.422-3.598 8.188-7.988 8.188h-39.95C16.598 94 13 90.234 13 85.812V28.186C13 23.765 16.598 20 20.99 20h2.308c.871-2.875 3.54-5 6.68-5h1.187c.528-5.012 4.66-9 9.801-9zm0 4a5.968 5.968 0 0 0-5.992 6v1a2 2 0 0 1-2 2h-2.996c-1.696 0-2.996 1.305-2.996 3s1.3 3 2.996 3H51.95c1.695 0 2.996-1.305 2.996-3s-1.301-3-2.996-3h-2.996a1.998 1.998 0 0 1-1.996-2v-1c0-3.336-2.66-6-5.993-6zm19.973 14h-2.309c-.87 2.875-3.539 5-6.68 5H29.978c-3.14 0-5.809-2.125-6.68-5h-2.309c-1.968 0-3.996 2.05-3.996 4.188v57.624c0 2.137 2.024 4.188 3.996 4.188h39.95c1.968 0 3.996-2.05 3.996-4.188v-26.81H46.176l6.117 5.5c.828.742.894 2.015.156 2.843a2.01 2.01 0 0 1-2.84.157l-9.988-9a2 2 0 0 1 0-3l9.988-9a2.005 2.005 0 0 1 1.465-.532 2.002 2.002 0 0 1 1.219 3.532L46.175 55h18.758V28.189c0-2.137-2.027-4.188-3.996-4.188z"/>
-    </svg>
-  </a>
-  <input type="text" id="copyToClipboardField" value="{{ request.build_absolute_uri }}"/>
+  <div id="copyHeadline">
+    <a href="{{ request.build_absolute_uri }}">{{ request.build_absolute_uri }}</a>
+      <a href="#" id="copyToClipboard" title="{% trans "Copy URL to clipboard" %}">
+      <svg fill="#FFF" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40.965 6c5.137 0 9.273 3.988 9.8 9h1.188c3.14 0 5.809 2.125 6.68 5h2.309c4.39 0 7.988 3.766 7.988 8.188V55h15.98-.004a1.99 1.99 0 0 1 1.574.652c.356.39.543.91.516 1.441A1.995 1.995 0 0 1 84.906 59h-15.98v26.812c0 4.422-3.598 8.188-7.988 8.188h-39.95C16.598 94 13 90.234 13 85.812V28.186C13 23.765 16.598 20 20.99 20h2.308c.871-2.875 3.54-5 6.68-5h1.187c.528-5.012 4.66-9 9.801-9zm0 4a5.968 5.968 0 0 0-5.992 6v1a2 2 0 0 1-2 2h-2.996c-1.696 0-2.996 1.305-2.996 3s1.3 3 2.996 3H51.95c1.695 0 2.996-1.305 2.996-3s-1.301-3-2.996-3h-2.996a1.998 1.998 0 0 1-1.996-2v-1c0-3.336-2.66-6-5.993-6zm19.973 14h-2.309c-.87 2.875-3.539 5-6.68 5H29.978c-3.14 0-5.809-2.125-6.68-5h-2.309c-1.968 0-3.996 2.05-3.996 4.188v57.624c0 2.137 2.024 4.188 3.996 4.188h39.95c1.968 0 3.996-2.05 3.996-4.188v-26.81H46.176l6.117 5.5c.828.742.894 2.015.156 2.843a2.01 2.01 0 0 1-2.84.157l-9.988-9a2 2 0 0 1 0-3l9.988-9a2.005 2.005 0 0 1 1.465-.532 2.002 2.002 0 0 1 1.219 3.532L46.175 55h18.758V28.189c0-2.137-2.027-4.188-3.996-4.188z"/>
+      </svg>
+    </a>
+    <input type="text" id="copyToClipboardField" value="{{ request.build_absolute_uri }}"/>
+  </div>
 {% endblock %}
 
 {% block options %}
   <ul id="snippetOptions">
-    <li>
+    <li class="option-type">
       <strong>{{ snippet.lexer_name }}</strong>
       {% if snippet.expire_type == 1 %}
         {% blocktrans with date=snippet.expires|timeuntil %}Expires in: {{ date }}{% endblocktrans %}
@@ -30,18 +31,18 @@
       {% endif %}
     </li>
     <li class="sep"></li>
-    <li>
+    <li class="option-delete">
       <a href="#delete">{% trans "Delete Now" %}</a>
     </li>
     {% if raw_mode and snippet.expire_type != 3 %}
-      <li><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "Raw" %}</a></li>
+      <li class="option-raw"><a href="{% url "snippet_details_raw" snippet.secret_id %}">{% trans "Raw" %}</a></li>
     {% endif %}
-    <li><a href="{% url "snippet_details_slim" snippet.secret_id %}">{% trans "Slim" %}</a></li>
+    <li class="option-slim"><a href="{% url "snippet_details_slim" snippet.secret_id %}">{% trans "Slim" %}</a></li>
     <textarea id="copySnippetSource">{{ snippet.content }}</textarea>
-    <li><a href="#copy" id="copySnippetToClipboard">{% trans "Copy Snippet" %}</a></li>
-    <li><a href="#edit" id="editSnippet">{% trans "Edit Snippet" %}</a></li>
+    <li class="option-copy"><a href="#copy" id="copySnippetToClipboard">{% trans "Copy Snippet" %}</a></li>
+    <li class="option-edit"><a href="#edit" id="editSnippet">{% trans "Edit Snippet" %}</a></li>
     {% if snippet.lexer != 'text' %}
-      <li>
+      <li class="option-wordwrap">
         <label for="wordwrap">
           <input type="checkbox" id="wordwrap"{% if wordwrap %} checked{% endif %}> Wordwrap
         </label>

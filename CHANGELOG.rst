@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.5 (master)
+------------
+
+- Mobile view improvements.
+
 3.4 (2019-12-08)
 ----------------
 

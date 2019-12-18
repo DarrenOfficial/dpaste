@@ -4,38 +4,37 @@
   {% csrf_token %}
   {{ form.non_field_errors }}
 
-  <div class="options">
-    <p style="display: none;">{{ form.title }}</p> {# Honeypot field #}
+  <p style="display: none;">{{ form.title }}</p> {# Honeypot field #}
 
-    <p class="options-lexer">
-      <label for="{{ form.lexer.auto_id }}">{% trans "Syntax" %}</label>
-      {{ form.lexer }}
-    </p>
+  <p class="form-lexer">
+    <label for="{{ form.lexer.auto_id }}">{% trans "Syntax" %}</label>
+    {{ form.lexer }}
+  </p>
 
-    <p class="options-expire">
-      <label for="{{ form.expires.auto_id }}">{% trans "Expires" %}</label>
-      {{ form.expires }}
-    </p>
+  <p class="form-expire">
+    <label for="{{ form.expires.auto_id }}">{% trans "Expires" %}</label>
+    {{ form.expires }}
+  </p>
 
-    <p class="options-rtl">
-      {{ form.rtl }}
-      <label for="{{ form.rtl.auto_id }}">{% trans "Right-to-Left" %}</label>
-    </p>
+  <p class="form-rtl">
+    {{ form.rtl }}
+    <label for="{{ form.rtl.auto_id }}">{% trans "Right-to-Left" %}</label>
+  </p>
 
-    <p class="action">
-      <button class="btn" type="submit">
-        {% trans "Paste Snippet" %}
-        <span class="sep"></span>
-        <span class="platform-mac">{% trans "&#8984;+&#9166;" %}</span>
-        <span class="platform-win">{% trans "Ctrl+&#9166;" %}</span>
-      </button>
-    </p>
-  </div>
-
-  <p class="content superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
+  <p class="form-textarea superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
       <label for="{{ form.content.auto_id }}">{% trans "Content" %}</label>
     {{ form.content }}
   </p>
+
+  <p class="form-action">
+    <button class="btn" type="submit">
+      {% trans "Paste Snippet" %}
+      <span class="sep"></span>
+      <span class="platform-mac">{% trans "&#8984;+&#9166;" %}</span>
+      <span class="platform-win">{% trans "Ctrl+&#9166;" %}</span>
+    </button>
+  </p>
+
 
   {{ dpaste_extra_post_form }}
 </form>

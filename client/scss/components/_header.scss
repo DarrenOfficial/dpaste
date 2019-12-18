@@ -73,7 +73,7 @@ ul#snippetOptions {
 
   display: flex;
   align-items: center;
-  
+
   a:link, a:visited {
     color: $metaTextColor;
     text-decoration: underline;
@@ -139,4 +139,10 @@ ul#snippetOptions {
   width: 0;
   position: absolute;
   left: -9999px;
+}
+
+// Hide some options on mobile to make up space
+@media only screen and (max-width: 700px) {
+  .option-type, .sep, .option-edit, .option-slim{ display: none; }
+  #copyHeadline { display: none; }
 }
