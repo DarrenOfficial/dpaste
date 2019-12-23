@@ -12,7 +12,8 @@ endef
 
 .PHONY: test
 test: ## Run Django tests
-	docker-compose run --rm app pytest dpaste/
+	rm -f .coverage
+	docker-compose run --rm app monkeytype run /usr/local/bin/pytest dpaste/
 
 .PHONY: code-cleanup
 code-cleanup: ## Black and isort the Python codebase
