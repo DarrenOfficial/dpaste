@@ -145,9 +145,9 @@ class SnippetTestCase(TestCase):
 
         for i in range(0, 100):
             Snippet.objects.create(content="foobar")
-        slug_list = Snippet.objects.values_list(
-            "secret_id", flat=True
-        ).order_by("published")
+        slug_list = Snippet.objects.values_list("secret_id", flat=True).order_by(
+            "published"
+        )
 
         # All 1001 Snippets have been created
         self.assertEqual(len(set(slug_list)), 100)
@@ -170,9 +170,7 @@ class SnippetTestCase(TestCase):
     def test_reply(self):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
-        response = self.client.post(
-            response.request["PATH_INFO"], data, follow=True
-        )
+        response = self.client.post(response.request["PATH_INFO"], data, follow=True)
         self.assertContains(response, data["content"])
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 2)
@@ -181,9 +179,7 @@ class SnippetTestCase(TestCase):
         data = self.valid_form_data()
         response = self.client.post(self.new_url, data, follow=True)
         del data["content"]
-        response = self.client.post(
-            response.request["PATH_INFO"], data, follow=True
-        )
+        response = self.client.post(response.request["PATH_INFO"], data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
 

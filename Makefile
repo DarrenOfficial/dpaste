@@ -19,7 +19,7 @@ code-cleanup: ## Black and isort the Python codebase
 	autoflake --remove-all-unused-imports --ignore-init-module-imports --remove-unused-variables \
           --in-place --exclude "**/migrations/*,dpaste/settings/local.py" -r dpaste
 	isort -rc dpaste
-	black --line-length=80 --exclude='/(migrations)/' dpaste
+	black --exclude='/(migrations)/' dpaste
 
 .PHONY: docs
 docs: ## Compile the documentation

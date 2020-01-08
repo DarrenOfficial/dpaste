@@ -21,10 +21,7 @@ def generate_secret_id(length):
         )
 
     secret_id = "".join(
-        [
-            R.choice(config.SLUG_CHOICES)
-            for i in range(length or config.SLUG_LENGTH)
-        ]
+        [R.choice(config.SLUG_CHOICES) for i in range(length or config.SLUG_LENGTH)]
     )
 
     # Check if this slug already exists, if not, return this new slug
@@ -52,9 +49,7 @@ class Snippet(models.Model):
         _("Secret ID"), max_length=255, blank=True, null=True, unique=True
     )
     content = models.TextField(_("Content"))
-    lexer = models.CharField(
-        _("Lexer"), max_length=30, default=highlight.LEXER_DEFAULT
-    )
+    lexer = models.CharField(_("Lexer"), max_length=30, default=highlight.LEXER_DEFAULT)
     published = models.DateTimeField(_("Published"), auto_now_add=True)
     expire_type = models.PositiveSmallIntegerField(
         _("Expire Type"), choices=EXPIRE_CHOICES, default=EXPIRE_CHOICES[0][0]

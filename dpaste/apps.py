@@ -43,9 +43,7 @@ class dpasteAppConfig(AppConfig):
     # String. A string of characters which are used to create the random slug.
     # This is intentionally missing l and I as they look too similar with
     # sans-serif fonts.
-    SLUG_CHOICES = (
-        "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890"
-    )
+    SLUG_CHOICES = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890"
 
     # String. The lexer key that is pre-selected in the dropdown. Note that
     # this is only used if the user has not saved a snippet before, otherwise

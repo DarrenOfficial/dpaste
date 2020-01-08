@@ -36,9 +36,7 @@ urlpatterns = [
     url(
         r"^(?P<snippet_id>[a-zA-Z0-9]{%d,})/slim/?$" % L,
         xframe_options_exempt(
-            views.SnippetDetailView.as_view(
-                template_name="dpaste/details_slim.html"
-            )
+            views.SnippetDetailView.as_view(template_name="dpaste/details_slim.html")
         ),
         name="snippet_details_slim",
     ),

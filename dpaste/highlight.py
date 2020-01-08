@@ -77,9 +77,7 @@ class MarkdownHighlighter(PlainTextHighlighter):
 
         return mark_safe(
             misaka.html(
-                code_string,
-                extensions=self.extensions,
-                render_flags=self.render_flags,
+                code_string, extensions=self.extensions, render_flags=self.render_flags,
             )
         )
 

@@ -20,18 +20,14 @@ def get_expire_values(expires):
     else:
         expire_type = Snippet.EXPIRE_TIME
         expires = expires and expires or config.EXPIRE_DEFAULT
-        expires = datetime.datetime.now() + datetime.timedelta(
-            seconds=int(expires)
-        )
+        expires = datetime.datetime.now() + datetime.timedelta(seconds=int(expires))
     return expires, expire_type
 
 
 class SnippetForm(forms.ModelForm):
     content = forms.CharField(
         label=_("Content"),
-        widget=forms.Textarea(
-            attrs={"placeholder": _("Awesome code goes here...")}
-        ),
+        widget=forms.Textarea(attrs={"placeholder": _("Awesome code goes here...")}),
         max_length=config.MAX_CONTENT_LENGTH,
         strip=False,
     )

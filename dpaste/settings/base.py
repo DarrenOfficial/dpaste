@@ -39,9 +39,7 @@ LANGUAGES = (("en", "English"),)
 #     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
 # )
 
-STATICFILES_STORAGE = (
-    "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-)
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -90,9 +88,7 @@ INSTALLED_APPS = [
 ]
 
 sys.stdout.write(f"\n🐘  Database URL is: {env('DATABASE_URL')}\n")
-DATABASES = {
-    "default": dj_database_url.config(default="sqlite:///dpaste.sqlite")
-}
+DATABASES = {"default": dj_database_url.config(default="sqlite:///dpaste.sqlite")}
 
 # ==============================================================================
 # App specific settings
@@ -124,9 +120,7 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "filters": {
-        "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}
-    },
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
         "mail_admins": {
             "level": "ERROR",
