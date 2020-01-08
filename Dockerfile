@@ -32,7 +32,7 @@ RUN echo "\nℹ️  Building Django project with "${BUILD_EXTRAS}" dependencies.
 WORKDIR /app
 
 # Upgrade pip, the Image one is quite old.
-RUN pip install pip==19.3.1
+RUN pip install -U pip
 
 # Copy the dpaste staticfiles to this image
 COPY --from=staticfiles /app /app/
@@ -42,10 +42,6 @@ COPY --from=staticfiles /app /app/
 COPY setup.py setup.cfg ./
 COPY dpaste/__init__.py dpaste/
 RUN pip install -e .[${BUILD_EXTRAS}]
-
-# Django 3.0 Fix for django-csp, which wasn't released yet
-RUN pip uninstall django-csp -y
-RUN pip install https://github.com/mozilla/django-csp/archive/master.zip
 
 # Copy the rest of the application code
 COPY . .

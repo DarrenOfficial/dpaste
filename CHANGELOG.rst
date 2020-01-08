@@ -1,10 +1,11 @@
 Changelog
 =========
 
-3.5 (master)
-------------
+3.5 (2020-01-08)
+----------------
 
 - Mobile view improvements.
+- Upgraded django-csp dependency to v3.6 that ships with Django 3.0 support.
 
 3.4 (2019-12-08)
 ----------------

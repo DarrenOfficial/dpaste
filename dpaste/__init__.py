@@ -1,4 +1,4 @@
-VERSION = (3, 4)
+VERSION = (3, 5)
 
 __version__ = "{major}.{minor}{rest}".format(
     major=VERSION[0],
