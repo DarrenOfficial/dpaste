@@ -124,7 +124,7 @@ command line:
 
 .. code-block:: bash
 
-    $ alias dpaste="curl -F 'format=url' -F 'content=<-' https://dpaste.de/api/"
+    $ alias dpaste="curl -F 'format=url' -F 'content=<-' https://dpaste.org/api/"
     $ cat foo.txt | dpaste
     https://dpaste.de/ke2pB
 
