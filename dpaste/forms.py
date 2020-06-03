@@ -1,7 +1,9 @@
-import datetime
+from datetime import datetime, timedelta
+from typing import Dict, Optional, Tuple, Type, Union
 
 from django import forms
 from django.apps import apps
+from django.core.handlers.wsgi import WSGIRequest
 from django.utils.translation import gettext_lazy as _
 
 from .highlight import LEXER_CHOICES, LEXER_DEFAULT, LEXER_KEYS
@@ -10,7 +12,9 @@ from .models import Snippet
 config = apps.get_app_config("dpaste")
 
 
-def get_expire_values(expires):
+def get_expire_values(
+    expires: str,
+) -> Union[Tuple[None, int], Tuple[datetime, int]]:
     if expires == "never":
         expire_type = Snippet.EXPIRE_KEEP
         expires = None
@@ -20,9 +24,7 @@ def get_expire_values(expires):
     else:
         expire_type = Snippet.EXPIRE_TIME
         expires = expires and expires or config.EXPIRE_DEFAULT
-        expires = datetime.datetime.now() + datetime.timedelta(
-            seconds=int(expires)
-        )
+        expires = datetime.now() + timedelta(seconds=int(expires))
     return expires, expire_type
 
 
@@ -59,7 +61,7 @@ class SnippetForm(forms.ModelForm):
         model = Snippet
         fields = ("content", "lexer", "rtl")
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, request: WSGIRequest, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.request = request
 
@@ -72,13 +74,13 @@ class SnippetForm(forms.ModelForm):
         if "l" in request.GET and request.GET["l"] in LEXER_KEYS:
             self.fields["lexer"].initial = request.GET["l"]
 
-    def clean_content(self):
+    def clean_content(self) -> str:
         content = self.cleaned_data.get("content", "")
         if not content.strip():
             raise forms.ValidationError(_("This field is required."))
         return content
 
-    def clean_expires(self):
+    def clean_expires(self) -> Optional[datetime]:
         """
         Extract the 'expire_type' from the choice of expire choices.
         """
@@ -87,7 +89,7 @@ class SnippetForm(forms.ModelForm):
         self.cleaned_data["expire_type"] = expire_type
         return expires
 
-    def clean(self):
+    def clean(self) -> Dict[str, Optional[Union[Type[object], None]]]:
         """
         The `title` field is a hidden honeypot field. If its filled,
         this is likely spam.
@@ -96,7 +98,9 @@ class SnippetForm(forms.ModelForm):
             raise forms.ValidationError("This snippet was identified as Spam.")
         return self.cleaned_data
 
-    def save(self, parent=None, *args, **kwargs):
+    def save(
+        self, parent: Optional[Snippet] = None, *args, **kwargs
+    ) -> Snippet:
         # Set parent snippet
         self.instance.parent = parent
 

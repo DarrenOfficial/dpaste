@@ -1,9 +1,11 @@
+from io import StringIO
 from logging import getLogger
+from typing import Any, Iterator, Optional, Type
 
 from django.apps import apps
 from django.template.defaultfilters import escape, linebreaksbr
 from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
+from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext_lazy as _
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -34,7 +36,13 @@ class Highlighter(object):
                 return l[1]
         return fallback
 
-    def render(self, code_string, lexer_name, direction=None, **kwargs):
+    def render(
+        self,
+        code_string: str,
+        lexer_name: str,
+        direction: Optional[str] = None,
+        **kwargs
+    ) -> SafeString:
         highlighted_string = self.highlight(code_string, lexer_name=lexer_name)
         context = {
             "highlighted": highlighted_string,
@@ -52,7 +60,7 @@ class PlainTextHighlighter(Highlighter):
 
     template_name = "dpaste/highlight/text.html"
 
-    def highlight(self, code_string, **kwargs):
+    def highlight(self, code_string: str, **kwargs) -> SafeString:
         return linebreaksbr(code_string)
 
 
@@ -99,7 +107,7 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
         },
     }
 
-    def highlight(self, code_string, **kwargs):
+    def highlight(self, code_string: str, **kwargs) -> SafeString:
         from docutils.core import publish_parts
 
         self.publish_args["source"] = code_string
@@ -113,10 +121,10 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
 class NakedHtmlFormatter(HtmlFormatter):
     """Pygments HTML formatter with no further HTML tags."""
 
-    def wrap(self, source, outfile):
+    def wrap(self, source: Iterator[Any], outfile: StringIO) -> Iterator[Any]:
         return self._wrap_code(source)
 
-    def _wrap_code(self, source):
+    def _wrap_code(self, source: Iterator[Any]) -> None:
         yield from source
 
 
@@ -125,7 +133,7 @@ class PlainCodeHighlighter(Highlighter):
     Plain Code. No highlighting but Pygments like span tags around each line.
     """
 
-    def highlight(self, code_string, **kwargs):
+    def highlight(self, code_string: str, **kwargs) -> str:
         return "\n".join(
             [
                 '<span class="plain">{}</span>'.format(escape(l) or "&#8203;")
@@ -144,7 +152,7 @@ class PygmentsHighlighter(Highlighter):
     lexer = None
     lexer_fallback = PythonLexer()
 
-    def highlight(self, code_string, lexer_name):
+    def highlight(self, code_string: str, lexer_name: str) -> str:
         if not self.lexer:
             try:
                 self.lexer = get_lexer_by_name(lexer_name)
@@ -155,18 +163,7 @@ class PygmentsHighlighter(Highlighter):
         return highlight(code_string, self.lexer, self.formatter)
 
 
-class SolidityHighlighter(PygmentsHighlighter):
-    """Solidity Specific Highlighter. This uses a 3rd party Pygments  lexer."""
-
-    def __init__(self):
-        # SolidityLexer does not necessarily need to be installed
-        # since its imported here and not used later.
-        from pygments_lexer_solidity import SolidityLexer
-
-        self.lexer = SolidityLexer()
-
-
-def get_highlighter_class(lexer_name):
+def get_highlighter_class(lexer_name: str) -> Type[Highlighter]:
     """
     Get Highlighter for lexer name.
 

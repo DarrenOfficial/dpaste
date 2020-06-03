@@ -6,12 +6,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dpaste', '0004_auto_20180107_1603'),
+        ("dpaste", "0004_auto_20180107_1603"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='snippet',
-            name='highlighted',
-        ),
+        migrations.RemoveField(model_name="snippet", name="highlighted",),
     ]

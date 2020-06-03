@@ -7,13 +7,20 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dpaste', '0005_remove_snippet_highlighted'),
+        ("dpaste", "0005_remove_snippet_highlighted"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='snippet',
-            name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='dpaste.Snippet', verbose_name='Parent Snippet'),
+            model_name="snippet",
+            name="parent",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="children",
+                to="dpaste.Snippet",
+                verbose_name="Parent Snippet",
+            ),
         ),
     ]

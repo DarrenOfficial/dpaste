@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dpaste', '0003_snippet_highlighted'),
+        ("dpaste", "0003_snippet_highlighted"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='snippet',
-            name='lexer',
-            field=models.CharField(default='python', max_length=30, verbose_name='Lexer'),
+            model_name="snippet",
+            name="lexer",
+            field=models.CharField(
+                default="python", max_length=30, verbose_name="Lexer"
+            ),
         ),
     ]

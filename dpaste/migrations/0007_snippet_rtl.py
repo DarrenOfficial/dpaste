@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dpaste', '0006_auto_20180622_1051'),
+        ("dpaste", "0006_auto_20180622_1051"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='snippet',
-            name='rtl',
-            field=models.BooleanField(default=False, verbose_name='Right-to-left'),
+            model_name="snippet",
+            name="rtl",
+            field=models.BooleanField(default=False, verbose_name="Right-to-left"),
         ),
     ]

@@ -1,4 +1,7 @@
+from typing import Dict, List, Optional, Tuple, Type, Union
+
 from django.apps import AppConfig, apps
+from django.core.handlers.wsgi import WSGIRequest
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
@@ -118,7 +121,7 @@ class dpasteAppConfig(AppConfig):
     PLAIN_CODE_SYMBOL = "_code"
 
     @property
-    def TEXT_FORMATTER(self):
+    def TEXT_FORMATTER(self,) -> List[Tuple[str, str, Type[object]]]:
         """
         Choices list with all "Text" lexer. Prepend keys with an underscore
         so they don't accidentally clash with a Pygments Lexer name.
@@ -130,6 +133,8 @@ class dpasteAppConfig(AppConfig):
             Lexer Highlight Class)
 
         If the Highlight Class is not given, PygmentsHighlighter is used.
+
+        @FIXME: Make `Type[object]` use the  Type[Highlighter] class.
         """
         from dpaste.highlight import (
             PlainTextHighlighter,
@@ -144,7 +149,9 @@ class dpasteAppConfig(AppConfig):
         ]
 
     @property
-    def CODE_FORMATTER(self):
+    def CODE_FORMATTER(
+        self,
+    ) -> List[Union[Tuple[str, str, Type[object]], Tuple[str, str]]]:
         """
         Choices list with all "Code" Lexer. Each list
         contains a lexer tuple of:
@@ -621,7 +628,7 @@ class dpasteAppConfig(AppConfig):
     CACHE_TIMEOUT = 60 * 10
 
     @staticmethod
-    def get_base_url(request=None):
+    def get_base_url(request: Optional[WSGIRequest] = None) -> str:
         """
         String. The full qualified hostname and path to the dpaste instance.
         This is used to generate a link in the API response. If the "Sites"
@@ -637,7 +644,7 @@ class dpasteAppConfig(AppConfig):
         return "https://dpaste-base-url.example.org"
 
     @property
-    def extra_template_context(self):
+    def extra_template_context(self) -> Dict[str, str]:
         """
         Returns a dictionary with context variables which are passed to
         all Template Views.

@@ -7,24 +7,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dpaste', '0001_initial'),
+        ("dpaste", "0001_initial"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='snippet',
-            name='level',
-        ),
-        migrations.RemoveField(
-            model_name='snippet',
-            name='lft',
-        ),
-        migrations.RemoveField(
-            model_name='snippet',
-            name='rght',
-        ),
-        migrations.RemoveField(
-            model_name='snippet',
-            name='tree_id',
-        ),
+        migrations.RemoveField(model_name="snippet", name="level",),
+        migrations.RemoveField(model_name="snippet", name="lft",),
+        migrations.RemoveField(model_name="snippet", name="rght",),
+        migrations.RemoveField(model_name="snippet", name="tree_id",),
     ]

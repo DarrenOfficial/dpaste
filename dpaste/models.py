@@ -4,6 +4,7 @@ from random import SystemRandom
 from django.apps import apps
 from django.db import models
 from django.urls import reverse
+from django.utils.safestring import SafeString
 from django.utils.translation import gettext_lazy as _
 
 from dpaste import highlight
@@ -13,7 +14,7 @@ logger = getLogger(__file__)
 R = SystemRandom()
 
 
-def generate_secret_id(length):
+def generate_secret_id(length: int) -> str:
     if length > config.SLUG_LENGTH:
         logger.warning(
             "Slug creation triggered a duplicate, "
@@ -75,18 +76,18 @@ class Snippet(models.Model):
         ordering = ("-published",)
         db_table = "dpaste_snippet"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.secret_id
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         if not self.secret_id:
             self.secret_id = generate_secret_id(length=config.SLUG_LENGTH)
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse("snippet_details", kwargs={"snippet_id": self.secret_id})
 
-    def highlight(self):
+    def highlight(self) -> SafeString:
         HighlighterClass = highlight.get_highlighter_class(self.lexer)
         return HighlighterClass().render(
             code_string=self.content,
@@ -95,12 +96,12 @@ class Snippet(models.Model):
         )
 
     @property
-    def lexer_name(self):
+    def lexer_name(self) -> str:
         """Display name for this lexer."""
         return highlight.Highlighter.get_lexer_display_name(self.lexer)
 
     @property
-    def remaining_views(self):
+    def remaining_views(self) -> int:
         if self.expire_type == self.EXPIRE_ONETIME:
             remaining = config.ONETIME_LIMIT - self.view_count
             return remaining > 0 and remaining or 0

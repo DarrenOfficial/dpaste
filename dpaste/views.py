@@ -1,8 +1,11 @@
 import datetime
 import difflib
 import json
+from typing import Any, Dict, Optional, Union
 
 from django.apps import apps
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models.query import QuerySet
 from django.http import (
     Http404,
     HttpResponse,
@@ -11,9 +14,11 @@ from django.http import (
     HttpResponseRedirect,
 )
 from django.shortcuts import get_object_or_404, render
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.cache import add_never_cache_headers, patch_cache_control
+from django.utils.datastructures import MultiValueDict
 from django.utils.http import http_date
 from django.utils.translation import ugettext
 from django.views.generic import FormView
@@ -23,6 +28,7 @@ from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
 from dpaste import highlight
+from dpaste.apps import dpasteAppConfig
 from dpaste.forms import SnippetForm, get_expire_values
 from dpaste.highlight import PygmentsHighlighter
 from dpaste.models import Snippet
@@ -43,22 +49,26 @@ class SnippetView(FormView):
     form_class = SnippetForm
     template_name = "dpaste/new.html"
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs) -> TemplateResponse:
         response = super().get(request, *args, **kwargs)
         if config.CACHE_HEADER:
             patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
         return response
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(
+        self,
+    ) -> Dict[str, Optional[Union[MultiValueDict, WSGIRequest]]]:
         kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form: SnippetForm) -> HttpResponseRedirect:
         snippet = form.save()
         return HttpResponseRedirect(snippet.get_absolute_url())
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(
+        self, **kwargs
+    ) -> Dict[str, Union[SnippetForm, "SnippetView", str]]:
         ctx = super().get_context_data(**kwargs)
         ctx.update(config.extra_template_context)
         return ctx
@@ -76,7 +86,9 @@ class SnippetDetailView(DetailView, FormView):
     slug_url_kwarg = "snippet_id"
     slug_field = "secret_id"
 
-    def post(self, request, *args, **kwargs):
+    def post(
+        self, request: WSGIRequest, *args, **kwargs
+    ) -> Union[HttpResponseRedirect, TemplateResponse]:
         """
         Delete a snippet. This is allowed by anybody as long as he knows the
         snippet id. I got too many manual requests to do this, mostly for legal
@@ -95,7 +107,7 @@ class SnippetDetailView(DetailView, FormView):
 
         return super().post(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs) -> HttpResponse:
         snippet = self.get_object()
 
         # One-Time snippet get deleted if the view count matches our limit
@@ -126,7 +138,7 @@ class SnippetDetailView(DetailView, FormView):
 
         return response
 
-    def get_initial(self):
+    def get_initial(self) -> Dict[str, Union[str, bool]]:
         snippet = self.get_object()
         return {
             "content": snippet.content,
@@ -134,16 +146,23 @@ class SnippetDetailView(DetailView, FormView):
             "rtl": snippet.rtl,
         }
 
-    def get_form_kwargs(self):
+    def get_form_kwargs(
+        self,
+    ) -> Dict[
+        str,
+        Optional[
+            Union[Dict[str, Union[str, bool]], MultiValueDict, WSGIRequest]
+        ],
+    ]:
         kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
-    def form_valid(self, form):
+    def form_valid(self, form: SnippetForm) -> HttpResponseRedirect:
         snippet = form.save(parent=self.get_object())
         return HttpResponseRedirect(snippet.get_absolute_url())
 
-    def get_snippet_diff(self):
+    def get_snippet_diff(self) -> None:
         snippet = self.get_object()
 
         if not snippet.parent_id:
@@ -165,7 +184,7 @@ class SnippetDetailView(DetailView, FormView):
         # Remove blank lines
         return highlighted
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         self.object = self.get_object()
 
         ctx = super().get_context_data(**kwargs)
@@ -187,26 +206,30 @@ class SnippetRawView(SnippetDetailView):
 
     template_name = "dpaste/raw.html"
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request: WSGIRequest, *args, **kwargs) -> HttpResponse:
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
                 ugettext("This dpaste installation has Raw view mode disabled.")
             )
         return super().dispatch(request, *args, **kwargs)
 
-    def render_plain_text(self, context, **response_kwargs):
+    def render_plain_text(
+        self, context: dpasteAppConfig, **response_kwargs
+    ) -> HttpResponse:
         snippet = self.get_object()
         response = HttpResponse(snippet.content)
         response["Content-Type"] = "text/plain;charset=UTF-8"
         response["X-Content-Type-Options"] = "nosniff"
         return response
 
-    def render_to_response(self, context, **response_kwargs):
+    def render_to_response(
+        self, context: Dict[str, Any], **response_kwargs
+    ) -> HttpResponse:
         if config.RAW_MODE_PLAIN_TEXT:
             return self.render_plain_text(config, **response_kwargs)
         return super().render_to_response(context, **response_kwargs)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         ctx.update(config.extra_template_context)
         return ctx
@@ -220,16 +243,18 @@ class SnippetHistory(TemplateView):
 
     template_name = "dpaste/history.html"
 
-    def get_user_snippets(self):
+    def get_user_snippets(self) -> QuerySet:
         snippet_id_list = self.request.session.get("snippet_list", [])
         return Snippet.objects.filter(pk__in=snippet_id_list)
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs) -> TemplateResponse:
         response = super().get(request, *args, **kwargs)
         add_never_cache_headers(response)
         return response
 
-    def post(self, request, *args, **kwargs):
+    def post(
+        self, request: WSGIRequest, *args, **kwargs
+    ) -> HttpResponseRedirect:
         """
         Delete all user snippets at once.
         """
@@ -240,7 +265,9 @@ class SnippetHistory(TemplateView):
         url = "{0}#".format(reverse("snippet_history"))
         return HttpResponseRedirect(url)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(
+        self, **kwargs
+    ) -> Dict[str, Union["SnippetHistory", QuerySet, str]]:
         ctx = super().get_context_data(**kwargs)
         ctx.update({"snippet_list": self.get_user_snippets()})
         ctx.update(config.extra_template_context)
@@ -257,14 +284,14 @@ class APIView(View):
     API View
     """
 
-    def _format_default(self, s):
+    def _format_default(self, s: Snippet) -> str:
         """
         The default response is the snippet URL wrapped in quotes.
         """
         base_url = config.get_base_url(request=self.request)
         return f'"{base_url}{s.get_absolute_url()}"'
 
-    def _format_url(self, s):
+    def _format_url(self, s: Snippet) -> str:
         """
         The `url` format returns the snippet URL,
         no quotes, but a linebreak at the end.
@@ -272,7 +299,7 @@ class APIView(View):
         base_url = config.get_base_url(request=self.request)
         return f"{base_url}{s.get_absolute_url()}\n"
 
-    def _format_json(self, s):
+    def _format_json(self, s: Snippet) -> str:
         """
         The `json` format export.
         """
@@ -285,7 +312,7 @@ class APIView(View):
             }
         )
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs) -> HttpResponse:
         content = request.POST.get("content", "")
         lexer = request.POST.get("lexer", highlight.LEXER_DEFAULT).strip()
         filename = request.POST.get("filename", "").strip()
@@ -357,7 +384,11 @@ class APIView(View):
 # -----------------------------------------------------------------------------
 
 
-def page_not_found(request, exception=None, template_name="dpaste/404.html"):
+def page_not_found(
+    request: WSGIRequest,
+    exception: Optional[Http404] = None,
+    template_name: str = "dpaste/404.html",
+) -> HttpResponse:
     context = {}
     context.update(config.extra_template_context)
     response = render(request, template_name, context, status=404)
