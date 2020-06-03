@@ -45,5 +45,23 @@ Then simply call it from the project directory.
     py36-django-20: commands succeeded
     congratulations :)
 
+Type Annotation
+===============
+
+Type annotation can be added automatically using MonkeyType_.
+
+.. code-block:: bash
+
+    # Generate the database
+    docker-compose run --rm app monkeytype -c dpaste.monkeytype:config run /usr/local/bin/pytest dpaste/
+
+    # List available modules
+    docker-compose run --rm app monkeytype -c dpaste.monkeytype:config list-modules
+
+    # Apply them one by one.
+    docker-compose run --rm app monkeytype -c dpaste.monkeytype:config stub <module-name> --ignore-existing-annotations
+    docker-compose run --rm app monkeytype -c dpaste.monkeytype:config apply <module-name> --ignore-existing-annotations
+
 .. _Travis: https://travis-ci.org/bartTC/dpaste
 .. _tox: http://tox.readthedocs.org/en/latest/
+.. _MonkeyType: https://monkeytype.readthedocs.io/en/stable/

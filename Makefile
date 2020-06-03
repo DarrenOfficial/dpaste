@@ -13,7 +13,7 @@ endef
 .PHONY: test
 test: ## Run Django tests
 	rm -f .coverage
-	docker-compose run --rm app monkeytype run /usr/local/bin/pytest dpaste/
+	docker-compose run --rm app /usr/local/bin/pytest dpaste/
 
 .PHONY: code-cleanup
 code-cleanup: ## Black and isort the Python codebase

@@ -25,6 +25,7 @@ services:
         BUILD_EXTRAS: dev
     image: app
     environment:
+      DJANGO_SETTINGS_MODULE: dpaste.settings.local
       STATIC_ROOT: /collectstatic
       DATABASE_URL: sqlite:////db/dpaste.sqlite
       PORT: 8000
