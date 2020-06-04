@@ -7,3 +7,4 @@ dpaste.egg-info
 dpaste.sqlite
 node_modules
 monkeytype.sqlite3
+.mypy_cache/

@@ -96,9 +96,7 @@ class SnippetDetailView(DetailView, FormView):
         always expire.
         """
         if "delete" in self.request.POST:
-            snippet = get_object_or_404(
-                Snippet, secret_id=self.kwargs["snippet_id"]
-            )
+            snippet = get_object_or_404(Snippet, secret_id=self.kwargs["snippet_id"])
             snippet.delete()
 
             # Append `#` so #delete goes away in Firefox
@@ -138,7 +136,7 @@ class SnippetDetailView(DetailView, FormView):
 
         return response
 
-    def get_initial(self) -> Dict[str, Union[str, bool]]:
+    def get_initial(self) -> Dict[str, Any]:
         snippet = self.get_object()
         return {
             "content": snippet.content,
@@ -146,14 +144,7 @@ class SnippetDetailView(DetailView, FormView):
             "rtl": snippet.rtl,
         }
 
-    def get_form_kwargs(
-        self,
-    ) -> Dict[
-        str,
-        Optional[
-            Union[Dict[str, Union[str, bool]], MultiValueDict, WSGIRequest]
-        ],
-    ]:
+    def get_form_kwargs(self,) -> Dict[str, Dict[str, Any]]:
         kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
@@ -162,7 +153,7 @@ class SnippetDetailView(DetailView, FormView):
         snippet = form.save(parent=self.get_object())
         return HttpResponseRedirect(snippet.get_absolute_url())
 
-    def get_snippet_diff(self) -> None:
+    def get_snippet_diff(self) -> str:
         snippet = self.get_object()
 
         if not snippet.parent_id:
@@ -252,9 +243,7 @@ class SnippetHistory(TemplateView):
         add_never_cache_headers(response)
         return response
 
-    def post(
-        self, request: WSGIRequest, *args, **kwargs
-    ) -> HttpResponseRedirect:
+    def post(self, request: WSGIRequest, *args, **kwargs) -> HttpResponseRedirect:
         """
         Delete all user snippets at once.
         """
@@ -265,9 +254,7 @@ class SnippetHistory(TemplateView):
         url = "{0}#".format(reverse("snippet_history"))
         return HttpResponseRedirect(url)
 
-    def get_context_data(
-        self, **kwargs
-    ) -> Dict[str, Union["SnippetHistory", QuerySet, str]]:
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         ctx.update({"snippet_list": self.get_user_snippets()})
         ctx.update(config.extra_template_context)
@@ -357,16 +344,11 @@ class APIView(View):
                 )
             expires, expire_type = get_expire_values(expires)
         else:
-            expires = datetime.datetime.now() + datetime.timedelta(
-                seconds=60 * 60 * 24
-            )
+            expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
-            content=content,
-            lexer=lexer,
-            expires=expires,
-            expire_type=expire_type,
+            content=content, lexer=lexer, expires=expires, expire_type=expire_type,
         )
 
         # Custom formatter for the API response
@@ -397,7 +379,9 @@ def page_not_found(
     return response
 
 
-def server_error(request, template_name="dpaste/500.html"):
+def server_error(
+    request: WSGIRequest, template_name: str = "dpaste/500.html"
+) -> HttpResponse:
     context = {}
     context.update(config.extra_template_context)
     response = render(request, template_name, context, status=500)

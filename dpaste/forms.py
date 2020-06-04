@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple, Type, Union
+from typing import Any, Dict, Optional, Tuple, Type, Union
 
 from django import forms
 from django.apps import apps
@@ -89,7 +89,7 @@ class SnippetForm(forms.ModelForm):
         self.cleaned_data["expire_type"] = expire_type
         return expires
 
-    def clean(self) -> Dict[str, Optional[Union[Type[object], None]]]:
+    def clean(self) -> Dict[str, Any]:
         """
         The `title` field is a hidden honeypot field. If its filled,
         this is likely spam.
