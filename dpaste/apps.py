@@ -5,13 +5,15 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from .types import DjangoChoicesType
+
 
 class dpasteAppConfig(AppConfig):
-    name = "dpaste"
-    verbose_name = "dpaste"
+    name: str = "dpaste"
+    verbose_name: str = "dpaste"
 
     # The application title used throughout the user interface.
-    APPLICATION_NAME = "dpaste"
+    APPLICATION_NAME: str = "dpaste"
 
     # This content is loaded in the <head> section of each template.
     # You can use it to add any HTML tags, specifically custom CSS styles.
@@ -27,35 +29,33 @@ class dpasteAppConfig(AppConfig):
     #       .btn { background-color: blue; border: 3px solid yellow; }
     #     </style>
     #   """
-    EXTRA_HEAD_HTML = ""
+    EXTRA_HEAD_HTML: str = ""
 
     # HTML content injected in the About page
-    EXTRA_POST_ABOUT = ""
+    EXTRA_POST_ABOUT: str = ""
 
     # HTML content injeted after the "New snippet" form
-    EXTRA_POST_NEW = ""
+    EXTRA_POST_NEW: str = ""
 
     # HTML content injected at the end of every form
-    EXTRA_POST_FORM = ""
+    EXTRA_POST_FORM: str = ""
 
     # Integer. Length of the random slug for each new snippet. In the rare
     # case an existing slug is generated again, the length will increase by
     # one more character.
-    SLUG_LENGTH = 4
+    SLUG_LENGTH: int = 4
 
     # String. A string of characters which are used to create the random slug.
     # This is intentionally missing l and I as they look too similar with
     # sans-serif fonts.
-    SLUG_CHOICES = (
-        "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890"
-    )
+    SLUG_CHOICES: str = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ1234567890"
 
     # String. The lexer key that is pre-selected in the dropdown. Note that
     # this is only used if the user has not saved a snippet before, otherwise
-    LEXER_DEFAULT = "python"
+    LEXER_DEFAULT: str = "python"
 
     # Integer. Maximum number of bytes per snippet.
-    MAX_CONTENT_LENGTH = 250 * 1024 * 1024
+    MAX_CONTENT_LENGTH: int = 250 * 1024 * 1024
 
     # A tuple of seconds and a descriptive string used in the lexer
     # expiration dropdown. Example::
@@ -77,7 +77,7 @@ class dpasteAppConfig(AppConfig):
     #         (3600, _('In one hour')),
     #         ('never', _('Never')),
     #     )
-    EXPIRE_CHOICES = (
+    EXPIRE_CHOICES: DjangoChoicesType = (
         ("onetime", _("One-Time snippet")),
         (3600, _("Expire in one hour")),
         (3600 * 24 * 7, _("Expire in one week")),
@@ -86,7 +86,7 @@ class dpasteAppConfig(AppConfig):
     )
 
     # Default value for ``EXPIRE_CHOICES``
-    EXPIRE_DEFAULT = 3600 * 24 * 7
+    EXPIRE_DEFAULT: int = 3600 * 24 * 7
 
     # **One-Time snippets** are supported. One-Time snippets are automatically
     # deleted once a defined view count has reached (Default: ``2``). To
@@ -104,21 +104,21 @@ class dpasteAppConfig(AppConfig):
     # You can also set the maximum view count after what the snippet gets
     # deleted. The default is ``2``. One view is from the author, one view
     # is from another user.
-    ONETIME_LIMIT = 2
+    ONETIME_LIMIT: int = 2
 
     # Disable "view Raw" mode.
-    RAW_MODE_ENABLED = True
+    RAW_MODE_ENABLED: bool = True
 
     # If enabled, the "raw View" mode will display the snippet content as
     # plain text rather rendered in a template.
-    RAW_MODE_PLAIN_TEXT = True
+    RAW_MODE_PLAIN_TEXT: bool = True
 
     # Lexers which have wordwrap enabled by default
-    LEXER_WORDWRAP = ("rst",)
+    LEXER_WORDWRAP: Tuple[str] = ("rst",)
 
     # Key names of the default text and code lexer.
-    PLAIN_TEXT_SYMBOL = "_text"
-    PLAIN_CODE_SYMBOL = "_code"
+    PLAIN_TEXT_SYMBOL: str = "_text"
+    PLAIN_CODE_SYMBOL: str = "_code"
 
     @property
     def TEXT_FORMATTER(self,) -> List[Tuple[str, str, Type[object]]]:

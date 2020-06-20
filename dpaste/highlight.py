@@ -42,7 +42,7 @@ class Highlighter(object):
         lexer_name: str,
         direction: Optional[str] = None,
         **kwargs
-    ) -> SafeString:
+    ) -> str:
         highlighted_string = self.highlight(code_string, lexer_name=lexer_name)
         context = {
             "highlighted": highlighted_string,

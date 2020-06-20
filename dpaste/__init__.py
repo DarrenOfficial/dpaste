@@ -1,4 +1,6 @@
-VERSION = (3, 4)
+from .types import VersionType
+
+VERSION: VersionType = (3, 4)
 
 __version__ = "{major}.{minor}{rest}".format(
     major=VERSION[0],

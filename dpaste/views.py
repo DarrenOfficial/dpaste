@@ -96,7 +96,9 @@ class SnippetDetailView(DetailView, FormView):
         always expire.
         """
         if "delete" in self.request.POST:
-            snippet = get_object_or_404(Snippet, secret_id=self.kwargs["snippet_id"])
+            snippet = get_object_or_404(
+                Snippet, secret_id=self.kwargs["snippet_id"]
+            )
             snippet.delete()
 
             # Append `#` so #delete goes away in Firefox
@@ -243,7 +245,9 @@ class SnippetHistory(TemplateView):
         add_never_cache_headers(response)
         return response
 
-    def post(self, request: WSGIRequest, *args, **kwargs) -> HttpResponseRedirect:
+    def post(
+        self, request: WSGIRequest, *args, **kwargs
+    ) -> HttpResponseRedirect:
         """
         Delete all user snippets at once.
         """
@@ -344,11 +348,16 @@ class APIView(View):
                 )
             expires, expire_type = get_expire_values(expires)
         else:
-            expires = datetime.datetime.now() + datetime.timedelta(seconds=60 * 60 * 24)
+            expires = datetime.datetime.now() + datetime.timedelta(
+                seconds=60 * 60 * 24
+            )
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
-            content=content, lexer=lexer, expires=expires, expire_type=expire_type,
+            content=content,
+            lexer=lexer,
+            expires=expires,
+            expire_type=expire_type,
         )
 
         # Custom formatter for the API response
