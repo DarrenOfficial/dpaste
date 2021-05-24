@@ -17,6 +17,9 @@
     background-color: $codeDiffBgColor;
     white-space: pre;
     font-size: 12px;
+    
+    max-width: 100%;
+    overflow-x: auto;
   }
 }
 
