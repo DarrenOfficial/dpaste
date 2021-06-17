@@ -1,8 +1,6 @@
 .venv
 .coverage
 docs/_build
-dpaste/settings/local.py
-dpaste/static/
 dpaste.egg-info
 dpaste.sqlite
 node_modules
