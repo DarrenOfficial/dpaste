@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pip = "==21.0.1"
+dpaste = {extras = ["production"], path = "."}
+black = "==21.6b0"
+
+[dev-packages]
+dpaste = {extras = ["dev"], path = "."}
+autoflake = "*"
+
+[requires]
+python_version = "3.9"

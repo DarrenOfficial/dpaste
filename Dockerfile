@@ -21,10 +21,11 @@ RUN make js
 
 # ------------------------------------------------
 
-FROM python:3.6 as build
+FROM python:3.9.1 as build
 
 ARG BUILD_EXTRAS=production
-
+ARG DEBUG=False
+ENV DEBUG=${DEBUG}
 ENV PORT=8000
 
 RUN echo "\nℹ️  Building Django project with "${BUILD_EXTRAS}" dependencies.\n"

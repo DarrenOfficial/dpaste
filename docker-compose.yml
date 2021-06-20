@@ -1,49 +1,57 @@
-version: "3.4"
+version: "3"
 
 services:
-  staticfiles:
-    build:
-      context: .
-      target: staticfiles
-      args:
-        BUILD_EXTRAS: dev
-    image: staticfiles
+  db:
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "dpaste"
+      MYSQL_PASSWORD: "dpaste"
+      MYSQL_DATABASE: "dpaste"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    image: mysql:5.7
     volumes:
-      - ./package.json:/app/package.json
-      - ./package-log.json:/app/package-log.json
-      - ./client:/app/client:delegated
-      - ./dpaste/static:/app/dpaste/static
+      - data_db:/var/lib/mysql
 
-  app:
-    stdin_open: true
-    tty: true
-    restart: always
+  db_migrations:
     build:
       context: .
       target: build
       args:
         BUILD_EXTRAS: dev
+    command: bash -c "sleep 10; ./manage.py makemigrations && ./manage.py migrate"
+    depends_on:
+      - db
     image: app
     environment:
-      STATIC_ROOT: /collectstatic
-      DATABASE_URL: sqlite:////db/dpaste.sqlite
+      DB_HOST: db
+      DB_NAME: dpaste
+      DB_PASS: dpaste
+      DB_USER: dpaste
+    links:
+      - db
+
+  app:
+    command: bash -c "sleep 15; ./manage.py runserver 0:8000"
+    depends_on:
+      - db_migrations
+    environment:
+      DB_HOST: db
+      DB_NAME: dpaste
+      DB_PASS: dpaste
+      DB_USER: dpaste
       PORT: 8000
-    volumes:
-      - .:/app:delegated
-      - data_collectstatic:/collectstatic
-      - data_db:/db
+    image: app
+    links:
+      - db
     ports:
       - "8000:8000"
-    command: ./manage.py runserver 0:8000
-
-  migration:
-    image: app
-    command: ./manage.py migrate --noinput
-    volumes:
-      - .:/app:delegated
-      - data_db:/db
+    restart: always
+    stdin_open: true
+    tty: true
 
 
 volumes:
   data_db:
-  data_collectstatic:
