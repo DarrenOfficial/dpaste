@@ -145,7 +145,8 @@ class SnippetAPITestCase(TestCase):
     def test_expire_choices_invalid_given(self):
         # A expire choice that does not exist returns a BadRequest
         response = self.client.post(
-            self.api_url, {"content": u"Hello Wörld.\n\tGood Bye", "expires": "foobar"},
+            self.api_url,
+            {"content": u"Hello Wörld.\n\tGood Bye", "expires": "foobar"},
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -166,7 +167,8 @@ class SnippetAPITestCase(TestCase):
 
     def test_valid_expiration_choices_never(self):
         response = self.client.post(
-            self.api_url, {"content": u"Hello Wörld.\n\tGood Bye", "expires": "never"},
+            self.api_url,
+            {"content": u"Hello Wörld.\n\tGood Bye", "expires": "never"},
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
@@ -174,7 +176,8 @@ class SnippetAPITestCase(TestCase):
 
     def test_valid_expiration_choices_hour(self):
         response = self.client.post(
-            self.api_url, {"content": u"Hello Wörld.\n\tGood Bye", "expires": 3600},
+            self.api_url,
+            {"content": u"Hello Wörld.\n\tGood Bye", "expires": 3600},
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 1)
@@ -204,7 +207,11 @@ class SnippetAPITestCase(TestCase):
         """
         response = self.client.post(
             self.api_url,
-            {"content": u"Hello Wörld.\n\tGood Bye", "lexer": "", "filename": "",},
+            {
+                "content": u"Hello Wörld.\n\tGood Bye",
+                "lexer": "",
+                "filename": "",
+            },
         )
         self.assertEqual(response.status_code, 400)
 

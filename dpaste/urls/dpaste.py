@@ -4,21 +4,21 @@ from django.conf.urls import url
 from django.views.decorators.cache import cache_control
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import TemplateView
-from django.conf.urls.static import static
-#from django.contrib.staticfiles import views as static_views
 
-from .. import views
-from .. import contribute
+from .. import contribute, views
+
+# from django.contrib.staticfiles import views as static_views
+
 
 L = getattr(settings, "DPASTE_SLUG_LENGTH", 4)
 config = apps.get_app_config("dpaste")
 
 urlpatterns = [
-    url(r'^$', views.SnippetView.as_view(), name='snippet_new'),
-    #url(
+    url(r"^$", views.SnippetView.as_view(), name="snippet_new"),
+    # url(
     #    r'^static/(?P<path>.*)$',
     #    static_views.serve,
-    #),
+    # ),
     url(
         r"^about/$",
         cache_control(max_age=config.CACHE_TIMEOUT)(
@@ -48,8 +48,8 @@ urlpatterns = [
         name="snippet_details_slim",
     ),
     url(
-        r'^contribute.json$',
+        r"^contribute.json$",
         contribute.contrib_file,
-        name='contrib_file',
+        name="contrib_file",
     ),
 ]

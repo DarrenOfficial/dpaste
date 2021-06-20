@@ -115,12 +115,12 @@ SESSION_COOKIE_SAMESITE = "strict"
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_HSTS_SECONDS = 15768001 # 6 months
+SECURE_HSTS_SECONDS = 15768001  # 6 months
 SECURE_BROWSER_XSS_FILTER = True
 
-#CSP_DEFAULT_SRC = ("'none'",)
-#CSP_SCRIPT_SRC = ("'self'",)
-#CSP_STYLE_SRC = ("'self'",)
+# CSP_DEFAULT_SRC = ("'none'",)
+# CSP_SCRIPT_SRC = ("'self'",)
+# CSP_STYLE_SRC = ("'self'",)
 CSP_DEFAULT_SRC = ("'none'",)
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")

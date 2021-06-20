@@ -14,7 +14,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--dry-run", action="store_true", dest="dry_run", help="Don't do anything.",
+            "--dry-run",
+            action="store_true",
+            dest="dry_run",
+            help="Don't do anything.",
         ),
 
     def handle(self, *args, **options):

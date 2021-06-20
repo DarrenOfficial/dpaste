@@ -332,7 +332,10 @@ class APIView(View):
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
-            content=content, lexer=lexer, expires=expires, expire_type=expire_type,
+            content=content,
+            lexer=lexer,
+            expires=expires,
+            expire_type=expire_type,
         )
 
         # Custom formatter for the API response

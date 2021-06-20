@@ -130,8 +130,8 @@ class dpasteAppConfig(AppConfig):
         If the Highlight Class is not given, PygmentsHighlighter is used.
         """
         from dpaste.highlight import (
-            PlainTextHighlighter,
             MarkdownHighlighter,
+            PlainTextHighlighter,
             RestructuredTextHighlighter,
         )
 
@@ -243,7 +243,7 @@ class dpasteAppConfig(AppConfig):
             ("console", "Console/Bash Session"),
             # ('control', 'Debian Control file'),
             # ('coq', 'Coq'),
-            ('cpp', 'C++'),
+            ("cpp", "C++"),
             # ('cpp-objdump', 'cpp-objdump'),
             # ('cpsa', 'CPSA'),
             # ('cr', 'Crystal'),
