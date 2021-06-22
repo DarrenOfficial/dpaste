@@ -1,10 +1,6 @@
 name: Build Docker image
 
-on:
-  push:
-    branches: [ master, ]
-  pull_request:
-    branches: [ master ]
+on: [ push, pull_request ]
 
 jobs:
   prepare:
@@ -12,27 +8,57 @@ jobs:
     outputs:
       FULL_IMAGE_TAG: ${{ steps.tag.outputs.tag }}
     steps:
-      - name: Set Tag
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Image Tag
         id: tag
-        env:
-          version_pattern: "tags\\/v[0-9]+\\.[0-9]+\\.[0-9]+"
         run: |
-          export CI_COMMIT_SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)
-          echo $CI_COMMIT_SHORT_SHA;
-          echo ${GITHUB_REF##*/};
-          echo $version_pattern;
-          if [[ ${GITHUB_REF} =~ $version_pattern ]]; then
-            echo "::set-output name=tag::${GITHUB_REF##*/}"
-          elif [ ${GITHUB_REF##*/} = "master" ]; then
-            echo "::set-output name=tag::stg-$CI_COMMIT_SHORT_SHA"
-          else
-            echo "::set-output name=tag::$CI_COMMIT_SHORT_SHA"
-          fi
+          export GIT_TAG=$(git describe --abbrev=7 --always --tags)
+          echo "::set-output name=tag::${GIT_TAG}"
 
   build-image:
     runs-on: ubuntu-latest
     needs: prepare
+    if: github.ref != 'refs/heads/master' && github.event_name != 'release'
+    steps:
+      - name: Echo tag
+        id: echotag
+        env:
+          IMAGE_TAG: ${{ needs.prepare.outputs.FULL_IMAGE_TAG }}
+        run: |
+          echo "Building an image with the following tag:"
+          echo $IMAGE_TAG
+          echo "Based off the following commit:"
+          echo $GITHUB_SHA
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        id: configure-aws-creds
+        with:
+          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build Image Only
+        id: build
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: pastebin
+          IMAGE_TAG: ${{ needs.prepare.outputs.FULL_IMAGE_TAG }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA
+      - name: Logut of Amazon ECR
+        if: always()
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}
 
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Echo tag
         id: echotag
@@ -46,12 +72,10 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         id: configure-aws-creds
-        env:
-          AWS_REGION: us-west-2
         with:
           aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: us-west-2
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -59,19 +83,50 @@ jobs:
         id: build-push
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ctms-api
+          ECR_REPOSITORY: pastebin
           IMAGE_TAG: ${{ needs.prepare.outputs.FULL_IMAGE_TAG }}
         run: |
-          printf '{\n    "commit": "%s",\n    "version": "%s",\n    "image_tag": "%s",\n    "source": "%s",\n    "build": "%s"\n}\n' \
-            "$GITHUB_SHA" \
-            "$GITHUB_REF" \
-            "$IMAGE_TAG" \
-            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
-            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > ./version.json
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker image tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY
+      - name: Logut of Amazon ECR
+        if: always()
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
+  promote-image:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: github.event_name == 'release' 
+    steps:
+      - name: Echo tag
+        id: echotag
+        env:
+          IMAGE_TAG: ${{ needs.prepare.outputs.FULL_IMAGE_TAG }}
+        run: |
+          echo "Building an image with the following tag:"
+          echo $IMAGE_TAG
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        id: configure-aws-creds
+        with:
+          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build and push to ECR
+        id: pull-tag-push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: pastebin
+          IMAGE_TAG: ${{ needs.prepare.outputs.FULL_IMAGE_TAG }}
+        run: |
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Logut of Amazon ECR
         if: always()
-        run: |
-          docker logout ${{ steps.login-ecr.outputs.registry }}
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}
