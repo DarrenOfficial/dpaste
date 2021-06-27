@@ -25,9 +25,9 @@ code-cleanup: ## Black and isort the Python codebase
 docs: ## Compile the documentation
 	docker-compose run --rm app sphinx-build docs docs/_build/html
 
-.PHONY: watch-docs
+.PHONY: docs-watch
 docs-watch: ## Compile the documentation and watch for changes
-	docker-compose run -p 8000:8000 --rm app sphinx-autobuild -H 0 -p 8000 docs docs/_build/html
+	docker-compose run -p 8000:8000 --rm app sphinx-autobuild --host 0 --port 8000 docs docs/_build/html
 
 .PHONY: css
 css: ## Compile SCSS files
