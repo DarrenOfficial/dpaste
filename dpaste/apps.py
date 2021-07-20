@@ -1,3 +1,5 @@
+import os
+
 from django.apps import AppConfig, apps
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -632,7 +634,10 @@ class dpasteAppConfig(AppConfig):
             site = get_current_site(request)
             if site:
                 return f"https://{site.domain}"
-        return "https://dpaste-base-url.example.org"
+        elif os.getenv("DPASTE_BASE_URL"):
+            domain = os.getenv("DPASTE_BASE_URL")
+            return f"https://{domain}"
+        return "https://paste.mozilla.org"
 
     @property
     def extra_template_context(self):
