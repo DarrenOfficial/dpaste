@@ -268,7 +268,7 @@ class dpasteAppConfig(AppConfig):
             ("cuda", "CUDA"),
             # ('cypher', 'Cypher'),
             # ('cython', 'Cython'),
-            # ('d', 'D'),
+            ("d", "D"),
             # ('d-objdump', 'd-objdump'),
             ("dart", "Dart"),
             ("delphi", "Delphi"),
