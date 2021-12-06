@@ -126,7 +126,7 @@ command line:
 
     $ alias dpaste="curl -F 'format=url' -F 'content=<-' https://dpaste.org/api/"
     $ cat foo.txt | dpaste
-    https://dpaste.de/ke2pB
+    https://dpaste.org/ke2pB
 
 .. note:: If you wrote or know a third party dpaste plugin or extension,
     please open an *Issue* on Github_ and it's added here.
