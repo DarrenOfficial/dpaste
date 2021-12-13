@@ -1,5 +1,6 @@
 import datetime
 import difflib
+import ipaddress
 import json
 
 from django.apps import apps
@@ -14,18 +15,21 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.cache import add_never_cache_headers, patch_cache_control
-from django.utils.http import http_date
-from django.utils.translation import ugettext
+from django.utils.translation import gettext
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
+from ratelimit.decorators import ratelimit
+from ratelimit.exceptions import Ratelimited
 
 from dpaste import highlight
 from dpaste.forms import SnippetForm, get_expire_values
 from dpaste.highlight import PygmentsHighlighter
 from dpaste.models import Snippet
+
+from django.conf import settings
 
 config = apps.get_app_config("dpaste")
 
@@ -45,8 +49,6 @@ class SnippetView(FormView):
 
     def get(self, request, *args, **kwargs):
         response = super().get(request, *args, **kwargs)
-        if config.CACHE_HEADER:
-            patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
         return response
 
     def get_form_kwargs(self):
@@ -111,18 +113,7 @@ class SnippetDetailView(DetailView, FormView):
         snippet.view_count += 1
         snippet.save(update_fields=["view_count"])
 
-        response = super().get(request, *args, **kwargs)
-
-        # Set the Max-Age header up until the snippet would expire
-        if config.CACHE_HEADER:
-            if snippet.expire_type == Snippet.EXPIRE_KEEP:
-                patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
-            if snippet.expire_type == Snippet.EXPIRE_ONETIME:
-                add_never_cache_headers(response)
-            if snippet.expire_type == Snippet.EXPIRE_TIME and snippet.expires:
-                response["Expires"] = http_date(snippet.expires.timestamp())
-
-        return response
+        return super().get(request, *args, **kwargs)
 
     def get_initial(self):
         snippet = self.get_object()
@@ -153,8 +144,8 @@ class SnippetDetailView(DetailView, FormView):
         d = difflib.unified_diff(
             snippet.parent.content.splitlines(),
             snippet.content.splitlines(),
-            ugettext("Previous Snippet"),
-            ugettext("Current Snippet"),
+            gettext("Previous Snippet"),
+            gettext("Current Snippet"),
             n=1,
         )
         diff_code = "\n".join(d).strip()
@@ -188,7 +179,7 @@ class SnippetRawView(SnippetDetailView):
     def dispatch(self, request, *args, **kwargs):
         if not config.RAW_MODE_ENABLED:
             return HttpResponseForbidden(
-                ugettext("This dpaste installation has Raw view mode disabled.")
+                gettext("This dpaste installation has Raw view mode disabled.")
             )
         return super().dispatch(request, *args, **kwargs)
 
@@ -332,7 +323,10 @@ class APIView(View):
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
-            content=content, lexer=lexer, expires=expires, expire_type=expire_type,
+            content=content,
+            lexer=lexer,
+            expires=expires,
+            expire_type=expire_type,
         )
 
         # Custom formatter for the API response
@@ -349,17 +343,15 @@ class APIView(View):
 # handle them here.
 # -----------------------------------------------------------------------------
 
-
-def page_not_found(request, exception=None, template_name="dpaste/404.html"):
+def handler404(request, exception=None, template_name="dpaste/404.html"):
     context = {}
     context.update(config.extra_template_context)
     response = render(request, template_name, context, status=404)
-    if config.CACHE_HEADER:
-        patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
+    patch_cache_control(response, max_age=config.CACHE_TIMEOUT)
     return response
 
 
-def server_error(request, template_name="dpaste/500.html"):
+def handler500(request, template_name="dpaste/500.html"):
     context = {}
     context.update(config.extra_template_context)
     response = render(request, template_name, context, status=500)

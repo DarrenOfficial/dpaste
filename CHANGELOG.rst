@@ -1,6 +1,14 @@
 Changelog
 =========
 
+3.6 (master)
+------------
+
+- Added support for Python 3.9.
+- Added support for Python 3.10.
+- Removed cache headers for all views except 404. Due to that snippets can be
+  deleted, it's not trivial to have them removed from upstream caches.
+
 3.5 (2020-01-08)
 ----------------
 

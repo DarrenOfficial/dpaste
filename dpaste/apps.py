@@ -2,6 +2,9 @@ from django.apps import AppConfig, apps
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from logging import getLogger
+
+log = getLogger(__file__)
 
 class dpasteAppConfig(AppConfig):
     name = "dpaste"
@@ -610,12 +613,8 @@ class dpasteAppConfig(AppConfig):
             # ('zephir', 'Zephir')
         ]
 
-    # Whether to send out cache headers (Max-Age, Never-Cache, etc.).
-    CACHE_HEADER = True
-
-    # Defines how long pages are cached by upstream Proxies (Max-Age Header).
-    # This does not affect caching of snippets, their max-age limit is set
-    # to the expire date.
+    # Cache timeout for 404 and static pages. Snippets don't have an explicit
+    # Cache timeout set to avoid caching in upstream proxies.
     CACHE_TIMEOUT = 60 * 10
 
     @staticmethod
