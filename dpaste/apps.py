@@ -1,10 +1,11 @@
+from logging import getLogger
+
 from django.apps import AppConfig, apps
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
-from logging import getLogger
-
 log = getLogger(__file__)
+
 
 class dpasteAppConfig(AppConfig):
     name = "dpaste"
@@ -133,8 +134,8 @@ class dpasteAppConfig(AppConfig):
         If the Highlight Class is not given, PygmentsHighlighter is used.
         """
         from dpaste.highlight import (
-            PlainTextHighlighter,
             MarkdownHighlighter,
+            PlainTextHighlighter,
             RestructuredTextHighlighter,
         )
 

@@ -1,7 +1,6 @@
 """
 Settings for the testsuite runs.
 """
-import django
 
 from .base import *  # noqa
 

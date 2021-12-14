@@ -1,6 +1,5 @@
 import datetime
 import difflib
-import ipaddress
 import json
 
 from django.apps import apps
@@ -21,15 +20,11 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
-from ratelimit.decorators import ratelimit
-from ratelimit.exceptions import Ratelimited
 
 from dpaste import highlight
 from dpaste.forms import SnippetForm, get_expire_values
 from dpaste.highlight import PygmentsHighlighter
 from dpaste.models import Snippet
-
-from django.conf import settings
 
 config = apps.get_app_config("dpaste")
 
@@ -342,6 +337,7 @@ class APIView(View):
 # Custom 404 and 500 views. Its easier to integrate this as a app if we
 # handle them here.
 # -----------------------------------------------------------------------------
+
 
 def handler404(request, exception=None, template_name="dpaste/404.html"):
     context = {}
