@@ -17,9 +17,9 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
 
    .. code-block:: bash
 
-      $ curl -X POST -F "format=url" -F "content=ABC" https:/dpaste.de/api/
+      $ curl -X POST -F "format=url" -F "content=ABC" https:/dpaste.org/api/
 
-      Host: dpaste.de
+      Host: dpaste.org
       User-Agent: curl/7.54.0
       Accept: */*
 
@@ -29,7 +29,7 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
 
       {
         "lexer": "python",
-        "url": "https://dpaste.de/EBKU",
+        "url": "https://dpaste.org/EBKU",
         "content": "ABC"
       }
 
@@ -42,10 +42,10 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
    :form format: (optional) The format of the API response. Choices are:
 
     * ``default`` — Returns a full qualified URL wrapped in quotes.
-      Example: ``"https://dpaste.de/xsWd"``
+      Example: ``"https://dpaste.org/xsWd"``
 
     * ``url`` — Returns the full qualified URL to the snippet, without surrounding
-      quotes, but with a line break. Example: ``https://dpaste.de/xsWd\n``
+      quotes, but with a line break. Example: ``https://dpaste.org/xsWd\n``
 
     * ``json`` — Returns a JSON object containing the URL, lexer and content of the
       the snippet. Example:
@@ -53,7 +53,7 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
       .. code-block:: json
 
           {
-            "url": "https://dpaste.de/xsWd",
+            "url": "https://dpaste.org/xsWd",
             "lexer": "python",
             "content": "The text body of the snippet."
           }
@@ -79,7 +79,7 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
     .. code-block:: json
 
         {
-          "url": "https://dpaste.de/xsWd",
+          "url": "https://dpaste.org/xsWd",
           "lexer": "",
           "filename": "python",
           "content": "The text body of the snippet."
@@ -90,7 +90,7 @@ do is a simple ``POST`` request to the API endpoint, usually ``/api/``:
     .. code-block:: json
 
         {
-          "url": "https://dpaste.de/xsWd",
+          "url": "https://dpaste.org/xsWd",
           "lexer": "php",
           "filename": "python",
           "content": "The text body of the snippet."

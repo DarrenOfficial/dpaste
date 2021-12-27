@@ -35,7 +35,7 @@ A crontab line might look like:
 
 .. code-block:: bash
 
-    1 20 * * * /srv/dpaste.de/pipenv run manage.py cleanup_snippets > /dev/null
+    1 20 * * * /srv/dpaste.org/pipenv run manage.py cleanup_snippets > /dev/null
 
 
 .. note:: If you use the *database* session backend, you may also need to setup

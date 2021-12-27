@@ -15,5 +15,5 @@ Documentation
    api
    changelog
 
-.. _dpaste.de: https://dpaste.de/
+.. _dpaste.org: https://dpaste.org/
 .. _pastebin: https://en.wikipedia.org/wiki/Pastebin

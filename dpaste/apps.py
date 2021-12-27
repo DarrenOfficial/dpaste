@@ -624,7 +624,7 @@ class dpasteAppConfig(AppConfig):
         String. The full qualified hostname and path to the dpaste instance.
         This is used to generate a link in the API response. If the "Sites"
         framework is installed, it uses the current Site domain. Otherwise
-        it falls back to 'https://dpaste.de'
+        it falls back to 'https://dpaste.org'
         """
         if apps.is_installed("django.contrib.sites"):
             from django.contrib.sites.shortcuts import get_current_site

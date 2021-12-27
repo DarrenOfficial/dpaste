@@ -228,5 +228,5 @@ Huge release. Full cleanup and update of the entire codebase. Details:
 ----------------
 
 - A huge cleanup and nearly total rewrite.
-- dpaste now includes a Django project which is used on www.dpaste.de
+- dpaste now includes a Django project which is used on www.dpaste.org
   as well as hooks to get it integrated into existing projcts.

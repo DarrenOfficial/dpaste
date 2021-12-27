@@ -19,10 +19,10 @@ dpaste
 📖 Full documentation on https://dpaste.readthedocs.io/
 
 dpaste is a pastebin_ application written in Python using the Django
-framework. You can find a live installation on `dpaste.de`_.
+framework. You can find a live installation on `dpaste.org`_.
 
 .. image:: https://raw.githubusercontent.com/bartTC/dpaste/master/docs/_static/dpaste_de_screenshot.png
-   :alt: A screenshot of https://dpaste.de/
+   :alt: A screenshot of https://dpaste.org/
    :width: 60%
 
 The project is intended to run standalone as any regular Django Project,
@@ -35,5 +35,5 @@ please create an *Issue* there.
 
 ⚠️ dpaste requires at a minimum Python 3.6 and Django 2.2.
 
-.. _dpaste.de: https://dpaste.de/
+.. _dpaste.org: https://dpaste.org/
 .. _pastebin: https://en.wikipedia.org/wiki/Pastebin
