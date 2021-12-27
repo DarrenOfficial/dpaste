@@ -16,7 +16,7 @@ dpaste
 
 ----
 
-📖 Full documentation on https://dpaste.readthedocs.io/
+📖 Full documentation on https://docs.dpaste.org
 
 dpaste is a pastebin_ application written in Python using the Django
 framework. You can find a live installation on `dpaste.org`_.
