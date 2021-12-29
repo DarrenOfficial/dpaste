@@ -29,7 +29,7 @@ class dpasteAppConfig(AppConfig):
     # HTML content injected in the About page
     EXTRA_POST_ABOUT = ""
 
-    # HTML content injeted after the "New snippet" form
+    # HTML content injected after the "New snippet" form
     EXTRA_POST_NEW = ""
 
     # HTML content injected at the end of every form
