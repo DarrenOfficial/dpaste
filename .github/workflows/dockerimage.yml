@@ -21,6 +21,6 @@ jobs:
         with:
           image: darrenofficial/dpaste
           registry: docker.io
-          tags: v1, latest
+          tags: latest
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
