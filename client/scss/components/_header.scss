@@ -39,7 +39,7 @@ header {
 
   .btn {
     width: 2 * $columnWidth;
-    margin-left: $columnGap / 2;
+    margin-left: math.div($columnGap, 2);
   }
 
   h1 {
