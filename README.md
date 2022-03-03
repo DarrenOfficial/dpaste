@@ -1,7 +1,8 @@
 Dpaste
 ---
 ![dpaste image](https://img.shields.io/pypi/v/dpaste.svg)
-![building](https://travis-ci.org/bartTC/dpaste.svg?branch=master)
+[![Python CI](https://github.com/DarrenOfficial/dpaste/actions/workflows/python.yml/badge.svg)](https://github.com/DarrenOfficial/dpaste/actions/workflows/python.yml)
+[![Docker Image CI](https://github.com/DarrenOfficial/dpaste/actions/workflows/docker.yml/badge.svg)](https://hub.docker.com/r/darrenofficial/dpaste)
 ![Code Quality](https://api.codacy.com/project/badge/Grade/185cfbe9b4b447e59a40f816c4a5ebf4)
 
 ----
