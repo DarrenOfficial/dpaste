@@ -8,6 +8,7 @@ Changelog
 - Added support for Python 3.10.
 - Removed cache headers for all views except 404. Due to that snippets can be
   deleted, it's not trivial to have them removed from upstream caches.
+- Bump pygments version to 2.11.
 
 3.5 (2020-01-08)
 ----------------
