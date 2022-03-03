@@ -34,9 +34,6 @@ services:
       - data_db:/db
     ports:
       - "8000:8000"
-    command: mkdir -p dpaste/static
-    command: make css
-    command: make js
     command: ./manage.py runserver 0:8000
 
   migration:
@@ -45,7 +42,6 @@ services:
     volumes:
       - .:/app:delegated
       - data_db:/db
-
 
 volumes:
   data_db:

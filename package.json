@@ -1,6 +1,6 @@
 {
   "name": "dpaste",
-  "version": "4.0.0",
+  "version": "3.0.0",
   "repository": "https://github.com/bartTC/dpaste",
   "license": "MIT",
   "dependencies": {
