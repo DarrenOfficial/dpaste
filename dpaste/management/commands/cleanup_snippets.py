@@ -21,24 +21,25 @@ class Command(BaseCommand):
         ),
 
     def handle(self, *args, **options):
-        deleteable_snippets = (
-            # Snippets which are expired but haven't been deleted by
-            # the view.
-            Snippet.objects.filter(
+        # Snippets which are expired but haven't been deleted by
+        # the view.
+        deleteable_snippets = Snippet.objects.filter(
                 expires__isnull=False,
                 expire_type=Snippet.EXPIRE_TIME,
                 expires__lte=timezone.now(),
             )
-            # Snipoets which are Onetime snippets but have never been viewed
-            # the second time. Delete them if they are older than our default
-            # expiration.
-            | Snippet.objects.filter(
-                expire_type=Snippet.EXPIRE_ONETIME,
-                published__lte=(
-                    timezone.now() - timedelta(seconds=config.EXPIRE_DEFAULT)
-                ),
-            )
-        )
+
+        # Snipets which are Onetime snippets but have never been viewed
+        # the second time. Delete them if they are older than our default
+        # expiration, unless that default is not an integer (e.g., 'never')
+        if isinstance(config.EXPIRE_DEFAULT, int):
+            onetime_unviewed_snippets = Snippet.objects.filter(
+                    expire_type=Snippet.EXPIRE_ONETIME,
+                    published__lte=(
+                        timezone.now() - timedelta(seconds=config.EXPIRE_DEFAULT)
+                    ),
+                )
+            deleteable_snippets = (expired_snippets | onetime_unviewed_snippets)
 
         if len(deleteable_snippets) == 0:
             self.stdout.write(u"No snippets to delete.")
