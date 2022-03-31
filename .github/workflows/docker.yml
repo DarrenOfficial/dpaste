@@ -1,10 +1,7 @@
-name: Docker Image CI
+name: Docker CICD
 
 # Only run after test passes
 on:
-  push:
-    branches:
-      - master
   workflow_run:
     workflows: ["Python CI"]
     types:
