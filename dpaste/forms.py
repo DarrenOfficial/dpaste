@@ -19,7 +19,8 @@ def get_expire_values(expires):
         expires = None
     else:
         expire_type = Snippet.EXPIRE_TIME
-        expires = expires and expires or config.EXPIRE_DEFAULT
+        # Correct one of the identical sub-expressions on both sides of operator "and".
+        expires = expires or config.EXPIRE_DEFAULT
         expires = datetime.datetime.now() + datetime.timedelta(seconds=int(expires))
     return expires, expire_type
 

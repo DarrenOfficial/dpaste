@@ -51,10 +51,11 @@
   .form-lexer { grid-area: a;}
   .form-expire { grid-area: b; }
   .form-rtl { grid-area: c; white-space: nowrap; }
-  .form-action { grid-area: d; }
+  // .form-action { grid-area: d; }
   .form-textarea { grid-area: e; }
 
   .form-action {
+    grid-area: d;
     .btn {
       width: auto;
       padding: 6px 20px;
