@@ -1,11 +1,10 @@
 name: Docker CICD
 
-# Only run after test passes
+# Only run when theres something on master
 on:
-  workflow_run:
-    workflows: ["Python CI"]
-    types:
-      - completed
+  push:
+    branches: 
+     - 'master'
 
 jobs:
   docker:
