@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 // Add data-platform to the body tag to show platform related shortcuts
 // -----------------------------------------------------------------------------
-const isMac = navigator.platform.indexOf('Mac') !== -1;
+const isMac = navigator.userAgentData.platform.includes('Mac') !== -1;
 document.body.dataset.platform = isMac ? 'mac' : 'win';
 
 // -----------------------------------------------------------------------------
@@ -108,7 +108,8 @@ if (clipboardLink && clipboardField) {
   clipboardLink.onclick = function(e) {
     e.preventDefault();
     clipboardField.select();
-    document.execCommand('Copy');
+    // because execCommand is deprecated.
+    navigator.clipboard.writeText(clipboardField.value);
   };
 }
 
@@ -123,7 +124,8 @@ if (snippetClipboardLink && snippetClipboardField) {
   snippetClipboardLink.onclick = function(e) {
     e.preventDefault();
     snippetClipboardField.select();
-    document.execCommand('Copy');
+    // because execCommand is deprecated.
+    navigator.clipboard.writeText(snippetClipboardField.value);
     snippetClipboardConfirm.style.maxHeight = '80px';
     window.scrollTo(0, 0);
   };
