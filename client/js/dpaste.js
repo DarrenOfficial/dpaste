@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 // Add data-platform to the body tag to show platform related shortcuts
 // -----------------------------------------------------------------------------
-const isMac = navigator.userAgentData.platform.includes('Mac') !== -1;
+const isMac = navigator.platform.indexOf('Mac') !== -1;
 document.body.dataset.platform = isMac ? 'mac' : 'win';
 
 // -----------------------------------------------------------------------------
