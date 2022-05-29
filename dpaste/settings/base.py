@@ -51,8 +51,6 @@ MEDIA_ROOT = env("MEDIA_ROOT", ".media")
 
 STATIC_URL = "/static/"
 
-URL_PREFIX = env("URL_PREFIX", "")
-
 ROOT_URLCONF = "dpaste.urls"
 
 WSGI_APPLICATION = "dpaste.wsgi.application"
