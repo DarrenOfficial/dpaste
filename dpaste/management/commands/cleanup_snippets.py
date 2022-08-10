@@ -39,7 +39,7 @@ class Command(BaseCommand):
                         timezone.now() - timedelta(seconds=config.EXPIRE_DEFAULT)
                     ),
                 )
-            deleteable_snippets = (expired_snippets | onetime_unviewed_snippets)
+            deleteable_snippets = (deleteable_snippets | onetime_unviewed_snippets)
 
         if len(deleteable_snippets) == 0:
             self.stdout.write(u"No snippets to delete.")
