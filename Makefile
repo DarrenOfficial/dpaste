@@ -34,7 +34,7 @@ css: ## Compile SCSS files
 	npx sass --no-source-map --style=compressed client/scss/dpaste.scss:dpaste/static/dpaste.css
 
 .PHONY: css-watch
-css-watch: ## Compile JS files
+css-watch: ## Compile SCSS files (watch stylesheets and recompile when they change)
 	npx sass --watch client/scss/dpaste.scss:dpaste/static/dpaste.css
 
 .PHONY: js
