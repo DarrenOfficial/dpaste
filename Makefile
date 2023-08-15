@@ -12,7 +12,7 @@ endef
 
 .PHONY: test
 test: ## Run Django tests
-	docker-compose run --rm app pytest dpaste/
+	docker compose run --rm app pytest dpaste/
 
 .PHONY: code-cleanup
 code-cleanup: ## Black and isort the Python codebase
@@ -23,11 +23,11 @@ code-cleanup: ## Black and isort the Python codebase
 
 .PHONY: docs
 docs: ## Compile the documentation
-	docker-compose run --rm app sphinx-build docs docs/_build/html
+	docker compose run --rm app sphinx-build docs docs/_build/html
 
 .PHONY: docs-watch
 docs-watch: ## Compile the documentation and watch for changes
-	docker-compose run -p 8000:8000 --rm app sphinx-autobuild --host 0 --port 8000 docs docs/_build/html
+	docker compose run -p 8000:8000 --rm app sphinx-autobuild --host 0 --port 8000 docs docs/_build/html
 
 .PHONY: css
 css: ## Compile SCSS files
@@ -55,8 +55,8 @@ release-pypi:
 	set -ex
 	rm -f .coverage
 	pip-compile --dry-run setup.py
-	docker-compose build
-	docker-compose run --rm app pytest dpaste/
+	docker compose build
+	docker compose run --rm app pytest dpaste/
 	rm -rf ./node_modules
 	npm ci
 	make css
