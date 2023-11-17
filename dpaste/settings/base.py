@@ -116,9 +116,8 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CSP_DEFAULT_SRC = ("'none'",)
-# If you edit the CSS/JS update your 256 HASH here.
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-hashes'", "'sha256-634c702966ae36dcd81fe7a4c4756413be3b77af4f4a820651faecd1db1ab26a'",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-hashes'", "'sha256-7ac9cd7ab2811dac84cdc031d0acf0f355a2ab619f633b857f6db5b4c2b45361'")
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
 LOGGING = {
     "version": 1,
