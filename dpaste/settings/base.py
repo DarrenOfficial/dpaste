@@ -116,8 +116,8 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CSP_DEFAULT_SRC = ("'none'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
 
 LOGGING = {
     "version": 1,
