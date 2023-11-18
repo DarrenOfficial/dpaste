@@ -6,3 +6,4 @@ dpaste/static/
 dpaste.egg-info
 dpaste.sqlite
 node_modules
+**/__pycache__/
