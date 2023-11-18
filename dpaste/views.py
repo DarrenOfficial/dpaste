@@ -13,6 +13,7 @@ from django.http import (
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.html import escape
 from django.utils.cache import add_never_cache_headers, patch_cache_control
 from django.utils.translation import gettext
 from django.views.generic import FormView
@@ -290,8 +291,7 @@ class APIView(View):
         # A lexer is given, check if its valid at all
         if lexer and lexer not in highlight.LEXER_KEYS:
             return HttpResponseBadRequest(
-                'Invalid lexer "%s" given. Valid lexers are: %s'
-                % (lexer, ", ".join(highlight.LEXER_KEYS))
+                f'Invalid lexer choice "{escape(lexer)}" given. Valid lexer values are: {", ".join(highlight.LEXER_KEYS)}'
             )
 
         # No lexer is given, but we have a filename, try to get the lexer
@@ -308,9 +308,7 @@ class APIView(View):
             expire_options = [str(i) for i in dict(config.EXPIRE_CHOICES)]
             if expires not in expire_options:
                 return HttpResponseBadRequest(
-                    'Invalid expire choice "{}" given. Valid values are: {}'.format(
-                        expires, ", ".join(expire_options)
-                    )
+                    f'Invalid expire choice "{escape(expires)}" given. Valid expire values are: {", ".join(expire_options)}'
                 )
             expires, expire_type = get_expire_values(expires)
         else:
