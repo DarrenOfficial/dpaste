@@ -1,0 +1,12 @@
+services:
+  dpaste:
+    container_name: dpaste
+    image: darrenofficial/dpaste:latest
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: sqlite:////db/dpaste.sqlite
+      PORT: 8000
+    volumes:
+      - ./data/db:/db
+    ports:
+      - "8000:8000"
