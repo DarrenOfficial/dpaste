@@ -4,7 +4,7 @@
   "repository": "https://github.com/DarrenOfficial/dpaste",
   "license": "MIT",
   "dependencies": {
-    "sass": "1.52.1",
+    "sass": "1.77.8",
     "uglify-es": "3.3.10"
   }
 }
