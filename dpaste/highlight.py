@@ -112,9 +112,11 @@ class NakedHtmlFormatter(HtmlFormatter):
     """Pygments HTML formatter with no further HTML tags."""
 
     def wrap(self, source, outfile):
-        return self._wrap_code(source)
+        # Call parent's wrap method with both parameters
+        return super().wrap(self._wrap_code(source), outfile)
 
     def _wrap_code(self, source):
+        """Process and yield the source code chunks."""
         yield from source
 
 
