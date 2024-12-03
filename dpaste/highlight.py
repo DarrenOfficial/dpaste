@@ -1,4 +1,5 @@
 from logging import getLogger
+import mistune
 
 from django.apps import apps
 from django.template.defaultfilters import escape, linebreaksbr
@@ -73,15 +74,12 @@ class MarkdownHighlighter(PlainTextHighlighter):
     render_flags = ("skip-html",)
 
     def highlight(self, code_string, **kwargs):
-        import misaka
-
-        return mark_safe(
-            misaka.html(
-                code_string,
-                extensions=self.extensions,
-                render_flags=self.render_flags,
-            )
+        """Highlight Markdown using Mistune"""
+        markdown = mistune.create_markdown(
+            plugins=['table', 'footnotes', 'strikethrough', 'superscript',
+                    'fenced_code', 'quote', 'url']
         )
+        return mark_safe(markdown(code_string))
 
 
 class RestructuredTextHighlighter(PlainTextHighlighter):
@@ -140,7 +138,6 @@ class PygmentsHighlighter(Highlighter):
     determined by the lexer name.
     """
 
-    formatter = NakedHtmlFormatter()
     lexer = None
     lexer_fallback = PythonLexer()
 
@@ -152,7 +149,9 @@ class PygmentsHighlighter(Highlighter):
                 logger.warning("Lexer for given name %s not found", lexer_name)
                 self.lexer = self.lexer_fallback
 
-        return highlight(code_string, self.lexer, self.formatter)
+        # Create a new formatter instance for each highlight call to avoid the pygments >= 2.12.0 issue
+        formatter = NakedHtmlFormatter()
+        return highlight(code_string, self.lexer, formatter)
 
 
 class SolidityHighlighter(PygmentsHighlighter):
