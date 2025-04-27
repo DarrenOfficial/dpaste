@@ -59,29 +59,26 @@ class PlainTextHighlighter(Highlighter):
 class MarkdownHighlighter(PlainTextHighlighter):
     """Markdown"""
 
-    extensions = (
-        "tables",
-        "fenced-code",
-        "footnotes",
-        "autolink,",
-        "strikethrough",
-        "underline",
-        "quote",
-        "superscript",
-        "math",
-    )
-    render_flags = ("skip-html",)
-
     def highlight(self, code_string, **kwargs):
-        import misaka
+        import mistune
 
-        return mark_safe(
-            misaka.html(
-                code_string,
-                extensions=self.extensions,
-                render_flags=self.render_flags,
-            )
+        # Create a Markdown parser with the desired extensions
+        markdown = mistune.create_markdown(
+            plugins=[
+                'strikethrough',
+                'footnotes',
+                'table',
+                'url',
+                'task_lists',
+                'def_list',
+                'abbr',
+                'mark',
+                'superscript',
+                'subscript',
+                'math',
+            ]
         )
+        return mark_safe(markdown(code_string))
 
 
 class RestructuredTextHighlighter(PlainTextHighlighter):
@@ -140,9 +137,10 @@ class PygmentsHighlighter(Highlighter):
     determined by the lexer name.
     """
 
-    formatter = NakedHtmlFormatter()
-    lexer = None
-    lexer_fallback = PythonLexer()
+    def __init__(self):
+        self.formatter = NakedHtmlFormatter()
+        self.lexer = None
+        self.lexer_fallback = PythonLexer()
 
     def highlight(self, code_string, lexer_name):
         if not self.lexer:

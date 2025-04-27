@@ -29,17 +29,28 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS", "*").split(",")
 
 TIME_ZONE = "UTC"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = False
 
 LANGUAGE_CODE = "en"
 LANGUAGES = (("en", "English"),)
 
+# Format localization settings
+FORMAT_MODULE_PATH = ["dpaste.formats"]
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = ","
+DECIMAL_SEPARATOR = "."
+NUMBER_GROUPING = 3
+
+# Date and time formats
+DATE_FORMAT = "Y-m-d"
+TIME_FORMAT = "H:i:s"
+DATETIME_FORMAT = "Y-m-d H:i:s"
+SHORT_DATE_FORMAT = "Y-m-d"
+SHORT_DATETIME_FORMAT = "Y-m-d H:i"
+
 # LOCALE_PATHS = (
 #     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'locale')),
 # )
-
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -136,5 +147,15 @@ LOGGING = {
             "level": "ERROR",
             "propagate": True,
         }
+    },
+}
+
+# Django 5.0+ compatibility
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
