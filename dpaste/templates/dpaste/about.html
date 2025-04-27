@@ -6,6 +6,14 @@
 
 {% block body_type %}text-page{%endblock %}
 
+{% block extra_head %}
+<style>
+  .text-page article {
+    white-space: normal !important;
+  }
+</style>
+{% endblock %}
+
 {% block page %}
   <article>
 
