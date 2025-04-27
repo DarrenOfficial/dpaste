@@ -8,6 +8,7 @@ from dpaste.highlight import (
     PlainCodeHighlighter,
     PygmentsHighlighter,
     RestructuredTextHighlighter,
+    NakedHtmlFormatter,
 )
 
 
@@ -76,6 +77,15 @@ class HighlightAPITestCase(TestCase):
         )
         value = PygmentsHighlighter().highlight(input, "python")
         self.assertEqual(value, expected)
+
+    def test_pygments_formatter_instance(self):
+        """Test that PygmentsHighlighter properly instantiates the formatter."""
+        highlighter = PygmentsHighlighter()
+        input = "def hello():\n    print('world')"
+        value = highlighter.highlight(input, "python")
+        self.assertIsInstance(highlighter.formatter, NakedHtmlFormatter)
+        self.assertIn("def", value)
+        self.assertIn("print", value)
 
     def test_broken_rst_syntax(self):
         """
