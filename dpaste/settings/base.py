@@ -69,6 +69,7 @@ ROOT_URLCONF = "dpaste.urls"
 WSGI_APPLICATION = "dpaste.wsgi.application"
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -96,6 +97,7 @@ TEMPLATES = [
 INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sessions",
+    "corsheaders",
     "staticinline.apps.StaticInlineAppConfig",
     "dpaste.apps.dpasteAppConfig",
 ]
@@ -129,6 +131,10 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 CSP_DEFAULT_SRC = ("'none'",)
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+
+_cors_origins = env("CORS_ALLOWED_ORIGINS", "")
+CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins.split(",") if o.strip()]
+CORS_ALLOW_ALL_ORIGINS = env("CORS_ALLOW_ALL_ORIGINS") == "True"
 
 LOGGING = {
     "version": 1,
