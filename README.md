@@ -17,6 +17,13 @@ The project is intended to run standalone as any regular Django Project, but it'
 
 The code is open source and available on Github: [https://github.com/darrenofficial/dpaste](https://github.com/darrenofficial/dpaste). If you found bugs, have problems or ideas with the project or the website installation, please create an *Issue* there.
 
+If you'd rather not manage the container/database yourself, [Easypanel](https://easypanel.io) is a self-hosted deployment platform with a one-click dpaste template:
+
+[![Deploy on Easypanel][easypanel-btn]][easypanel-deploy]
+
+[easypanel-btn]: https://easypanel.io/img/deploy-on-easypanel-40.svg
+[easypanel-deploy]: https://easypanel.io/templates/dpaste
+
 ⚠️ dpaste requires at a minimum Python 3.9 and Django 3.2.
 
 
