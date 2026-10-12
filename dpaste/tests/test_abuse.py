@@ -1,3 +1,4 @@
+import os
 from io import StringIO
 from tempfile import NamedTemporaryFile
 
@@ -315,3 +316,140 @@ class AbuseFilterTestCase(TestCase):
         management.call_command("blocklist", "remove", "evil.example", stdout=out)
         self.assertEqual(BlockedDomain.objects.count(), 1)
         self.assertIsNone(abuse.scan_text("https://evil.example/"))
+
+
+KEYWORDS_FILE = """\
+// Why these are blocked,
+// over more than one line.
+FILE_HOSTS = [
+\t'filehost.example',
+\t'badsite.', // they move TLDs a lot
+\t"quoted.example",
+]
+
+# Another kind of comment
+bare.example
+https://url.example/with/path  # keeps the slashes of the URL
+abc
+"""
+
+
+class AbuseKeywordsTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.new_url = reverse("snippet_new")
+        abuse.clear_cache()
+
+    def tearDown(self):
+        config.ABUSE_KEYWORDS = ()
+        config.ABUSE_KEYWORDS_FILE = ""
+        abuse.clear_cache()
+
+    def test_parse_list(self):
+        self.assertEqual(
+            abuse.parse_list(KEYWORDS_FILE),
+            [
+                "filehost.example",
+                "badsite.",
+                "quoted.example",
+                "bare.example",
+                "https://url.example/with/path",
+                "abc",
+            ],
+        )
+
+    def test_keywords(self):
+        config.ABUSE_KEYWORDS = ("Badsite.", "filehost.example")
+
+        match = abuse.scan_text("https://cdn3.badsite.cc/abcd")
+        self.assertEqual(match.reason, abuse.REASON_KEYWORD)
+        self.assertEqual(match.domain, "badsite.")
+
+        # Other than a blocked domain, a keyword is just a part of the hostname
+        self.assertIsNotNone(abuse.scan_text("my-filehost.example.net/abcd"))
+
+        # Only hostnames are checked, not the text around them
+        self.assertIsNone(abuse.scan_text("this is a badsite. Really."))
+
+    def test_short_keywords_are_ignored(self):
+        config.ABUSE_KEYWORDS = ("", ".", "com", "abcd")
+        self.assertEqual(abuse.get_keywords(), ("abcd",))
+        self.assertIsNone(abuse.scan_text("https://www.example.com/"))
+
+    def test_keywords_file(self):
+        with NamedTemporaryFile("w", suffix=".txt") as f:
+            f.write(KEYWORDS_FILE)
+            f.flush()
+            config.ABUSE_KEYWORDS_FILE = f.name
+
+            self.assertEqual(len(abuse.get_keywords()), 5)
+            self.assertIsNotNone(abuse.scan_text("http://badsite.to/abcd"))
+            self.assertIsNotNone(abuse.scan_text("http://bare.example/abcd"))
+            self.assertIsNone(abuse.scan_text("http://new.example/abcd"))
+
+            # The file is read again when it has changed.
+            f.write("new.example\n")
+            f.flush()
+            os.utime(f.name, (1, 1))
+            abuse._file_keywords["checked"] = None
+            self.assertIsNotNone(abuse.scan_text("http://new.example/abcd"))
+
+    def test_keywords_file_missing(self):
+        config.ABUSE_KEYWORDS_FILE = "/does/not/exist.txt"
+        with self.assertLogs("dpaste.abuse", level="ERROR"):
+            self.assertEqual(abuse.get_keywords(), ())
+        # The rest of the filter keeps working
+        self.assertIsNotNone(abuse.scan_text("https://pastebin.com/abcd"))
+
+    def test_keyword_never_matches_own_host(self):
+        """
+        A shared list might contain the domain of this very installation.
+        """
+        config.ABUSE_KEYWORDS = ("paste.example.org",)
+        headers = {"host": "paste.example.org"}
+        data = {
+            "content": "as seen in https://paste.example.org/abcd",
+            "lexer": config.LEXER_DEFAULT,
+            "expires": config.EXPIRE_DEFAULT,
+        }
+        self.client.post(self.new_url, data, headers=headers)
+        snippet = Snippet.objects.get()
+
+        url = reverse("snippet_details", kwargs={"snippet_id": snippet.secret_id})
+        headers["referer"] = "https://paste.example.org/history/"
+        self.assertEqual(self.client.get(url, headers=headers).status_code, 200)
+
+        # Everybody else is blocked
+        headers["referer"] = "https://not-paste.example.org.evil.example/"
+        self.assertEqual(self.client.get(url, headers=headers).status_code, 404)
+
+    def test_form_rejects_keyword_without_showing_it(self):
+        config.ABUSE_KEYWORDS = ("badsite.",)
+        data = {
+            "content": "Hello",
+            "title": "see badsite.to/abcd",
+            "lexer": config.LEXER_DEFAULT,
+            "expires": config.EXPIRE_DEFAULT,
+        }
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.count(), 0)
+        self.assertContains(response, "rejected by the abuse filter")
+        self.assertNotContains(response, "badsite.&quot;")
+        self.assertNotIn("badsite.", str(response.context["form"].non_field_errors()))
+
+    def test_purge_abuse(self):
+        Snippet.objects.create(content="Hello")
+        Snippet.objects.create(content="https://badsite.to/abcd")
+        config.ABUSE_KEYWORDS = ("badsite.",)
+        management.call_command("purge_abuse", stdout=StringIO())
+        self.assertEqual(Snippet.objects.count(), 1)
+
+    def test_blocklist_import_accepts_the_same_format(self):
+        with NamedTemporaryFile("w", suffix=".txt") as f:
+            f.write("LIST = [\n\t'evil.example', // why\n\t'https://other.example/x',\n]\n")
+            f.flush()
+            management.call_command("blocklist", "import", f.name, stdout=StringIO())
+        self.assertEqual(
+            list(BlockedDomain.objects.values_list("domain", flat=True)),
+            ["evil.example", "other.example"],
+        )

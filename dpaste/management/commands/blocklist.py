@@ -20,7 +20,7 @@ class Command(BaseCommand):
         load = subparsers.add_parser(
             "import",
             help="Block all domains listed in a file, one domain or URL per "
-            "line. Empty lines and lines starting with # are ignored.",
+            "line. Quotes, trailing commas and comments (# or //) are ignored.",
         )
         load.add_argument("file")
 
@@ -63,10 +63,10 @@ class Command(BaseCommand):
     def handle_import(self, file, note, no_purge, **options):
         try:
             with open(file, encoding="utf-8") as f:
-                lines = [line.strip() for line in f]
+                entries = abuse.parse_list(f.read())
         except OSError as e:
             raise CommandError("Can't read %s: %s" % (file, e))
-        self.block([l for l in lines if l and not l.startswith("#")], note, no_purge)
+        self.block(entries, note, no_purge)
 
     def handle_remove(self, domains, **options):
         domains = [abuse.normalize_domain(d) for d in domains]
@@ -82,3 +82,7 @@ class Command(BaseCommand):
             self.stdout.write(
                 "%s\t%s hit(s)\t%s\n" % (blocked.domain, blocked.hits, blocked.note)
             )
+        self.stdout.write(
+            "%s blocked domain(s), %s keyword(s).\n"
+            % (BlockedDomain.objects.count(), len(abuse.get_keywords()))
+        )

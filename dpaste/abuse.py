@@ -10,12 +10,14 @@ detects them:
 - links to ``.onion`` hidden services,
 - links to file sharing providers,
 - links to any domain on the operator's own blocklist,
+- links to any hostname which contains one of the operator's keywords,
 - visits arriving with an HTTP Referer from any of the above.
 
 A detected snippet is never stored; one which is already in the database is
 deleted the moment it is detected. Nothing of it is kept.
 """
 
+import os
 import re
 import time
 import unicodedata
@@ -35,12 +37,14 @@ REASON_ONION = "onion"
 REASON_PASTEBIN = "pastebin"
 REASON_FILEHOST = "filehost"
 REASON_BLOCKLIST = "blocklist"
+REASON_KEYWORD = "keyword"
 
 REASON_MESSAGES = {
     REASON_ONION: _("links to .onion hidden services are not allowed"),
     REASON_PASTEBIN: _("links to other pastebins are not allowed"),
     REASON_FILEHOST: _("links to file sharing services are not allowed"),
     REASON_BLOCKLIST: _("it links to a blocked domain"),
+    REASON_KEYWORD: _("it links to a blocked domain"),
 }
 
 # What was found (`reason` is one of the REASON_* keys, `domain` the entry
@@ -68,6 +72,39 @@ DEFANGED_DOT_RE = re.compile(r"\s*[\[({]\s*(?:\.|dot)\s*[\])}]\s*", re.IGNORECAS
 INVISIBLE_CHARS = dict.fromkeys(
     (0x00AD, 0x200B, 0x200C, 0x200D, 0x2060, 0xFEFF), None
 )
+
+
+# A comment in a blocklist file starts with // or # and runs to the end of
+# the line. It has to be at the start of the line or follow a space, so the
+# slashes of a URL are not mistaken for one.
+LIST_COMMENT_RE = re.compile(r"(?:^|\s)(?://|#).*$")
+
+# Keywords shorter than this match too many harmless hostnames.
+KEYWORD_MIN_LENGTH = 4
+
+
+def parse_list(text):
+    """
+    Read the entries of a blocklist file. That is one entry per line, in
+    the most simple case. Quotes, trailing commas, comments and the lines
+    which open or close a list are ignored, so a list which was written as
+    source code can be used as it is::
+
+        // Why these are blocked
+        BLOCKED = [
+            'filehost.example',
+            'badsite.', // they move TLDs a lot
+        ]
+    """
+    entries = []
+    for line in text.splitlines():
+        line = LIST_COMMENT_RE.sub("", line).strip().rstrip(",;").strip()
+        if not line or line[-1] in "[({" or line in ("]", ")", "}"):
+            continue
+        entry = line.strip("'\"").strip().lower()
+        if entry:
+            entries.append(entry)
+    return entries
 
 
 def normalize_domain(value):
@@ -121,10 +158,11 @@ _db_blocklist = {"domains": {}, "loaded": None}
 
 def clear_cache(**kwargs):
     """
-    Forget the cached database blocklist. Connected to the save and delete
-    signals of the BlockedDomain model.
+    Forget the cached blocklist of the database and the keywords file.
+    Connected to the save and delete signals of the BlockedDomain model.
     """
     _db_blocklist["loaded"] = None
+    _file_keywords.update(keywords=(), path=None, mtime=None, checked=None)
 
 
 def get_db_blocklist():
@@ -141,6 +179,52 @@ def get_db_blocklist():
         )
         _db_blocklist["loaded"] = time.monotonic()
     return _db_blocklist["domains"]
+
+
+_file_keywords = {"keywords": (), "path": None, "mtime": None, "checked": None}
+
+
+def get_file_keywords():
+    """
+    The keywords of the ``ABUSE_KEYWORDS_FILE``. The file is read again
+    when it has changed, so it can be edited while the server is running.
+    """
+    path = config.ABUSE_KEYWORDS_FILE
+    if not path:
+        return ()
+
+    cache = _file_keywords
+    checked = cache["checked"]
+    if (
+        cache["path"] == path
+        and checked is not None
+        and time.monotonic() - checked <= config.ABUSE_BLOCKLIST_CACHE
+    ):
+        return cache["keywords"]
+
+    if cache["path"] != path:
+        cache.update(keywords=(), mtime=None)
+    cache.update(path=path, checked=time.monotonic())
+    try:
+        mtime = os.stat(path).st_mtime
+        if mtime != cache["mtime"]:
+            with open(path, encoding="utf-8") as f:
+                cache.update(keywords=tuple(parse_list(f.read())), mtime=mtime)
+    except OSError as e:
+        # Keep what was loaded before, a filter which silently stops to
+        # work is worse than one which is a few entries behind.
+        logger.error("Abuse filter can't read the keywords file %s: %s", path, e)
+    return cache["keywords"]
+
+
+def get_keywords():
+    """
+    All keywords, the ones of the settings and the ones of the keywords file.
+    A hostname which contains a keyword is blocked.
+    """
+    keywords = [str(k).strip().lower() for k in config.ABUSE_KEYWORDS]
+    keywords.extend(get_file_keywords())
+    return tuple(dict.fromkeys(k for k in keywords if len(k) >= KEYWORD_MIN_LENGTH))
 
 
 def get_blocklist():
@@ -177,17 +261,21 @@ def domain_suffixes(host):
     return [".".join(labels[i:]) for i in range(len(labels))]
 
 
-def match_host(host, blocklist, allowed):
+def match_host(host, blocklist, allowed, keywords=()):
     """
-    The blocklist entry a hostname (or one of its parent domains) is listed
-    under, or None.
+    Check a single hostname. Returns a `(reason, entry)` tuple with the
+    blocklist entry the hostname or one of its parent domains is listed
+    under, or the keyword it contains. Returns None if it's fine.
     """
     suffixes = domain_suffixes(host)
     if any(suffix in allowed for suffix in suffixes):
         return None
     for suffix in suffixes:
         if suffix in blocklist:
-            return suffix
+            return blocklist[suffix], suffix
+    for keyword in keywords:
+        if keyword in host:
+            return REASON_KEYWORD, keyword
     return None
 
 
@@ -212,14 +300,15 @@ def scan_text(text, request=None, source="content"):
             return Match(REASON_ONION, onion.group(0).lower(), source)
 
     blocklist = get_blocklist()
-    if not blocklist:
+    keywords = get_keywords()
+    if not blocklist and not keywords:
         return None
 
     allowed = get_allowed_domains(request)
-    for host in extract_hosts(text):
-        domain = match_host(host, blocklist, allowed)
-        if domain:
-            return Match(blocklist[domain], domain, source)
+    for host in sorted(extract_hosts(text)):
+        found = match_host(host, blocklist, allowed, keywords)
+        if found:
+            return Match(found[0], found[1], source)
     return None
 
 

@@ -12,6 +12,9 @@
   domain.
 - New `blocklist` management command to maintain a domain blocklist in the
   database (`add`, `import`, `remove`, `list`).
+- Keywords: a link is detected if its hostname contains a keyword of the new
+  `ABUSE_KEYWORDS` option or of the file set with `ABUSE_KEYWORDS_FILE`
+  (`DPASTE_ABUSE_KEYWORDS_FILE`). The file is reloaded when it changes.
 - New `purge_abuse` management command, which is also run by
   `cleanup_snippets`.
 - New `ABUSE_CONTACT` option, displayed on the About page, next to each snippet

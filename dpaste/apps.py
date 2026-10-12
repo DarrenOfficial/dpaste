@@ -181,9 +181,29 @@ class dpasteAppConfig(AppConfig):
     # installation is always allowed.
     ALLOWED_LINK_DOMAINS = ()
 
-    # Integer. Seconds the blocklist of the database is cached in each
-    # process. Changes done with the ``blocklist`` management command are
-    # picked up by a running server after this time.
+    # Keywords. A link is detected if its hostname contains one of them, so
+    # other than a blocked domain, a keyword does not need to be a complete
+    # domain. That catches sites which hop from one TLD to the next::
+    #
+    #     ABUSE_KEYWORDS = (
+    #         "filehost.example",
+    #         "badsite.",   # badsite.to, badsite.cc, cdn.badsite.xyz, ...
+    #     )
+    #
+    # Keywords shorter than four characters are ignored. Pick them with
+    # care, "x0.at" also matches "linux0.at".
+    ABUSE_KEYWORDS = ()
+
+    # String. Path to a file with more keywords, one per line. It is read
+    # again when it changes, no restart needed. The file is kept out of the
+    # source code on purpose: the lists passed around between operators are
+    # not something to publish. See ``abuse_keywords.txt.example`` for the
+    # format.
+    ABUSE_KEYWORDS_FILE = os.environ.get("DPASTE_ABUSE_KEYWORDS_FILE", "")
+
+    # Integer. Seconds the blocklist of the database and the keywords file
+    # are cached in each process. Changes are picked up by a running server
+    # after this time.
     ABUSE_BLOCKLIST_CACHE = 60
 
     # Other pastebins. A domain includes all of its subdomains. Additional

@@ -34,6 +34,7 @@ A few are available as environment variables as well:
 | `DPASTE_BASE_URL` | Public URL of the installation, e.g. `https://paste.example.org`. Used for the links to snippets. If it's not set, the hostname of the request is used. |
 | `USE_X_FORWARDED_HOST` | Set to `True` if your reverse proxy passes the public hostname in `X-Forwarded-Host` rather than `Host`. |
 | `DPASTE_ABUSE_CONTACT` | Email address or URL to report abuse to. Displayed on the About page and next to each snippet. |
+| `DPASTE_ABUSE_KEYWORDS_FILE` | Path to a file with keywords for the abuse filter, see below. |
 
 ## Abuse filter
 
@@ -46,6 +47,7 @@ is kept. Detected are:
 - links to `.onion` hidden services,
 - links to file sharing providers,
 - links to any domain on your blocklist,
+- links to any hostname which contains one of your keywords,
 - visits with an HTTP Referer from any of the above.
 
 Snippets are checked when they are created, every time they are viewed and
@@ -64,6 +66,30 @@ deletes all snippets which link to it:
     ./manage.py blocklist list
     ./manage.py blocklist remove evil.example
     ./manage.py purge_abuse --dry-run
+
+### Keywords
+
+A blocked domain has to be a complete domain. A keyword is just a piece of a
+hostname, which catches the sites that hop from one TLD to the next. Keywords
+live in a file, one per line, which dpaste reads again whenever it changes:
+
+    DPASTE_ABUSE_KEYWORDS_FILE=/path/to/abuse_keywords.txt
+
+```
+// Everything after // or # is a comment.
+FILE_HOSTS = [
+	'filehost.example',
+	'badsite.', // moves TLDs a lot: matches badsite.to, badsite.cc, ...
+]
+```
+
+Quotes, commas and the lines which open or close a list are optional, a plain
+list of keywords works just as well. See
+[abuse_keywords.txt.example](abuse_keywords.txt.example). dpaste ships without
+any keywords: the lists which pastebin operators and abuse desks pass around
+are not something to publish, so keep yours out of public repositories too.
+`manage.py blocklist import` reads the same format, if you rather want the
+entries of a file as blocked domains in the database.
 
 The filter is strict by design and will reject some harmless snippets, such as
 one with a link to a file on Google Drive. Set `ABUSE_CONTACT` so people can
