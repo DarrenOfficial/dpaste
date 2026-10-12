@@ -1,0 +1,132 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dpaste"
+dynamic = ["version"]
+description = "A Django based pastebin for text and code."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Martin Mahner", email = "martin@mahner.org" },
+    { name = "Darren Nathanael", email = "git@darrennathanael.com" },
+]
+keywords = ["django", "pastebin"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
+]
+requires-python = ">=3.10"
+dependencies = [
+    # Essential packages
+    "django>=5.2",
+    "pygments>=2.12",
+    "django-staticinline>=1.0",
+    "django-csp>=4.0",
+    "dj-database-url>=0.5.0",
+    # Additional Lexer
+    "jsx-lexer>=0.0.8",
+    "mistune>=3.0.0",
+    "docutils>=0.22",
+]
+
+[project.urls]
+Homepage = "https://github.com/DarrenOfficial/dpaste"
+Documentation = "https://docs.dpaste.org"
+Issues = "https://github.com/DarrenOfficial/dpaste/issues"
+
+[project.optional-dependencies]
+production = [
+    "psycopg2-binary==2.9.13",
+    "django-webserver[pyuwsgi]==1.2.0",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+]
+dev = [
+    "dpaste[test]",
+    "tox",
+    "ipdb",
+    "isort",
+    "black",
+    "autoflake",
+    "django-sslserver",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "dpaste.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["dpaste*"]
+
+[tool.setuptools.package-data]
+dpaste = ["templates/**/*", "static/**/*"]
+
+[tool.setuptools.exclude-package-data]
+dpaste = ["settings/local.py"]
+
+[tool.isort]
+known_first_party = ["dpaste"]
+default_section = "THIRDPARTY"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip = ["migrations"]
+profile = "black"
+line_length = 88
+
+[tool.coverage.run]
+source = ["dpaste"]
+branch = true
+omit = [
+    "dpaste/migrations/*",
+    "dpaste/tests/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+]
+
+[tool.pytest.ini_options]
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = [
+    "--ds=dpaste.settings.tests",
+    "--cov=./dpaste",
+    "--cov-branch",
+    "--nomigrations",
+]
+
+[tool.tox]
+env_list = [
+    "py310-django52",
+    "py311-django52",
+    "py312-django{52,60,61}",
+    "py313-django{52,60,61}",
+    "py314-django{52,60,61}",
+]
+skip_missing_interpreters = true
+
+[tool.tox.env_run_base]
+extras = ["test"]
+commands = [["pytest", "dpaste"]]
+deps = [
+    "django52: django>=5.2,<6.0",
+    "django60: django>=6.0,<6.1",
+    "django61: django>=6.1,<6.2",
+]

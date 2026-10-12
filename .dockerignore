@@ -1,4 +1,5 @@
 .venv
+.git
 .pytest-cache
 .vscode
 .coverage

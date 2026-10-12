@@ -1,3 +1,4 @@
+import os
 from logging import getLogger
 
 from django.apps import AppConfig, apps
@@ -10,6 +11,7 @@ log = getLogger(__file__)
 class dpasteAppConfig(AppConfig):
     name = "dpaste"
     verbose_name = "dpaste"
+    default_auto_field = "django.db.models.AutoField"
 
     # The application title used throughout the user interface.
     APPLICATION_NAME = "dpaste"
@@ -114,6 +116,228 @@ class dpasteAppConfig(AppConfig):
 
     # Lexers which have wordwrap enabled by default
     LEXER_WORDWRAP = ("rst",)
+
+    # Snippets can have an optional title, which is displayed above the
+    # snippet and in the <title> of the page.
+    TITLE_ENABLED = True
+
+    # Integer. Maximum number of characters of a snippet title.
+    TITLE_MAX_LENGTH = 120
+
+    # If a snippet has no title, the first line of its content is used in the
+    # <title> of the page instead. One-Time snippets never do that.
+    TITLE_FROM_CONTENT = True
+
+    # Display the number of times a snippet has been viewed.
+    VIEW_COUNT_ENABLED = True
+
+    # Regular expression, matched case insensitive against the User-Agent.
+    # Messengers and social networks fetch every link which is posted to
+    # generate a preview. Those requests neither count as a view nor do they
+    # get to see the content of a One-Time snippet, otherwise it would be
+    # gone before a human had the chance to open it.
+    PREVIEW_USER_AGENTS = (
+        r"bot\b|crawler|spider|preview|facebookexternalhit|whatsapp|slack|"
+        r"embedly|iframely|skypeuri|mastodon|synapse|pleroma|misskey|akkoma|"
+        r"vkshare|snapchat|pinterest|redditbot|bitlybot|nuzzel|outbrain|"
+        r"quora link|google-safety|googleother|feedfetcher"
+    )
+
+    # String. The full URL of this installation without a trailing slash,
+    # e.g. "https://dpaste.org". It is used to build the links to snippets
+    # which are displayed and returned by the API. If it's not set, the URL
+    # is taken from the "Sites" framework or the current request.
+    BASE_URL = os.environ.get("DPASTE_BASE_URL", "")
+
+    # -------------------------------------------------------------------------
+    # Abuse filter
+    # -------------------------------------------------------------------------
+
+    # Snippets which are detected by the abuse filter are not stored. The ones
+    # already in the database are deleted as soon as they are detected: when
+    # they are viewed, and when the ``cleanup_snippets`` or ``purge_abuse``
+    # management command runs. See ``dpaste/abuse.py``.
+    ABUSE_FILTER_ENABLED = True
+
+    # String. An email address or URL to report abuse to. It's displayed on
+    # the About page, next to each snippet and when a snippet was rejected.
+    ABUSE_CONTACT = os.environ.get("DPASTE_ABUSE_CONTACT", "")
+
+    # Detect links to Tor hidden services (.onion).
+    ABUSE_BLOCK_ONION = True
+
+    # Detect links to other pastebins (``ABUSE_PASTEBIN_DOMAINS``).
+    ABUSE_BLOCK_PASTEBINS = True
+
+    # Detect links to file sharing providers (``ABUSE_FILEHOST_DOMAINS``).
+    ABUSE_BLOCK_FILEHOSTS = True
+
+    # Delete a snippet if a visitor arrives with a HTTP Referer of a pastebin,
+    # a hidden service, a file sharing provider or a blocked domain.
+    ABUSE_CHECK_REFERER = True
+
+    # Domains which are never detected, even if they or one of their parent
+    # domains are listed below or in the blocklist. The domain of this
+    # installation is always allowed.
+    ALLOWED_LINK_DOMAINS = ()
+
+    # Integer. Seconds the blocklist of the database is cached in each
+    # process. Changes done with the ``blocklist`` management command are
+    # picked up by a running server after this time.
+    ABUSE_BLOCKLIST_CACHE = 60
+
+    # Other pastebins. A domain includes all of its subdomains. Additional
+    # domains are added at runtime with ``manage.py blocklist add``.
+    ABUSE_PASTEBIN_DOMAINS = (
+        "0bin.net",
+        "0x0.st",
+        "bin.gy",
+        "bpa.st",
+        "bpaste.net",
+        "codepad.org",
+        "controlc.com",
+        "cryptobin.co",
+        "cutapaste.net",
+        "defuse.ca",
+        "dpaste.com",
+        "dpaste.de",
+        "dpaste.org",
+        "ghostbin.co",
+        "ghostbin.com",
+        "ghostbin.me",
+        "hastebin.com",
+        "hastebin.skyra.pw",
+        "haste.zneix.eu",
+        "heypasteit.com",
+        "ideone.com",
+        "ivpaste.com",
+        "ix.io",
+        "jpst.it",
+        "justpaste.it",
+        "justpaste.me",
+        "katb.in",
+        "nekobin.com",
+        "notes.io",
+        "p.ip.fi",
+        "paste.c-net.org",
+        "paste.centos.org",
+        "paste.debian.net",
+        "paste.ee",
+        "paste.fo",
+        "paste.gg",
+        "paste.lol",
+        "paste.mozilla.org",
+        "paste.ofcode.org",
+        "paste.opensuse.org",
+        "paste.org",
+        "paste.rs",
+        "paste.sh",
+        "paste.ubuntu.com",
+        "paste2.org",
+        "pastebin.ai",
+        "pastebin.com",
+        "pastebin.pl",
+        "pastecode.io",
+        "pasted.co",
+        "pastefs.com",
+        "pastehill.com",
+        "pasteio.com",
+        "pastelink.net",
+        "pastenow.net",
+        "pastes.io",
+        "privatebin.net",
+        "rentry.co",
+        "rentry.org",
+        "snippet.host",
+        "sprunge.us",
+        "telegra.ph",
+        "termbin.com",
+        "textbin.net",
+        "txt.fyi",
+        "write.as",
+        "zerobin.net",
+    )
+
+    # File sharing providers. A domain includes all of its subdomains.
+    ABUSE_FILEHOST_DOMAINS = (
+        "1drv.ms",
+        "1fichier.com",
+        "4shared.com",
+        "anonfiles.com",
+        "anonymfile.com",
+        "bayfiles.com",
+        "bowfile.com",
+        "box.com",
+        "buzzheavier.com",
+        "catbox.moe",
+        "cyberdrop.me",
+        "cyberfile.me",
+        "ddownload.com",
+        "depositfiles.com",
+        "disk.yandex.com",
+        "disk.yandex.ru",
+        "dood.la",
+        "dood.to",
+        "dood.watch",
+        "doodstream.com",
+        "drive.google.com",
+        "dropbox.com",
+        "dropmefiles.com",
+        "easyupload.io",
+        "fastupload.io",
+        "file.io",
+        "filebin.net",
+        "filecrypt.cc",
+        "filefactory.com",
+        "filemoon.sx",
+        "files.fm",
+        "filetransfer.io",
+        "fromsmash.com",
+        "gofile.io",
+        "hexupload.net",
+        "hitfile.net",
+        "icedrive.net",
+        "katfile.com",
+        "krakenfiles.com",
+        "limewire.com",
+        "linkbox.to",
+        "litterbox.catbox.moe",
+        "mediafire.com",
+        "mega.co.nz",
+        "mega.io",
+        "mega.nz",
+        "mixdrop.co",
+        "nitroflare.com",
+        "onedrive.live.com",
+        "oshi.at",
+        "pcloud.com",
+        "pixeldrain.com",
+        "qiwi.gg",
+        "rapidgator.net",
+        "send.cm",
+        "send.vis.ee",
+        "sendspace.com",
+        "streamtape.com",
+        "swisstransfer.com",
+        "temp.sh",
+        "tempfile.io",
+        "terabox.app",
+        "terabox.com",
+        "tmpfiles.org",
+        "transfer.sh",
+        "turbobit.net",
+        "ufile.io",
+        "upload.ee",
+        "uploadhaven.com",
+        "uploadrar.com",
+        "uptobox.com",
+        "userscloud.com",
+        "we.tl",
+        "wetransfer.com",
+        "workupload.com",
+        "yadi.sk",
+        "zippyshare.com",
+    )
 
     # Key names of the default text and code lexer.
     PLAIN_TEXT_SYMBOL = "_text"
@@ -618,21 +842,37 @@ class dpasteAppConfig(AppConfig):
     # Cache timeout set to avoid caching in upstream proxies.
     CACHE_TIMEOUT = 60 * 10
 
-    @staticmethod
-    def get_base_url(request=None):
+    def get_base_url(self, request=None):
         """
         String. The full qualified hostname and path to the dpaste instance.
-        This is used to generate a link in the API response. If the "Sites"
-        framework is installed, it uses the current Site domain. Otherwise
-        it falls back to 'https://dpaste.de'
+        This is used to generate the links to snippets, in the user interface
+        and in the API response.
+
+        It is the ``BASE_URL`` setting if that is set. Otherwise the domain of
+        the current Site if the "Sites" framework is installed, and finally
+        the scheme and hostname of the current request.
         """
+        if self.BASE_URL:
+            return self.BASE_URL.rstrip("/")
         if apps.is_installed("django.contrib.sites"):
             from django.contrib.sites.shortcuts import get_current_site
 
             site = get_current_site(request)
             if site:
                 return f"https://{site.domain}"
+        if request is not None:
+            return f"{request.scheme}://{request.get_host()}"
         return "https://dpaste-base-url.example.org"
+
+    @property
+    def abuse_contact_url(self):
+        """
+        The link for ``ABUSE_CONTACT``, which is either a URL or an email.
+        """
+        contact = self.ABUSE_CONTACT
+        if not contact or "://" in contact or contact.startswith("mailto:"):
+            return contact
+        return f"mailto:{contact}"
 
     @property
     def extra_template_context(self):
@@ -646,4 +886,6 @@ class dpasteAppConfig(AppConfig):
             "dpaste_extra_post_about": mark_safe(self.EXTRA_POST_ABOUT),
             "dpaste_extra_post_new": mark_safe(self.EXTRA_POST_NEW),
             "dpaste_extra_post_form": mark_safe(self.EXTRA_POST_FORM),
+            "dpaste_abuse_contact": self.ABUSE_CONTACT,
+            "dpaste_abuse_contact_url": self.abuse_contact_url,
         }

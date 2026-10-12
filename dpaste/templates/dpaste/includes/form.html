@@ -4,7 +4,7 @@
   {% csrf_token %}
   {{ form.non_field_errors }}
 
-  <p style="display: none;">{{ form.title }}</p> {# Honeypot field #}
+  <p style="display: none;" aria-hidden="true">{{ form.website }}</p> {# Honeypot field #}
 
   <p class="form-lexer">
     <label for="{{ form.lexer.auto_id }}">{% trans "Syntax" %}</label>
@@ -22,7 +22,11 @@
   </p>
 
   <p class="form-textarea superenter {% if not object %}autofocus{% endif %} {% if form.content.errors %}error{% endif %}">
-      <label for="{{ form.content.auto_id }}">{% trans "Content" %}</label>
+    {% if title_enabled %}
+      <label for="{{ form.title.auto_id }}">{% trans "Title" %}</label>
+      {{ form.title }}
+    {% endif %}
+    <label for="{{ form.content.auto_id }}">{% trans "Content" %}</label>
     {{ form.content }}
   </p>
 

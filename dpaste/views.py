@@ -1,6 +1,7 @@
 import datetime
 import difflib
 import json
+import re
 
 from django.apps import apps
 from django.http import (
@@ -22,12 +23,25 @@ from django.views.generic.detail import DetailView
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
 
-from dpaste import highlight
+from dpaste import abuse, highlight
 from dpaste.forms import SnippetForm, get_expire_values
 from dpaste.highlight import PygmentsHighlighter
 from dpaste.models import Snippet
 
 config = apps.get_app_config("dpaste")
+
+
+def is_preview_request(request):
+    """
+    Messengers and social networks fetch a link to generate a preview of it,
+    as soon as it's posted. That is not a human looking at the snippet.
+    """
+    if request.method == "HEAD":
+        return True
+    user_agent = request.headers.get("User-Agent", "")
+    if not user_agent or not config.PREVIEW_USER_AGENTS:
+        return False
+    return bool(re.search(config.PREVIEW_USER_AGENTS, user_agent, re.IGNORECASE))
 
 
 # -----------------------------------------------------------------------------
@@ -58,6 +72,7 @@ class SnippetView(FormView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        ctx.update({"title_enabled": config.TITLE_ENABLED})
         ctx.update(config.extra_template_context)
         return ctx
 
@@ -91,6 +106,11 @@ class SnippetDetailView(DetailView, FormView):
 
         return super().post(request, *args, **kwargs)
 
+    def get_object(self, queryset=None):
+        if not hasattr(self, "_snippet"):
+            self._snippet = super().get_object(queryset)
+        return self._snippet
+
     def get(self, request, *args, **kwargs):
         snippet = self.get_object()
 
@@ -105,6 +125,28 @@ class SnippetDetailView(DetailView, FormView):
             snippet.delete()
             raise Http404()
 
+        # Snippets detected by the abuse filter are deleted on the spot. The
+        # content is checked again on every view, since the blocklist grows
+        # after a snippet was created.
+        match = abuse.scan_referer(request) or abuse.scan_snippet(
+            snippet, request=request
+        )
+        if match:
+            abuse.record_hit(match)
+            snippet.delete()
+            raise Http404()
+
+        # Link previews are not views. They don't get to see a One-Time
+        # snippet either, it would be gone before somebody opens the link.
+        if is_preview_request(request):
+            if snippet.expire_type == Snippet.EXPIRE_ONETIME:
+                context = {"snippet": snippet}
+                context.update(config.extra_template_context)
+                response = render(request, "dpaste/onetime_preview.html", context)
+                add_never_cache_headers(response)
+                return response
+            return super().get(request, *args, **kwargs)
+
         # Increase the view count of the snippet
         snippet.view_count += 1
         snippet.save(update_fields=["view_count"])
@@ -114,6 +156,7 @@ class SnippetDetailView(DetailView, FormView):
     def get_initial(self):
         snippet = self.get_object()
         return {
+            "title": snippet.title,
             "content": snippet.content,
             "lexer": snippet.lexer,
             "rtl": snippet.rtl,
@@ -159,6 +202,12 @@ class SnippetDetailView(DetailView, FormView):
                 "wordwrap": self.object.lexer in highlight.LEXER_WORDWRAP,
                 "diff": self.get_snippet_diff(),
                 "raw_mode": config.RAW_MODE_ENABLED,
+                "snippet_url": "{}{}".format(
+                    config.get_base_url(request=self.request),
+                    self.object.get_absolute_url(),
+                ),
+                "title_enabled": config.TITLE_ENABLED,
+                "view_count_enabled": config.VIEW_COUNT_ENABLED,
             }
         )
         ctx.update(config.extra_template_context)
@@ -272,6 +321,7 @@ class APIView(View):
 
     def post(self, request, *args, **kwargs):
         content = request.POST.get("content", "")
+        title = " ".join(request.POST.get("title", "").split())
         lexer = request.POST.get("lexer", highlight.LEXER_DEFAULT).strip()
         filename = request.POST.get("filename", "").strip()
         expires = request.POST.get("expires", "").strip()
@@ -279,6 +329,28 @@ class APIView(View):
 
         if not content.strip():
             return HttpResponseBadRequest("No content given")
+
+        if len(content) > config.MAX_CONTENT_LENGTH:
+            return HttpResponseBadRequest(
+                f"Content is too long. The maximum is {config.MAX_CONTENT_LENGTH} "
+                "characters."
+            )
+
+        if not config.TITLE_ENABLED:
+            title = ""
+        if len(title) > config.TITLE_MAX_LENGTH:
+            return HttpResponseBadRequest(
+                f"Title is too long. The maximum is {config.TITLE_MAX_LENGTH} "
+                "characters."
+            )
+
+        # Snippets detected by the abuse filter are never stored.
+        match = abuse.scan_text(f"{title}\n{content}", request=request)
+        if match:
+            abuse.record_hit(match)
+            return HttpResponseBadRequest(
+                abuse.reject_message(match), content_type="text/plain; charset=utf-8"
+            )
 
         # We need at least a lexer or a filename
         if not lexer and not filename:
@@ -316,6 +388,7 @@ class APIView(View):
             expire_type = Snippet.EXPIRE_TIME
 
         snippet = Snippet.objects.create(
+            title=title,
             content=content,
             lexer=lexer,
             expires=expires,

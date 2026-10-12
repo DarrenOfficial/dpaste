@@ -4,6 +4,7 @@ from django import forms
 from django.apps import apps
 from django.utils.translation import gettext_lazy as _
 
+from . import abuse
 from .highlight import LEXER_CHOICES, LEXER_DEFAULT, LEXER_KEYS
 from .models import Snippet
 
@@ -45,16 +46,23 @@ class SnippetForm(forms.ModelForm):
 
     rtl = forms.BooleanField(label=_("Right to Left"), required=False)
 
-    # Honeypot field
     title = forms.CharField(
         label=_("Title"),
         required=False,
-        widget=forms.TextInput(attrs={"autocomplete": "off"}),
+        max_length=config.TITLE_MAX_LENGTH,
+        widget=forms.TextInput(attrs={"placeholder": _("Title (optional)")}),
+    )
+
+    # Honeypot field
+    website = forms.CharField(
+        label=_("Website"),
+        required=False,
+        widget=forms.TextInput(attrs={"autocomplete": "off", "tabindex": "-1"}),
     )
 
     class Meta:
         model = Snippet
-        fields = ("content", "lexer", "rtl")
+        fields = ("title", "content", "lexer", "rtl")
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -84,13 +92,31 @@ class SnippetForm(forms.ModelForm):
         self.cleaned_data["expire_type"] = expire_type
         return expires
 
+    def clean_title(self):
+        if not config.TITLE_ENABLED:
+            return ""
+        return " ".join(self.cleaned_data.get("title", "").split())
+
     def clean(self):
         """
-        The `title` field is a hidden honeypot field. If its filled,
+        The `website` field is a hidden honeypot field. If its filled,
         this is likely spam.
         """
-        if self.cleaned_data.get("title"):
-            raise forms.ValidationError("This snippet was identified as Spam.")
+        if self.cleaned_data.get("website"):
+            raise forms.ValidationError(_("This snippet was identified as Spam."))
+
+        # Snippets detected by the abuse filter are never stored.
+        match = abuse.scan_text(
+            "{}\n{}".format(
+                self.cleaned_data.get("title", ""),
+                self.cleaned_data.get("content", ""),
+            ),
+            request=self.request,
+        )
+        if match:
+            abuse.record_hit(match)
+            raise forms.ValidationError(abuse.reject_message(match))
+
         return self.cleaned_data
 
     def save(self, parent=None, *args, **kwargs):

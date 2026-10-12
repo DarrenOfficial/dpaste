@@ -270,3 +270,43 @@ class SnippetAPITestCase(TestCase):
         content = " one\n  two\n   three\n    four"
         self.client.post(self.api_url, {"content": content})
         self.assertEqual(Snippet.objects.all()[0].content, content)
+
+    def test_url_uses_request_host(self):
+        """
+        Without a configured base URL, the returned link points to the host
+        the request was sent to.
+        """
+        data = {"content": "Hello", "format": "url"}
+        response = self.client.post(
+            self.api_url, data, headers={"host": "paste.example.org"}
+        )
+        snippet = Snippet.objects.get()
+        self.assertEqual(
+            response.content.decode("utf-8"),
+            f"http://paste.example.org/{snippet.secret_id}\n",
+        )
+
+    def test_url_uses_base_url(self):
+        config.BASE_URL = "https://paste.example.org"
+        try:
+            data = {"content": "Hello", "format": "url"}
+            response = self.client.post(self.api_url, data)
+            snippet = Snippet.objects.get()
+            self.assertEqual(
+                response.content.decode("utf-8"),
+                f"https://paste.example.org/{snippet.secret_id}\n",
+            )
+        finally:
+            config.BASE_URL = ""
+
+    def test_title(self):
+        data = {"content": "Hello", "title": "  My  Title "}
+        response = self.client.post(self.api_url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Snippet.objects.get().title, "My Title")
+
+    def test_title_too_long(self):
+        data = {"content": "Hello", "title": "a" * (config.TITLE_MAX_LENGTH + 1)}
+        response = self.client.post(self.api_url, data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(Snippet.objects.count(), 0)

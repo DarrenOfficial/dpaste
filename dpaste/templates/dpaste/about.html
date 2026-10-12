@@ -17,8 +17,15 @@
       This site is powered by dpaste, an <strong>open source</strong>
       <a href="https://en.wikipedia.org/wiki/Pastebin">pastebin</a> application.
       You can find the source code, contribute to it or leave feedback
-      <a href="https://github.com/bartTC/dpaste">on Github</a>.
+      <a href="https://github.com/DarrenOfficial/dpaste">on Github</a>.
     </p>
+
+    {% if dpaste_abuse_contact_url %}
+      <h3>{% trans "Report abuse" %}</h3>
+      <p>
+        {% blocktrans with url=dpaste_abuse_contact_url contact=dpaste_abuse_contact %}Found a snippet which should not be here? Everybody can remove a snippet with the "Delete Now" link above it. Please also let us know at <a href="{{ url }}">{{ contact }}</a>, we will take care of it faster than anybody else can.{% endblocktrans %}
+      </p>
+    {% endif %}
 
     {{ dpaste_extra_post_about }}
 
