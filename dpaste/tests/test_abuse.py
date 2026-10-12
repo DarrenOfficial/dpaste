@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 
 from django.apps import apps
 from django.core import management
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import Client
 from django.urls import reverse
 
@@ -115,9 +115,29 @@ class AbuseFilterTestCase(TestCase):
     # -------------------------------------------------------------------------
     def test_form_rejects_snippet(self):
         response = self.post("get it at https://gofile.io/d/abcd")
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "rejected by the abuse filter")
+        self.assertEqual(response.status_code, 406)
         self.assertEqual(Snippet.objects.count(), 0)
+
+    def test_form_does_not_tell_the_reason(self):
+        response = self.post("get it at https://gofile.io/d/abcd")
+        self.assertContains(response, "406 Not Acceptable", status_code=406)
+        self.assertNotContains(response, "abuse filter", status_code=406)
+        self.assertNotContains(response, "file sharing", status_code=406)
+        self.assertNotContains(response, "gofile", status_code=406)
+
+    @override_settings(DEBUG=True)
+    def test_form_tells_the_reason_in_debug_mode(self):
+        response = self.post("get it at https://gofile.io/d/abcd")
+        self.assertContains(
+            response, "rejected by the abuse filter", status_code=406
+        )
+        self.assertContains(response, "file sharing", status_code=406)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+    def test_other_form_errors_are_still_shown(self):
+        response = self.post("")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["form"].errors)
 
     def test_form_rejects_title(self):
         self.post("Hello", title=f"{ONION}")
@@ -140,7 +160,16 @@ class AbuseFilterTestCase(TestCase):
         response = self.client.post(
             self.api_url, {"content": "https://pastebin.com/abcd"}
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 406)
+        self.assertEqual(response.content, b"Not Acceptable")
+        self.assertEqual(Snippet.objects.count(), 0)
+
+    @override_settings(DEBUG=True)
+    def test_api_tells_the_reason_in_debug_mode(self):
+        response = self.client.post(
+            self.api_url, {"content": "https://pastebin.com/abcd"}
+        )
+        self.assertContains(response, "other pastebins", status_code=406)
         self.assertEqual(Snippet.objects.count(), 0)
 
     def test_reply_is_rejected(self):
@@ -151,7 +180,8 @@ class AbuseFilterTestCase(TestCase):
             "lexer": config.LEXER_DEFAULT,
             "expires": config.EXPIRE_DEFAULT,
         }
-        self.client.post(self.details_url(snippet), data, follow=True)
+        response = self.client.post(self.details_url(snippet), data, follow=True)
+        self.assertEqual(response.status_code, 406)
         self.assertEqual(Snippet.objects.count(), 1)
 
     def test_hit_is_counted(self):
@@ -423,6 +453,7 @@ class AbuseKeywordsTestCase(TestCase):
         headers["referer"] = "https://not-paste.example.org.evil.example/"
         self.assertEqual(self.client.get(url, headers=headers).status_code, 404)
 
+    @override_settings(DEBUG=True)
     def test_form_rejects_keyword_without_showing_it(self):
         config.ABUSE_KEYWORDS = ("badsite.",)
         data = {
@@ -433,9 +464,10 @@ class AbuseKeywordsTestCase(TestCase):
         }
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(Snippet.objects.count(), 0)
-        self.assertContains(response, "rejected by the abuse filter")
-        self.assertNotContains(response, "badsite.&quot;")
-        self.assertNotIn("badsite.", str(response.context["form"].non_field_errors()))
+        self.assertContains(
+            response, "rejected by the abuse filter", status_code=406
+        )
+        self.assertNotContains(response, "badsite", status_code=406)
 
     def test_purge_abuse(self):
         Snippet.objects.create(content="Hello")

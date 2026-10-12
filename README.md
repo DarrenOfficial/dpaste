@@ -91,6 +91,12 @@ are not something to publish, so keep yours out of public repositories too.
 `manage.py blocklist import` reads the same format, if you rather want the
 entries of a file as blocked domains in the database.
 
+A snippet which is detected is answered with a `406 Not Acceptable`, in the
+form and in the API. The response does not say why, or that there is a filter
+at all: that would only help the ones who try to get around it. With
+`DEBUG=True` the reason is given (the kind of link, never the entry which
+matched), which is what you want while you test your lists.
+
 The filter is strict by design and will reject some harmless snippets, such as
 one with a link to a file on Google Drive. Set `ABUSE_CONTACT` so people can
 tell you, and see the `ABUSE_*` and `ALLOWED_LINK_DOMAINS` options in

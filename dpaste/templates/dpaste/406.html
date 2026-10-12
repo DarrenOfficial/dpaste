@@ -1,0 +1,16 @@
+{% extends "dpaste/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "406 Not Acceptable" %}{% endblock %}
+
+{% block body_type %}text-page{%endblock %}
+
+{% block page %}
+<article>
+  <h2 class="first-item">{% trans "406 Not Acceptable" %}</h2>
+  <p>
+    {% if reason %}{{ reason }}{% else %}{% trans "This snippet was not accepted." %}{% endif %}
+  </p>
+</article>
+{% endblock %}

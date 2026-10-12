@@ -157,10 +157,14 @@ class dpasteAppConfig(AppConfig):
     # already in the database are deleted as soon as they are detected: when
     # they are viewed, and when the ``cleanup_snippets`` or ``purge_abuse``
     # management command runs. See ``dpaste/abuse.py``.
+    #
+    # A snippet which is not stored is answered with a plain "406 Not
+    # Acceptable", in the form and in the API. The reason is only given if
+    # Django's ``DEBUG`` setting is on.
     ABUSE_FILTER_ENABLED = True
 
     # String. An email address or URL to report abuse to. It's displayed on
-    # the About page, next to each snippet and when a snippet was rejected.
+    # the About page and next to each snippet.
     ABUSE_CONTACT = os.environ.get("DPASTE_ABUSE_CONTACT", "")
 
     # Detect links to Tor hidden services (.onion).

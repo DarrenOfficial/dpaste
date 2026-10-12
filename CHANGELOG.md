@@ -5,7 +5,9 @@
 ### Abuse filter
 
 - Snippets which link to other pastebins, `.onion` hidden services, file
-  sharing providers or a blocked domain are rejected, in the form and the API.
+  sharing providers or a blocked domain are rejected, in the form and the API. The
+  response is a `406 Not Acceptable` which does not tell why. The reason is
+  only given if `DEBUG` is on.
 - Existing snippets are checked again on every view and deleted if they are
   detected. A snippet is deleted as well if a visitor arrives with an HTTP
   Referer of a pastebin, hidden service, file sharing provider or blocked
@@ -17,8 +19,8 @@
   (`DPASTE_ABUSE_KEYWORDS_FILE`). The file is reloaded when it changes.
 - New `purge_abuse` management command, which is also run by
   `cleanup_snippets`.
-- New `ABUSE_CONTACT` option, displayed on the About page, next to each snippet
-  and in the rejection message.
+- New `ABUSE_CONTACT` option, displayed on the About page and next to each
+  snippet.
 
 ### Features
 
