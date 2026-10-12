@@ -14,7 +14,8 @@ detects them:
 - visits arriving with an HTTP Referer from any of the above.
 
 A detected snippet is never stored; one which is already in the database is
-deleted the moment it is detected. Nothing of it is kept.
+deleted the moment it is detected. Nothing of it is kept, and nobody is told
+what was detected: the only trace is a line in the log.
 """
 
 import os
@@ -28,7 +29,6 @@ from urllib.parse import urlsplit
 from django.apps import apps
 from django.db.models import F
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 
 logger = getLogger(__name__)
 config = apps.get_app_config("dpaste")
@@ -38,14 +38,6 @@ REASON_PASTEBIN = "pastebin"
 REASON_FILEHOST = "filehost"
 REASON_BLOCKLIST = "blocklist"
 REASON_KEYWORD = "keyword"
-
-REASON_MESSAGES = {
-    REASON_ONION: _("links to .onion hidden services are not allowed"),
-    REASON_PASTEBIN: _("links to other pastebins are not allowed"),
-    REASON_FILEHOST: _("links to file sharing services are not allowed"),
-    REASON_BLOCKLIST: _("it links to a blocked domain"),
-    REASON_KEYWORD: _("it links to a blocked domain"),
-}
 
 # What was found (`reason` is one of the REASON_* keys, `domain` the entry
 # of the list that matched) and where (`source` is "content" or "referer").
@@ -347,22 +339,6 @@ def record_hit(match):
         BlockedDomain.objects.filter(domain=match.domain).update(
             hits=F("hits") + 1, last_hit=timezone.now()
         )
-
-
-def reject_message(match):
-    """
-    The message shown to a user whose snippet was not accepted.
-    """
-    message = _("This snippet was rejected by the abuse filter: %(reason)s.") % {
-        "reason": REASON_MESSAGES[match.reason]
-    }
-    if config.ABUSE_CONTACT:
-        message = "{} {}".format(
-            message,
-            _("Contact %(contact)s if you think this is a mistake.")
-            % {"contact": config.ABUSE_CONTACT},
-        )
-    return message
 
 
 def purge_snippets(dry_run=False):

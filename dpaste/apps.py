@@ -159,8 +159,8 @@ class dpasteAppConfig(AppConfig):
     # management command runs. See ``dpaste/abuse.py``.
     #
     # A snippet which is not stored is answered with a plain "406 Not
-    # Acceptable", in the form and in the API. The reason is only given if
-    # Django's ``DEBUG`` setting is on.
+    # Acceptable", in the form and in the API. The reason is never given,
+    # it is written to the log.
     ABUSE_FILTER_ENABLED = True
 
     # String. An email address or URL to report abuse to. It's displayed on

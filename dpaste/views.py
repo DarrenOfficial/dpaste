@@ -4,7 +4,6 @@ import json
 import re
 
 from django.apps import apps
-from django.conf import settings
 from django.http import (
     Http404,
     HttpResponse,
@@ -45,21 +44,19 @@ def is_preview_request(request):
     return bool(re.search(config.PREVIEW_USER_AGENTS, user_agent, re.IGNORECASE))
 
 
-def not_acceptable(request, match, plain=False):
+def not_acceptable(request, plain=False):
     """
     The response to a snippet which was detected by the abuse filter. It
     does not tell what was detected, nor that there is a filter at all:
-    that is only helpful for those who try to get around it. The reason is
-    given if ``DEBUG`` is on.
+    that is only helpful for those who try to get around it. What was
+    detected is written to the log.
     """
     if plain:
-        message = abuse.reject_message(match) if settings.DEBUG else "Not Acceptable"
         response = HttpResponse(
-            message, content_type="text/plain; charset=utf-8", status=406
+            "Not Acceptable", content_type="text/plain; charset=utf-8", status=406
         )
     else:
-        context = {"reason": abuse.reject_message(match) if settings.DEBUG else ""}
-        context.update(config.extra_template_context)
+        context = dict(config.extra_template_context)
         response = render(request, "dpaste/406.html", context, status=406)
     add_never_cache_headers(response)
     return response
@@ -71,9 +68,8 @@ class AbuseFilterMixin:
     """
 
     def form_invalid(self, form):
-        match = getattr(form, "abuse_match", None)
-        if match:
-            return not_acceptable(self.request, match)
+        if getattr(form, "abuse_match", None):
+            return not_acceptable(self.request)
         return super().form_invalid(form)
 
 
@@ -381,7 +377,7 @@ class APIView(View):
         match = abuse.scan_text(f"{title}\n{content}", request=request)
         if match:
             abuse.record_hit(match)
-            return not_acceptable(request, match, plain=True)
+            return not_acceptable(request, plain=True)
 
         # We need at least a lexer or a filename
         if not lexer and not filename:

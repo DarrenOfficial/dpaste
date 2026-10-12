@@ -116,7 +116,7 @@ class SnippetForm(forms.ModelForm):
         if match:
             abuse.record_hit(match)
             self.abuse_match = match
-            raise forms.ValidationError(abuse.reject_message(match))
+            raise forms.ValidationError(_("This snippet was not accepted."))
 
         return self.cleaned_data
 
