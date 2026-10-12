@@ -111,22 +111,3 @@ addopts = [
     "--cov-branch",
     "--nomigrations",
 ]
-
-[tool.tox]
-env_list = [
-    "py310-django52",
-    "py311-django52",
-    "py312-django{52,60,61}",
-    "py313-django{52,60,61}",
-    "py314-django{52,60,61}",
-]
-skip_missing_interpreters = true
-
-[tool.tox.env_run_base]
-extras = ["test"]
-commands = [["pytest", "dpaste"]]
-deps = [
-    "django52: django>=5.2,<6.0",
-    "django60: django>=6.0,<6.1",
-    "django61: django>=6.1,<6.2",
-]
