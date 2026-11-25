@@ -21,7 +21,7 @@ RUN make js
 
 # ------------------------------------------------
 
-FROM python:3.14 AS build
+FROM python:3.15 AS build
 
 ARG BUILD_EXTRAS=production
 
