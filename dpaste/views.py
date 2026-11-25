@@ -422,10 +422,17 @@ class APIView(View):
             expire_type=expire_type,
         )
 
-        # Custom formatter for the API response
+        # Custom formatter for the API response. The JSON export embeds the
+        # snippet content verbatim; served as the default text/html it would
+        # execute as HTML (reflected XSS), so the content type is set here.
         formatter = getattr(self, f"_format_{response_format}", None)
         if callable(formatter):
-            return HttpResponse(formatter(snippet))
+            content_type = (
+                "application/json"
+                if response_format == "json"
+                else "text/plain; charset=utf-8"
+            )
+            return HttpResponse(formatter(snippet), content_type=content_type)
 
         # Otherwise use the default one.
         return HttpResponse(self._format_default(snippet))
