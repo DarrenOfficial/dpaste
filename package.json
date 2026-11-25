@@ -6,6 +6,6 @@
   "license": "MIT",
   "devDependencies": {
     "sass": "1.105.1",
-    "terser": "5.51.2"
+    "terser": "5.51.4"
   }
 }
