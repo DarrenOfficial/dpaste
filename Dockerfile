@@ -1,4 +1,4 @@
-FROM node:24 AS staticfiles
+FROM node:26 AS staticfiles
 
 ARG BUILD_EXTRAS=production
 
