@@ -1,0 +1,16 @@
+{% extends "dpaste/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ dpaste_application_name }}/{{ snippet.secret_id }} ({% trans "One-Time snippet" %}){% endblock %}
+
+{% block body_type %}text-page{%endblock %}
+
+{% block page %}
+<article>
+  <h2 class="first-item">{% trans "One-Time snippet" %}</h2>
+  <p>
+    {% trans "This is a one-time snippet. Its content is not shown in link previews, open the link in a browser to view it." %}
+  </p>
+</article>
+{% endblock %}

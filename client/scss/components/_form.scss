@@ -108,7 +108,26 @@
     }
   }
 
+  input[type=text] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+
+    color: $selectTextColor;
+    border: 1px solid $borderColor;
+
+    font-family: $baseFont;
+    font-weight: $baseFontRegular;
+    font-size: 14px;
+
+    &:active, &:focus {
+      border-color: darken($selectBorderColor, 10%)
+    }
+  }
+
   textarea {
+    flex: 1;
     padding: 20px;
     @include codeTextArea;
     box-sizing: border-box;

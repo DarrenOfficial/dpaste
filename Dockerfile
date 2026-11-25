@@ -1,4 +1,4 @@
-FROM node:lts as staticfiles
+FROM node:24 AS staticfiles
 
 ARG BUILD_EXTRAS=production
 
@@ -21,7 +21,7 @@ RUN make js
 
 # ------------------------------------------------
 
-FROM python:3.10 as build
+FROM python:3.14 AS build
 
 ARG BUILD_EXTRAS=production
 
@@ -39,7 +39,7 @@ COPY --from=staticfiles /app /app/
 
 # Copy only the files necessary to install the dpaste project as an editable
 # package. This improves caching.
-COPY setup.py setup.cfg ./
+COPY pyproject.toml README.md LICENSE ./
 COPY dpaste/__init__.py dpaste/
 RUN pip install -e .[${BUILD_EXTRAS}]
 
@@ -52,6 +52,6 @@ RUN ./manage.py collectstatic --noinput
 # By default run it with pyuwsgi, which is a great production ready
 # server. For development, docker-compose will override it to use the
 # regular Django runserver.
-CMD ./manage.py migrate --noinput && ./manage.py pyuwsgi --http=:${PORT} --logger file:/var/log/uwsgi.log
+CMD ["/bin/sh", "-c", "./manage.py migrate --noinput && ./manage.py pyuwsgi --http=:${PORT} --logger file:/var/log/uwsgi.log"]
 
 EXPOSE ${PORT}

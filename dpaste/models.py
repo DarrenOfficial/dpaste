@@ -3,10 +3,11 @@ from random import SystemRandom
 
 from django.apps import apps
 from django.db import models
+from django.db.models.signals import post_delete, post_save
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from dpaste import highlight
+from dpaste import abuse, highlight
 
 config = apps.get_app_config("dpaste")
 logger = getLogger(__file__)
@@ -48,6 +49,7 @@ class Snippet(models.Model):
     secret_id = models.CharField(
         _("Secret ID"), max_length=255, blank=True, null=True, unique=True
     )
+    title = models.CharField(_("Title"), max_length=255, blank=True, default="")
     content = models.TextField(_("Content"))
     lexer = models.CharField(_("Lexer"), max_length=30, default=highlight.LEXER_DEFAULT)
     published = models.DateTimeField(_("Published"), auto_now_add=True)
@@ -95,7 +97,51 @@ class Snippet(models.Model):
         return highlight.Highlighter.get_lexer_display_name(self.lexer)
 
     @property
+    def page_title(self):
+        """
+        The title of this snippet, or the first line of its content if it
+        has none. One-Time snippets never leak their content that way.
+        """
+        if self.title:
+            return self.title
+        if not config.TITLE_FROM_CONTENT or self.expire_type == self.EXPIRE_ONETIME:
+            return ""
+        for line in self.content.splitlines():
+            line = line.strip()
+            if line:
+                return line[: config.TITLE_MAX_LENGTH]
+        return ""
+
+    @property
     def remaining_views(self):
         if self.expire_type == self.EXPIRE_ONETIME:
             remaining = config.ONETIME_LIMIT - self.view_count
             return remaining > 0 and remaining or 0
+
+
+class BlockedDomain(models.Model):
+    """
+    A domain on the blocklist. Snippets which link to it, or to one of its
+    subdomains, are rejected and deleted by the abuse filter.
+    """
+
+    domain = models.CharField(_("Domain"), max_length=255, unique=True)
+    note = models.CharField(_("Note"), max_length=255, blank=True, default="")
+    created = models.DateTimeField(_("Created"), auto_now_add=True)
+    hits = models.PositiveIntegerField(_("Hits"), default=0)
+    last_hit = models.DateTimeField(_("Last hit"), blank=True, null=True)
+
+    class Meta:
+        ordering = ("domain",)
+        db_table = "dpaste_blockeddomain"
+
+    def __str__(self):
+        return self.domain
+
+    def save(self, *args, **kwargs):
+        self.domain = abuse.normalize_domain(self.domain)
+        super().save(*args, **kwargs)
+
+
+post_save.connect(abuse.clear_cache, sender=BlockedDomain)
+post_delete.connect(abuse.clear_cache, sender=BlockedDomain)

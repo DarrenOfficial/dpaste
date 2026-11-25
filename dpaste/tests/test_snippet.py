@@ -97,11 +97,11 @@ class SnippetTestCase(TestCase):
 
     def test_new_spam_snippet(self):
         """
-        The form has a `title` field acting as a honeypot, if its filled,
+        The form has a `website` field acting as a honeypot, if its filled,
         the snippet is considered as spam. We let the user know its spam.
         """
         data = self.valid_form_data()
-        data["title"] = "Any content"
+        data["website"] = "Any content"
         response = self.client.post(self.new_url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Snippet.objects.count(), 0)
@@ -268,6 +268,125 @@ class SnippetTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Hello")
+
+    # -------------------------------------------------------------------------
+    # Title
+    # -------------------------------------------------------------------------
+    def test_title(self):
+        data = self.valid_form_data(title="  My   <b>Title</b> ")
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.get().title, "My <b>Title</b>")
+        self.assertContains(response, "<title>My &lt;b&gt;Title&lt;/b&gt; - dpaste/")
+        self.assertContains(response, 'class="snippet-title"')
+
+    def test_title_falls_back_to_first_line(self):
+        data = self.valid_form_data(content="\n  first line\nsecond line")
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.get().title, "")
+        self.assertContains(response, "<title>first line - dpaste/")
+        self.assertNotContains(response, 'class="snippet-title"')
+
+    def test_title_of_onetime_snippet_does_not_leak_content(self):
+        data = self.valid_form_data(content="secret", expires="onetime")
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertContains(response, "<title>dpaste/")
+
+    def test_title_too_long(self):
+        data = self.valid_form_data(title="a" * (config.TITLE_MAX_LENGTH + 1))
+        self.client.post(self.new_url, data, follow=True)
+        self.assertEqual(Snippet.objects.count(), 0)
+
+    # -------------------------------------------------------------------------
+    # View count and link previews
+    # -------------------------------------------------------------------------
+    PREVIEW_USER_AGENTS = (
+        "TelegramBot (like TwitterBot)",
+        "WhatsApp/2.23.20.0",
+        "Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)",
+        "Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)",
+        "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 "
+        "(KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 "
+        "facebookexternalhit/1.1 Facebot Twitterbot/1.0",
+    )
+
+    def test_view_count(self):
+        data = self.valid_form_data()
+        response = self.client.post(self.new_url, data, follow=True)
+        self.assertContains(response, "1 view")
+        response = self.client.get(response.request["PATH_INFO"])
+        self.assertContains(response, "2 views")
+
+    def test_link_preview_is_not_a_view(self):
+        data = self.valid_form_data()
+        response = self.client.post(self.new_url, data, follow=True)
+        url = response.request["PATH_INFO"]
+        for user_agent in self.PREVIEW_USER_AGENTS:
+            response = self.client.get(url, headers={"user-agent": user_agent})
+            self.assertContains(response, data["content"])
+        self.client.head(url)
+        self.assertEqual(Snippet.objects.get().view_count, 1)
+
+        # Regular browsers and tools are views
+        self.client.get(url, headers={"user-agent": "curl/8.5.0"})
+        self.client.get(
+            url,
+            headers={
+                "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) "
+                "Gecko/20100101 Firefox/130.0"
+            },
+        )
+        self.assertEqual(Snippet.objects.get().view_count, 3)
+
+    def test_link_preview_does_not_destroy_onetime_snippet(self):
+        data = self.valid_form_data(expires="onetime")
+        response = self.client.post(self.new_url, data, follow=True)
+        url = response.request["PATH_INFO"]
+
+        # The link is posted in a messenger, which fetches it right away.
+        for user_agent in self.PREVIEW_USER_AGENTS:
+            response = self.client.get(url, headers={"user-agent": user_agent})
+            self.assertEqual(response.status_code, 200)
+            self.assertNotContains(response, "Hello")
+        self.assertEqual(self.client.head(url).status_code, 200)
+        raw_url = reverse(
+            "snippet_details_raw",
+            kwargs={"snippet_id": Snippet.objects.get().secret_id},
+        )
+        response = self.client.get(
+            raw_url, headers={"user-agent": self.PREVIEW_USER_AGENTS[0]}
+        )
+        self.assertNotContains(response, "Hello")
+
+        # The recipient still gets to see it, once.
+        response = self.client.get(url)
+        self.assertContains(response, "Hello")
+        self.assertEqual(self.client.get(url).status_code, 404)
+
+    # -------------------------------------------------------------------------
+    # Snippet URL
+    # -------------------------------------------------------------------------
+    def test_snippet_url_uses_request_host(self):
+        data = self.valid_form_data()
+        response = self.client.post(
+            self.new_url, data, follow=True, headers={"host": "paste.example.org"}
+        )
+        snippet = Snippet.objects.get()
+        self.assertContains(
+            response, f'value="http://paste.example.org/{snippet.secret_id}"'
+        )
+
+    def test_snippet_url_uses_base_url(self):
+        config.BASE_URL = "https://paste.example.org/"
+        try:
+            data = self.valid_form_data()
+            response = self.client.post(self.new_url, data, follow=True)
+            snippet = Snippet.objects.get()
+            self.assertContains(
+                response, f'value="https://paste.example.org/{snippet.secret_id}"'
+            )
+        finally:
+            config.BASE_URL = ""
 
     # -------------------------------------------------------------------------
     # XSS and correct escaping

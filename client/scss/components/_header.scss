@@ -134,6 +134,18 @@ ul#snippetOptions {
   font-weight: $baseFontDemiBold;
 }
 
+.snippet-title {
+  @include boxPadding(15px, 15px);
+  margin: 0;
+
+  color: $textColor;
+  background-color: $borderColor;
+
+  font-size: 16px;
+  font-weight: $baseFontDemiBold;
+  overflow-wrap: anywhere;
+}
+
 // Textarea that holds the unaltered snippet content to be copied to clipboard
 #copySnippetSource {
   width: 0;
@@ -143,6 +155,6 @@ ul#snippetOptions {
 
 // Hide some options on mobile to make up space
 @media only screen and (max-width: 700px) {
-  .option-type, .sep, .option-edit, .option-slim{ display: none; }
+  .option-type, .option-views, .option-report, .sep, .option-edit, .option-slim{ display: none; }
   #copyHeadline { display: none; }
 }

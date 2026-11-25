@@ -6,7 +6,7 @@ DEBUG = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-INSTALLED_APPS += ('sslserver',)
+INSTALLED_APPS += ['sslserver']
 
 # Optionally run the runserver as `manage.py runsslserver` to locally
 # test correct cookie and csp behavior.
@@ -32,6 +32,13 @@ if not 'runsslserver' in sys.argv:
 #         (3600 * 24 * 31, _('Expire in one month')),
 #     )
 #     EXPIRE_DEFAULT = 3600 * 24 * 7
+#
+#     # The public URL of this installation, used for the links to snippets.
+#     BASE_URL = 'https://paste.example.org'
+#
+#     # Abuse filter. See dpaste/apps.py for all options.
+#     ABUSE_CONTACT = 'abuse@example.org'
+#     ALLOWED_LINK_DOMAINS = ('drive.google.com',)
 #
 # INSTALLED_APPS.remove('dpaste.apps.dpasteAppConfig')
 # INSTALLED_APPS.append('dpaste.settings.local.ProductionDpasteAppConfig')

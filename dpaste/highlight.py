@@ -86,7 +86,7 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
 
     rst_part_name = "html_body"
     publish_args = {
-        "writer_name": "html5_polyglot",
+        "writer": "html5_polyglot",
         "settings_overrides": {
             "raw_enabled": False,
             "file_insertion_enabled": False,
@@ -110,12 +110,11 @@ class RestructuredTextHighlighter(PlainTextHighlighter):
 class NakedHtmlFormatter(HtmlFormatter):
     """Pygments HTML formatter with no further HTML tags."""
 
-    def wrap(self, source, outfile):
-        return self._wrap_code(source)
-
-    def _wrap_code(self, source):
-        for line in source:
-            yield line
+    def __init__(self, **options):
+        # `nowrap` skips the <div> and <pre> wrapper in every Pygments
+        # version, other than overriding one of its `wrap` methods.
+        options["nowrap"] = True
+        super().__init__(**options)
 
 
 class PlainCodeHighlighter(Highlighter):

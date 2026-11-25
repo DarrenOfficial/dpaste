@@ -1,0 +1,27 @@
+// Example for a keywords file of the abuse filter.
+//
+// Copy it, replace the entries with your own and point dpaste to it:
+//
+//     DPASTE_ABUSE_KEYWORDS_FILE=/path/to/abuse_keywords.txt
+//
+// A snippet is rejected and deleted if it links to a hostname which contains
+// one of the keywords. One keyword per line. Everything after // or # is a
+// comment. Quotes, commas and the lines which open or close a list are
+// optional, so a list which was sent to you as source code works as it is.
+// The names of the lists don't matter, they are for you.
+//
+// The entries below are made up. The real ones are not published here on
+// purpose: ask the abuse desk of your hosting provider or other pastebin
+// operators for theirs, and keep the file out of public repositories.
+
+FILE_HOSTS = [
+	'filehost.example',
+	'another-filehost.example',
+	'badsite.', // moves TLDs a lot: matches badsite.to, badsite.cc, ...
+]
+
+// Short links and "content lockers" which generate the most abuse reports.
+LINK_SHORTENERS = [
+	'shortlink.example',
+	'locker.example', // took the server down twice
+]

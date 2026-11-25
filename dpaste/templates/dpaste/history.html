@@ -36,7 +36,7 @@
 {% block page %}
     {% for snippet in snippet_list %}
       <h3 class="history-header">
-        <a href="{{ snippet.get_absolute_url }}">{% blocktrans with snippet.lexer_name as type %}{{ type }} Snippet{% endblocktrans %}</a>
+        <a href="{{ snippet.get_absolute_url }}">{% if snippet.title %}{{ snippet.title }}{% else %}{% blocktrans with snippet.lexer_name as type %}{{ type }} Snippet{% endblocktrans %}{% endif %}</a>
         <span class="sep"></span>
         {% blocktrans with snippet.published|timesince as since %}Created {{ since }} ago{% endblocktrans %}
       </h3>

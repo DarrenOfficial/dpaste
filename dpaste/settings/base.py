@@ -100,8 +100,8 @@ INSTALLED_APPS = [
     "dpaste.apps.dpasteAppConfig",
 ]
 
-sys.stdout.write(f"\n🐘  Database URL is: {env('DATABASE_URL')}\n")
 DATABASES = {"default": dj_database_url.config(default="sqlite:///dpaste.sqlite")}
+sys.stdout.write(f"\n🐘  Database engine is: {DATABASES['default']['ENGINE']}\n")
 
 # ==============================================================================
 # App specific settings
@@ -123,12 +123,21 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-CSP_DEFAULT_SRC = ("'none'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+# Behind a reverse proxy which does not pass the original `Host` header,
+# the links to snippets would point to the internal hostname. Either set this
+# to trust the `X-Forwarded-Host` header of the proxy, or set the public URL
+# of the installation with the DPASTE_BASE_URL environment variable.
+USE_X_FORWARDED_HOST = env("USE_X_FORWARDED_HOST") == "True"
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ["'none'"],
+        "script-src": ["'self'", "'unsafe-inline'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+    }
+}
 
 LOGGING = {
     "version": 1,
